@@ -1,0 +1,53 @@
+﻿@model Docimax.Web_ICD.Models.IndexViewModel
+@{
+    ViewBag.Title = "个人信息管理";
+}
+
+<h2>@ViewBag.Title</h2>
+<p class="text-success">@ViewBag.StatusMessage</p>
+<div>
+    <h4>更改你的账户设置</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>密码:</dt>
+        <dd>
+            [
+            @if (Model.HasPassword)
+            {
+                @Html.ActionLink("更改密码", "ChangePassword")
+            }
+            else
+            {
+                @Html.ActionLink("创建", "SetPassword")
+            }
+            ]
+        </dd>
+
+
+        <dt>电话号码:</dt>
+        <dd>
+            @(Model.PhoneNumber ?? "无") [
+            @if (Model.PhoneNumber != null)
+            {
+                @Html.ActionLink("更改", "AddPhoneNumber")
+                @: &nbsp;|&nbsp;
+                @Html.ActionLink("删除", "RemovePhoneNumber")
+            }
+            else
+            {
+                @Html.ActionLink("添加", "AddPhoneNumber")
+            }
+            ]
+        </dd>
+        <dt>身份认证:</dt>
+        <dd>
+           @switch (Model.CertificationFlag)
+           {
+               case 1:
+                   break;
+               default:
+                   break;
+           }
+        </dd>
+    </dl>
+</div>

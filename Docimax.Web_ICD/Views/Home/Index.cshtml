@@ -1,0 +1,31 @@
+﻿@{
+    ViewBag.Title = "主页";
+}
+
+<div class="jumbotron">
+    <h1>51ICD</h1>
+    <p>
+        是一个基于<span class="label label-warning">去隐私化的病案</span>提供不同病案质控服务的平台，可以根据医院的现状提供差别化的病案质控服务。自动化的形式质控使现在病案室的医生从大量重复的体力劳动中解放出来；
+        基于内容的首页编码服务一方面提供现有病案的数据完整性和可靠性，另一方面也可与现有编码医生进行相互学习和提高，解决病案峰值的压力，保证编码质量。
+    </p>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <h2>病案首页形式质控</h2>
+        <p>
+            不仅仅提供简单的缺项检查，还会自动完成简单的一些逻辑上非专业知识的质控，解放病案室医生的体力劳动，使他们把更多的精力放到能应用专业技能的工作上来.
+        </p>
+        <p>@Html.ActionLink("了解更多 >>", "Detail", "Home", "http", "www.51ICD.com", "3", null, new { @class = "btn btn-default" })</p>
+    </div>
+    <div class="col-md-4">
+        <h2>病案内容形式质控</h2>
+        <p>病案内容项目缺项检查和排序，保证病案内容的完整性，为后续的编码服务提供基础的数据完整性保证</p>
+        <p>@Html.ActionLink("了解更多 >>", "Detail", "Home", new { @class = "btn btn-default" })</p>
+    </div>
+    <div class="col-md-4">
+        <h2>病案首页编码服务</h2>
+        <p>为由编码需求的医院和有资质、能力的编码员搭建的一个服务供需平台，提高医院的编码质量的同时为有专业技能的编码员提供了一个新的提现能力价值的平台，达到双赢甚至多赢的局面.速度，</p>
+        <p>@Html.ActionLink("了解更多 >>", "Detail", "Home", new { @class = "btn btn-default" })</p>
+    </div>
+</div>

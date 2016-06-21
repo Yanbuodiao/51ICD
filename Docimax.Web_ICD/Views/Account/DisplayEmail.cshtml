@@ -1,0 +1,11 @@
+@{
+    ViewBag.Title = "未激活邮箱";
+    var userID = ViewBag.UserID;
+}
+<h2>@ViewBag.Title.</h2>
+<p class="text-info">
+    抱歉您的邮箱尚未激活，无法登陆！
+</p>
+<p class="text-danger">
+    没有收到激活邮件？请点击 @Html.ActionLink("重新激活", "SendConfirmEmail", "Account", new { userID },null)再次发送激活邮件
+</p>
