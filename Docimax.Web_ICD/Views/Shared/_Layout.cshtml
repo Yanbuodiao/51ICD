@@ -21,7 +21,8 @@
                 @Html.ActionLink("51ICD", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
-                @Html.Partial("../Account/MenuList")
+                @{Html.RenderAction("MenuList", "Account");}
+                @*@Html.Partial("../Account/MenuList")*@
                 @Html.Partial("_LoginPartial")
             </div>
         </div>
