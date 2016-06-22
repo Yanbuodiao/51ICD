@@ -1,4 +1,5 @@
-﻿@model Docimax.Web_ICD.Models.IndexViewModel
+﻿@using Docimax.Interface_ICD.Enum
+@model Docimax.Web_ICD.Models.IndexViewModel
 @{
     ViewBag.Title = "个人信息管理";
 }
@@ -14,40 +15,46 @@
             [
             @if (Model.HasPassword)
             {
-                @Html.ActionLink("更改密码", "ChangePassword")
+            @Html.ActionLink("更改密码", "ChangePassword")
             }
             else
             {
-                @Html.ActionLink("创建", "SetPassword")
+            @Html.ActionLink("创建", "SetPassword")
             }
             ]
         </dd>
-
-
-        <dt>电话号码:</dt>
+        <dt>手机认证:</dt>
         <dd>
-            @(Model.PhoneNumber ?? "无") [
+            @(Model.PhoneNumber ?? "未认证") [
             @if (Model.PhoneNumber != null)
             {
-                @Html.ActionLink("更改", "AddPhoneNumber")
-                @: &nbsp;|&nbsp;
-                @Html.ActionLink("删除", "RemovePhoneNumber")
+            @Html.ActionLink("更改", "AddPhoneNumber")
             }
             else
             {
-                @Html.ActionLink("添加", "AddPhoneNumber")
+            @Html.ActionLink("去认证", "AddPhoneNumber")
             }
             ]
         </dd>
         <dt>身份认证:</dt>
         <dd>
-           @switch (Model.CertificationFlag)
-           {
-               case 1:
-                   break;
-               default:
-                   break;
-           }
+            @switch (Model.CertificationFlag)
+            {
+                case CertificateState.未认证:
+                default:
+            @Html.ActionLink("发起认证申请", "VerifyIdentity")
+                    break;
+                case CertificateState.发起认证申请:
+                case CertificateState.平台人员审核通过:
+            @: "平台已收到申请，最多两个工作日认证完成，请耐心等候...";
+                    break;
+                case CertificateState.认证成功:
+            @: "已认证"|&nbsp;@Html.ActionLink("发起认证申请", "VerifyIdentity");
+                    break;
+                case CertificateState.认证失败:
+            @: "未通过认证"|&nbsp;@Html.ActionLink("发起认证申请", "VerifyIdentity");
+                    break;
+            }
         </dd>
     </dl>
 </div>

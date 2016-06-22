@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
+using Docimax.Interface_ICD.Enum;
 
 namespace Docimax.Web_ICD.Models
 {
@@ -12,7 +13,7 @@ namespace Docimax.Web_ICD.Models
         public string PhoneNumber { get; set; }
         public bool TwoFactor { get; set; }
         public bool BrowserRemembered { get; set; }
-        public int CertificationFlag { get; set; }
+        public CertificateState CertificationFlag { get; set; }
     }
 
     public class ManageLoginsViewModel
@@ -70,7 +71,7 @@ namespace Docimax.Web_ICD.Models
     public class VerifyPhoneNumberViewModel
     {
         [Required]
-        [Display(Name = "代码")]
+        [Display(Name = "收到的短信验证码")]
         public string Code { get; set; }
 
         [Required]

@@ -80,7 +80,21 @@ namespace Docimax.Web_ICD.Models
         [Compare("Password", ErrorMessage = "密码和确认密码不匹配。")]
         public string ConfirmPassword { get; set; }
     }
-
+    public class VerifyIdentityViewModel
+    {
+        [Required]
+        [StringLength(18, ErrorMessage = "请输出正确的身份证号码。", MinimumLength = 15)]
+        [Display(Name = "身份证号")]
+        public string IDCardNo { get; set; }
+        [Required]
+        [StringLength(100, ErrorMessage = "{0} 必须至少包含 {2} 个字符。", MinimumLength = 2)]
+        [Display(Name = "姓名")]
+        public string RealName { get; set; }
+        [Required]
+        [StringLength(19, ErrorMessage = "{0} 必须至少包含 {2} 个字符。", MinimumLength = 16)]
+        [Display(Name = "银行卡号")]
+        public string BankCardNO { get; set; }
+    }
     public class ResetPasswordViewModel
     {
         [Required]
@@ -101,7 +115,6 @@ namespace Docimax.Web_ICD.Models
 
         public string Code { get; set; }
     }
-
     public class ForgotPasswordViewModel
     {
         [Required]
