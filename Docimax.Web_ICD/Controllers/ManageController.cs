@@ -1,12 +1,12 @@
-﻿using System;
+﻿using Docimax.Common;
+using Docimax.Web_ICD.Models;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
+using Microsoft.Owin.Security;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.Owin;
-using Microsoft.Owin.Security;
-using Docimax.Web_ICD.Models;
 
 namespace Docimax.Web_ICD.Controllers
 {
@@ -280,7 +280,12 @@ namespace Docimax.Web_ICD.Controllers
             var result = await UserManager.AddLoginAsync(User.Identity.GetUserId(), loginInfo.Login);
             return result.Succeeded ? RedirectToAction("ManageLogins") : RedirectToAction("ManageLogins", new { Message = ManageMessageId.Error });
         }
-
+        [AllowAnonymous]
+        public ActionResult GetVerrifyCode()
+        {
+            var verrifyCodeModel = ValidateCodeHelper.CreateValidateCode();
+            return File(ValidateCodeHelper.CreateValidateGraphic(verrifyCodeModel.ValidateCode), @"image/jpeg", verrifyCodeModel.ValidateKey);
+        }
         public ActionResult VerifyIdentity()
         {
             return View();

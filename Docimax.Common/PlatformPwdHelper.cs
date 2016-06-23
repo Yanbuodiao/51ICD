@@ -8,10 +8,10 @@ namespace Docimax.Common
 {
     public class PlatformPwdHelper
     {
-        static List<string> upperCharecters = "A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z".Split(',').ToList();
-        static List<string> lowerCharecters = "a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z".Split(',').ToList();
-        static List<string> digtals = "0,1,2,3,4,5,6,7,8,9".Split(',').ToList();
-        static List<string> symbols = "@,#,$,%,^,&,*,(,),-,_,+,=,-".Split(',').ToList();
+        static List<string> upperCharecters = ConstStrHelper.UperCharecters.Split(',').ToList();
+        static List<string> lowerCharecters = ConstStrHelper.LowerCharecters.Split(',').ToList();
+        static List<string> digtals = ConstStrHelper.Digtals.Split(',').ToList();
+        static List<string> symbols = ConstStrHelper.Symbols.Split(',').ToList();
         public static string CreatRadomPwd()
         {
             Random random = new Random((int)DateTime.Now.Ticks);

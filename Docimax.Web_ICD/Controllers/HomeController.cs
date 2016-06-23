@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 
 namespace Docimax.Web_ICD.Controllers
 {
@@ -10,6 +6,7 @@ namespace Docimax.Web_ICD.Controllers
     {
         public ActionResult Index()
         {
+
             return View();
         }
         public ActionResult About()
