@@ -7,8 +7,7 @@
     <title>@ViewBag.Title - 51ICD</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-    @Scripts.Render("~/bundles/jquery")
-
+    <script type="text/javascript" src="~/Scripts/jquery-1.10.2.js"></script>
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -42,7 +41,6 @@
 
         </footer>
     </div>
-
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
 </body>

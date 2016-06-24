@@ -25,7 +25,6 @@ namespace Docimax.Common_ICD.SMS
                     var resultData = client.UploadData(sMSConfig.Server, "Post", postData);
                     var resultStr = Encoding.UTF8.GetString(resultData);
                 }
-
             });
         }
     }
