@@ -5,6 +5,7 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Web.Mvc;
 
 namespace Docimax.Common
 {
@@ -14,20 +15,15 @@ namespace Docimax.Common
         static List<string> digtals = ConstStrHelper.Digtals.Split(',').ToList();
         static List<string> lowerCharecters = ConstStrHelper.LowerCharecters.Split(',').ToList();
         static List<ValidateCodeModel> allValidateCodeList = new List<ValidateCodeModel>();
-        static int maxLength = 6;
-        static int minLength = 6;
-        public static ValidateCodeModel CreateValidateCode()
+        static int valicodeLength = 6;
+        public static ValidateCodeModel CreateValidateCode(string validateKey)
         {
             Random random = new Random((int)DateTime.Now.Ticks);
-            var pwdLength = random.Next(minLength, maxLength + 1);
-            var upperLength = random.Next(1, pwdLength - 1);
-            var lowerLength = random.Next(1, pwdLength - upperLength);
-            var digtalLegth = random.Next(1, pwdLength - upperLength - lowerLength);
-            var symbalLenth = pwdLength - upperLength;
+            var upperLength = random.Next(1, valicodeLength - 1);
+            var lowerLength = random.Next(1, valicodeLength - upperLength);
+            var digtalLegth =  valicodeLength - upperLength - lowerLength;
             var guid = Guid.NewGuid();
 
-            var bb = upperCharecters.Select(e => new { ID = Guid.NewGuid(), e }).OrderBy(e => e.ID).ToList();
-            var aa = upperCharecters.OrderBy(e => guid.ToString()).Take(upperLength);
 
             var result = string.Join("",
                 upperCharecters.Select(e => new { ID = Guid.NewGuid(), Str = e }).OrderBy(e => e.ID).Take(upperLength)
@@ -36,50 +32,67 @@ namespace Docimax.Common
                  .OrderBy(e => e.ID).Select(e => e.Str).ToArray());
             var newModel = new ValidateCodeModel
             {
-                ValidateCode = result,
-                ValidateKey = Guid.NewGuid().ToString(),
+                ValidateKey = validateKey,
                 CreateTime = DateTime.Now,
+                ValidateImage = CreateValidateGraphic(result),
             };
             return newModel;
         }
-        /// <summary>
-        /// 创建验证码的图片
-        /// </summary>
-        /// <param name="containsPage">要输出到的page对象</param>
-        /// <param name="validateNum">验证码</param>
-        /// <summary>
-        public static byte[] CreateValidateGraphic(string validateCode)
+        private static byte[] CreateValidateGraphic(string validateCode)
         {
-            Bitmap image = new Bitmap((int)Math.Ceiling(validateCode.Length * 12.0), 22);
+            var width = (int)Math.Ceiling(validateCode.Length * 16.0);
+            var fontSize = 14;
+            var height = 30;
+            var image = new Bitmap(width, height);
             Graphics g = Graphics.FromImage(image);
+            Color[] colors ={ 
+             System.Drawing.Color.Black,
+             System.Drawing.Color.Red,
+             System.Drawing.Color.Blue,
+             System.Drawing.Color.Green,
+             System.Drawing.Color.Orange,
+             System.Drawing.Color.Brown,
+             System.Drawing.Color.Brown,
+             System.Drawing.Color.DarkBlue
+            };
+            string[] fontNames = { "Times New Roman", "MS Mincho", "Book Antiqua", "Gungsuh", "PMingLiU", "Impact" };
+            float dotX, dotY, spaceWith=0;
+            spaceWith = (width - fontSize * validateCode.Length - 10) / validateCode.Length;
             try
             {
                 Random random = new Random();
                 g.Clear(Color.White);
-                for (int i = 0; i < 50; i++)
+                for (int i = 0; i < 10; i++)
                 {
                     int x1 = random.Next(image.Width);
                     int x2 = random.Next(image.Width);
                     int y1 = random.Next(image.Height);
                     int y2 = random.Next(image.Height);
-                    g.DrawLine(new Pen(Color.Silver), x1, y1, x2, y2);
+                    g.DrawLine(new Pen(colors[random.Next(colors.Length)]), x1, y1, x2, y2);
                 }
-                Font font = new Font("Arial", 12, FontStyle.Italic);
-                LinearGradientBrush brush = new LinearGradientBrush(new Rectangle(0, 0, image.Width, image.Height),
-                 Color.Blue, Color.DarkRed, 1.2f, true);
-                g.DrawString(validateCode, font, brush, 3, 2);
-                for (int i = 0; i < 200; i++)
+                for (var N1 = 0; N1 <= validateCode.Length - 1; N1++)
+                {
+                    var fontName = fontNames[random.Next(fontNames.Length)];
+                    var font = new Font(fontName, fontSize, FontStyle.Italic | FontStyle.Bold);
+                    var color = colors[random.Next(colors.Length)];
+
+                    dotY = (height - font.Height) / 2 + 2;//中心下移2像素
+                    dotX = Convert.ToSingle(N1) * fontSize + (N1 + 1) * spaceWith;
+
+                    g.DrawString(validateCode[N1].ToString(), font, new SolidBrush(color), dotX, dotY);
+                }
+                for (int i = 0; i < 50; i++)
                 {
                     int x = random.Next(image.Width);
                     int y = random.Next(image.Height);
-                    image.SetPixel(x, y, Color.FromArgb(random.Next()));
+                    image.SetPixel(x, y, colors[random.Next(colors.Length)]);
                 }
                 g.DrawRectangle(new Pen(Color.Silver), 0, 0, image.Width - 1, image.Height - 1);
                 using (MemoryStream stream = new MemoryStream())
                 {
                     image.Save(stream, ImageFormat.Jpeg);
                     return stream.ToArray();
-                };
+                }
             }
             finally
             {
@@ -102,7 +115,7 @@ namespace Docimax.Common
         /// <summary>
         /// 验证码
         /// </summary>
-        public string ValidateCode
+        public string InputValidateCode
         { get; set; }
         /// <summary>
         /// 验证码生成时间
@@ -113,9 +126,8 @@ namespace Docimax.Common
         /// 验证码生成的Key
         /// </summary>
         public string ValidateKey
-        {
-            get;
-            set;
-        }
+        { get; set; }
+        public byte[] ValidateImage
+        { get; set; }
     }
 }

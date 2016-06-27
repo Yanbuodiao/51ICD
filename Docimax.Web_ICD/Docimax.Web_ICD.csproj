@@ -155,6 +155,7 @@
     <Compile Include="Controllers\UnRobItemController.cs" />
     <Compile Include="Controllers\UploadItemController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\VerificationCodeController.cs" />
     <Compile Include="Controllers_Manage\MenuController.cs" />
     <Compile Include="Controllers_Manage\RolesAdminController.cs" />
     <Compile Include="Global.asax.cs">
@@ -227,6 +228,7 @@
     <Content Include="Views\Manage\VerifyIdentity.cshtml" />
     <Content Include="tsconfig.json" />
     <Content Include="Views\Test\Index.cshtml" />
+    <Content Include="Views\VerificationCode\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -270,6 +272,7 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="Scripts\jquery.d.ts" />
     <TypeScriptCompile Include="src\app.ts" />
   </ItemGroup>
   <PropertyGroup>

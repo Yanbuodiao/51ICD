@@ -1,0 +1,19 @@
+﻿@Html.LabelForModel("验证码", new { @class = "col-md-2 control-label" })
+
+<div class="col-md-10">
+    <input id="valiKey" type="hidden" value="@Guid.NewGuid().ToString()" />
+    <input id="valicodetxt" type="text" class="form-control">
+    <img id="valiCode" style="cursor: pointer;" alt="验证码" title="看不清，点击换一张" />
+</div>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        var initURL = "@Url.Action("GetNewValidateCode", "VerificationCode")?validatekey=" + $("#valikey").val();
+        $("#valiCode") = initURL;
+        $("#valiCode").click(function () {
+            $("#valiKey").val("@Guid.NewGuid().ToString()");
+            var newSrc = "@Url.Action("GetNewValidateCode", "VerificationCode")?validateKey=" + $("#valiKey").val();
+            this.src = newSrc;
+        });
+    });
+</script>

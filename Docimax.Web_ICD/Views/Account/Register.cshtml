@@ -30,11 +30,7 @@
         </div>
     </div>
     <div class="form-group">
-        @Html.LabelForModel("验证码", new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            <input type="text" class="form-control" id="valiCodeTxt">
-            <img id="valiCode" style="cursor: pointer;" src="../Manage/GetVerrifyCode" alt="验证码" title="看不清，点击换一张" />
-        </div>
+        @{Html.RenderAction("Index", "VerificationCode");}
     </div>
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
@@ -42,19 +38,6 @@
         </div>
     </div>
 }
-<script type="text/javascript">
-    $(document).ready(function () {
-        $("#valiCode").click(
-            $.ajax({
-                url: '../Manage/GetVerrifyCode',
-                type: 'post', //数据发送方式
-                dataType: 'file', //接受数据格式 (这里有很多,常用的有html,xml,js,json)
-                success: function (data) {
-                    alert(data);
-                }
-            }));
-    });
-</script>
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }

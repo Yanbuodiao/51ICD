@@ -280,12 +280,6 @@ namespace Docimax.Web_ICD.Controllers
             var result = await UserManager.AddLoginAsync(User.Identity.GetUserId(), loginInfo.Login);
             return result.Succeeded ? RedirectToAction("ManageLogins") : RedirectToAction("ManageLogins", new { Message = ManageMessageId.Error });
         }
-        [AllowAnonymous]
-        public ActionResult GetVerrifyCode()
-        {
-            var verrifyCodeModel = ValidateCodeHelper.CreateValidateCode();
-            return File(ValidateCodeHelper.CreateValidateGraphic(verrifyCodeModel.ValidateCode), @"image/jpeg", verrifyCodeModel.ValidateKey);
-        }
         public ActionResult VerifyIdentity()
         {
             return View();
