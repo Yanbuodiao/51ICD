@@ -21,9 +21,7 @@ namespace Docimax.Common
             Random random = new Random((int)DateTime.Now.Ticks);
             var upperLength = random.Next(1, valicodeLength - 1);
             var lowerLength = random.Next(1, valicodeLength - upperLength);
-            var digtalLegth =  valicodeLength - upperLength - lowerLength;
-            var guid = Guid.NewGuid();
-
+            var digtalLegth = valicodeLength - upperLength - lowerLength;
 
             var result = string.Join("",
                 upperCharecters.Select(e => new { ID = Guid.NewGuid(), Str = e }).OrderBy(e => e.ID).Take(upperLength)
@@ -36,6 +34,7 @@ namespace Docimax.Common
                 CreateTime = DateTime.Now,
                 ValidateImage = CreateValidateGraphic(result),
             };
+            handleValidateCode(newModel);
             return newModel;
         }
         private static byte[] CreateValidateGraphic(string validateCode)
@@ -56,7 +55,7 @@ namespace Docimax.Common
              System.Drawing.Color.DarkBlue
             };
             string[] fontNames = { "Times New Roman", "MS Mincho", "Book Antiqua", "Gungsuh", "PMingLiU", "Impact" };
-            float dotX, dotY, spaceWith=0;
+            float dotX, dotY, spaceWith = 0;
             spaceWith = (width - fontSize * validateCode.Length - 10) / validateCode.Length;
             try
             {
@@ -100,7 +99,7 @@ namespace Docimax.Common
                 image.Dispose();
             }
         }
-        static void handleValidateCode(ValidateCodeModel model)
+        private static void handleValidateCode(ValidateCodeModel model)
         {
             if (allValidateCodeList.Count >= 10000)//列表过大时，清除超过验证时长的验证码
             {
