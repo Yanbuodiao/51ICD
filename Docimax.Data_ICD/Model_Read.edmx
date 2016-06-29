@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="ICD_DBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="ICD_DBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="__MigrationHistory">
           <Key>
             <PropertyRef Name="MigrationId" />
@@ -23,9 +23,9 @@
           <Property Name="Name" Type="nvarchar" MaxLength="256" Nullable="false" />
           <Property Name="Description" Type="nvarchar(max)" />
           <Property Name="CreateTime" Type="datetime" />
-          <Property Name="CreateUserID" Type="int" />
+          <Property Name="CreateUserID" Type="nvarchar(max)" />
           <Property Name="LastModtifyTime" Type="datetime" />
-          <Property Name="LastModityUserID" Type="int" />
+          <Property Name="LastModityUserID" Type="nvarchar(max)" />
           <Property Name="Discriminator" Type="nvarchar" MaxLength="128" Nullable="false" />
         </EntityType>
         <EntityType Name="AspNetUserClaims">
@@ -108,6 +108,35 @@
           <Property Name="PinyinShort" Type="nvarchar" MaxLength="200" />
           <Property Name="LastModifyStamp" Type="timestamp" StoreGeneratedPattern="Computed" />
         </EntityType>
+        <EntityType Name="BaseDic_ICD_Repository">
+          <Key>
+            <PropertyRef Name="ICDID" />
+          </Key>
+          <Property Name="ICDID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ICD_Code" Type="nvarchar" MaxLength="300" />
+          <Property Name="ICD_Name" Type="nvarchar" MaxLength="300" />
+          <Property Name="ICD_VersionID" Type="int" />
+          <Property Name="CreateTime" Type="datetime" />
+          <Property Name="CreateUserID" Type="nvarchar" MaxLength="128" />
+          <Property Name="LastModifyTime" Type="datetime" />
+          <Property Name="LastModifyUserID" Type="nvarchar" MaxLength="128" />
+          <Property Name="DeleteFlag" Type="int" />
+          <Property Name="LastModifyStamp" Type="timestamp" StoreGeneratedPattern="Computed" />
+        </EntityType>
+        <EntityType Name="BaseDic_ICD_Version">
+          <Key>
+            <PropertyRef Name="ICD_VersionID" />
+          </Key>
+          <Property Name="ICD_VersionID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ICD_VersionName" Type="nvarchar" MaxLength="300" />
+          <Property Name="ICD_Description" Type="nvarchar" MaxLength="300" />
+          <Property Name="CreateTime" Type="datetime" />
+          <Property Name="CreateUserID" Type="nvarchar" MaxLength="128" />
+          <Property Name="LastModifyTime" Type="datetime" />
+          <Property Name="LastModifyUserID" Type="nvarchar" MaxLength="128" />
+          <Property Name="DeleteFlag" Type="int" />
+          <Property Name="LastModifyStamp" Type="timestamp" StoreGeneratedPattern="Computed" />
+        </EntityType>
         <EntityType Name="BaseDic_Province">
           <Key>
             <PropertyRef Name="ProvinceID" />
@@ -142,35 +171,6 @@
           <Property Name="BuilderCodeID" Type="int" />
           <Property Name="UploadItemID" Type="int" />
           <Property Name="GIndex" Type="int" />
-          <Property Name="CreateTime" Type="datetime" />
-          <Property Name="CreateUserID" Type="nvarchar" MaxLength="128" />
-          <Property Name="LastModifyTime" Type="datetime" />
-          <Property Name="LastModifyUserID" Type="nvarchar" MaxLength="128" />
-          <Property Name="DeleteFlag" Type="int" />
-          <Property Name="LastModifyStamp" Type="timestamp" StoreGeneratedPattern="Computed" />
-        </EntityType>
-        <EntityType Name="Dic_ICD_Repository">
-          <Key>
-            <PropertyRef Name="ICDID" />
-          </Key>
-          <Property Name="ICDID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="ICD_Code" Type="nvarchar" MaxLength="300" />
-          <Property Name="ICD_Name" Type="nvarchar" MaxLength="300" />
-          <Property Name="ICD_VersionID" Type="int" />
-          <Property Name="CreateTime" Type="datetime" />
-          <Property Name="CreateUserID" Type="nvarchar" MaxLength="128" />
-          <Property Name="LastModifyTime" Type="datetime" />
-          <Property Name="LastModifyUserID" Type="nvarchar" MaxLength="128" />
-          <Property Name="DeleteFlag" Type="int" />
-          <Property Name="LastModifyStamp" Type="timestamp" StoreGeneratedPattern="Computed" />
-        </EntityType>
-        <EntityType Name="Dic_ICD_Version">
-          <Key>
-            <PropertyRef Name="ICD_VersionID" />
-          </Key>
-          <Property Name="ICD_VersionID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="ICD_VersionName" Type="nvarchar" MaxLength="300" />
-          <Property Name="ICD_Description" Type="nvarchar" MaxLength="300" />
           <Property Name="CreateTime" Type="datetime" />
           <Property Name="CreateUserID" Type="nvarchar" MaxLength="128" />
           <Property Name="LastModifyTime" Type="datetime" />
@@ -249,6 +249,21 @@
           <Property Name="LastModifyUserID" Type="nvarchar" MaxLength="128" />
           <Property Name="DeleteFlag" Type="int" />
           <Property Name="LastModifyStamp" Type="nvarchar" MaxLength="128" />
+        </EntityType>
+        <EntityType Name="Dic_Service_Menu">
+          <Key>
+            <PropertyRef Name="Service_Menu_ID" />
+          </Key>
+          <Property Name="Service_Menu_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ServiceID" Type="int" />
+          <Property Name="MenuID" Type="int" />
+          <Property Name="ServiceType" Type="int" />
+          <Property Name="CreateTime" Type="datetime" />
+          <Property Name="CreateUserID" Type="nvarchar" MaxLength="128" />
+          <Property Name="LastModifyTime" Type="datetime" />
+          <Property Name="LastModifyUserID" Type="nvarchar" MaxLength="128" />
+          <Property Name="DeleteFlag" Type="int" />
+          <Property Name="LastModifyStamp" Type="timestamp" StoreGeneratedPattern="Computed" />
         </EntityType>
         <EntityType Name="Dic_Service_UploadItem">
           <Key>
@@ -364,6 +379,16 @@
           <Property Name="LastModifyUserID" Type="nvarchar" MaxLength="128" />
           <Property Name="DeleteFlag" Type="int" />
           <Property Name="LastModifyStamp" Type="timestamp" StoreGeneratedPattern="Computed" />
+        </EntityType>
+        <EntityType Name="Sec_Message">
+          <Key>
+            <PropertyRef Name="Secure_ID" />
+          </Key>
+          <Property Name="Secure_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserID" Type="nvarchar" MaxLength="128" />
+          <Property Name="SourceIP" Type="varchar" MaxLength="100" />
+          <Property Name="LastModifyTime" Type="datetime" />
+          <Property Name="InValidateTime" Type="int" />
         </EntityType>
         <EntityType Name="User_Attach">
           <Key>
@@ -481,15 +506,16 @@
           <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUsers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BaseDic_Area" EntityType="Self.BaseDic_Area" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BaseDic_City" EntityType="Self.BaseDic_City" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BaseDic_ICD_Repository" EntityType="Self.BaseDic_ICD_Repository" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BaseDic_ICD_Version" EntityType="Self.BaseDic_ICD_Version" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BaseDic_Province" EntityType="Self.BaseDic_Province" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Code_Builder" EntityType="Self.Code_Builder" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Code_Builder_Item" EntityType="Self.Code_Builder_Item" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Dic_ICD_Repository" EntityType="Self.Dic_ICD_Repository" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Dic_ICD_Version" EntityType="Self.Dic_ICD_Version" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Dic_Menu" EntityType="Self.Dic_Menu" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Dic_Organization" EntityType="Self.Dic_Organization" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Dic_Service" EntityType="Self.Dic_Service" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Dic_Service_Claim" EntityType="Self.Dic_Service_Claim" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Dic_Service_Menu" EntityType="Self.Dic_Service_Menu" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Dic_Service_UploadItem" EntityType="Self.Dic_Service_UploadItem" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Dic_UploadItem" EntityType="Self.Dic_UploadItem" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ORG_Attach" EntityType="Self.ORG_Attach" Schema="dbo" store:Type="Tables" />
@@ -497,6 +523,7 @@
           <EntitySet Name="ORG_Service_Provider" EntityType="Self.ORG_Service_Provider" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ORG_Service_UploadItem" EntityType="Self.ORG_Service_UploadItem" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ORG_SubOrganization" EntityType="Self.ORG_SubOrganization" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Sec_Message" EntityType="Self.Sec_Message" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User_Attach" EntityType="Self.User_Attach" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User_Service_Attach" EntityType="Self.User_Service_Attach" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User_Service_Provider" EntityType="Self.User_Service_Provider" Schema="dbo" store:Type="Tables" />
@@ -517,34 +544,80 @@
             <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="ICD_DBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="Entities_Read" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="C__MigrationHistory" EntityType="ICD_DBModel.C__MigrationHistory" />
+          <EntitySet Name="AspNetRoles" EntityType="ICD_DBModel.AspNetRoles" />
+          <EntitySet Name="AspNetUserClaims" EntityType="ICD_DBModel.AspNetUserClaims" />
+          <EntitySet Name="AspNetUserLogins" EntityType="ICD_DBModel.AspNetUserLogins" />
+          <EntitySet Name="AspNetUserRoles" EntityType="ICD_DBModel.AspNetUserRoles" />
+          <EntitySet Name="AspNetUsers" EntityType="ICD_DBModel.AspNetUsers" />
+          <EntitySet Name="BaseDic_Area" EntityType="ICD_DBModel.BaseDic_Area" />
+          <EntitySet Name="BaseDic_City" EntityType="ICD_DBModel.BaseDic_City" />
+          <EntitySet Name="BaseDic_ICD_Repository" EntityType="ICD_DBModel.BaseDic_ICD_Repository" />
+          <EntitySet Name="BaseDic_ICD_Version" EntityType="ICD_DBModel.BaseDic_ICD_Version" />
+          <EntitySet Name="BaseDic_Province" EntityType="ICD_DBModel.BaseDic_Province" />
+          <EntitySet Name="Code_Builder" EntityType="ICD_DBModel.Code_Builder" />
+          <EntitySet Name="Code_Builder_Item" EntityType="ICD_DBModel.Code_Builder_Item" />
+          <EntitySet Name="Dic_Menu" EntityType="ICD_DBModel.Dic_Menu" />
+          <EntitySet Name="Dic_Organization" EntityType="ICD_DBModel.Dic_Organization" />
+          <EntitySet Name="Dic_Service" EntityType="ICD_DBModel.Dic_Service" />
+          <EntitySet Name="Dic_Service_Claim" EntityType="ICD_DBModel.Dic_Service_Claim" />
+          <EntitySet Name="Dic_Service_Menu" EntityType="ICD_DBModel.Dic_Service_Menu" />
+          <EntitySet Name="Dic_Service_UploadItem" EntityType="ICD_DBModel.Dic_Service_UploadItem" />
+          <EntitySet Name="Dic_UploadItem" EntityType="ICD_DBModel.Dic_UploadItem" />
+          <EntitySet Name="ORG_Attach" EntityType="ICD_DBModel.ORG_Attach" />
+          <EntitySet Name="ORG_Service_Config" EntityType="ICD_DBModel.ORG_Service_Config" />
+          <EntitySet Name="ORG_Service_Provider" EntityType="ICD_DBModel.ORG_Service_Provider" />
+          <EntitySet Name="ORG_Service_UploadItem" EntityType="ICD_DBModel.ORG_Service_UploadItem" />
+          <EntitySet Name="ORG_SubOrganization" EntityType="ICD_DBModel.ORG_SubOrganization" />
+          <EntitySet Name="Sec_Message" EntityType="ICD_DBModel.Sec_Message" />
+          <EntitySet Name="User_Attach" EntityType="ICD_DBModel.User_Attach" />
+          <EntitySet Name="User_Service_Attach" EntityType="ICD_DBModel.User_Service_Attach" />
+          <EntitySet Name="User_Service_Provider" EntityType="ICD_DBModel.User_Service_Provider" />
+          <AssociationSet Name="FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId" Association="ICD_DBModel.FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId">
+            <End Role="AspNetRoles" EntitySet="AspNetRoles" />
+            <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="ICD_DBModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="AspNetUserClaims" EntitySet="AspNetUserClaims" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" Association="ICD_DBModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="AspNetUserLogins" EntitySet="AspNetUserLogins" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId" Association="ICD_DBModel.FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
+          </AssociationSet>
+        </EntityContainer>
         <EntityType Name="C__MigrationHistory">
           <Key>
             <PropertyRef Name="MigrationId" />
             <PropertyRef Name="ContextKey" />
           </Key>
-          <Property Name="MigrationId" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="ContextKey" Type="String" MaxLength="300" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Model" Type="Binary" MaxLength="Max" FixedLength="false" Nullable="false" />
-          <Property Name="ProductVersion" Type="String" MaxLength="32" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="MigrationId" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="ContextKey" Type="String" Nullable="false" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="Model" Type="Binary" Nullable="false" MaxLength="Max" FixedLength="false" />
+          <Property Name="ProductVersion" Type="String" Nullable="false" MaxLength="32" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="AspNetRoles">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Name" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
           <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="CreateTime" Type="DateTime" Precision="3" />
-          <Property Name="CreateUserID" Type="Int32" />
+          <Property Name="CreateUserID" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="LastModtifyTime" Type="DateTime" Precision="3" />
-          <Property Name="LastModityUserID" Type="Int32" />
-          <Property Name="Discriminator" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="AspNetUserRoles" Relationship="Self.FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId" FromRole="AspNetRoles" ToRole="AspNetUserRoles" />
+          <Property Name="LastModityUserID" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Discriminator" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="AspNetUserRoles" Relationship="ICD_DBModel.FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId" FromRole="AspNetRoles" ToRole="AspNetUserRoles" />
         </EntityType>
         <EntityType Name="AspNetUserClaims">
           <Key>
@@ -553,7 +626,7 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ClaimType" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="ClaimValue" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="AspNetUsers" Relationship="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" FromRole="AspNetUserClaims" ToRole="AspNetUsers" />
+          <NavigationProperty Name="AspNetUsers" Relationship="ICD_DBModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" FromRole="AspNetUserClaims" ToRole="AspNetUsers" />
         </EntityType>
         <EntityType Name="AspNetUserLogins">
           <Key>
@@ -561,27 +634,27 @@
             <PropertyRef Name="ProviderKey" />
             <PropertyRef Name="UserId" />
           </Key>
-          <Property Name="LoginProvider" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="ProviderKey" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="AspNetUsers" Relationship="Self.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUserLogins" ToRole="AspNetUsers" />
+          <Property Name="LoginProvider" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="ProviderKey" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="UserId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="AspNetUsers" Relationship="ICD_DBModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUserLogins" ToRole="AspNetUsers" />
         </EntityType>
         <EntityType Name="AspNetUserRoles">
           <Key>
             <PropertyRef Name="UserId" />
             <PropertyRef Name="RoleId" />
           </Key>
-          <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="RoleId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Discriminator" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="AspNetRoles" Relationship="Self.FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId" FromRole="AspNetUserRoles" ToRole="AspNetRoles" />
-          <NavigationProperty Name="AspNetUsers" Relationship="Self.FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId" FromRole="AspNetUserRoles" ToRole="AspNetUsers" />
+          <Property Name="UserId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="RoleId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="Discriminator" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="AspNetRoles" Relationship="ICD_DBModel.FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId" FromRole="AspNetUserRoles" ToRole="AspNetRoles" />
+          <NavigationProperty Name="AspNetUsers" Relationship="ICD_DBModel.FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId" FromRole="AspNetUserRoles" ToRole="AspNetUsers" />
         </EntityType>
         <EntityType Name="AspNetUsers">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="IDCardNo" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="RealName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="BankCardNO" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
@@ -605,10 +678,10 @@
           <Property Name="LockoutEndDateUtc" Type="DateTime" Precision="3" />
           <Property Name="LockoutEnabled" Type="Boolean" Nullable="false" />
           <Property Name="AccessFailedCount" Type="Int32" Nullable="false" />
-          <Property Name="UserName" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="AspNetUserClaims" Relationship="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" FromRole="AspNetUsers" ToRole="AspNetUserClaims" />
-          <NavigationProperty Name="AspNetUserLogins" Relationship="Self.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUsers" ToRole="AspNetUserLogins" />
-          <NavigationProperty Name="AspNetUserRoles" Relationship="Self.FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId" FromRole="AspNetUsers" ToRole="AspNetUserRoles" />
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="AspNetUserClaims" Relationship="ICD_DBModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" FromRole="AspNetUsers" ToRole="AspNetUserClaims" />
+          <NavigationProperty Name="AspNetUserLogins" Relationship="ICD_DBModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUsers" ToRole="AspNetUserLogins" />
+          <NavigationProperty Name="AspNetUserRoles" Relationship="ICD_DBModel.FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId" FromRole="AspNetUsers" ToRole="AspNetUserRoles" />
         </EntityType>
         <EntityType Name="BaseDic_Area">
           <Key>
@@ -630,6 +703,35 @@
           <Property Name="CityName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="ProvinceCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="PinyinShort" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="LastModifyStamp" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+        </EntityType>
+        <EntityType Name="BaseDic_ICD_Repository">
+          <Key>
+            <PropertyRef Name="ICDID" />
+          </Key>
+          <Property Name="ICDID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ICD_Code" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="ICD_Name" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="ICD_VersionID" Type="Int32" />
+          <Property Name="CreateTime" Type="DateTime" Precision="3" />
+          <Property Name="CreateUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="LastModifyTime" Type="DateTime" Precision="3" />
+          <Property Name="LastModifyUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="DeleteFlag" Type="Int32" />
+          <Property Name="LastModifyStamp" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+        </EntityType>
+        <EntityType Name="BaseDic_ICD_Version">
+          <Key>
+            <PropertyRef Name="ICD_VersionID" />
+          </Key>
+          <Property Name="ICD_VersionID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ICD_VersionName" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="ICD_Description" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="CreateTime" Type="DateTime" Precision="3" />
+          <Property Name="CreateUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="LastModifyTime" Type="DateTime" Precision="3" />
+          <Property Name="LastModifyUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="DeleteFlag" Type="Int32" />
           <Property Name="LastModifyStamp" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
         </EntityType>
         <EntityType Name="BaseDic_Province">
@@ -666,35 +768,6 @@
           <Property Name="BuilderCodeID" Type="Int32" />
           <Property Name="UploadItemID" Type="Int32" />
           <Property Name="GIndex" Type="Int32" />
-          <Property Name="CreateTime" Type="DateTime" Precision="3" />
-          <Property Name="CreateUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="LastModifyTime" Type="DateTime" Precision="3" />
-          <Property Name="LastModifyUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="DeleteFlag" Type="Int32" />
-          <Property Name="LastModifyStamp" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
-        </EntityType>
-        <EntityType Name="Dic_ICD_Repository">
-          <Key>
-            <PropertyRef Name="ICDID" />
-          </Key>
-          <Property Name="ICDID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ICD_Code" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
-          <Property Name="ICD_Name" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
-          <Property Name="ICD_VersionID" Type="Int32" />
-          <Property Name="CreateTime" Type="DateTime" Precision="3" />
-          <Property Name="CreateUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="LastModifyTime" Type="DateTime" Precision="3" />
-          <Property Name="LastModifyUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="DeleteFlag" Type="Int32" />
-          <Property Name="LastModifyStamp" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
-        </EntityType>
-        <EntityType Name="Dic_ICD_Version">
-          <Key>
-            <PropertyRef Name="ICD_VersionID" />
-          </Key>
-          <Property Name="ICD_VersionID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ICD_VersionName" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
-          <Property Name="ICD_Description" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
           <Property Name="CreateTime" Type="DateTime" Precision="3" />
           <Property Name="CreateUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="LastModifyTime" Type="DateTime" Precision="3" />
@@ -773,6 +846,21 @@
           <Property Name="LastModifyUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="DeleteFlag" Type="Int32" />
           <Property Name="LastModifyStamp" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Dic_Service_Menu">
+          <Key>
+            <PropertyRef Name="Service_Menu_ID" />
+          </Key>
+          <Property Name="Service_Menu_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ServiceID" Type="Int32" />
+          <Property Name="MenuID" Type="Int32" />
+          <Property Name="ServiceType" Type="Int32" />
+          <Property Name="CreateTime" Type="DateTime" Precision="3" />
+          <Property Name="CreateUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="LastModifyTime" Type="DateTime" Precision="3" />
+          <Property Name="LastModifyUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="DeleteFlag" Type="Int32" />
+          <Property Name="LastModifyStamp" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
         </EntityType>
         <EntityType Name="Dic_Service_UploadItem">
           <Key>
@@ -889,6 +977,16 @@
           <Property Name="DeleteFlag" Type="Int32" />
           <Property Name="LastModifyStamp" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
         </EntityType>
+        <EntityType Name="Sec_Message">
+          <Key>
+            <PropertyRef Name="Secure_ID" />
+          </Key>
+          <Property Name="Secure_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="SourceIP" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="LastModifyTime" Type="DateTime" Precision="3" />
+          <Property Name="InValidateTime" Type="Int32" />
+        </EntityType>
         <EntityType Name="User_Attach">
           <Key>
             <PropertyRef Name="UserAttachID" />
@@ -941,10 +1039,10 @@
           <Property Name="LastModifyStamp" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
         </EntityType>
         <Association Name="FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId">
-          <End Role="AspNetRoles" Type="Self.AspNetRoles" Multiplicity="1">
+          <End Type="ICD_DBModel.AspNetRoles" Role="AspNetRoles" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="AspNetUserRoles" Type="Self.AspNetUserRoles" Multiplicity="*" />
+          <End Type="ICD_DBModel.AspNetUserRoles" Role="AspNetUserRoles" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="AspNetRoles">
               <PropertyRef Name="Id" />
@@ -955,16 +1053,16 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
-          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
+          <End Type="ICD_DBModel.AspNetUsers" Role="AspNetUsers" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="AspNetUserClaims" Type="Self.AspNetUserClaims" Multiplicity="*" />
+          <End Type="ICD_DBModel.AspNetUserClaims" Role="AspNetUserClaims" Multiplicity="*" />
         </Association>
         <Association Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
-          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
+          <End Type="ICD_DBModel.AspNetUsers" Role="AspNetUsers" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="AspNetUserLogins" Type="Self.AspNetUserLogins" Multiplicity="*" />
+          <End Type="ICD_DBModel.AspNetUserLogins" Role="AspNetUserLogins" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="AspNetUsers">
               <PropertyRef Name="Id" />
@@ -975,10 +1073,10 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId">
-          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
+          <End Type="ICD_DBModel.AspNetUsers" Role="AspNetUsers" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="AspNetUserRoles" Type="Self.AspNetUserRoles" Multiplicity="*" />
+          <End Type="ICD_DBModel.AspNetUserRoles" Role="AspNetUserRoles" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="AspNetUsers">
               <PropertyRef Name="Id" />
@@ -988,52 +1086,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="Entities_Read" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="C__MigrationHistory" EntityType="Self.C__MigrationHistory" />
-          <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRoles" />
-          <EntitySet Name="AspNetUserClaims" EntityType="Self.AspNetUserClaims" />
-          <EntitySet Name="AspNetUserLogins" EntityType="Self.AspNetUserLogins" />
-          <EntitySet Name="AspNetUserRoles" EntityType="Self.AspNetUserRoles" />
-          <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUsers" />
-          <EntitySet Name="BaseDic_Area" EntityType="Self.BaseDic_Area" />
-          <EntitySet Name="BaseDic_City" EntityType="Self.BaseDic_City" />
-          <EntitySet Name="BaseDic_Province" EntityType="Self.BaseDic_Province" />
-          <EntitySet Name="Code_Builder" EntityType="Self.Code_Builder" />
-          <EntitySet Name="Code_Builder_Item" EntityType="Self.Code_Builder_Item" />
-          <EntitySet Name="Dic_ICD_Repository" EntityType="Self.Dic_ICD_Repository" />
-          <EntitySet Name="Dic_ICD_Version" EntityType="Self.Dic_ICD_Version" />
-          <EntitySet Name="Dic_Menu" EntityType="Self.Dic_Menu" />
-          <EntitySet Name="Dic_Organization" EntityType="Self.Dic_Organization" />
-          <EntitySet Name="Dic_Service" EntityType="Self.Dic_Service" />
-          <EntitySet Name="Dic_Service_Claim" EntityType="Self.Dic_Service_Claim" />
-          <EntitySet Name="Dic_Service_UploadItem" EntityType="Self.Dic_Service_UploadItem" />
-          <EntitySet Name="Dic_UploadItem" EntityType="Self.Dic_UploadItem" />
-          <EntitySet Name="ORG_Attach" EntityType="Self.ORG_Attach" />
-          <EntitySet Name="ORG_Service_Config" EntityType="Self.ORG_Service_Config" />
-          <EntitySet Name="ORG_Service_Provider" EntityType="Self.ORG_Service_Provider" />
-          <EntitySet Name="ORG_Service_UploadItem" EntityType="Self.ORG_Service_UploadItem" />
-          <EntitySet Name="ORG_SubOrganization" EntityType="Self.ORG_SubOrganization" />
-          <EntitySet Name="User_Attach" EntityType="Self.User_Attach" />
-          <EntitySet Name="User_Service_Attach" EntityType="Self.User_Service_Attach" />
-          <EntitySet Name="User_Service_Provider" EntityType="Self.User_Service_Provider" />
-          <AssociationSet Name="FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId" Association="Self.FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId">
-            <End Role="AspNetRoles" EntitySet="AspNetRoles" />
-            <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
-          </AssociationSet>
-          <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-            <End Role="AspNetUserClaims" EntitySet="AspNetUserClaims" />
-          </AssociationSet>
-          <AssociationSet Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-            <End Role="AspNetUserLogins" EntitySet="AspNetUserLogins" />
-          </AssociationSet>
-          <AssociationSet Name="FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId">
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-            <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
-          </AssociationSet>
-        </EntityContainer>
-      </Schema>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -1042,442 +1095,469 @@
           <EntitySetMapping Name="C__MigrationHistory">
             <EntityTypeMapping TypeName="ICD_DBModel.C__MigrationHistory">
               <MappingFragment StoreEntitySet="__MigrationHistory">
-                <ScalarProperty Name="MigrationId" ColumnName="MigrationId" />
-                <ScalarProperty Name="ContextKey" ColumnName="ContextKey" />
-                <ScalarProperty Name="Model" ColumnName="Model" />
                 <ScalarProperty Name="ProductVersion" ColumnName="ProductVersion" />
+                <ScalarProperty Name="Model" ColumnName="Model" />
+                <ScalarProperty Name="ContextKey" ColumnName="ContextKey" />
+                <ScalarProperty Name="MigrationId" ColumnName="MigrationId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="AspNetRoles">
             <EntityTypeMapping TypeName="ICD_DBModel.AspNetRoles">
               <MappingFragment StoreEntitySet="AspNetRoles">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
-                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
-                <ScalarProperty Name="LastModtifyTime" ColumnName="LastModtifyTime" />
-                <ScalarProperty Name="LastModityUserID" ColumnName="LastModityUserID" />
                 <ScalarProperty Name="Discriminator" ColumnName="Discriminator" />
+                <ScalarProperty Name="LastModityUserID" ColumnName="LastModityUserID" />
+                <ScalarProperty Name="LastModtifyTime" ColumnName="LastModtifyTime" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="AspNetUserClaims">
             <EntityTypeMapping TypeName="ICD_DBModel.AspNetUserClaims">
               <MappingFragment StoreEntitySet="AspNetUserClaims">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="ClaimType" ColumnName="ClaimType" />
                 <ScalarProperty Name="ClaimValue" ColumnName="ClaimValue" />
+                <ScalarProperty Name="ClaimType" ColumnName="ClaimType" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="AspNetUserLogins">
             <EntityTypeMapping TypeName="ICD_DBModel.AspNetUserLogins">
               <MappingFragment StoreEntitySet="AspNetUserLogins">
-                <ScalarProperty Name="LoginProvider" ColumnName="LoginProvider" />
-                <ScalarProperty Name="ProviderKey" ColumnName="ProviderKey" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="ProviderKey" ColumnName="ProviderKey" />
+                <ScalarProperty Name="LoginProvider" ColumnName="LoginProvider" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="AspNetUserRoles">
             <EntityTypeMapping TypeName="ICD_DBModel.AspNetUserRoles">
               <MappingFragment StoreEntitySet="AspNetUserRoles">
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
                 <ScalarProperty Name="Discriminator" ColumnName="Discriminator" />
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="AspNetUsers">
             <EntityTypeMapping TypeName="ICD_DBModel.AspNetUsers">
               <MappingFragment StoreEntitySet="AspNetUsers">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="IDCardNo" ColumnName="IDCardNo" />
-                <ScalarProperty Name="RealName" ColumnName="RealName" />
-                <ScalarProperty Name="BankCardNO" ColumnName="BankCardNO" />
-                <ScalarProperty Name="CertificationFlag" ColumnName="CertificationFlag" />
-                <ScalarProperty Name="ORGID" ColumnName="ORGID" />
-                <ScalarProperty Name="SubORGID" ColumnName="SubORGID" />
-                <ScalarProperty Name="IsFirstLogin" ColumnName="IsFirstLogin" />
-                <ScalarProperty Name="LastLoginIP" ColumnName="LastLoginIP" />
-                <ScalarProperty Name="LastLoginTime" ColumnName="LastLoginTime" />
-                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
-                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
-                <ScalarProperty Name="LastModtifyTime" ColumnName="LastModtifyTime" />
-                <ScalarProperty Name="LastModityUserID" ColumnName="LastModityUserID" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="EmailConfirmed" ColumnName="EmailConfirmed" />
-                <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
-                <ScalarProperty Name="SecurityStamp" ColumnName="SecurityStamp" />
-                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
-                <ScalarProperty Name="PhoneNumberConfirmed" ColumnName="PhoneNumberConfirmed" />
-                <ScalarProperty Name="TwoFactorEnabled" ColumnName="TwoFactorEnabled" />
-                <ScalarProperty Name="LockoutEndDateUtc" ColumnName="LockoutEndDateUtc" />
-                <ScalarProperty Name="LockoutEnabled" ColumnName="LockoutEnabled" />
-                <ScalarProperty Name="AccessFailedCount" ColumnName="AccessFailedCount" />
                 <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="AccessFailedCount" ColumnName="AccessFailedCount" />
+                <ScalarProperty Name="LockoutEnabled" ColumnName="LockoutEnabled" />
+                <ScalarProperty Name="LockoutEndDateUtc" ColumnName="LockoutEndDateUtc" />
+                <ScalarProperty Name="TwoFactorEnabled" ColumnName="TwoFactorEnabled" />
+                <ScalarProperty Name="PhoneNumberConfirmed" ColumnName="PhoneNumberConfirmed" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="SecurityStamp" ColumnName="SecurityStamp" />
+                <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
+                <ScalarProperty Name="EmailConfirmed" ColumnName="EmailConfirmed" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="LastModityUserID" ColumnName="LastModityUserID" />
+                <ScalarProperty Name="LastModtifyTime" ColumnName="LastModtifyTime" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="LastLoginTime" ColumnName="LastLoginTime" />
+                <ScalarProperty Name="LastLoginIP" ColumnName="LastLoginIP" />
+                <ScalarProperty Name="IsFirstLogin" ColumnName="IsFirstLogin" />
+                <ScalarProperty Name="SubORGID" ColumnName="SubORGID" />
+                <ScalarProperty Name="ORGID" ColumnName="ORGID" />
+                <ScalarProperty Name="CertificationFlag" ColumnName="CertificationFlag" />
+                <ScalarProperty Name="BankCardNO" ColumnName="BankCardNO" />
+                <ScalarProperty Name="RealName" ColumnName="RealName" />
+                <ScalarProperty Name="IDCardNo" ColumnName="IDCardNo" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="BaseDic_Area">
             <EntityTypeMapping TypeName="ICD_DBModel.BaseDic_Area">
               <MappingFragment StoreEntitySet="BaseDic_Area">
-                <ScalarProperty Name="AreaID" ColumnName="AreaID" />
-                <ScalarProperty Name="AreaCode" ColumnName="AreaCode" />
-                <ScalarProperty Name="AreaName" ColumnName="AreaName" />
-                <ScalarProperty Name="CityCode" ColumnName="CityCode" />
-                <ScalarProperty Name="PinyinShort" ColumnName="PinyinShort" />
                 <ScalarProperty Name="LastModifyStamp" ColumnName="LastModifyStamp" />
+                <ScalarProperty Name="PinyinShort" ColumnName="PinyinShort" />
+                <ScalarProperty Name="CityCode" ColumnName="CityCode" />
+                <ScalarProperty Name="AreaName" ColumnName="AreaName" />
+                <ScalarProperty Name="AreaCode" ColumnName="AreaCode" />
+                <ScalarProperty Name="AreaID" ColumnName="AreaID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="BaseDic_City">
             <EntityTypeMapping TypeName="ICD_DBModel.BaseDic_City">
               <MappingFragment StoreEntitySet="BaseDic_City">
-                <ScalarProperty Name="CityID" ColumnName="CityID" />
-                <ScalarProperty Name="CityCode" ColumnName="CityCode" />
-                <ScalarProperty Name="CityName" ColumnName="CityName" />
-                <ScalarProperty Name="ProvinceCode" ColumnName="ProvinceCode" />
-                <ScalarProperty Name="PinyinShort" ColumnName="PinyinShort" />
                 <ScalarProperty Name="LastModifyStamp" ColumnName="LastModifyStamp" />
+                <ScalarProperty Name="PinyinShort" ColumnName="PinyinShort" />
+                <ScalarProperty Name="ProvinceCode" ColumnName="ProvinceCode" />
+                <ScalarProperty Name="CityName" ColumnName="CityName" />
+                <ScalarProperty Name="CityCode" ColumnName="CityCode" />
+                <ScalarProperty Name="CityID" ColumnName="CityID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BaseDic_ICD_Repository">
+            <EntityTypeMapping TypeName="ICD_DBModel.BaseDic_ICD_Repository">
+              <MappingFragment StoreEntitySet="BaseDic_ICD_Repository">
+                <ScalarProperty Name="LastModifyStamp" ColumnName="LastModifyStamp" />
+                <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
+                <ScalarProperty Name="LastModifyUserID" ColumnName="LastModifyUserID" />
+                <ScalarProperty Name="LastModifyTime" ColumnName="LastModifyTime" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="ICD_VersionID" ColumnName="ICD_VersionID" />
+                <ScalarProperty Name="ICD_Name" ColumnName="ICD_Name" />
+                <ScalarProperty Name="ICD_Code" ColumnName="ICD_Code" />
+                <ScalarProperty Name="ICDID" ColumnName="ICDID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BaseDic_ICD_Version">
+            <EntityTypeMapping TypeName="ICD_DBModel.BaseDic_ICD_Version">
+              <MappingFragment StoreEntitySet="BaseDic_ICD_Version">
+                <ScalarProperty Name="LastModifyStamp" ColumnName="LastModifyStamp" />
+                <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
+                <ScalarProperty Name="LastModifyUserID" ColumnName="LastModifyUserID" />
+                <ScalarProperty Name="LastModifyTime" ColumnName="LastModifyTime" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="ICD_Description" ColumnName="ICD_Description" />
+                <ScalarProperty Name="ICD_VersionName" ColumnName="ICD_VersionName" />
+                <ScalarProperty Name="ICD_VersionID" ColumnName="ICD_VersionID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="BaseDic_Province">
             <EntityTypeMapping TypeName="ICD_DBModel.BaseDic_Province">
               <MappingFragment StoreEntitySet="BaseDic_Province">
-                <ScalarProperty Name="ProvinceID" ColumnName="ProvinceID" />
-                <ScalarProperty Name="ProvinceCode" ColumnName="ProvinceCode" />
-                <ScalarProperty Name="ProvinceName" ColumnName="ProvinceName" />
-                <ScalarProperty Name="PinyinShort" ColumnName="PinyinShort" />
                 <ScalarProperty Name="LastModifyStamp" ColumnName="LastModifyStamp" />
+                <ScalarProperty Name="PinyinShort" ColumnName="PinyinShort" />
+                <ScalarProperty Name="ProvinceName" ColumnName="ProvinceName" />
+                <ScalarProperty Name="ProvinceCode" ColumnName="ProvinceCode" />
+                <ScalarProperty Name="ProvinceID" ColumnName="ProvinceID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Code_Builder">
             <EntityTypeMapping TypeName="ICD_DBModel.Code_Builder">
               <MappingFragment StoreEntitySet="Code_Builder">
-                <ScalarProperty Name="BuilderCodeID" ColumnName="BuilderCodeID" />
-                <ScalarProperty Name="PlatformOrderCode" ColumnName="PlatformOrderCode" />
-                <ScalarProperty Name="OrderStatus" ColumnName="OrderStatus" />
-                <ScalarProperty Name="ORGID" ColumnName="ORGID" />
-                <ScalarProperty Name="ORGSubID" ColumnName="ORGSubID" />
-                <ScalarProperty Name="Createtime" ColumnName="Createtime" />
-                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
-                <ScalarProperty Name="LastModifyTime" ColumnName="LastModifyTime" />
-                <ScalarProperty Name="LastModifyUserID" ColumnName="LastModifyUserID" />
-                <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
                 <ScalarProperty Name="LastModifyStamp" ColumnName="LastModifyStamp" />
+                <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
+                <ScalarProperty Name="LastModifyUserID" ColumnName="LastModifyUserID" />
+                <ScalarProperty Name="LastModifyTime" ColumnName="LastModifyTime" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="Createtime" ColumnName="Createtime" />
+                <ScalarProperty Name="ORGSubID" ColumnName="ORGSubID" />
+                <ScalarProperty Name="ORGID" ColumnName="ORGID" />
+                <ScalarProperty Name="OrderStatus" ColumnName="OrderStatus" />
+                <ScalarProperty Name="PlatformOrderCode" ColumnName="PlatformOrderCode" />
+                <ScalarProperty Name="BuilderCodeID" ColumnName="BuilderCodeID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Code_Builder_Item">
             <EntityTypeMapping TypeName="ICD_DBModel.Code_Builder_Item">
               <MappingFragment StoreEntitySet="Code_Builder_Item">
-                <ScalarProperty Name="BuilderCodeItemID" ColumnName="BuilderCodeItemID" />
-                <ScalarProperty Name="BuilderCodeID" ColumnName="BuilderCodeID" />
-                <ScalarProperty Name="UploadItemID" ColumnName="UploadItemID" />
+                <ScalarProperty Name="LastModifyStamp" ColumnName="LastModifyStamp" />
+                <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
+                <ScalarProperty Name="LastModifyUserID" ColumnName="LastModifyUserID" />
+                <ScalarProperty Name="LastModifyTime" ColumnName="LastModifyTime" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
                 <ScalarProperty Name="GIndex" ColumnName="GIndex" />
-                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
-                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
-                <ScalarProperty Name="LastModifyTime" ColumnName="LastModifyTime" />
-                <ScalarProperty Name="LastModifyUserID" ColumnName="LastModifyUserID" />
-                <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
-                <ScalarProperty Name="LastModifyStamp" ColumnName="LastModifyStamp" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Dic_ICD_Repository">
-            <EntityTypeMapping TypeName="ICD_DBModel.Dic_ICD_Repository">
-              <MappingFragment StoreEntitySet="Dic_ICD_Repository">
-                <ScalarProperty Name="ICDID" ColumnName="ICDID" />
-                <ScalarProperty Name="ICD_Code" ColumnName="ICD_Code" />
-                <ScalarProperty Name="ICD_Name" ColumnName="ICD_Name" />
-                <ScalarProperty Name="ICD_VersionID" ColumnName="ICD_VersionID" />
-                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
-                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
-                <ScalarProperty Name="LastModifyTime" ColumnName="LastModifyTime" />
-                <ScalarProperty Name="LastModifyUserID" ColumnName="LastModifyUserID" />
-                <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
-                <ScalarProperty Name="LastModifyStamp" ColumnName="LastModifyStamp" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Dic_ICD_Version">
-            <EntityTypeMapping TypeName="ICD_DBModel.Dic_ICD_Version">
-              <MappingFragment StoreEntitySet="Dic_ICD_Version">
-                <ScalarProperty Name="ICD_VersionID" ColumnName="ICD_VersionID" />
-                <ScalarProperty Name="ICD_VersionName" ColumnName="ICD_VersionName" />
-                <ScalarProperty Name="ICD_Description" ColumnName="ICD_Description" />
-                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
-                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
-                <ScalarProperty Name="LastModifyTime" ColumnName="LastModifyTime" />
-                <ScalarProperty Name="LastModifyUserID" ColumnName="LastModifyUserID" />
-                <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
-                <ScalarProperty Name="LastModifyStamp" ColumnName="LastModifyStamp" />
+                <ScalarProperty Name="UploadItemID" ColumnName="UploadItemID" />
+                <ScalarProperty Name="BuilderCodeID" ColumnName="BuilderCodeID" />
+                <ScalarProperty Name="BuilderCodeItemID" ColumnName="BuilderCodeItemID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Dic_Menu">
             <EntityTypeMapping TypeName="ICD_DBModel.Dic_Menu">
               <MappingFragment StoreEntitySet="Dic_Menu">
-                <ScalarProperty Name="MenuID" ColumnName="MenuID" />
-                <ScalarProperty Name="DisplayName" ColumnName="DisplayName" />
-                <ScalarProperty Name="AreaName" ColumnName="AreaName" />
-                <ScalarProperty Name="ControllerName" ColumnName="ControllerName" />
-                <ScalarProperty Name="ActionName" ColumnName="ActionName" />
-                <ScalarProperty Name="ParentMenuID" ColumnName="ParentMenuID" />
-                <ScalarProperty Name="RoleControl" ColumnName="RoleControl" />
-                <ScalarProperty Name="Createtime" ColumnName="Createtime" />
-                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
-                <ScalarProperty Name="LastModifyTime" ColumnName="LastModifyTime" />
-                <ScalarProperty Name="LastModifyUserID" ColumnName="LastModifyUserID" />
-                <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
                 <ScalarProperty Name="LastModifyStamp" ColumnName="LastModifyStamp" />
+                <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
+                <ScalarProperty Name="LastModifyUserID" ColumnName="LastModifyUserID" />
+                <ScalarProperty Name="LastModifyTime" ColumnName="LastModifyTime" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="Createtime" ColumnName="Createtime" />
+                <ScalarProperty Name="RoleControl" ColumnName="RoleControl" />
+                <ScalarProperty Name="ParentMenuID" ColumnName="ParentMenuID" />
+                <ScalarProperty Name="ActionName" ColumnName="ActionName" />
+                <ScalarProperty Name="ControllerName" ColumnName="ControllerName" />
+                <ScalarProperty Name="AreaName" ColumnName="AreaName" />
+                <ScalarProperty Name="DisplayName" ColumnName="DisplayName" />
+                <ScalarProperty Name="MenuID" ColumnName="MenuID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Dic_Organization">
             <EntityTypeMapping TypeName="ICD_DBModel.Dic_Organization">
               <MappingFragment StoreEntitySet="Dic_Organization">
-                <ScalarProperty Name="OrganizationID" ColumnName="OrganizationID" />
-                <ScalarProperty Name="OrganizationCode" ColumnName="OrganizationCode" />
-                <ScalarProperty Name="OrganizationName" ColumnName="OrganizationName" />
-                <ScalarProperty Name="ShortName_CN" ColumnName="ShortName_CN" />
-                <ScalarProperty Name="ShortName_EN" ColumnName="ShortName_EN" />
-                <ScalarProperty Name="RegisterCode" ColumnName="RegisterCode" />
-                <ScalarProperty Name="ProvinceID" ColumnName="ProvinceID" />
-                <ScalarProperty Name="CityID" ColumnName="CityID" />
-                <ScalarProperty Name="AreaID" ColumnName="AreaID" />
-                <ScalarProperty Name="DetailAddress1" ColumnName="DetailAddress1" />
-                <ScalarProperty Name="DetailAddress2" ColumnName="DetailAddress2" />
-                <ScalarProperty Name="DetailAddress3" ColumnName="DetailAddress3" />
-                <ScalarProperty Name="CertificationFlag" ColumnName="CertificationFlag" />
-                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
-                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
-                <ScalarProperty Name="LastModifyID" ColumnName="LastModifyID" />
-                <ScalarProperty Name="LastModifyTime" ColumnName="LastModifyTime" />
-                <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
                 <ScalarProperty Name="LastModifyStamp" ColumnName="LastModifyStamp" />
+                <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
+                <ScalarProperty Name="LastModifyTime" ColumnName="LastModifyTime" />
+                <ScalarProperty Name="LastModifyID" ColumnName="LastModifyID" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="CertificationFlag" ColumnName="CertificationFlag" />
+                <ScalarProperty Name="DetailAddress3" ColumnName="DetailAddress3" />
+                <ScalarProperty Name="DetailAddress2" ColumnName="DetailAddress2" />
+                <ScalarProperty Name="DetailAddress1" ColumnName="DetailAddress1" />
+                <ScalarProperty Name="AreaID" ColumnName="AreaID" />
+                <ScalarProperty Name="CityID" ColumnName="CityID" />
+                <ScalarProperty Name="ProvinceID" ColumnName="ProvinceID" />
+                <ScalarProperty Name="RegisterCode" ColumnName="RegisterCode" />
+                <ScalarProperty Name="ShortName_EN" ColumnName="ShortName_EN" />
+                <ScalarProperty Name="ShortName_CN" ColumnName="ShortName_CN" />
+                <ScalarProperty Name="OrganizationName" ColumnName="OrganizationName" />
+                <ScalarProperty Name="OrganizationCode" ColumnName="OrganizationCode" />
+                <ScalarProperty Name="OrganizationID" ColumnName="OrganizationID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Dic_Service">
             <EntityTypeMapping TypeName="ICD_DBModel.Dic_Service">
               <MappingFragment StoreEntitySet="Dic_Service">
-                <ScalarProperty Name="ServiceID" ColumnName="ServiceID" />
-                <ScalarProperty Name="ServiceName" ColumnName="ServiceName" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
-                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
-                <ScalarProperty Name="LastModifyTime" ColumnName="LastModifyTime" />
-                <ScalarProperty Name="LastModifyUserID" ColumnName="LastModifyUserID" />
-                <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
                 <ScalarProperty Name="LastModifyStamp" ColumnName="LastModifyStamp" />
+                <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
+                <ScalarProperty Name="LastModifyUserID" ColumnName="LastModifyUserID" />
+                <ScalarProperty Name="LastModifyTime" ColumnName="LastModifyTime" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="ServiceName" ColumnName="ServiceName" />
+                <ScalarProperty Name="ServiceID" ColumnName="ServiceID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Dic_Service_Claim">
             <EntityTypeMapping TypeName="ICD_DBModel.Dic_Service_Claim">
               <MappingFragment StoreEntitySet="Dic_Service_Claim">
-                <ScalarProperty Name="ServiceClaimID" ColumnName="ServiceClaimID" />
-                <ScalarProperty Name="ServiceID" ColumnName="ServiceID" />
-                <ScalarProperty Name="ClaimType" ColumnName="ClaimType" />
-                <ScalarProperty Name="ClaimOperateType" ColumnName="ClaimOperateType" />
-                <ScalarProperty Name="ClaimValue" ColumnName="ClaimValue" />
-                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
-                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
-                <ScalarProperty Name="LastModifyTime" ColumnName="LastModifyTime" />
-                <ScalarProperty Name="LastModifyUserID" ColumnName="LastModifyUserID" />
-                <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
                 <ScalarProperty Name="LastModifyStamp" ColumnName="LastModifyStamp" />
+                <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
+                <ScalarProperty Name="LastModifyUserID" ColumnName="LastModifyUserID" />
+                <ScalarProperty Name="LastModifyTime" ColumnName="LastModifyTime" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="ClaimValue" ColumnName="ClaimValue" />
+                <ScalarProperty Name="ClaimOperateType" ColumnName="ClaimOperateType" />
+                <ScalarProperty Name="ClaimType" ColumnName="ClaimType" />
+                <ScalarProperty Name="ServiceID" ColumnName="ServiceID" />
+                <ScalarProperty Name="ServiceClaimID" ColumnName="ServiceClaimID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Dic_Service_Menu">
+            <EntityTypeMapping TypeName="ICD_DBModel.Dic_Service_Menu">
+              <MappingFragment StoreEntitySet="Dic_Service_Menu">
+                <ScalarProperty Name="LastModifyStamp" ColumnName="LastModifyStamp" />
+                <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
+                <ScalarProperty Name="LastModifyUserID" ColumnName="LastModifyUserID" />
+                <ScalarProperty Name="LastModifyTime" ColumnName="LastModifyTime" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="ServiceType" ColumnName="ServiceType" />
+                <ScalarProperty Name="MenuID" ColumnName="MenuID" />
+                <ScalarProperty Name="ServiceID" ColumnName="ServiceID" />
+                <ScalarProperty Name="Service_Menu_ID" ColumnName="Service_Menu_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Dic_Service_UploadItem">
             <EntityTypeMapping TypeName="ICD_DBModel.Dic_Service_UploadItem">
               <MappingFragment StoreEntitySet="Dic_Service_UploadItem">
-                <ScalarProperty Name="Service_UploadItemID" ColumnName="Service_UploadItemID" />
-                <ScalarProperty Name="ServiceID" ColumnName="ServiceID" />
-                <ScalarProperty Name="UploadItemID" ColumnName="UploadItemID" />
-                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
-                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
-                <ScalarProperty Name="LastModifyTime" ColumnName="LastModifyTime" />
-                <ScalarProperty Name="LastModifyUserID" ColumnName="LastModifyUserID" />
-                <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
                 <ScalarProperty Name="LastModifyStamp" ColumnName="LastModifyStamp" />
+                <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
+                <ScalarProperty Name="LastModifyUserID" ColumnName="LastModifyUserID" />
+                <ScalarProperty Name="LastModifyTime" ColumnName="LastModifyTime" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="UploadItemID" ColumnName="UploadItemID" />
+                <ScalarProperty Name="ServiceID" ColumnName="ServiceID" />
+                <ScalarProperty Name="Service_UploadItemID" ColumnName="Service_UploadItemID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Dic_UploadItem">
             <EntityTypeMapping TypeName="ICD_DBModel.Dic_UploadItem">
               <MappingFragment StoreEntitySet="Dic_UploadItem">
-                <ScalarProperty Name="UploadItemID" ColumnName="UploadItemID" />
-                <ScalarProperty Name="UploadItemName" ColumnName="UploadItemName" />
-                <ScalarProperty Name="UploadItemDescription" ColumnName="UploadItemDescription" />
-                <ScalarProperty Name="PinyinShort" ColumnName="PinyinShort" />
-                <ScalarProperty Name="UploadItemLevel" ColumnName="UploadItemLevel" />
-                <ScalarProperty Name="UploadItemIndex" ColumnName="UploadItemIndex" />
-                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
-                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
-                <ScalarProperty Name="LastModifyTime" ColumnName="LastModifyTime" />
-                <ScalarProperty Name="LastModifyUserID" ColumnName="LastModifyUserID" />
-                <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
                 <ScalarProperty Name="LastModifyStamp" ColumnName="LastModifyStamp" />
+                <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
+                <ScalarProperty Name="LastModifyUserID" ColumnName="LastModifyUserID" />
+                <ScalarProperty Name="LastModifyTime" ColumnName="LastModifyTime" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="UploadItemIndex" ColumnName="UploadItemIndex" />
+                <ScalarProperty Name="UploadItemLevel" ColumnName="UploadItemLevel" />
+                <ScalarProperty Name="PinyinShort" ColumnName="PinyinShort" />
+                <ScalarProperty Name="UploadItemDescription" ColumnName="UploadItemDescription" />
+                <ScalarProperty Name="UploadItemName" ColumnName="UploadItemName" />
+                <ScalarProperty Name="UploadItemID" ColumnName="UploadItemID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="ORG_Attach">
             <EntityTypeMapping TypeName="ICD_DBModel.ORG_Attach">
               <MappingFragment StoreEntitySet="ORG_Attach">
-                <ScalarProperty Name="ORGAttachID" ColumnName="ORGAttachID" />
-                <ScalarProperty Name="ORGID" ColumnName="ORGID" />
-                <ScalarProperty Name="ORGAttachType" ColumnName="ORGAttachType" />
-                <ScalarProperty Name="ORGAttachURL" ColumnName="ORGAttachURL" />
-                <ScalarProperty Name="AttachDescription" ColumnName="AttachDescription" />
-                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
-                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
-                <ScalarProperty Name="LastModityTime" ColumnName="LastModityTime" />
-                <ScalarProperty Name="LastModifyUserID" ColumnName="LastModifyUserID" />
                 <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
+                <ScalarProperty Name="LastModifyUserID" ColumnName="LastModifyUserID" />
+                <ScalarProperty Name="LastModityTime" ColumnName="LastModityTime" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="AttachDescription" ColumnName="AttachDescription" />
+                <ScalarProperty Name="ORGAttachURL" ColumnName="ORGAttachURL" />
+                <ScalarProperty Name="ORGAttachType" ColumnName="ORGAttachType" />
+                <ScalarProperty Name="ORGID" ColumnName="ORGID" />
+                <ScalarProperty Name="ORGAttachID" ColumnName="ORGAttachID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="ORG_Service_Config">
             <EntityTypeMapping TypeName="ICD_DBModel.ORG_Service_Config">
               <MappingFragment StoreEntitySet="ORG_Service_Config">
-                <ScalarProperty Name="ORG_ServiceID" ColumnName="ORG_ServiceID" />
-                <ScalarProperty Name="ORGID" ColumnName="ORGID" />
-                <ScalarProperty Name="ServiceID" ColumnName="ServiceID" />
-                <ScalarProperty Name="BeginTime" ColumnName="BeginTime" />
-                <ScalarProperty Name="EndTime" ColumnName="EndTime" />
-                <ScalarProperty Name="ServiceAuditStatus" ColumnName="ServiceAuditStatus" />
-                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
-                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
-                <ScalarProperty Name="LastModityTime" ColumnName="LastModityTime" />
-                <ScalarProperty Name="LastModityUserID" ColumnName="LastModityUserID" />
-                <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
                 <ScalarProperty Name="LastModifyStamp" ColumnName="LastModifyStamp" />
+                <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
+                <ScalarProperty Name="LastModityUserID" ColumnName="LastModityUserID" />
+                <ScalarProperty Name="LastModityTime" ColumnName="LastModityTime" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="ServiceAuditStatus" ColumnName="ServiceAuditStatus" />
+                <ScalarProperty Name="EndTime" ColumnName="EndTime" />
+                <ScalarProperty Name="BeginTime" ColumnName="BeginTime" />
+                <ScalarProperty Name="ServiceID" ColumnName="ServiceID" />
+                <ScalarProperty Name="ORGID" ColumnName="ORGID" />
+                <ScalarProperty Name="ORG_ServiceID" ColumnName="ORG_ServiceID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="ORG_Service_Provider">
             <EntityTypeMapping TypeName="ICD_DBModel.ORG_Service_Provider">
               <MappingFragment StoreEntitySet="ORG_Service_Provider">
-                <ScalarProperty Name="ORG_ServiceID" ColumnName="ORG_ServiceID" />
-                <ScalarProperty Name="ORGID" ColumnName="ORGID" />
-                <ScalarProperty Name="ServiceID" ColumnName="ServiceID" />
-                <ScalarProperty Name="CertificationStatus" ColumnName="CertificationStatus" />
-                <ScalarProperty Name="ApplyTime" ColumnName="ApplyTime" />
-                <ScalarProperty Name="PlatformAuditTime" ColumnName="PlatformAuditTime" />
-                <ScalarProperty Name="PlatformAuditUserID" ColumnName="PlatformAuditUserID" />
-                <ScalarProperty Name="PlatformAbendTime" ColumnName="PlatformAbendTime" />
-                <ScalarProperty Name="PlatformAbendUserID" ColumnName="PlatformAbendUserID" />
-                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
-                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
-                <ScalarProperty Name="LastModifyTime" ColumnName="LastModifyTime" />
-                <ScalarProperty Name="LastModifyUserID" ColumnName="LastModifyUserID" />
                 <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
+                <ScalarProperty Name="LastModifyUserID" ColumnName="LastModifyUserID" />
+                <ScalarProperty Name="LastModifyTime" ColumnName="LastModifyTime" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="PlatformAbendUserID" ColumnName="PlatformAbendUserID" />
+                <ScalarProperty Name="PlatformAbendTime" ColumnName="PlatformAbendTime" />
+                <ScalarProperty Name="PlatformAuditUserID" ColumnName="PlatformAuditUserID" />
+                <ScalarProperty Name="PlatformAuditTime" ColumnName="PlatformAuditTime" />
+                <ScalarProperty Name="ApplyTime" ColumnName="ApplyTime" />
+                <ScalarProperty Name="CertificationStatus" ColumnName="CertificationStatus" />
+                <ScalarProperty Name="ServiceID" ColumnName="ServiceID" />
+                <ScalarProperty Name="ORGID" ColumnName="ORGID" />
+                <ScalarProperty Name="ORG_ServiceID" ColumnName="ORG_ServiceID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="ORG_Service_UploadItem">
             <EntityTypeMapping TypeName="ICD_DBModel.ORG_Service_UploadItem">
               <MappingFragment StoreEntitySet="ORG_Service_UploadItem">
-                <ScalarProperty Name="ORG_Service_UploadItemID" ColumnName="ORG_Service_UploadItemID" />
-                <ScalarProperty Name="ServiceID" ColumnName="ServiceID" />
-                <ScalarProperty Name="ORGID" ColumnName="ORGID" />
-                <ScalarProperty Name="Sub_ORGID" ColumnName="Sub_ORGID" />
-                <ScalarProperty Name="UploadItemID" ColumnName="UploadItemID" />
-                <ScalarProperty Name="Required" ColumnName="Required" />
-                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
-                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
-                <ScalarProperty Name="LastModifyTime" ColumnName="LastModifyTime" />
-                <ScalarProperty Name="LastModifyUserID" ColumnName="LastModifyUserID" />
-                <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
                 <ScalarProperty Name="LastModifyStamp" ColumnName="LastModifyStamp" />
+                <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
+                <ScalarProperty Name="LastModifyUserID" ColumnName="LastModifyUserID" />
+                <ScalarProperty Name="LastModifyTime" ColumnName="LastModifyTime" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="Required" ColumnName="Required" />
+                <ScalarProperty Name="UploadItemID" ColumnName="UploadItemID" />
+                <ScalarProperty Name="Sub_ORGID" ColumnName="Sub_ORGID" />
+                <ScalarProperty Name="ORGID" ColumnName="ORGID" />
+                <ScalarProperty Name="ServiceID" ColumnName="ServiceID" />
+                <ScalarProperty Name="ORG_Service_UploadItemID" ColumnName="ORG_Service_UploadItemID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="ORG_SubOrganization">
             <EntityTypeMapping TypeName="ICD_DBModel.ORG_SubOrganization">
               <MappingFragment StoreEntitySet="ORG_SubOrganization">
-                <ScalarProperty Name="SubORGID" ColumnName="SubORGID" />
-                <ScalarProperty Name="SubORGCode" ColumnName="SubORGCode" />
-                <ScalarProperty Name="SubORGName" ColumnName="SubORGName" />
-                <ScalarProperty Name="SubORGAddress" ColumnName="SubORGAddress" />
-                <ScalarProperty Name="ORGID" ColumnName="ORGID" />
-                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
-                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
-                <ScalarProperty Name="LastModifyTime" ColumnName="LastModifyTime" />
-                <ScalarProperty Name="LastModifyUserID" ColumnName="LastModifyUserID" />
-                <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
                 <ScalarProperty Name="LastModifyStamp" ColumnName="LastModifyStamp" />
+                <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
+                <ScalarProperty Name="LastModifyUserID" ColumnName="LastModifyUserID" />
+                <ScalarProperty Name="LastModifyTime" ColumnName="LastModifyTime" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="ORGID" ColumnName="ORGID" />
+                <ScalarProperty Name="SubORGAddress" ColumnName="SubORGAddress" />
+                <ScalarProperty Name="SubORGName" ColumnName="SubORGName" />
+                <ScalarProperty Name="SubORGCode" ColumnName="SubORGCode" />
+                <ScalarProperty Name="SubORGID" ColumnName="SubORGID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Sec_Message">
+            <EntityTypeMapping TypeName="ICD_DBModel.Sec_Message">
+              <MappingFragment StoreEntitySet="Sec_Message">
+                <ScalarProperty Name="InValidateTime" ColumnName="InValidateTime" />
+                <ScalarProperty Name="LastModifyTime" ColumnName="LastModifyTime" />
+                <ScalarProperty Name="SourceIP" ColumnName="SourceIP" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="Secure_ID" ColumnName="Secure_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="User_Attach">
             <EntityTypeMapping TypeName="ICD_DBModel.User_Attach">
               <MappingFragment StoreEntitySet="User_Attach">
-                <ScalarProperty Name="UserAttachID" ColumnName="UserAttachID" />
-                <ScalarProperty Name="UserID" ColumnName="UserID" />
-                <ScalarProperty Name="AttachType" ColumnName="AttachType" />
-                <ScalarProperty Name="AttachURL" ColumnName="AttachURL" />
-                <ScalarProperty Name="AttachDecription" ColumnName="AttachDecription" />
-                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
-                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
-                <ScalarProperty Name="LastModityTime" ColumnName="LastModityTime" />
-                <ScalarProperty Name="LastModifyUserID" ColumnName="LastModifyUserID" />
-                <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
                 <ScalarProperty Name="LastModifyStamp" ColumnName="LastModifyStamp" />
+                <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
+                <ScalarProperty Name="LastModifyUserID" ColumnName="LastModifyUserID" />
+                <ScalarProperty Name="LastModityTime" ColumnName="LastModityTime" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="AttachDecription" ColumnName="AttachDecription" />
+                <ScalarProperty Name="AttachURL" ColumnName="AttachURL" />
+                <ScalarProperty Name="AttachType" ColumnName="AttachType" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="UserAttachID" ColumnName="UserAttachID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="User_Service_Attach">
             <EntityTypeMapping TypeName="ICD_DBModel.User_Service_Attach">
               <MappingFragment StoreEntitySet="User_Service_Attach">
-                <ScalarProperty Name="UserServiceAttachID" ColumnName="UserServiceAttachID" />
-                <ScalarProperty Name="User_ServiceID" ColumnName="User_ServiceID" />
-                <ScalarProperty Name="AttachType" ColumnName="AttachType" />
-                <ScalarProperty Name="AttachURL" ColumnName="AttachURL" />
-                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
-                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
-                <ScalarProperty Name="LastModityTime" ColumnName="LastModityTime" />
-                <ScalarProperty Name="LastModifyUserID" ColumnName="LastModifyUserID" />
-                <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
                 <ScalarProperty Name="LastModifyStamp" ColumnName="LastModifyStamp" />
+                <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
+                <ScalarProperty Name="LastModifyUserID" ColumnName="LastModifyUserID" />
+                <ScalarProperty Name="LastModityTime" ColumnName="LastModityTime" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="AttachURL" ColumnName="AttachURL" />
+                <ScalarProperty Name="AttachType" ColumnName="AttachType" />
+                <ScalarProperty Name="User_ServiceID" ColumnName="User_ServiceID" />
+                <ScalarProperty Name="UserServiceAttachID" ColumnName="UserServiceAttachID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="User_Service_Provider">
             <EntityTypeMapping TypeName="ICD_DBModel.User_Service_Provider">
               <MappingFragment StoreEntitySet="User_Service_Provider">
-                <ScalarProperty Name="User_ServiceID" ColumnName="User_ServiceID" />
-                <ScalarProperty Name="UserID" ColumnName="UserID" />
-                <ScalarProperty Name="ServiceID" ColumnName="ServiceID" />
-                <ScalarProperty Name="CertificationStatus" ColumnName="CertificationStatus" />
-                <ScalarProperty Name="ApplyTime" ColumnName="ApplyTime" />
-                <ScalarProperty Name="PlatformAuditTime" ColumnName="PlatformAuditTime" />
-                <ScalarProperty Name="PlatformAuditUserID" ColumnName="PlatformAuditUserID" />
-                <ScalarProperty Name="PlatformAbendTime" ColumnName="PlatformAbendTime" />
-                <ScalarProperty Name="PlatformAbendUserID" ColumnName="PlatformAbendUserID" />
-                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
-                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
-                <ScalarProperty Name="LastModityTime" ColumnName="LastModityTime" />
-                <ScalarProperty Name="LastModifyUserID" ColumnName="LastModifyUserID" />
-                <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
                 <ScalarProperty Name="LastModifyStamp" ColumnName="LastModifyStamp" />
+                <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
+                <ScalarProperty Name="LastModifyUserID" ColumnName="LastModifyUserID" />
+                <ScalarProperty Name="LastModityTime" ColumnName="LastModityTime" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="PlatformAbendUserID" ColumnName="PlatformAbendUserID" />
+                <ScalarProperty Name="PlatformAbendTime" ColumnName="PlatformAbendTime" />
+                <ScalarProperty Name="PlatformAuditUserID" ColumnName="PlatformAuditUserID" />
+                <ScalarProperty Name="PlatformAuditTime" ColumnName="PlatformAuditTime" />
+                <ScalarProperty Name="ApplyTime" ColumnName="ApplyTime" />
+                <ScalarProperty Name="CertificationStatus" ColumnName="CertificationStatus" />
+                <ScalarProperty Name="ServiceID" ColumnName="ServiceID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="User_ServiceID" ColumnName="User_ServiceID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <AssociationSetMapping Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" TypeName="ICD_DBModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" StoreEntitySet="AspNetUserClaims">
-            <EndProperty Name="AspNetUsers">
-              <ScalarProperty Name="Id" ColumnName="UserId" />
-            </EndProperty>
             <EndProperty Name="AspNetUserClaims">
               <ScalarProperty Name="Id" ColumnName="Id" />
+            </EndProperty>
+            <EndProperty Name="AspNetUsers">
+              <ScalarProperty Name="Id" ColumnName="UserId" />
             </EndProperty>
           </AssociationSetMapping>
         </EntityContainerMapping>

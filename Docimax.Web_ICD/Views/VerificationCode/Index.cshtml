@@ -1,19 +1,30 @@
-﻿@Html.LabelForModel("验证码", new { @class = "col-md-2 control-label" })
+﻿@Html.LabelForModel("验证码", new { @class = "col-md-2 control-label"})
 
 <div class="col-md-10">
-    <input id="valiKey" type="hidden" value="@Guid.NewGuid().ToString()" />
+    <input id="valiKey" type="hidden" value="" />
     <input id="valicodetxt" type="text" class="form-control">
     <img id="valiCode" style="cursor: pointer;" alt="验证码" title="看不清，点击换一张" />
 </div>
 <script type="text/javascript">
-
     $(document).ready(function () {
-        var initURL = "@Url.Action("GetNewValidateCode", "VerificationCode")?validatekey=" + $("#valikey").val();
-        $("#valiCode") = initURL;
+        var uuid = guid();
+        $("#valiKey").val(uuid);
+        $("#valiCode").attr("src","@Url.Action("GetNewValidateCode", "VerificationCode")?validatekey=" + uuid);
+
         $("#valiCode").click(function () {
-            $("#valiKey").val("@Guid.NewGuid().ToString()");
-            var newSrc = "@Url.Action("GetNewValidateCode", "VerificationCode")?validateKey=" + $("#valiKey").val();
+            uuid = guid();
+            $("#valiKey").val(uuid);
+            var newSrc = "@Url.Action("GetNewValidateCode", "VerificationCode")?validateKey=" + uuid;
             this.src = newSrc;
         });
     });
+    function guid() {
+        function s4() {
+            return Math.floor((1 + Math.random()) * 0x10000)
+              .toString(16)
+              .substring(1);
+        }
+        return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+          s4() + '-' + s4() + s4() + s4();
+    }
 </script>

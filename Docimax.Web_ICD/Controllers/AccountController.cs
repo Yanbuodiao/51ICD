@@ -9,6 +9,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Docimax.Web_ICD.Models;
+using Docimax.Common;
 
 namespace Docimax.Web_ICD.Controllers
 {
@@ -135,6 +136,7 @@ namespace Docimax.Web_ICD.Controllers
         [AllowAnonymous]
         public ActionResult Register()
         {
+            var ip = HttpHelper.GetIPFromRequest(Request);
             return View();
         }
 
@@ -143,6 +145,7 @@ namespace Docimax.Web_ICD.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
+            var ip = HttpHelper.GetIPFromRequest(Request);
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
@@ -153,6 +156,7 @@ namespace Docimax.Web_ICD.Controllers
                 }
                 AddErrors(result);
             }
+            model.NeedVarify = true;
             return View(model);
         }
 
@@ -163,7 +167,7 @@ namespace Docimax.Web_ICD.Controllers
             var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userID, code = code }, protocol: Request.Url.Scheme);
             await UserManager.SendEmailAsync(
                 userID,
-                "激活您的账户",
+                "51ICD-激活账户",
                 string.Format(@"<br/><br/>请通过单击 <a href={0}>这里</a> 激活您在51ICD注册的账户
                                        <br/><br/><br/>如果上述链接失效，请将下面地址复制到浏览器地址栏进行激活<br/><br/>{1}
                                        <br/><br/><br/>系统邮件，请勿回复", callbackUrl, callbackUrl));
@@ -208,7 +212,10 @@ namespace Docimax.Web_ICD.Controllers
                 }
                 string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
                 var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                await UserManager.SendEmailAsync(user.Id, "重置密码", "请通过单击 <a href=\"" + callbackUrl + "\">此处</a> 来重置你的密码");
+                await UserManager.SendEmailAsync(user.Id, "51ICD-重置密码", string.Format(@"<br/><br/>请通过单击 <a href={0}>这里</a> 
+                                                     重置您在51ICD的账户密码
+                                       <br/><br/><br/>如果上述链接失效，请将下面地址复制到浏览器地址栏进行激活<br/><br/>{1}
+                                       <br/><br/><br/>系统邮件，请勿回复!", callbackUrl, callbackUrl));
                 return RedirectToAction("ForgotPasswordConfirmation", "Account");
             }
             return View(model);

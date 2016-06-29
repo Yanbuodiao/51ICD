@@ -79,6 +79,8 @@ namespace Docimax.Web_ICD.Models
         [Display(Name = "确认密码")]
         [Compare("Password", ErrorMessage = "密码和确认密码不匹配。")]
         public string ConfirmPassword { get; set; }
+
+        public bool NeedVarify { get; set; }
     }
     public class VerifyIdentityViewModel
     {

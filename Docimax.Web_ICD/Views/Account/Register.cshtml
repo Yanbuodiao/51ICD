@@ -29,9 +29,12 @@
             @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
         </div>
     </div>
-    <div class="form-group">
-        @{Html.RenderAction("Index", "VerificationCode");}
-    </div>
+    if (Model != null && Model.NeedVarify)
+    {
+        <div class="form-group">
+            @{Html.RenderAction("Index", "VerificationCode");}
+        </div>
+    }
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
             <input type="submit" class="btn btn-default" value="зЂВс" />

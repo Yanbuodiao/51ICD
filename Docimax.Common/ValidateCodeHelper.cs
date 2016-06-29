@@ -18,6 +18,7 @@ namespace Docimax.Common
         static int valicodeLength = 6;
         public static ValidateCodeModel CreateValidateCode(string validateKey)
         {
+            allValidateCodeList = allValidateCodeList.Where(e => e.ValidateKey != validateKey).ToList();
             Random random = new Random((int)DateTime.Now.Ticks);
             var upperLength = random.Next(1, valicodeLength - 1);
             var lowerLength = random.Next(1, valicodeLength - upperLength);

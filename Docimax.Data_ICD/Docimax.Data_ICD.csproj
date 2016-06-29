@@ -71,6 +71,12 @@
     <Compile Include="BaseDic_City.cs">
       <DependentUpon>Model_Read.tt</DependentUpon>
     </Compile>
+    <Compile Include="BaseDic_ICD_Repository.cs">
+      <DependentUpon>Model_Read.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BaseDic_ICD_Version.cs">
+      <DependentUpon>Model_Read.tt</DependentUpon>
+    </Compile>
     <Compile Include="BaseDic_Province.cs">
       <DependentUpon>Model_Read.tt</DependentUpon>
     </Compile>
@@ -84,12 +90,7 @@
       <DependentUpon>Model_Read.tt</DependentUpon>
     </Compile>
     <Compile Include="DAL\DAL_Menu.cs" />
-    <Compile Include="Dic_ICD_Repository.cs">
-      <DependentUpon>Model_Read.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Dic_ICD_Version.cs">
-      <DependentUpon>Model_Read.tt</DependentUpon>
-    </Compile>
+    <Compile Include="DAL\DAL_Security.cs" />
     <Compile Include="Dic_Menu.cs">
       <DependentUpon>Model_Read.tt</DependentUpon>
     </Compile>
@@ -100,6 +101,9 @@
       <DependentUpon>Model_Read.tt</DependentUpon>
     </Compile>
     <Compile Include="Dic_Service_Claim.cs">
+      <DependentUpon>Model_Read.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Dic_Service_Menu.cs">
       <DependentUpon>Model_Read.tt</DependentUpon>
     </Compile>
     <Compile Include="Dic_Service_UploadItem.cs">
@@ -154,6 +158,9 @@
       <DependentUpon>Model_Read.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Sec_Message.cs">
+      <DependentUpon>Model_Read.tt</DependentUpon>
+    </Compile>
     <Compile Include="User_Attach.cs">
       <DependentUpon>Model_Read.tt</DependentUpon>
     </Compile>

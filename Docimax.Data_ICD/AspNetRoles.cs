@@ -24,9 +24,9 @@ namespace Docimax.Data_ICD
         public string Name { get; set; }
         public string Description { get; set; }
         public Nullable<System.DateTime> CreateTime { get; set; }
-        public Nullable<int> CreateUserID { get; set; }
+        public string CreateUserID { get; set; }
         public Nullable<System.DateTime> LastModtifyTime { get; set; }
-        public Nullable<int> LastModityUserID { get; set; }
+        public string LastModityUserID { get; set; }
         public string Discriminator { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
