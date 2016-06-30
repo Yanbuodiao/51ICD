@@ -32,11 +32,17 @@ namespace Docimax.Common
             var newModel = new ValidateCodeModel
             {
                 ValidateKey = validateKey,
+                ValidateCode = result,
                 CreateTime = DateTime.Now,
                 ValidateImage = CreateValidateGraphic(result),
             };
             handleValidateCode(newModel);
             return newModel;
+        }
+        public static bool VerifyValidateCode(string validateKey, string validateCode)
+        {
+            var model = allValidateCodeList.FirstOrDefault(e => e.ValidateKey == validateKey);
+            return model != null && model.ValidateCode.ToLower() == validateCode.ToLower();
         }
         private static byte[] CreateValidateGraphic(string validateCode)
         {
@@ -50,8 +56,6 @@ namespace Docimax.Common
              System.Drawing.Color.Red,
              System.Drawing.Color.Blue,
              System.Drawing.Color.Green,
-             System.Drawing.Color.Orange,
-             System.Drawing.Color.Brown,
              System.Drawing.Color.Brown,
              System.Drawing.Color.DarkBlue
             };
@@ -62,7 +66,7 @@ namespace Docimax.Common
             {
                 Random random = new Random();
                 g.Clear(Color.White);
-                for (int i = 0; i < 10; i++)
+                for (int i = 0; i < 8; i++)
                 {
                     int x1 = random.Next(image.Width);
                     int x2 = random.Next(image.Width);
@@ -115,7 +119,7 @@ namespace Docimax.Common
         /// <summary>
         /// 验证码
         /// </summary>
-        public string InputValidateCode
+        public string ValidateCode
         { get; set; }
         /// <summary>
         /// 验证码生成时间

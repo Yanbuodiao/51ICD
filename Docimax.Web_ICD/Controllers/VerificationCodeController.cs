@@ -25,5 +25,11 @@ namespace Docimax.Web_ICD.Controllers
             var verrifyCodeModel = ValidateCodeHelper.CreateValidateCode(validateKey);
             return File(verrifyCodeModel.ValidateImage, @"image/jpeg");
         }
+        [AllowAnonymous]
+        public ActionResult VerifyValidateCode(string validateKey,string validateCode)
+        {
+            var verifyResult = ValidateCodeHelper.VerifyValidateCode(validateKey, validateCode);
+            return Content(verifyResult.ToString());
+        }
     }
 }

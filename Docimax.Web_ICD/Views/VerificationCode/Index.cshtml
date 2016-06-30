@@ -1,21 +1,61 @@
-﻿@Html.LabelForModel("验证码", new { @class = "col-md-2 control-label"})
+﻿
 
-<div class="col-md-10">
-    <input id="valiKey" type="hidden" value="" />
-    <input id="valicodetxt" type="text" class="form-control">
-    <img id="valiCode" style="cursor: pointer;" alt="验证码" title="看不清，点击换一张" />
+<div class="modal  fade" id="verifyCodeModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">请输入下图中的验证码</h4>
+            </div>
+            <div class="modal-body">
+                <input id="valiKey" type="hidden" value="" />
+                @Html.LabelForModel("验证码", new { @class = "col-md-2 control-label" })
+                <input id="valicodetxt" type="text" class="form-control">
+                <img id="valiCode" style="cursor: pointer;" alt="验证码"  title="看不清，点击换一张" />
+            </div>
+            <div class="modal-footer">
+                <input type="submit" class="btn btn-default" value="确定" />
+            </div>
+        </div>
+    </div>
 </div>
 <script type="text/javascript">
-    $(document).ready(function () {
-        var uuid = guid();
-        $("#valiKey").val(uuid);
-        $("#valiCode").attr("src","@Url.Action("GetNewValidateCode", "VerificationCode")?validatekey=" + uuid);
 
-        $("#valiCode").click(function () {
+    $(document).ready(function () {
+
+        var getValidateCode = function () {
             uuid = guid();
             $("#valiKey").val(uuid);
             var newSrc = "@Url.Action("GetNewValidateCode", "VerificationCode")?validateKey=" + uuid;
-            this.src = newSrc;
+            $("#valiCode").attr("src", newSrc);
+        }
+
+        getValidateCode();
+
+        $("#valiCode").click(getValidateCode);
+
+        $("#valicodetxt").keyup(function () {
+            if (this.value.length == 6) {
+                $.ajax({
+                    url: "@Url.Action("VerifyValidateCode", "VerificationCode")",// 跳转到 action
+                    data: {
+                        validateKey: $("#valiKey").val(),
+                        validateCode: $("#valicodetxt").val()
+                    },
+                    type: 'post',
+                    cache: false,
+                    success: function (data) {
+                        if (data == "True") {
+                            alert("修改成功！");
+                        }
+                        else {
+                            getValidateCode();
+                        }
+                    },
+                    error: function () {
+                        alert("异常！");
+                    }
+                })
+            }
         });
     });
     function guid() {
