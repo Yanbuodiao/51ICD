@@ -46,9 +46,9 @@ namespace Docimax.Common
         }
         private static byte[] CreateValidateGraphic(string validateCode)
         {
-            var width = (int)Math.Ceiling(validateCode.Length * 16.0);
+            var width = (int)Math.Ceiling(validateCode.Length * 18.0);
             var fontSize = 14;
-            var height = 30;
+            var height = 33;
             var image = new Bitmap(width, height);
             Graphics g = Graphics.FromImage(image);
             Color[] colors ={ 
@@ -59,7 +59,7 @@ namespace Docimax.Common
              System.Drawing.Color.Brown,
              System.Drawing.Color.DarkBlue
             };
-            string[] fontNames = { "Times New Roman", "MS Mincho", "Book Antiqua", "Gungsuh", "PMingLiU", "Impact" };
+            string[] fontNames = { "arial", "arial black", "comic sans ms", "courier new", "estrangelo edessa", "franklin gothic medium", "georgia", "lucida console", "lucida sans unicode", "mangal", "microsoft sans serif", "palatino linotype", "sylfaen", "tahoma", "times new roman", "trebuchet ms", "verdana" };
             float dotX, dotY, spaceWith = 0;
             spaceWith = (width - fontSize * validateCode.Length - 10) / validateCode.Length;
             try

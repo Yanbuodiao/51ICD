@@ -7,10 +7,15 @@
                 <h4 class="modal-title" id="myModalLabel">请输入下图中的验证码</h4>
             </div>
             <div class="modal-body">
-                <input id="valiKey" type="hidden" value="" />
-                @Html.LabelForModel("验证码", new { @class = "col-md-2 control-label" })
-                <input id="valicodetxt" type="text" class="form-control">
-                <img id="valiCode" class="col-md-pull-3 " style="cursor: pointer;" alt="验证码" title="看不清，点击换一张" />
+                <div class="row">
+                    <div class="col-xs-8">
+                        <input id="valiKey" type="hidden" value="" />
+                        @Html.LabelForModel("验证码", new { @class = "col-xs-2 control-label" })
+                        <input id="valicodetxt" type="text" class="form-control">
+                    </div>
+                    <img id="valiCode" style="cursor: pointer;" alt="验证码" title="看不清，点击换一张" />
+                </div>
+
             </div>
             <div class="modal-footer">
                 <input type="submit" class="btn btn-default" value="确定" disabled="disabled" id="submitBtn" />
@@ -58,6 +63,7 @@
             }
         });
     });
+
     function guid() {
         function s4() {
             return Math.floor((1 + Math.random()) * 0x10000)

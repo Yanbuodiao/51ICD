@@ -62,8 +62,6 @@ namespace Docimax.Web_ICD.Models
 
     public class AddPhoneNumberViewModel
     {
-        [Required]
-        [Phone]
         [Display(Name = "电话号码")]
         public string Number { get; set; }
     }

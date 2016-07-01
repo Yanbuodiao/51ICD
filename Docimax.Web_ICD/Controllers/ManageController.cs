@@ -109,7 +109,7 @@ namespace Docimax.Web_ICD.Controllers
                 var message = new IdentityMessage
                 {
                     Destination = model.Number,
-                    Body = "您的验证码是：" + code + "。请不要把验证码泄露给其他人。",
+                    Body = "您的验证码是：" + code + "。请不要把验证码泄露给其他人。如非本人操作，可不用理会！",
                 };
                 await UserManager.SmsService.SendAsync(message);
             }

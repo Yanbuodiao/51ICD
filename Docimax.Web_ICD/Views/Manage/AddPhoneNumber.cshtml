@@ -16,16 +16,60 @@
     <div class="form-group">
         @Html.LabelFor(m => m.Number, new { @class = "col-md-2 control-label" })
         <div class="col-md-10">
-            @Html.TextBoxFor(m => m.Number, new { @class = "form-control" })
+            @Html.TextBoxFor(m => m.Number, new { @class = "form-control", @id = "mobile" })
         </div>
     </div>
 
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
-            <input type="submit" class="btn btn-default" data-toggle="modal" data-target="#verifyCodeModal" value="发送短信" />
+            <input type="button" class="btn btn-default" id="showBtn" value="发送短信" />
         </div>
     </div>
 }
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#mobile").focus();
+        $("#showBtn").click(function () {
+            if (validatemobile($("#mobile").val())) {
+                $("#valicodetxt").focus();
+                $("#verifyCodeModal").modal('show');
+            };
+        })
+    })
+
+    function validatemobile(mobile) {
+        if (mobile.length == 0) {
+            showError("手机号码不能为空！");
+            $("#mobile").focus();
+            return false;
+        }
+        if (mobile.length != 11) {
+            showError('请输入有效的手机号码！');
+            $("#mobile").focus();
+            return false;
+        }
+
+        var myreg = /^(((13[0-9]{1})|(15[0-9]{1})|(17[0-9]{1})|(18[0-9]{1}))+\d{8})$/;
+        if (!myreg.test(mobile)) {
+            showError('请输入有效的手机号码！');
+            $("#mobile").focus();
+            return false;
+        }
+        return true;
+    }
+
+    function showError(errorStr) {
+        var container = $(document).find("[data-valmsg-summary=true]");
+        list = container.find("ul");
+
+        if (list && list.length) {
+            list.empty();
+            container.addClass("validation-summary-errors").removeClass("validation-summary-valid");
+            $("<li />").html(errorStr).appendTo(list);
+        }
+    }
+
+</script>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
