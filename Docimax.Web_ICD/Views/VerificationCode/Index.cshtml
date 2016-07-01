@@ -10,10 +10,10 @@
                 <input id="valiKey" type="hidden" value="" />
                 @Html.LabelForModel("验证码", new { @class = "col-md-2 control-label" })
                 <input id="valicodetxt" type="text" class="form-control">
-                <img id="valiCode" style="cursor: pointer;" alt="验证码"  title="看不清，点击换一张" />
+                <img id="valiCode" class="col-md-pull-3 " style="cursor: pointer;" alt="验证码" title="看不清，点击换一张" />
             </div>
             <div class="modal-footer">
-                <input type="submit" class="btn btn-default" value="确定" />
+                <input type="submit" class="btn btn-default" value="确定" disabled="disabled" id="submitBtn" />
             </div>
         </div>
     </div>
@@ -45,7 +45,7 @@
                     cache: false,
                     success: function (data) {
                         if (data == "True") {
-                            alert("修改成功！");
+                            $("#submitBtn").removeAttr("disabled");
                         }
                         else {
                             getValidateCode();
