@@ -22,3 +22,13 @@ select,
 textarea {
     max-width: 280px;
 }
+
+
+
+.form-control.validate {
+    padding: 0px;
+}
+
+.control-label.validate {
+     padding: 0px;
+}
