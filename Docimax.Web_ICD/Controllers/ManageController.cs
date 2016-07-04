@@ -280,7 +280,7 @@ namespace Docimax.Web_ICD.Controllers
             var result = await UserManager.AddLoginAsync(User.Identity.GetUserId(), loginInfo.Login);
             return result.Succeeded ? RedirectToAction("ManageLogins") : RedirectToAction("ManageLogins", new { Message = ManageMessageId.Error });
         }
-        public ActionResult VerifyIdentity()
+        public ActionResult VerifyIdentityIndex()
         {
             return View();
         }

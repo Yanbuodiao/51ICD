@@ -36,23 +36,23 @@
             }
             ]
         </dd>
-        <dt>身份认证:</dt>
+        <dt>身份及银行卡认证:</dt>
         <dd>
             @switch (Model.CertificationFlag)
             {
                 case CertificateState.未认证:
                 default:
-            @Html.ActionLink("发起认证申请", "VerifyIdentity")
+            @Html.ActionLink("发起认证申请", "VerifyIdentityIndex")
                     break;
                 case CertificateState.发起认证申请:
                 case CertificateState.平台人员审核通过:
             @: "平台已收到申请，最多两个工作日认证完成，请耐心等候...";
                     break;
                 case CertificateState.认证成功:
-            @: "已认证"|&nbsp;@Html.ActionLink("发起认证申请", "VerifyIdentity");
+            @: "已认证"|&nbsp;@Html.ActionLink("发起认证申请", "VerifyIdentityIndex");
                     break;
                 case CertificateState.认证失败:
-            @: "未通过认证"|&nbsp;@Html.ActionLink("发起认证申请", "VerifyIdentity");
+            @: "未通过认证"|&nbsp;@Html.ActionLink("发起认证申请", "VerifyIdentityIndex");
                     break;
             }
         </dd>
