@@ -42,17 +42,17 @@
             {
                 case CertificateState.未认证:
                 default:
-            @Html.ActionLink("发起认证申请", "VerifyIdentityIndex")
+            @Html.ActionLink("发起认证申请", "VerifyIdentity", routeValues: null)
                     break;
                 case CertificateState.发起认证申请:
                 case CertificateState.平台人员审核通过:
             @: "平台已收到申请，最多两个工作日认证完成，请耐心等候...";
                     break;
                 case CertificateState.认证成功:
-            @: "已认证"|&nbsp;@Html.ActionLink("发起认证申请", "VerifyIdentityIndex");
+            @: "已认证"|&nbsp;@Html.ActionLink("发起认证申请", "VerifyIdentity", routeValues: null);
                     break;
                 case CertificateState.认证失败:
-            @: "未通过认证"|&nbsp;@Html.ActionLink("发起认证申请", "VerifyIdentityIndex");
+            @: "未通过认证"|&nbsp;@Html.ActionLink("发起认证申请", "VerifyIdentity" ,routeValues: null);
                     break;
             }
         </dd>

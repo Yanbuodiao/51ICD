@@ -3,6 +3,8 @@ using Docimax.Web_ICD.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
@@ -280,13 +282,21 @@ namespace Docimax.Web_ICD.Controllers
             var result = await UserManager.AddLoginAsync(User.Identity.GetUserId(), loginInfo.Login);
             return result.Succeeded ? RedirectToAction("ManageLogins") : RedirectToAction("ManageLogins", new { Message = ManageMessageId.Error });
         }
-        public ActionResult VerifyIdentityIndex()
+        public ActionResult VerifyIdentity()
         {
             return View();
         }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult VerifyIdentity(VerifyIdentityViewModel model)
         {
-            return View();
+            if (ModelState.IsValid)
+            {
+                var allFiles = Request.Files.Count;
+                model.UserID = User.Identity.GetUserId();
+                model.ApplyTime = DateTime.Now;
+            }
+            return View(model);
         }
         protected override void Dispose(bool disposing)
         {

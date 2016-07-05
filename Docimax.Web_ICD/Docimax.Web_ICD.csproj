@@ -224,7 +224,7 @@
     <Content Include="Views\Home\Detail.cshtml" />
     <Content Include="Views\Account\MenuList.cshtml" />
     <Content Include="Web.config" />
-    <Content Include="Views\Manage\VerifyIdentityIndex.cshtml" />
+    <Content Include="Views\Manage\VerifyIdentity.cshtml" />
     <Content Include="tsconfig.json" />
     <Content Include="Views\VerificationCode\Index.cshtml" />
     <None Include="Web.Debug.config">

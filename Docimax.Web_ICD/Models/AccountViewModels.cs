@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Docimax.Web_ICD.Models
@@ -84,6 +85,10 @@ namespace Docimax.Web_ICD.Models
     }
     public class VerifyIdentityViewModel
     {
+        /// <summary>
+        /// 用户ID
+        /// </summary>
+        public string UserID { get; set; }
         [Required]
         [StringLength(18, ErrorMessage = "请输出正确的身份证号码。", MinimumLength = 15)]
         [Display(Name = "身份证号")]
@@ -96,6 +101,10 @@ namespace Docimax.Web_ICD.Models
         [StringLength(19, ErrorMessage = "{0} 必须至少包含 {2} 个字符。", MinimumLength = 16)]
         [Display(Name = "银行卡号")]
         public string BankCardNO { get; set; }
+        /// <summary>
+        /// 发起申请时间
+        /// </summary>
+        public DateTime ApplyTime { get; set; }
     }
     public class ResetPasswordViewModel
     {

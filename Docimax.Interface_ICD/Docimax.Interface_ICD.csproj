@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="Enum\CertificateState.cs" />
     <Compile Include="Enum\ItemState.cs" />
+    <Compile Include="Enum\UserAttachType.cs" />
     <Compile Include="Interface\IMenu.cs" />
     <Compile Include="Interface\ISecurity.cs" />
     <Compile Include="Interface\ISMS.cs" />
