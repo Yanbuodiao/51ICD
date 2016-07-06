@@ -98,7 +98,7 @@ namespace Docimax.Web_ICD.Models
         [Display(Name = "姓名")]
         public string RealName { get; set; }
         [Required]
-        [StringLength(19, ErrorMessage = "{0} 必须至少包含 {2} 个字符。", MinimumLength = 16)]
+        [StringLength(23, ErrorMessage = "{0} 必须至少包含 {2} 个字符。", MinimumLength = 19)]//算上四位间加的间隔
         [Display(Name = "银行卡号")]
         public string BankCardNO { get; set; }
         /// <summary>

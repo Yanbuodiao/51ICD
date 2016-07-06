@@ -29,7 +29,7 @@
     <div class="form-group">
         @Html.LabelFor(model => model.BankCardNO, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.EditorFor(model => model.BankCardNO, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.EditorFor(model => model.BankCardNO, new { htmlAttributes = new { @class = "form-control", @id = "bankCard" } })
             @Html.ValidationMessageFor(model => model.BankCardNO, "", new { @class = "text-danger" })
         </div>
     </div>
@@ -58,6 +58,27 @@
         </div>
     </div>
 }
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#bankCard").on("keyup", formatBC);
+
+        function formatBC(e) {
+
+            //$(this).attr("data-oral", $(this).val().replace(/\ +/g, ""));
+            //$("#bankCard").attr("data-oral")获取未格式化的卡号  
+
+            var self = $.trim(e.target.value);
+            var temp = this.value.replace(/\D/g, '').replace(/(....)(?=.)/g, '$1 ');
+            if (self.length > 23) {
+                this.value = self.substr(0, 23);
+                return this.value;
+            }
+            if (temp != this.value) {
+                this.value = temp;
+            }
+        }
+    })
+</script>
 
 <div>
     @Html.ActionLink("返回", "Index")

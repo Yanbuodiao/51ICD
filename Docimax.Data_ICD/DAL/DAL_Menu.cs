@@ -17,7 +17,6 @@ namespace Docimax.Data_ICD.DAL
                 var resultMenus = entity.Dic_Menu.Where(e => (e.RoleControl ?? 0) == 0);
                 if (!string.IsNullOrWhiteSpace(userID))
                 {
-
                 }
 
             }

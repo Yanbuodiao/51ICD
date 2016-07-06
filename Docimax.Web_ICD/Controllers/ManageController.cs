@@ -292,7 +292,10 @@ namespace Docimax.Web_ICD.Controllers
         {
             if (ModelState.IsValid)
             {
-                var allFiles = Request.Files.Count;
+                for (int i = 0; i <  Request.Files.Count; i++)
+                {
+                    var file = Request.Files[0];
+                }
                 model.UserID = User.Identity.GetUserId();
                 model.ApplyTime = DateTime.Now;
             }
