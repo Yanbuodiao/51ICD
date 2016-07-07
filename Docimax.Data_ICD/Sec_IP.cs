@@ -12,11 +12,9 @@ namespace Docimax.Data_ICD
     using System;
     using System.Collections.Generic;
     
-    public partial class Sec_Message
+    public partial class Sec_IP
     {
-        public int SecurityMessage_ID { get; set; }
-        public string UserPhoneNumber { get; set; }
-        public string UserID { get; set; }
+        public int SecurityIP_ID { get; set; }
         public string SourceIP { get; set; }
         public Nullable<System.DateTime> CreateTime { get; set; }
         public Nullable<System.DateTime> LastModifyTime { get; set; }

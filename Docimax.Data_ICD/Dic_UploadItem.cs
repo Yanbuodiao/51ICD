@@ -18,7 +18,7 @@ namespace Docimax.Data_ICD
         public string UploadItemName { get; set; }
         public string UploadItemDescription { get; set; }
         public string PinyinShort { get; set; }
-        public Nullable<int> UploadItemLevel { get; set; }
+        public Nullable<int> ParentID { get; set; }
         public Nullable<int> UploadItemIndex { get; set; }
         public Nullable<System.DateTime> CreateTime { get; set; }
         public string CreateUserID { get; set; }

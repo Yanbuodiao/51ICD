@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="Enum\CertificateState.cs" />
     <Compile Include="Enum\ItemState.cs" />
+    <Compile Include="Enum\ServiceType.cs" />
     <Compile Include="Enum\UserAttachType.cs" />
     <Compile Include="Interface\IFile.cs" />
     <Compile Include="Interface\IMenu.cs" />
@@ -51,6 +52,7 @@
     <Compile Include="Model\Configurations\MailConfig.cs" />
     <Compile Include="Model\Configurations\SMSConfig.cs" />
     <Compile Include="Model\Menu\ICDMenu.cs" />
+    <Compile Include="Model\Public\ICDFilePath.cs" />
     <Compile Include="Model\Security\SecurityIPModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

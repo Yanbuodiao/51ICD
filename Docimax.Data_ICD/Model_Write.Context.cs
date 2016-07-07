@@ -50,6 +50,7 @@ namespace Docimax.Data_ICD
         public virtual DbSet<ORG_Service_Provider> ORG_Service_Provider { get; set; }
         public virtual DbSet<ORG_Service_UploadItem> ORG_Service_UploadItem { get; set; }
         public virtual DbSet<ORG_SubOrganization> ORG_SubOrganization { get; set; }
+        public virtual DbSet<Sec_IP> Sec_IP { get; set; }
         public virtual DbSet<Sec_Message> Sec_Message { get; set; }
         public virtual DbSet<User_Attach> User_Attach { get; set; }
         public virtual DbSet<User_Service_Attach> User_Service_Attach { get; set; }

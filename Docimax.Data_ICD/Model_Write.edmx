@@ -287,7 +287,7 @@
           <Property Name="UploadItemName" Type="nvarchar" MaxLength="300" />
           <Property Name="UploadItemDescription" Type="nvarchar" MaxLength="500" />
           <Property Name="PinyinShort" Type="nvarchar" MaxLength="300" />
-          <Property Name="UploadItemLevel" Type="int" />
+          <Property Name="ParentID" Type="int" />
           <Property Name="UploadItemIndex" Type="int" />
           <Property Name="CreateTime" Type="datetime" />
           <Property Name="CreateUserID" Type="nvarchar" MaxLength="128" />
@@ -380,23 +380,34 @@
           <Property Name="DeleteFlag" Type="int" />
           <Property Name="LastModifyStamp" Type="timestamp" StoreGeneratedPattern="Computed" />
         </EntityType>
+        <EntityType Name="Sec_IP">
+          <Key>
+            <PropertyRef Name="SecurityIP_ID" />
+          </Key>
+          <Property Name="SecurityIP_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SourceIP" Type="varchar" MaxLength="100" />
+          <Property Name="CreateTime" Type="datetime" />
+          <Property Name="LastModifyTime" Type="datetime" />
+        </EntityType>
         <EntityType Name="Sec_Message">
           <Key>
-            <PropertyRef Name="Secure_ID" />
+            <PropertyRef Name="SecurityMessage_ID" />
           </Key>
-          <Property Name="Secure_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SecurityMessage_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserPhoneNumber" Type="nvarchar(max)" />
           <Property Name="UserID" Type="nvarchar" MaxLength="128" />
           <Property Name="SourceIP" Type="varchar" MaxLength="100" />
+          <Property Name="CreateTime" Type="datetime" />
           <Property Name="LastModifyTime" Type="datetime" />
-          <Property Name="InValidateTime" Type="int" />
         </EntityType>
         <EntityType Name="User_Attach">
           <Key>
             <PropertyRef Name="UserAttachID" />
           </Key>
           <Property Name="UserAttachID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="UserID" Type="int" />
+          <Property Name="UserID" Type="nvarchar" MaxLength="128" />
           <Property Name="AttachType" Type="int" />
+          <Property Name="ContentType" Type="nvarchar(max)" />
           <Property Name="AttachURL" Type="nvarchar(max)" />
           <Property Name="AttachDecription" Type="nvarchar" MaxLength="300" />
           <Property Name="CreateTime" Type="datetime" />
@@ -413,6 +424,7 @@
           <Property Name="UserServiceAttachID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="User_ServiceID" Type="int" />
           <Property Name="AttachType" Type="int" />
+          <Property Name="ContentType" Type="nvarchar(max)" />
           <Property Name="AttachURL" Type="nvarchar(max)" />
           <Property Name="CreateTime" Type="datetime" />
           <Property Name="CreateUserID" Type="nvarchar" MaxLength="128" />
@@ -426,7 +438,7 @@
             <PropertyRef Name="User_ServiceID" />
           </Key>
           <Property Name="User_ServiceID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="UserID" Type="int" />
+          <Property Name="UserID" Type="nvarchar" MaxLength="128" />
           <Property Name="ServiceID" Type="int" />
           <Property Name="CertificationStatus" Type="int" />
           <Property Name="ApplyTime" Type="datetime" />
@@ -435,9 +447,9 @@
           <Property Name="PlatformAbendTime" Type="datetime" />
           <Property Name="PlatformAbendUserID" Type="datetime" />
           <Property Name="CreateTime" Type="datetime" />
-          <Property Name="CreateUserID" Type="int" />
+          <Property Name="CreateUserID" Type="nvarchar" MaxLength="128" />
           <Property Name="LastModityTime" Type="datetime" />
-          <Property Name="LastModifyUserID" Type="int" />
+          <Property Name="LastModifyUserID" Type="nvarchar" MaxLength="128" />
           <Property Name="DeleteFlag" Type="int" />
           <Property Name="LastModifyStamp" Type="timestamp" StoreGeneratedPattern="Computed" />
         </EntityType>
@@ -523,6 +535,7 @@
           <EntitySet Name="ORG_Service_Provider" EntityType="Self.ORG_Service_Provider" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ORG_Service_UploadItem" EntityType="Self.ORG_Service_UploadItem" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ORG_SubOrganization" EntityType="Self.ORG_SubOrganization" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Sec_IP" EntityType="Self.Sec_IP" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Sec_Message" EntityType="Self.Sec_Message" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User_Attach" EntityType="Self.User_Attach" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User_Service_Attach" EntityType="Self.User_Service_Attach" Schema="dbo" store:Type="Tables" />
@@ -574,6 +587,7 @@
           <EntitySet Name="ORG_Service_Provider" EntityType="ICD_DBModel1.ORG_Service_Provider" />
           <EntitySet Name="ORG_Service_UploadItem" EntityType="ICD_DBModel1.ORG_Service_UploadItem" />
           <EntitySet Name="ORG_SubOrganization" EntityType="ICD_DBModel1.ORG_SubOrganization" />
+          <EntitySet Name="Sec_IP" EntityType="ICD_DBModel1.Sec_IP" />
           <EntitySet Name="Sec_Message" EntityType="ICD_DBModel1.Sec_Message" />
           <EntitySet Name="User_Attach" EntityType="ICD_DBModel1.User_Attach" />
           <EntitySet Name="User_Service_Attach" EntityType="ICD_DBModel1.User_Service_Attach" />
@@ -884,7 +898,7 @@
           <Property Name="UploadItemName" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
           <Property Name="UploadItemDescription" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="PinyinShort" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
-          <Property Name="UploadItemLevel" Type="Int32" />
+          <Property Name="ParentID" Type="Int32" />
           <Property Name="UploadItemIndex" Type="Int32" />
           <Property Name="CreateTime" Type="DateTime" Precision="3" />
           <Property Name="CreateUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
@@ -977,23 +991,34 @@
           <Property Name="DeleteFlag" Type="Int32" />
           <Property Name="LastModifyStamp" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
         </EntityType>
+        <EntityType Name="Sec_IP">
+          <Key>
+            <PropertyRef Name="SecurityIP_ID" />
+          </Key>
+          <Property Name="SecurityIP_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SourceIP" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="CreateTime" Type="DateTime" Precision="3" />
+          <Property Name="LastModifyTime" Type="DateTime" Precision="3" />
+        </EntityType>
         <EntityType Name="Sec_Message">
           <Key>
-            <PropertyRef Name="Secure_ID" />
+            <PropertyRef Name="SecurityMessage_ID" />
           </Key>
-          <Property Name="Secure_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SecurityMessage_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserPhoneNumber" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="UserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="SourceIP" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="CreateTime" Type="DateTime" Precision="3" />
           <Property Name="LastModifyTime" Type="DateTime" Precision="3" />
-          <Property Name="InValidateTime" Type="Int32" />
         </EntityType>
         <EntityType Name="User_Attach">
           <Key>
             <PropertyRef Name="UserAttachID" />
           </Key>
           <Property Name="UserAttachID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="UserID" Type="Int32" />
+          <Property Name="UserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="AttachType" Type="Int32" />
+          <Property Name="ContentType" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="AttachURL" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="AttachDecription" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
           <Property Name="CreateTime" Type="DateTime" Precision="3" />
@@ -1010,6 +1035,7 @@
           <Property Name="UserServiceAttachID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="User_ServiceID" Type="Int32" />
           <Property Name="AttachType" Type="Int32" />
+          <Property Name="ContentType" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="AttachURL" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="CreateTime" Type="DateTime" Precision="3" />
           <Property Name="CreateUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
@@ -1023,7 +1049,7 @@
             <PropertyRef Name="User_ServiceID" />
           </Key>
           <Property Name="User_ServiceID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="UserID" Type="Int32" />
+          <Property Name="UserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="ServiceID" Type="Int32" />
           <Property Name="CertificationStatus" Type="Int32" />
           <Property Name="ApplyTime" Type="DateTime" Precision="3" />
@@ -1032,9 +1058,9 @@
           <Property Name="PlatformAbendTime" Type="DateTime" Precision="3" />
           <Property Name="PlatformAbendUserID" Type="DateTime" Precision="3" />
           <Property Name="CreateTime" Type="DateTime" Precision="3" />
-          <Property Name="CreateUserID" Type="Int32" />
+          <Property Name="CreateUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="LastModityTime" Type="DateTime" Precision="3" />
-          <Property Name="LastModifyUserID" Type="Int32" />
+          <Property Name="LastModifyUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="DeleteFlag" Type="Int32" />
           <Property Name="LastModifyStamp" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
         </EntityType>
@@ -1390,7 +1416,7 @@
                 <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
                 <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
                 <ScalarProperty Name="UploadItemIndex" ColumnName="UploadItemIndex" />
-                <ScalarProperty Name="UploadItemLevel" ColumnName="UploadItemLevel" />
+                <ScalarProperty Name="ParentID" ColumnName="ParentID" />
                 <ScalarProperty Name="PinyinShort" ColumnName="PinyinShort" />
                 <ScalarProperty Name="UploadItemDescription" ColumnName="UploadItemDescription" />
                 <ScalarProperty Name="UploadItemName" ColumnName="UploadItemName" />
@@ -1487,14 +1513,25 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="Sec_IP">
+            <EntityTypeMapping TypeName="ICD_DBModel1.Sec_IP">
+              <MappingFragment StoreEntitySet="Sec_IP">
+                <ScalarProperty Name="LastModifyTime" ColumnName="LastModifyTime" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="SourceIP" ColumnName="SourceIP" />
+                <ScalarProperty Name="SecurityIP_ID" ColumnName="SecurityIP_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Sec_Message">
             <EntityTypeMapping TypeName="ICD_DBModel1.Sec_Message">
               <MappingFragment StoreEntitySet="Sec_Message">
-                <ScalarProperty Name="InValidateTime" ColumnName="InValidateTime" />
                 <ScalarProperty Name="LastModifyTime" ColumnName="LastModifyTime" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
                 <ScalarProperty Name="SourceIP" ColumnName="SourceIP" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
-                <ScalarProperty Name="Secure_ID" ColumnName="Secure_ID" />
+                <ScalarProperty Name="UserPhoneNumber" ColumnName="UserPhoneNumber" />
+                <ScalarProperty Name="SecurityMessage_ID" ColumnName="SecurityMessage_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1509,6 +1546,7 @@
                 <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
                 <ScalarProperty Name="AttachDecription" ColumnName="AttachDecription" />
                 <ScalarProperty Name="AttachURL" ColumnName="AttachURL" />
+                <ScalarProperty Name="ContentType" ColumnName="ContentType" />
                 <ScalarProperty Name="AttachType" ColumnName="AttachType" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="UserAttachID" ColumnName="UserAttachID" />
@@ -1525,6 +1563,7 @@
                 <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
                 <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
                 <ScalarProperty Name="AttachURL" ColumnName="AttachURL" />
+                <ScalarProperty Name="ContentType" ColumnName="ContentType" />
                 <ScalarProperty Name="AttachType" ColumnName="AttachType" />
                 <ScalarProperty Name="User_ServiceID" ColumnName="User_ServiceID" />
                 <ScalarProperty Name="UserServiceAttachID" ColumnName="UserServiceAttachID" />

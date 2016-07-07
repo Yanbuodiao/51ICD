@@ -25,7 +25,7 @@ namespace Docimax.Data_ICD.DAL
                 {
                     if ((item.LastModifyTime ?? DateTime.Now).AddMinutes(3) <= Model.CreateTime)
                     {
-                        item.InValidateTime = item.InValidateTime ?? 0 + 1;
+                        //item.InValidateTime = item.InValidateTime ?? 0 + 1;
                     }
                 }
 

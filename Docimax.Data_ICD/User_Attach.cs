@@ -15,8 +15,9 @@ namespace Docimax.Data_ICD
     public partial class User_Attach
     {
         public int UserAttachID { get; set; }
-        public Nullable<int> UserID { get; set; }
+        public string UserID { get; set; }
         public Nullable<int> AttachType { get; set; }
+        public string ContentType { get; set; }
         public string AttachURL { get; set; }
         public string AttachDecription { get; set; }
         public Nullable<System.DateTime> CreateTime { get; set; }

@@ -30,10 +30,11 @@
         <EntityTypeShape EntityType="ICD_DBModel1.ORG_Service_Provider" Width="1.5" PointX="0.75" PointY="14.75" />
         <EntityTypeShape EntityType="ICD_DBModel1.ORG_Service_UploadItem" Width="1.5" PointX="2.75" PointY="14.75" />
         <EntityTypeShape EntityType="ICD_DBModel1.ORG_SubOrganization" Width="1.5" PointX="11.75" PointY="14.75" />
-        <EntityTypeShape EntityType="ICD_DBModel1.Sec_Message" Width="1.5" PointX="13.75" PointY="14.75" />
-        <EntityTypeShape EntityType="ICD_DBModel1.User_Attach" Width="1.5" PointX="15.75" PointY="0.75" />
-        <EntityTypeShape EntityType="ICD_DBModel1.User_Service_Attach" Width="1.5" PointX="15.75" PointY="4.75" />
-        <EntityTypeShape EntityType="ICD_DBModel1.User_Service_Provider" Width="1.5" PointX="4.75" PointY="15.75" />
+        <EntityTypeShape EntityType="ICD_DBModel1.Sec_IP" Width="1.5" PointX="13.75" PointY="14.75" />
+        <EntityTypeShape EntityType="ICD_DBModel1.Sec_Message" Width="1.5" PointX="15.75" PointY="0.75" />
+        <EntityTypeShape EntityType="ICD_DBModel1.User_Attach" Width="1.5" PointX="15.75" PointY="3.75" />
+        <EntityTypeShape EntityType="ICD_DBModel1.User_Service_Attach" Width="1.5" PointX="4.75" PointY="15.75" />
+        <EntityTypeShape EntityType="ICD_DBModel1.User_Service_Provider" Width="1.5" PointX="6.75" PointY="15.75" />
         <AssociationConnector Association="ICD_DBModel1.FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId" />
         <AssociationConnector Association="ICD_DBModel1.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" />
         <AssociationConnector Association="ICD_DBModel1.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" />
