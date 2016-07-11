@@ -10,6 +10,8 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Docimax.Web_ICD.Models;
 using Docimax.Common;
+using Docimax.Interface_ICD.Interface;
+using Docimax.Data_ICD.DAL;
 
 namespace Docimax.Web_ICD.Controllers
 {
@@ -379,7 +381,8 @@ namespace Docimax.Web_ICD.Controllers
         [AllowAnonymous]
         public ActionResult MenuList()
         {
-            return PartialView();
+            IMenu menuAccess = new DAL_Menu();
+            return PartialView(menuAccess.GetMenuListByUserID(User.Identity.GetUserId()));
         }
         #region 帮助程序
 

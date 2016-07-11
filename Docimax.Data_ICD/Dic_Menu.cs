@@ -19,6 +19,7 @@ namespace Docimax.Data_ICD
         public string AreaName { get; set; }
         public string ControllerName { get; set; }
         public string ActionName { get; set; }
+        public Nullable<int> MenuIndex { get; set; }
         public Nullable<int> ParentMenuID { get; set; }
         public Nullable<int> RoleControl { get; set; }
         public Nullable<System.DateTime> Createtime { get; set; }

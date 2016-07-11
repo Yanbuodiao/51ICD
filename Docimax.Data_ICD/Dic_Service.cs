@@ -17,6 +17,7 @@ namespace Docimax.Data_ICD
         public int ServiceID { get; set; }
         public string ServiceName { get; set; }
         public string Description { get; set; }
+        public Nullable<int> ServiceType { get; set; }
         public Nullable<System.DateTime> CreateTime { get; set; }
         public string CreateUserID { get; set; }
         public Nullable<System.DateTime> LastModifyTime { get; set; }

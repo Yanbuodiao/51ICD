@@ -2,7 +2,10 @@
 <ul class="nav navbar-nav">
     @if (Model != null)
     {
-
+        foreach (var item in Model)
+        {
+            <li>@Html.ActionLink(item.DisplayName, item.ActionName, item.ControllerName)</li>
+        }
     }
     else
     {

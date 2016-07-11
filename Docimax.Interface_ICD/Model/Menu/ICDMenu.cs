@@ -10,11 +10,11 @@ namespace Docimax.Interface_ICD.Model
         /// <summary>
         /// 菜单ID
         /// </summary>
-        public string MenuID { get; set; }
+        public int MenuID { get; set; }
         /// <summary>
         /// 显示名称
         /// </summary>
-        public string DisplayNanme { get; set; }
+        public string DisplayName { get; set; }
         /// <summary>
         /// 父菜单ID
         /// </summary>

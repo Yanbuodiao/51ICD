@@ -187,6 +187,7 @@
           <Property Name="AreaName" Type="nvarchar" MaxLength="300" />
           <Property Name="ControllerName" Type="nvarchar" MaxLength="300" />
           <Property Name="ActionName" Type="nvarchar" MaxLength="300" />
+          <Property Name="MenuIndex" Type="int" />
           <Property Name="ParentMenuID" Type="int" />
           <Property Name="RoleControl" Type="int" />
           <Property Name="Createtime" Type="datetime" />
@@ -227,6 +228,7 @@
           <Property Name="ServiceID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ServiceName" Type="nvarchar" MaxLength="300" />
           <Property Name="Description" Type="nvarchar" MaxLength="500" />
+          <Property Name="ServiceType" Type="int" />
           <Property Name="CreateTime" Type="datetime" />
           <Property Name="CreateUserID" Type="nvarchar" MaxLength="128" />
           <Property Name="LastModifyTime" Type="datetime" />
@@ -257,7 +259,6 @@
           <Property Name="Service_Menu_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ServiceID" Type="int" />
           <Property Name="MenuID" Type="int" />
-          <Property Name="ServiceType" Type="int" />
           <Property Name="CreateTime" Type="datetime" />
           <Property Name="CreateUserID" Type="nvarchar" MaxLength="128" />
           <Property Name="LastModifyTime" Type="datetime" />
@@ -798,6 +799,7 @@
           <Property Name="AreaName" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
           <Property Name="ControllerName" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
           <Property Name="ActionName" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="MenuIndex" Type="Int32" />
           <Property Name="ParentMenuID" Type="Int32" />
           <Property Name="RoleControl" Type="Int32" />
           <Property Name="Createtime" Type="DateTime" Precision="3" />
@@ -838,6 +840,7 @@
           <Property Name="ServiceID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ServiceName" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
           <Property Name="Description" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="ServiceType" Type="Int32" />
           <Property Name="CreateTime" Type="DateTime" Precision="3" />
           <Property Name="CreateUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="LastModifyTime" Type="DateTime" Precision="3" />
@@ -868,7 +871,6 @@
           <Property Name="Service_Menu_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ServiceID" Type="Int32" />
           <Property Name="MenuID" Type="Int32" />
-          <Property Name="ServiceType" Type="Int32" />
           <Property Name="CreateTime" Type="DateTime" Precision="3" />
           <Property Name="CreateUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="LastModifyTime" Type="DateTime" Precision="3" />
@@ -1310,6 +1312,7 @@
                 <ScalarProperty Name="Createtime" ColumnName="Createtime" />
                 <ScalarProperty Name="RoleControl" ColumnName="RoleControl" />
                 <ScalarProperty Name="ParentMenuID" ColumnName="ParentMenuID" />
+                <ScalarProperty Name="MenuIndex" ColumnName="MenuIndex" />
                 <ScalarProperty Name="ActionName" ColumnName="ActionName" />
                 <ScalarProperty Name="ControllerName" ColumnName="ControllerName" />
                 <ScalarProperty Name="AreaName" ColumnName="AreaName" />
@@ -1352,6 +1355,7 @@
                 <ScalarProperty Name="LastModifyTime" ColumnName="LastModifyTime" />
                 <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
                 <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="ServiceType" ColumnName="ServiceType" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="ServiceName" ColumnName="ServiceName" />
                 <ScalarProperty Name="ServiceID" ColumnName="ServiceID" />
@@ -1384,7 +1388,6 @@
                 <ScalarProperty Name="LastModifyTime" ColumnName="LastModifyTime" />
                 <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
                 <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
-                <ScalarProperty Name="ServiceType" ColumnName="ServiceType" />
                 <ScalarProperty Name="MenuID" ColumnName="MenuID" />
                 <ScalarProperty Name="ServiceID" ColumnName="ServiceID" />
                 <ScalarProperty Name="Service_Menu_ID" ColumnName="Service_Menu_ID" />
