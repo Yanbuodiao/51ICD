@@ -89,9 +89,15 @@
     <Compile Include="C__MigrationHistory.cs">
       <DependentUpon>Model_Write.tt</DependentUpon>
     </Compile>
-    <Compile Include="DAL\DAL_Menu.cs" />
-    <Compile Include="DAL\DAL_Security.cs" />
-    <Compile Include="DAL\DAL_UserAccess.cs" />
+    <Compile Include="DAL\DAL_Menu.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DAL\DAL_Security.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DAL\DAL_UserAccess.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Dic_Menu.cs">
       <DependentUpon>Model_Write.tt</DependentUpon>
     </Compile>
