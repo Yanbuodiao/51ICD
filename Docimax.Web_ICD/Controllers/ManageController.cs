@@ -1,6 +1,9 @@
 ﻿using Docimax.Common_ICD.File;
+using Docimax.Data_ICD.DAL;
 using Docimax.Interface_ICD.Enum;
+using Docimax.Interface_ICD.Interface;
 using Docimax.Interface_ICD.Model;
+using Docimax.Web_ICD.Convert;
 using Docimax.Web_ICD.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
@@ -58,6 +61,7 @@ namespace Docimax.Web_ICD.Controllers
                 : message == ManageMessageId.Error ? "出现错误。"
                 : message == ManageMessageId.AddPhoneSuccess ? "已添加你的电话号码。"
                 : message == ManageMessageId.RemovePhoneSuccess ? "已删除你的电话号码。"
+                : message == ManageMessageId.ApplyCertifacationSuccess ? "已受理你的实名认证请求。"
                 : "";
 
             var userId = User.Identity.GetUserId();
@@ -295,45 +299,49 @@ namespace Docimax.Web_ICD.Controllers
             if (ModelState.IsValid)
             {
                 var allFileTags = new List<string> { "IDCardfront", "IDCardback", "bankCard" };
-                if (allFileTags.Any(e => Request.Files[e].ContentLength == 0))
+                if (allFileTags.Any(e => Request.Files[e] == null || Request.Files[e].ContentLength == 0))
                 {
                     ModelState.AddModelError("", "请上传必要的附件");
                     return View(model);
                 }
                 model.UserID = User.Identity.GetUserId();
                 model.ApplyTime = DateTime.Now;
-                if (Request.Files != null && Request.Files.Count > 0)
+                model.FileList = new List<ICDFile>();
+                for (int i = 0; i < Request.Files.Count; i++)
                 {
-                    model.FileList = new List<ICDFile>();
-                    for (int i = 0; i < Request.Files.Count; i++)
+                    var file = Request.Files[i];
+                    if (file != null && file.ContentLength > 0)
                     {
-                        var file = Request.Files[i];
-                        if (file != null && file.ContentLength > 0)
+                        var icdFile = new ICDFile
                         {
-                            var icdFile = new ICDFile
-                            {
-                                FileURL = FileHelper.SaveUserAttachFile(file),
-                                ContentType = file.ContentType,
-                            };
-                            switch (Request.Files.AllKeys[i])
-                            {
-                                case "IDCardfront":
-                                    icdFile.AttachType = UserAttachType.身份证正面.GetHashCode();
-                                    break;
-                                case "IDCardback":
-                                    icdFile.AttachType = UserAttachType.身份证背面.GetHashCode();
-                                    break;
-                                case "bankCard":
-                                    icdFile.AttachType = UserAttachType.银行卡.GetHashCode();
-                                    break;
-                                default:
-                                    break;
-                            }
-                            icdFile.FileIndex = model.FileList.Count(e => e.AttachType == icdFile.AttachType);
-                            model.FileList.Add(icdFile);
+                            FileURL = FileHelper.SaveUserAttachFile(file),
+                            ContentType = file.ContentType,
+                        };
+                        switch (Request.Files.AllKeys[i])
+                        {
+                            case "IDCardfront":
+                                icdFile.AttachType = UserAttachType.身份证正面.GetHashCode();
+                                break;
+                            case "IDCardback":
+                                icdFile.AttachType = UserAttachType.身份证背面.GetHashCode();
+                                break;
+                            case "bankCard":
+                                icdFile.AttachType = UserAttachType.银行卡.GetHashCode();
+                                break;
+                            default:
+                                break;
                         }
+                        icdFile.FileIndex = model.FileList.Count(e => e.AttachType == icdFile.AttachType);
+                        model.FileList.Add(icdFile);
                     }
                 }
+                IUserAccess ua = new DAL_UserAccess();
+                var result = ua.ApplyIdentityVerify(ViewModel2Model.VerifyIdentityModel2Model(model));
+                if (result.Result)
+                {
+                    return RedirectToAction("Index", new { Message = ManageMessageId.ApplyCertifacationSuccess });
+                }
+                ModelState.AddModelError("", result.ErrorStr);
             }
             return View(model);
         }
@@ -396,6 +404,7 @@ namespace Docimax.Web_ICD.Controllers
             SetPasswordSuccess,
             RemoveLoginSuccess,
             RemovePhoneSuccess,
+            ApplyCertifacationSuccess,
             Error
         }
 

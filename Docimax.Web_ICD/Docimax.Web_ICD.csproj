@@ -157,7 +157,9 @@
     <Compile Include="Controllers\VerificationCodeController.cs" />
     <Compile Include="Controllers_Manage\MenuController.cs" />
     <Compile Include="Controllers_Manage\RolesAdminController.cs" />
-    <Compile Include="Convert\ViewModel2Model.cs" />
+    <Compile Include="Convert\ViewModel2Model.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -228,6 +230,9 @@
     <Content Include="Views\Manage\VerifyIdentity.cshtml" />
     <Content Include="tsconfig.json" />
     <Content Include="Views\VerificationCode\Index.cshtml" />
+    <Content Include="Views\Account\Manage.cshtml">
+      <SubType>Code</SubType>
+    </Content>
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
