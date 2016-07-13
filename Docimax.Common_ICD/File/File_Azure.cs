@@ -23,8 +23,8 @@ namespace Docimax.Common_ICD.File
             CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
             CloudBlobContainer container = blobClient.GetContainerReference(Container);
             container.CreateIfNotExists();
-            var fileName = string.Format("{0}.{1}", DateTime.Now.ToString("yyMMdd-HHmmssfff"), System.IO.Path.GetExtension(file.FileName));
-            var filePath = string.Format("{0}/{1}", virtualDirectory, fileName);
+            var fileName = string.Format("{0}{1}", DateTime.Now.ToString("yyMMdd-HHmmssfff"), System.IO.Path.GetExtension(file.FileName));
+            var filePath = string.Format("{0}{1}", virtualDirectory, fileName);
             CloudBlockBlob blockBlob = container.GetBlockBlobReference(filePath);
             blockBlob.UploadFromStream(file.InputStream);
             return filePath;

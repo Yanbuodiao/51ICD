@@ -91,6 +91,7 @@
     </Compile>
     <Compile Include="DAL\DAL_Menu.cs" />
     <Compile Include="DAL\DAL_Security.cs" />
+    <Compile Include="DAL\DAL_UserAccess.cs" />
     <Compile Include="Dic_Menu.cs">
       <DependentUpon>Model_Write.tt</DependentUpon>
     </Compile>

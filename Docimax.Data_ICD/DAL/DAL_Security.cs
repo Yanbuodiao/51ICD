@@ -20,6 +20,7 @@ namespace Docimax.Data_ICD.DAL
         {
             using (var entity = new Entities_Write())
             {
+                var a = entity.Database.BeginTransaction();
                 var item = entity.Sec_Message.FirstOrDefault(e => e.SourceIP == Model.SourIP);
                 if (item != null)
                 {

@@ -1,17 +1,14 @@
-﻿using System;
-using System.Globalization;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using System.Web;
-using System.Web.Mvc;
+﻿using Docimax.Common;
+using Docimax.Data_ICD.DAL;
+using Docimax.Interface_ICD.Interface;
+using Docimax.Web_ICD.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
-using Docimax.Web_ICD.Models;
-using Docimax.Common;
-using Docimax.Interface_ICD.Interface;
-using Docimax.Data_ICD.DAL;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Web;
+using System.Web.Mvc;
 
 namespace Docimax.Web_ICD.Controllers
 {

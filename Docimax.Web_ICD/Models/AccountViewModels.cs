@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Docimax.Interface_ICD.Enum;
+using Docimax.Interface_ICD.Model;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -105,6 +107,14 @@ namespace Docimax.Web_ICD.Models
         /// 发起申请时间
         /// </summary>
         public DateTime ApplyTime { get; set; }
+        /// <summary>
+        /// 认证状态
+        /// </summary>
+        public CertificateState CertificateFlag { get; set; }
+        /// <summary>
+        /// 附件信息
+        /// </summary>
+        public List<ICDFile> FileList { get; set; }
     }
     public class ResetPasswordViewModel
     {

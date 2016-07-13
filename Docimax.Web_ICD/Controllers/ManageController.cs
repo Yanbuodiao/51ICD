@@ -1,4 +1,6 @@
-﻿using Docimax.Common;
+﻿using Docimax.Common_ICD.File;
+using Docimax.Interface_ICD.Enum;
+using Docimax.Interface_ICD.Model;
 using Docimax.Web_ICD.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
@@ -292,12 +294,46 @@ namespace Docimax.Web_ICD.Controllers
         {
             if (ModelState.IsValid)
             {
-                for (int i = 0; i <  Request.Files.Count; i++)
+                var allFileTags = new List<string> { "IDCardfront", "IDCardback", "bankCard" };
+                if (allFileTags.Any(e => Request.Files[e].ContentLength == 0))
                 {
-                    var file = Request.Files[0];
+                    ModelState.AddModelError("", "请上传必要的附件");
+                    return View(model);
                 }
                 model.UserID = User.Identity.GetUserId();
                 model.ApplyTime = DateTime.Now;
+                if (Request.Files != null && Request.Files.Count > 0)
+                {
+                    model.FileList = new List<ICDFile>();
+                    for (int i = 0; i < Request.Files.Count; i++)
+                    {
+                        var file = Request.Files[i];
+                        if (file != null && file.ContentLength > 0)
+                        {
+                            var icdFile = new ICDFile
+                            {
+                                FileURL = FileHelper.SaveUserAttachFile(file),
+                                ContentType = file.ContentType,
+                            };
+                            switch (Request.Files.AllKeys[i])
+                            {
+                                case "IDCardfront":
+                                    icdFile.AttachType = UserAttachType.身份证正面.GetHashCode();
+                                    break;
+                                case "IDCardback":
+                                    icdFile.AttachType = UserAttachType.身份证背面.GetHashCode();
+                                    break;
+                                case "bankCard":
+                                    icdFile.AttachType = UserAttachType.银行卡.GetHashCode();
+                                    break;
+                                default:
+                                    break;
+                            }
+                            icdFile.FileIndex = model.FileList.Count(e => e.AttachType == icdFile.AttachType);
+                            model.FileList.Add(icdFile);
+                        }
+                    }
+                }
             }
             return View(model);
         }
