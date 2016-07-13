@@ -7,19 +7,22 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Docimax.Data_ICD
+namespace Docimax.Data_ICD.Entity
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class User_Attach
+    public partial class User_Service_Provider
     {
-        public int UserAttachID { get; set; }
+        public int User_ServiceID { get; set; }
         public string UserID { get; set; }
-        public Nullable<int> AttachType { get; set; }
-        public string ContentType { get; set; }
-        public string AttachURL { get; set; }
-        public string AttachDecription { get; set; }
+        public Nullable<int> ServiceID { get; set; }
+        public Nullable<int> CertificationStatus { get; set; }
+        public Nullable<System.DateTime> ApplyTime { get; set; }
+        public Nullable<System.DateTime> PlatformAuditTime { get; set; }
+        public Nullable<int> PlatformAuditUserID { get; set; }
+        public Nullable<System.DateTime> PlatformAbendTime { get; set; }
+        public Nullable<System.DateTime> PlatformAbendUserID { get; set; }
         public Nullable<System.DateTime> CreateTime { get; set; }
         public string CreateUserID { get; set; }
         public Nullable<System.DateTime> LastModityTime { get; set; }

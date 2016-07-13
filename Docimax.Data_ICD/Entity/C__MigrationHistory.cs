@@ -7,18 +7,16 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Docimax.Data_ICD
+namespace Docimax.Data_ICD.Entity
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class BaseDic_Area
+    public partial class C__MigrationHistory
     {
-        public int AreaID { get; set; }
-        public string AreaCode { get; set; }
-        public string AreaName { get; set; }
-        public string CityCode { get; set; }
-        public string PinyinShort { get; set; }
-        public byte[] LastModifyStamp { get; set; }
+        public string MigrationId { get; set; }
+        public string ContextKey { get; set; }
+        public byte[] Model { get; set; }
+        public string ProductVersion { get; set; }
     }
 }

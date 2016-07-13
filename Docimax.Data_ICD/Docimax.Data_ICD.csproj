@@ -50,45 +50,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AspNetRoles.cs">
-      <DependentUpon>Model_Write.tt</DependentUpon>
-    </Compile>
-    <Compile Include="AspNetUserClaims.cs">
-      <DependentUpon>Model_Write.tt</DependentUpon>
-    </Compile>
-    <Compile Include="AspNetUserLogins.cs">
-      <DependentUpon>Model_Write.tt</DependentUpon>
-    </Compile>
-    <Compile Include="AspNetUserRoles.cs">
-      <DependentUpon>Model_Write.tt</DependentUpon>
-    </Compile>
-    <Compile Include="AspNetUsers.cs">
-      <DependentUpon>Model_Write.tt</DependentUpon>
-    </Compile>
-    <Compile Include="BaseDic_Area.cs">
-      <DependentUpon>Model_Write.tt</DependentUpon>
-    </Compile>
-    <Compile Include="BaseDic_City.cs">
-      <DependentUpon>Model_Write.tt</DependentUpon>
-    </Compile>
-    <Compile Include="BaseDic_ICD_Repository.cs">
-      <DependentUpon>Model_Write.tt</DependentUpon>
-    </Compile>
-    <Compile Include="BaseDic_ICD_Version.cs">
-      <DependentUpon>Model_Write.tt</DependentUpon>
-    </Compile>
-    <Compile Include="BaseDic_Province.cs">
-      <DependentUpon>Model_Write.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Code_Builder.cs">
-      <DependentUpon>Model_Write.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Code_Builder_Item.cs">
-      <DependentUpon>Model_Write.tt</DependentUpon>
-    </Compile>
-    <Compile Include="C__MigrationHistory.cs">
-      <DependentUpon>Model_Write.tt</DependentUpon>
-    </Compile>
     <Compile Include="DAL\DAL_Menu.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -98,124 +59,163 @@
     <Compile Include="DAL\DAL_UserAccess.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Dic_Menu.cs">
-      <DependentUpon>Model_Write.tt</DependentUpon>
+    <Compile Include="Entity\AspNetRoles.cs">
+      <DependentUpon>Entity_Write.tt</DependentUpon>
     </Compile>
-    <Compile Include="Dic_Organization.cs">
-      <DependentUpon>Model_Write.tt</DependentUpon>
+    <Compile Include="Entity\AspNetUserClaims.cs">
+      <DependentUpon>Entity_Write.tt</DependentUpon>
     </Compile>
-    <Compile Include="Dic_Service.cs">
-      <DependentUpon>Model_Write.tt</DependentUpon>
+    <Compile Include="Entity\AspNetUserLogins.cs">
+      <DependentUpon>Entity_Write.tt</DependentUpon>
     </Compile>
-    <Compile Include="Dic_Service_Claim.cs">
-      <DependentUpon>Model_Write.tt</DependentUpon>
+    <Compile Include="Entity\AspNetUserRoles.cs">
+      <DependentUpon>Entity_Write.tt</DependentUpon>
     </Compile>
-    <Compile Include="Dic_Service_Menu.cs">
-      <DependentUpon>Model_Write.tt</DependentUpon>
+    <Compile Include="Entity\AspNetUsers.cs">
+      <DependentUpon>Entity_Write.tt</DependentUpon>
     </Compile>
-    <Compile Include="Dic_Service_UploadItem.cs">
-      <DependentUpon>Model_Write.tt</DependentUpon>
+    <Compile Include="Entity\BaseDic_Area.cs">
+      <DependentUpon>Entity_Write.tt</DependentUpon>
     </Compile>
-    <Compile Include="Dic_UploadItem.cs">
-      <DependentUpon>Model_Write.tt</DependentUpon>
+    <Compile Include="Entity\BaseDic_City.cs">
+      <DependentUpon>Entity_Write.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model_Read.Context.cs">
+    <Compile Include="Entity\BaseDic_ICD_Repository.cs">
+      <DependentUpon>Entity_Write.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\BaseDic_ICD_Version.cs">
+      <DependentUpon>Entity_Write.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\BaseDic_Province.cs">
+      <DependentUpon>Entity_Write.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\Code_Builder.cs">
+      <DependentUpon>Entity_Write.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\Code_Builder_Item.cs">
+      <DependentUpon>Entity_Write.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\C__MigrationHistory.cs">
+      <DependentUpon>Entity_Write.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\Dic_Menu.cs">
+      <DependentUpon>Entity_Write.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\Dic_Organization.cs">
+      <DependentUpon>Entity_Write.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\Dic_Service.cs">
+      <DependentUpon>Entity_Write.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\Dic_Service_Claim.cs">
+      <DependentUpon>Entity_Write.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\Dic_Service_Menu.cs">
+      <DependentUpon>Entity_Write.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\Dic_Service_UploadItem.cs">
+      <DependentUpon>Entity_Write.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\Dic_UploadItem.cs">
+      <DependentUpon>Entity_Write.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\Entity_Read.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Model_Read.Context.tt</DependentUpon>
+      <DependentUpon>Entity_Read.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model_Read.cs">
+    <Compile Include="Entity\Entity_Read.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Model_Read.tt</DependentUpon>
+      <DependentUpon>Entity_Read.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model_Read.Designer.cs">
+    <Compile Include="Entity\Entity_Read.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Model_Read.edmx</DependentUpon>
+      <DependentUpon>Entity_Read.edmx</DependentUpon>
     </Compile>
-    <Compile Include="Model_Write.Context.cs">
+    <Compile Include="Entity\Entity_Write.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Model_Write.Context.tt</DependentUpon>
+      <DependentUpon>Entity_Write.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model_Write.cs">
+    <Compile Include="Entity\Entity_Write.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Model_Write.tt</DependentUpon>
+      <DependentUpon>Entity_Write.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model_Write.Designer.cs">
+    <Compile Include="Entity\Entity_Write.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Model_Write.edmx</DependentUpon>
+      <DependentUpon>Entity_Write.edmx</DependentUpon>
     </Compile>
-    <Compile Include="ORG_Attach.cs">
-      <DependentUpon>Model_Write.tt</DependentUpon>
+    <Compile Include="Entity\ORG_Attach.cs">
+      <DependentUpon>Entity_Write.tt</DependentUpon>
     </Compile>
-    <Compile Include="ORG_Service_Config.cs">
-      <DependentUpon>Model_Write.tt</DependentUpon>
+    <Compile Include="Entity\ORG_Service_Config.cs">
+      <DependentUpon>Entity_Write.tt</DependentUpon>
     </Compile>
-    <Compile Include="ORG_Service_Provider.cs">
-      <DependentUpon>Model_Write.tt</DependentUpon>
+    <Compile Include="Entity\ORG_Service_Provider.cs">
+      <DependentUpon>Entity_Write.tt</DependentUpon>
     </Compile>
-    <Compile Include="ORG_Service_UploadItem.cs">
-      <DependentUpon>Model_Write.tt</DependentUpon>
+    <Compile Include="Entity\ORG_Service_UploadItem.cs">
+      <DependentUpon>Entity_Write.tt</DependentUpon>
     </Compile>
-    <Compile Include="ORG_SubOrganization.cs">
-      <DependentUpon>Model_Write.tt</DependentUpon>
+    <Compile Include="Entity\ORG_SubOrganization.cs">
+      <DependentUpon>Entity_Write.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\Sec_IP.cs">
+      <DependentUpon>Entity_Write.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\Sec_Message.cs">
+      <DependentUpon>Entity_Write.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\User_Attach.cs">
+      <DependentUpon>Entity_Write.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\User_Service_Attach.cs">
+      <DependentUpon>Entity_Write.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\User_Service_Provider.cs">
+      <DependentUpon>Entity_Write.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Sec_IP.cs">
-      <DependentUpon>Model_Write.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Sec_Message.cs">
-      <DependentUpon>Model_Write.tt</DependentUpon>
-    </Compile>
-    <Compile Include="User_Attach.cs">
-      <DependentUpon>Model_Write.tt</DependentUpon>
-    </Compile>
-    <Compile Include="User_Service_Attach.cs">
-      <DependentUpon>Model_Write.tt</DependentUpon>
-    </Compile>
-    <Compile Include="User_Service_Provider.cs">
-      <DependentUpon>Model_Write.tt</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
-    <EntityDeploy Include="Model_Read.edmx">
+    <EntityDeploy Include="Entity\Entity_Read.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>Model_Read.Designer.cs</LastGenOutput>
+      <LastGenOutput>Entity_Read.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <None Include="Model_Read.Context.tt">
+    <None Include="App.Config" />
+    <None Include="Entity\Entity_Read.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>Model_Read.edmx</DependentUpon>
-      <LastGenOutput>Model_Read.Context.cs</LastGenOutput>
+      <DependentUpon>Entity_Read.edmx</DependentUpon>
+      <LastGenOutput>Entity_Read.Context.cs</LastGenOutput>
     </None>
-    <None Include="Model_Read.edmx.diagram">
-      <DependentUpon>Model_Read.edmx</DependentUpon>
+    <None Include="Entity\Entity_Read.edmx.diagram">
+      <DependentUpon>Entity_Read.edmx</DependentUpon>
     </None>
-    <None Include="Model_Read.tt">
+    <None Include="Entity\Entity_Read.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>Model_Read.edmx</DependentUpon>
-      <LastGenOutput>Model_Read.cs</LastGenOutput>
+      <DependentUpon>Entity_Read.edmx</DependentUpon>
+      <LastGenOutput>Entity_Read.cs</LastGenOutput>
     </None>
-    <EntityDeploy Include="Model_Write.edmx">
+    <EntityDeploy Include="Entity\Entity_Write.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>Model_Write.Designer.cs</LastGenOutput>
+      <LastGenOutput>Entity_Write.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <None Include="Model_Write.Context.tt">
+    <None Include="Entity\Entity_Write.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>Model_Write.edmx</DependentUpon>
-      <LastGenOutput>Model_Write.Context.cs</LastGenOutput>
+      <DependentUpon>Entity_Write.edmx</DependentUpon>
+      <LastGenOutput>Entity_Write.Context.cs</LastGenOutput>
     </None>
-    <None Include="Model_Write.edmx.diagram">
-      <DependentUpon>Model_Write.edmx</DependentUpon>
+    <None Include="Entity\Entity_Write.edmx.diagram">
+      <DependentUpon>Entity_Write.edmx</DependentUpon>
     </None>
-    <None Include="Model_Write.tt">
+    <None Include="Entity\Entity_Write.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>Model_Write.edmx</DependentUpon>
-      <LastGenOutput>Model_Write.cs</LastGenOutput>
+      <DependentUpon>Entity_Write.edmx</DependentUpon>
+      <LastGenOutput>Entity_Write.cs</LastGenOutput>
     </None>
     <None Include="packages.config" />
   </ItemGroup>
@@ -228,6 +228,7 @@
       <Name>Docimax.Interface_ICD</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -7,18 +7,23 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Docimax.Data_ICD
+namespace Docimax.Data_ICD.Entity
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class Sec_Message
+    public partial class ORG_SubOrganization
     {
-        public int SecurityMessage_ID { get; set; }
-        public string UserPhoneNumber { get; set; }
-        public string UserID { get; set; }
-        public string SourceIP { get; set; }
+        public int SubORGID { get; set; }
+        public Nullable<int> SubORGCode { get; set; }
+        public string SubORGName { get; set; }
+        public string SubORGAddress { get; set; }
+        public string ORGID { get; set; }
         public Nullable<System.DateTime> CreateTime { get; set; }
+        public string CreateUserID { get; set; }
         public Nullable<System.DateTime> LastModifyTime { get; set; }
+        public string LastModifyUserID { get; set; }
+        public Nullable<int> DeleteFlag { get; set; }
+        public byte[] LastModifyStamp { get; set; }
     }
 }

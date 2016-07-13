@@ -7,18 +7,18 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Docimax.Data_ICD
+namespace Docimax.Data_ICD.Entity
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class BaseDic_City
+    public partial class Sec_Message
     {
-        public int CityID { get; set; }
-        public string CityCode { get; set; }
-        public string CityName { get; set; }
-        public string ProvinceCode { get; set; }
-        public string PinyinShort { get; set; }
-        public byte[] LastModifyStamp { get; set; }
+        public int SecurityMessage_ID { get; set; }
+        public string UserPhoneNumber { get; set; }
+        public string UserID { get; set; }
+        public string SourceIP { get; set; }
+        public Nullable<System.DateTime> CreateTime { get; set; }
+        public Nullable<System.DateTime> LastModifyTime { get; set; }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Docimax.Interface_ICD.Enum;
+﻿using Docimax.Data_ICD.Entity;
+using Docimax.Interface_ICD.Enum;
 using Docimax.Interface_ICD.Interface;
 using Docimax.Interface_ICD.Model;
 using System;
@@ -13,7 +14,7 @@ namespace Docimax.Data_ICD.DAL
     {
         public List<ICDMenu> GetMenuListByUserID(string userID)
         {
-            using (var entity = new Entities_Read())
+            using (var entity = new Entity_Read())
             {
                 var resultMenus = entity.Dic_Menu.Where(e => (e.RoleControl ?? 0) == 0).Select(p =>
                     new

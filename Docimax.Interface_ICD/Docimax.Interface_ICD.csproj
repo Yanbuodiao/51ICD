@@ -53,8 +53,13 @@
     <Compile Include="Model\Configurations\MailConfig.cs" />
     <Compile Include="Model\Configurations\SMSConfig.cs" />
     <Compile Include="Model\Menu\ICDMenu.cs" />
-    <Compile Include="Model\Public\ICDFile.cs" />
-    <Compile Include="Model\Public\VerifyIdentityModel.cs" />
+    <Compile Include="Model\Public\ICDExcuteResult.cs" />
+    <Compile Include="Model\Public\ICDFile.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Model\Public\VerifyIdentityModel.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Model\Security\SecurityIPModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

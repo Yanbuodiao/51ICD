@@ -7,18 +7,16 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Docimax.Data_ICD
+namespace Docimax.Data_ICD.Entity
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class AspNetUserRoles
+    public partial class Sec_IP
     {
-        public string UserId { get; set; }
-        public string RoleId { get; set; }
-        public string Discriminator { get; set; }
-    
-        public virtual AspNetRoles AspNetRoles { get; set; }
-        public virtual AspNetUsers AspNetUsers { get; set; }
+        public int SecurityIP_ID { get; set; }
+        public string SourceIP { get; set; }
+        public Nullable<System.DateTime> CreateTime { get; set; }
+        public Nullable<System.DateTime> LastModifyTime { get; set; }
     }
 }
