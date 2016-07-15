@@ -48,6 +48,7 @@
     <Compile Include="Enum\ServiceType.cs" />
     <Compile Include="Enum\UserAttachType.cs" />
     <Compile Include="Enum\UserOperateTarget.cs" />
+    <Compile Include="Interface\ICode_Order.cs" />
     <Compile Include="Interface\IFile.cs" />
     <Compile Include="Interface\IMenu.cs" />
     <Compile Include="Interface\ISecurity.cs" />

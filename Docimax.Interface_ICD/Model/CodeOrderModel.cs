@@ -20,6 +20,6 @@ namespace Docimax.Interface_ICD.Model
         public DateTime LastModifyTime { get; set; }
         public string LastModifyUserID { get; set; }
         public int DeleteFlag { get; set; }
-        List<UploadItemModel> 
+        public List<UploadItemModel> UpLoadItemList { get; set; }
     }
 }

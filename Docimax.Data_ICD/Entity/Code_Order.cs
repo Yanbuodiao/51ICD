@@ -12,9 +12,9 @@ namespace Docimax.Data_ICD.Entity
     using System;
     using System.Collections.Generic;
     
-    public partial class Code_Builder
+    public partial class Code_Order
     {
-        public int BuilderCodeID { get; set; }
+        public int CodeOrderID { get; set; }
         public string PlatformOrderCode { get; set; }
         public string CaseNum { get; set; }
         public Nullable<int> OrderStatus { get; set; }

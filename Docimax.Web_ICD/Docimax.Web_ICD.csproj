@@ -233,6 +233,8 @@
     <Content Include="Views\Account\Manage.cshtml">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="Views\UploadItem\Index.cshtml" />
+    <Content Include="Views\UploadItem\Create.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -242,6 +244,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="src\" />
     <Folder Include="Views\ICDItem\" />
     <Folder Include="Views\Menu\" />
     <Folder Include="Views\RolesAdmin\" />
@@ -277,7 +280,6 @@
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Scripts\jquery.d.ts" />
-    <TypeScriptCompile Include="src\app.ts" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

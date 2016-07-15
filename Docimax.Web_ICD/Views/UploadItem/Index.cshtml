@@ -1,0 +1,50 @@
+﻿@model IEnumerable<Docimax.Interface_ICD.Model.CodeOrderModel>
+
+@{
+    ViewBag.Title = "编码订单列表";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<p>
+    @Html.ActionLink("上传新订单", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayName("病案号")
+        </th>
+        <th>
+            @Html.DisplayName("订单号")
+        </th>
+        <th>
+            @Html.DisplayName("状态")
+        </th>
+        <th>
+            @Html.DisplayName("创建时间")
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.CaseNum)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PlatformOrderCode)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Createtime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Createtime)
+            </td>
+            <td>
+                @Html.ActionLink("补充信息", "Edit", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("详情", "Details", new { /* id=item.PrimaryKey */ })
+            </td>
+        </tr>
+    }
+</table>

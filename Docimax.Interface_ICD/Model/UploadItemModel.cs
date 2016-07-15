@@ -16,5 +16,6 @@ namespace Docimax.Interface_ICD.Model
         public Nullable<int> UploadItemIndex { get; set; }
         public Nullable<System.DateTime> CreateTime { get; set; }
         public string CreateUserID { get; set; }
+        public List<UploadItemModel> ChildrenList { get; set; }
     }
 }

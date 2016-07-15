@@ -12,17 +12,17 @@ namespace Docimax.Data_ICD.Entity
     using System;
     using System.Collections.Generic;
     
-    public partial class ORG_Service_Provider
+    public partial class Code_Order_Diagnosis
     {
-        public int ORG_ServiceID { get; set; }
-        public Nullable<int> ORGID { get; set; }
-        public Nullable<int> ServiceID { get; set; }
-        public Nullable<int> CertificationStatus { get; set; }
-        public Nullable<System.DateTime> ApplyTime { get; set; }
+        public int CodeResultID { get; set; }
+        public Nullable<int> CodeOrderID { get; set; }
+        public Nullable<int> DiagnosisIndex { get; set; }
+        public string ICD_Code { get; set; }
+        public string ICD_Content { get; set; }
         public Nullable<System.DateTime> CreateTime { get; set; }
-        public Nullable<int> CreateUserID { get; set; }
+        public string CreateUserID { get; set; }
         public Nullable<System.DateTime> LastModifyTime { get; set; }
-        public Nullable<int> LastModifyUserID { get; set; }
+        public string LastModifyUserID { get; set; }
         public Nullable<int> DeleteFlag { get; set; }
         public byte[] LastModifyStamp { get; set; }
     }

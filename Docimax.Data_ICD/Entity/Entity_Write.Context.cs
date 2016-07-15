@@ -36,8 +36,11 @@ namespace Docimax.Data_ICD.Entity
         public virtual DbSet<BaseDic_ICD_Repository> BaseDic_ICD_Repository { get; set; }
         public virtual DbSet<BaseDic_ICD_Version> BaseDic_ICD_Version { get; set; }
         public virtual DbSet<BaseDic_Province> BaseDic_Province { get; set; }
-        public virtual DbSet<Code_Builder> Code_Builder { get; set; }
-        public virtual DbSet<Code_Builder_Item> Code_Builder_Item { get; set; }
+        public virtual DbSet<Code_Order> Code_Order { get; set; }
+        public virtual DbSet<Code_Order_Audit> Code_Order_Audit { get; set; }
+        public virtual DbSet<Code_Order_Diagnosis> Code_Order_Diagnosis { get; set; }
+        public virtual DbSet<Code_Order_Item> Code_Order_Item { get; set; }
+        public virtual DbSet<Code_Order_Operate> Code_Order_Operate { get; set; }
         public virtual DbSet<Dic_Menu> Dic_Menu { get; set; }
         public virtual DbSet<Dic_Organization> Dic_Organization { get; set; }
         public virtual DbSet<Dic_Service> Dic_Service { get; set; }
@@ -53,6 +56,7 @@ namespace Docimax.Data_ICD.Entity
         public virtual DbSet<Sec_IP> Sec_IP { get; set; }
         public virtual DbSet<Sec_Message> Sec_Message { get; set; }
         public virtual DbSet<User_Attach> User_Attach { get; set; }
+        public virtual DbSet<User_ChangeAuditLog> User_ChangeAuditLog { get; set; }
         public virtual DbSet<User_Service_Attach> User_Service_Attach { get; set; }
         public virtual DbSet<User_Service_Provider> User_Service_Provider { get; set; }
     }
