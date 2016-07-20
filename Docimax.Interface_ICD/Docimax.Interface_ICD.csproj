@@ -31,6 +31,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Web" />
@@ -67,6 +68,7 @@
     </Compile>
     <Compile Include="Model\Security\SecurityIPModel.cs" />
     <Compile Include="Model\UploadItemModel.cs" />
+    <Compile Include="Model\UserInfoModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

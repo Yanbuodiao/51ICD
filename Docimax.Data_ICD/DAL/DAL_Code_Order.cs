@@ -1,4 +1,5 @@
 ﻿using Docimax.Data_ICD.Entity;
+using Docimax.Interface_ICD.Enum;
 using Docimax.Interface_ICD.Interface;
 using Docimax.Interface_ICD.Model;
 using System;
@@ -15,10 +16,12 @@ namespace Docimax.Data_ICD.DAL
         {
             using (var entity = new Entity_Read())
             {
-                var query = (from u in entity.AspNetUsers
-                             join org_service in entity.ORG_Service_UploadItem on u.ORGID equals org_service.ORGID
-                             join service in entity.Dic_Service.Where(e => e.ServiceName == serviceName) on org_service.ServiceID equals service.ServiceID
-                             join upload in entity.Dic_UploadItem on org_service.UploadItemID equals upload.UploadItemID
+                var serviceAuditStatusInt = CertificateState.认证成功.GetHashCode();
+                var query = (from u in entity.AspNetUsers.Where(e => e.Id == userID)
+                             join org_service in entity.ORG_Service_Config.Where(e => e.ServiceAuditStatus == serviceAuditStatusInt) on u.ORGID equals org_service.ORGID
+                             join org_service_upload in entity.ORG_Service_UploadItem.Where(e => e.DeleteFlag != 1) on u.ORGID equals org_service_upload.ORGID
+                             join service in entity.Dic_Service.Where(e => e.ServiceName == serviceName) on org_service_upload.ServiceID equals service.ServiceID
+                             join upload in entity.Dic_UploadItem on org_service_upload.UploadItemID equals upload.UploadItemID
                              select new
                              {
                                  upload.UploadItemID,
@@ -35,7 +38,7 @@ namespace Docimax.Data_ICD.DAL
                                  UploadItemName = e.UploadItemName,
                              }).ToList();
                 var result = query.Where(e => e.ParentID == 0).OrderBy(t => t.UploadItemIndex).ToList();
-                result.ForEach(e => e.ChildrenList = GetUploadItemList(e.UploadItemID,query));
+                result.ForEach(e => e.ChildrenList = GetUploadItemList(e.UploadItemID, query));
                 return new CodeOrderModel { UpLoadItemList = result };
             }
         }

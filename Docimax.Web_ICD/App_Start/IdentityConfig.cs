@@ -1,6 +1,7 @@
 ﻿using Docimax.Common;
 using Docimax.Common_ICD.SMS;
 using Docimax.Interface_ICD.Configurations;
+using Docimax.Interface_ICD.Enum;
 using Docimax.Interface_ICD.Interface;
 using Docimax.Web_ICD.Models;
 using Microsoft.AspNet.Identity;
@@ -112,6 +113,11 @@ namespace Docimax.Web_ICD
             }
             return manager;
         }
+
+        //public CertificateState GetCertificateState(string Uid)
+        //{
+ 
+        //}
     }
     public class ApplicationRoleManager : RoleManager<IdentityRole>
     {

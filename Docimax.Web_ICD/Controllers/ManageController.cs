@@ -65,14 +65,18 @@ namespace Docimax.Web_ICD.Controllers
                 : "";
 
             var userId = User.Identity.GetUserId();
+            IUserAccess userAccess = new DAL_UserAccess();
+            var userInfo = userAccess.GetUserInfo(userId);
             var model = new IndexViewModel
             {
                 HasPassword = HasPassword(),
+                CertificationFlag = userInfo.CertificationFlag,
                 PhoneNumber = await UserManager.GetPhoneNumberAsync(userId),
                 TwoFactor = await UserManager.GetTwoFactorEnabledAsync(userId),
                 Logins = await UserManager.GetLoginsAsync(userId),
-                BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(userId)
+                BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(userId),
             };
+            
             return View(model);
         }
 
@@ -339,7 +343,7 @@ namespace Docimax.Web_ICD.Controllers
                 var result = ua.ApplyIdentityVerify(ViewModel2Model.VerifyIdentityModel2Model(model));
                 if (result.Result)
                 {
-                    return RedirectToAction("Index", new { Message = ManageMessageId.ApplyCertifacationSuccess });
+                    return RedirectToAction("Index", new { message = ManageMessageId.ApplyCertifacationSuccess });
                 }
                 ModelState.AddModelError("", result.ErrorStr);
             }

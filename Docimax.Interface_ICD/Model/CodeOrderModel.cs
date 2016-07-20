@@ -1,6 +1,7 @@
 ﻿using Docimax.Interface_ICD.Enum;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,6 +12,8 @@ namespace Docimax.Interface_ICD.Model
     {
         public int CodeOrderID { get; set; }
         public string PlatformOrderCode { get; set; }
+        [Required]
+        [Display(Name = "病案号")]
         public string CaseNum { get; set; }
         public ICDOrderState OrderStatus { get; set; }
         public int ORGID { get; set; }

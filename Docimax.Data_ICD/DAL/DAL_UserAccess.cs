@@ -47,5 +47,25 @@ namespace Docimax.Data_ICD.DAL
                 }
             }
         }
+
+        public UserInfoModel GetUserInfo(string userID)
+        {
+            using (var entity = new Entity_Read())
+            {
+                var model = entity.AspNetUsers.FirstOrDefault(e => e.Id == userID);
+                if (model == null)
+                {
+                    return new UserInfoModel();
+                }
+                return new UserInfoModel
+                {
+                    UserID = userID,
+                    CertificationFlag = (CertificateState)(model.CertificationFlag ?? 0),
+                    HasPassword = true,
+                    PhoneNumber = model.PhoneNumber,
+                    TwoFactor = model.TwoFactorEnabled,
+                };
+            }
+        }
     }
 }
