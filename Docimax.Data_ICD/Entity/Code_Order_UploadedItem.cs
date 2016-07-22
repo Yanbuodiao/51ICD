@@ -12,14 +12,14 @@ namespace Docimax.Data_ICD.Entity
     using System;
     using System.Collections.Generic;
     
-    public partial class Dic_UploadItem
+    public partial class Code_Order_UploadedItem
     {
-        public int UploadItemID { get; set; }
-        public string UploadItemName { get; set; }
-        public string UploadItemDescription { get; set; }
-        public string PinyinShort { get; set; }
-        public Nullable<int> ParentID { get; set; }
-        public Nullable<int> UploadItemIndex { get; set; }
+        public int CodeOrderUploadedItemID { get; set; }
+        public Nullable<int> CodeOrderID { get; set; }
+        public Nullable<int> ItemID { get; set; }
+        public Nullable<int> GIndex { get; set; }
+        public string ContentType { get; set; }
+        public string AttachURL { get; set; }
         public Nullable<System.DateTime> CreateTime { get; set; }
         public string CreateUserID { get; set; }
         public Nullable<System.DateTime> LastModifyTime { get; set; }

@@ -17,36 +17,42 @@ namespace Docimax.Data_ICD.DAL
             using (var entity = new Entity_Read())
             {
                 var serviceAuditStatusInt = CertificateState.认证成功.GetHashCode();
-                var query = (from u in entity.AspNetUsers.Where(e => e.Id == userID)
-                             join org_service in entity.ORG_Service_Config.Where(e => e.ServiceAuditStatus == serviceAuditStatusInt) on u.ORGID equals org_service.ORGID
-                             join org_service_upload in entity.ORG_Service_UploadItem.Where(e => e.DeleteFlag != 1) on u.ORGID equals org_service_upload.ORGID
+                var user = entity.AspNetUsers.FirstOrDefault(e => e.Id == userID);
+                var query = (from org_service in entity.ORG_Service_Config.Where(e => e.ServiceAuditStatus == serviceAuditStatusInt)
+                             join org_service_upload in entity.ORG_Service_Item.Where(e => e.DeleteFlag != 1) on org_service.ORGID equals org_service_upload.ORGID
                              join service in entity.Dic_Service.Where(e => e.ServiceName == serviceName) on org_service_upload.ServiceID equals service.ServiceID
-                             join upload in entity.Dic_UploadItem on org_service_upload.UploadItemID equals upload.UploadItemID
+                             join upload in entity.Dic_Item on org_service_upload.ItemID equals upload.ItemID
+                             where user.ORGID == org_service.ORGID && ((org_service_upload.Sub_ORGID ?? 0) == (user.SubORGID ?? 0))
                              select new
                              {
-                                 upload.UploadItemID,
-                                 upload.UploadItemIndex,
-                                 upload.UploadItemName,
+                                 upload.ItemID,
+                                 upload.ItemIndex,
+                                 upload.ItemName,
                                  ParentID = upload.ParentID ?? 0,
-                                 upload.UploadItemDescription
-                             }).ToList().Select(e => new UploadItemModel
+                                 upload.ItemDescription
+                             }).ToList().Select(e => new ItemModel
                              {
                                  ParentID = e.ParentID,
-                                 UploadItemDescription = e.UploadItemDescription,
-                                 UploadItemID = e.UploadItemID,
-                                 UploadItemIndex = e.UploadItemIndex,
-                                 UploadItemName = e.UploadItemName,
+                                 ItemDescription = e.ItemDescription,
+                                 ItemID = e.ItemID,
+                                 ItemIndex = e.ItemIndex,
+                                 ItemName = e.ItemName,
                              }).ToList();
-                var result = query.Where(e => e.ParentID == 0).OrderBy(t => t.UploadItemIndex).ToList();
-                result.ForEach(e => e.ChildrenList = GetUploadItemList(e.UploadItemID, query));
-                return new CodeOrderModel { UpLoadItemList = result };
+                var result = query.Where(e => e.ParentID == 0).OrderBy(t => t.ItemIndex).ToList();
+                result.ForEach(e => e.ChildrenList = GetUploadItemList(e.ItemID, query));
+                return new CodeOrderModel
+                {
+                    ORGID = user.ORGID??0,
+                    ORGSubID = user.SubORGID??0,
+                    ItemList = result
+                };
             }
         }
 
-        private List<UploadItemModel> GetUploadItemList(int parentID, List<UploadItemModel> allResultUploadItems)
+        private List<ItemModel> GetUploadItemList(int parentID, List<ItemModel> allResultUploadItems)
         {
-            var result = allResultUploadItems.Where(p => p.ParentID == parentID).OrderBy(e => e.UploadItemIndex).ToList();
-            result.ForEach(e => e.ChildrenList = GetUploadItemList(e.UploadItemID, allResultUploadItems));
+            var result = allResultUploadItems.Where(p => p.ParentID == parentID).OrderBy(e => e.ItemIndex).ToList();
+            result.ForEach(e => e.ChildrenList = GetUploadItemList(e.ItemID, allResultUploadItems));
             return result;
         }
     }

@@ -108,6 +108,14 @@
           <Property Name="PinyinShort" Type="nvarchar" MaxLength="200" />
           <Property Name="LastModifyStamp" Type="timestamp" StoreGeneratedPattern="Computed" />
         </EntityType>
+        <EntityType Name="BaseDic_Code">
+          <Key>
+            <PropertyRef Name="Code" />
+          </Key>
+          <Property Name="Code" Type="nvarchar" MaxLength="7" Nullable="false" />
+          <Property Name="LastModifyTime" Type="datetime" />
+          <Property Name="LastModifyStamp" Type="timestamp" StoreGeneratedPattern="Computed" />
+        </EntityType>
         <EntityType Name="BaseDic_ICD_Repository">
           <Key>
             <PropertyRef Name="ICDID" />
@@ -198,23 +206,6 @@
           <Property Name="DeleteFlag" Type="int" />
           <Property Name="LastModifyStamp" Type="timestamp" StoreGeneratedPattern="Computed" />
         </EntityType>
-        <EntityType Name="Code_Order_Item">
-          <Key>
-            <PropertyRef Name="CodeOrderItemID" />
-          </Key>
-          <Property Name="CodeOrderItemID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="CodeOrderID" Type="int" />
-          <Property Name="UploadItemID" Type="int" />
-          <Property Name="GIndex" Type="int" />
-          <Property Name="ContentType" Type="nvarchar(max)" />
-          <Property Name="AttachURL" Type="nvarchar(max)" />
-          <Property Name="CreateTime" Type="datetime" />
-          <Property Name="CreateUserID" Type="nvarchar" MaxLength="128" />
-          <Property Name="LastModifyTime" Type="datetime" />
-          <Property Name="LastModifyUserID" Type="nvarchar" MaxLength="128" />
-          <Property Name="DeleteFlag" Type="int" />
-          <Property Name="LastModifyStamp" Type="timestamp" StoreGeneratedPattern="Computed" />
-        </EntityType>
         <EntityType Name="Code_Order_Operate">
           <Key>
             <PropertyRef Name="CodeOrderOperateID" />
@@ -231,6 +222,40 @@
           <Property Name="Anesthesia" Type="nvarchar(max)" />
           <Property Name="Anesthesiologist" Type="nvarchar(max)" />
           <Property Name="OperateIndex" Type="int" />
+          <Property Name="CreateTime" Type="datetime" />
+          <Property Name="CreateUserID" Type="nvarchar" MaxLength="128" />
+          <Property Name="LastModifyTime" Type="datetime" />
+          <Property Name="LastModifyUserID" Type="nvarchar" MaxLength="128" />
+          <Property Name="DeleteFlag" Type="int" />
+          <Property Name="LastModifyStamp" Type="timestamp" StoreGeneratedPattern="Computed" />
+        </EntityType>
+        <EntityType Name="Code_Order_UploadedItem">
+          <Key>
+            <PropertyRef Name="CodeOrderUploadedItemID" />
+          </Key>
+          <Property Name="CodeOrderUploadedItemID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CodeOrderID" Type="int" />
+          <Property Name="ItemID" Type="int" />
+          <Property Name="GIndex" Type="int" />
+          <Property Name="ContentType" Type="nvarchar(max)" />
+          <Property Name="AttachURL" Type="nvarchar(max)" />
+          <Property Name="CreateTime" Type="datetime" />
+          <Property Name="CreateUserID" Type="nvarchar" MaxLength="128" />
+          <Property Name="LastModifyTime" Type="datetime" />
+          <Property Name="LastModifyUserID" Type="nvarchar" MaxLength="128" />
+          <Property Name="DeleteFlag" Type="int" />
+          <Property Name="LastModifyStamp" Type="timestamp" StoreGeneratedPattern="Computed" />
+        </EntityType>
+        <EntityType Name="Dic_Item">
+          <Key>
+            <PropertyRef Name="ItemID" />
+          </Key>
+          <Property Name="ItemID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ItemName" Type="nvarchar" MaxLength="300" />
+          <Property Name="ItemDescription" Type="nvarchar" MaxLength="500" />
+          <Property Name="PinyinShort" Type="nvarchar" MaxLength="300" />
+          <Property Name="ParentID" Type="int" />
+          <Property Name="ItemIndex" Type="int" />
           <Property Name="CreateTime" Type="datetime" />
           <Property Name="CreateUserID" Type="nvarchar" MaxLength="128" />
           <Property Name="LastModifyTime" Type="datetime" />
@@ -312,6 +337,20 @@
           <Property Name="DeleteFlag" Type="int" />
           <Property Name="LastModifyStamp" Type="nvarchar" MaxLength="128" />
         </EntityType>
+        <EntityType Name="Dic_Service_Item">
+          <Key>
+            <PropertyRef Name="Service_UploadItemID" />
+          </Key>
+          <Property Name="Service_UploadItemID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ServiceID" Type="int" />
+          <Property Name="ItemID" Type="int" />
+          <Property Name="CreateTime" Type="datetime" />
+          <Property Name="CreateUserID" Type="nvarchar" MaxLength="128" />
+          <Property Name="LastModifyTime" Type="datetime" />
+          <Property Name="LastModifyUserID" Type="nvarchar" MaxLength="128" />
+          <Property Name="DeleteFlag" Type="int" />
+          <Property Name="LastModifyStamp" Type="timestamp" StoreGeneratedPattern="Computed" />
+        </EntityType>
         <EntityType Name="Dic_Service_Menu">
           <Key>
             <PropertyRef Name="Service_Menu_ID" />
@@ -319,37 +358,6 @@
           <Property Name="Service_Menu_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ServiceID" Type="int" />
           <Property Name="MenuID" Type="int" />
-          <Property Name="CreateTime" Type="datetime" />
-          <Property Name="CreateUserID" Type="nvarchar" MaxLength="128" />
-          <Property Name="LastModifyTime" Type="datetime" />
-          <Property Name="LastModifyUserID" Type="nvarchar" MaxLength="128" />
-          <Property Name="DeleteFlag" Type="int" />
-          <Property Name="LastModifyStamp" Type="timestamp" StoreGeneratedPattern="Computed" />
-        </EntityType>
-        <EntityType Name="Dic_Service_UploadItem">
-          <Key>
-            <PropertyRef Name="Service_UploadItemID" />
-          </Key>
-          <Property Name="Service_UploadItemID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="ServiceID" Type="int" />
-          <Property Name="UploadItemID" Type="int" />
-          <Property Name="CreateTime" Type="datetime" />
-          <Property Name="CreateUserID" Type="nvarchar" MaxLength="128" />
-          <Property Name="LastModifyTime" Type="datetime" />
-          <Property Name="LastModifyUserID" Type="nvarchar" MaxLength="128" />
-          <Property Name="DeleteFlag" Type="int" />
-          <Property Name="LastModifyStamp" Type="timestamp" StoreGeneratedPattern="Computed" />
-        </EntityType>
-        <EntityType Name="Dic_UploadItem">
-          <Key>
-            <PropertyRef Name="UploadItemID" />
-          </Key>
-          <Property Name="UploadItemID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="UploadItemName" Type="nvarchar" MaxLength="300" />
-          <Property Name="UploadItemDescription" Type="nvarchar" MaxLength="500" />
-          <Property Name="PinyinShort" Type="nvarchar" MaxLength="300" />
-          <Property Name="ParentID" Type="int" />
-          <Property Name="UploadItemIndex" Type="int" />
           <Property Name="CreateTime" Type="datetime" />
           <Property Name="CreateUserID" Type="nvarchar" MaxLength="128" />
           <Property Name="LastModifyTime" Type="datetime" />
@@ -389,6 +397,23 @@
           <Property Name="DeleteFlag" Type="int" />
           <Property Name="LastModifyStamp" Type="timestamp" StoreGeneratedPattern="Computed" />
         </EntityType>
+        <EntityType Name="ORG_Service_Item">
+          <Key>
+            <PropertyRef Name="ORG_Service_ItemID" />
+          </Key>
+          <Property Name="ORG_Service_ItemID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ServiceID" Type="int" />
+          <Property Name="ORGID" Type="int" />
+          <Property Name="Sub_ORGID" Type="int" />
+          <Property Name="ItemID" Type="int" />
+          <Property Name="Required" Type="bit" />
+          <Property Name="CreateTime" Type="datetime" />
+          <Property Name="CreateUserID" Type="nvarchar" MaxLength="128" />
+          <Property Name="LastModifyTime" Type="datetime" />
+          <Property Name="LastModifyUserID" Type="nvarchar" MaxLength="128" />
+          <Property Name="DeleteFlag" Type="int" />
+          <Property Name="LastModifyStamp" Type="timestamp" StoreGeneratedPattern="Computed" />
+        </EntityType>
         <EntityType Name="ORG_Service_Provider">
           <Key>
             <PropertyRef Name="ORG_ServiceID" />
@@ -402,23 +427,6 @@
           <Property Name="CreateUserID" Type="int" />
           <Property Name="LastModifyTime" Type="datetime" />
           <Property Name="LastModifyUserID" Type="int" />
-          <Property Name="DeleteFlag" Type="int" />
-          <Property Name="LastModifyStamp" Type="timestamp" StoreGeneratedPattern="Computed" />
-        </EntityType>
-        <EntityType Name="ORG_Service_UploadItem">
-          <Key>
-            <PropertyRef Name="ORG_Service_UploadItemID" />
-          </Key>
-          <Property Name="ORG_Service_UploadItemID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="ServiceID" Type="int" />
-          <Property Name="ORGID" Type="int" />
-          <Property Name="Sub_ORGID" Type="int" />
-          <Property Name="UploadItemID" Type="int" />
-          <Property Name="Required" Type="bit" />
-          <Property Name="CreateTime" Type="datetime" />
-          <Property Name="CreateUserID" Type="nvarchar" MaxLength="128" />
-          <Property Name="LastModifyTime" Type="datetime" />
-          <Property Name="LastModifyUserID" Type="nvarchar" MaxLength="128" />
           <Property Name="DeleteFlag" Type="int" />
           <Property Name="LastModifyStamp" Type="timestamp" StoreGeneratedPattern="Computed" />
         </EntityType>
@@ -593,25 +601,26 @@
           <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUsers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BaseDic_Area" EntityType="Self.BaseDic_Area" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BaseDic_City" EntityType="Self.BaseDic_City" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BaseDic_Code" EntityType="Self.BaseDic_Code" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BaseDic_ICD_Repository" EntityType="Self.BaseDic_ICD_Repository" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BaseDic_ICD_Version" EntityType="Self.BaseDic_ICD_Version" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BaseDic_Province" EntityType="Self.BaseDic_Province" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Code_Order" EntityType="Self.Code_Order" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Code_Order_Audit" EntityType="Self.Code_Order_Audit" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Code_Order_Diagnosis" EntityType="Self.Code_Order_Diagnosis" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Code_Order_Item" EntityType="Self.Code_Order_Item" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Code_Order_Operate" EntityType="Self.Code_Order_Operate" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Code_Order_UploadedItem" EntityType="Self.Code_Order_UploadedItem" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Dic_Item" EntityType="Self.Dic_Item" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Dic_Menu" EntityType="Self.Dic_Menu" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Dic_Organization" EntityType="Self.Dic_Organization" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Dic_Service" EntityType="Self.Dic_Service" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Dic_Service_Claim" EntityType="Self.Dic_Service_Claim" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Dic_Service_Item" EntityType="Self.Dic_Service_Item" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Dic_Service_Menu" EntityType="Self.Dic_Service_Menu" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Dic_Service_UploadItem" EntityType="Self.Dic_Service_UploadItem" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Dic_UploadItem" EntityType="Self.Dic_UploadItem" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ORG_Attach" EntityType="Self.ORG_Attach" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ORG_Service_Config" EntityType="Self.ORG_Service_Config" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ORG_Service_Item" EntityType="Self.ORG_Service_Item" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ORG_Service_Provider" EntityType="Self.ORG_Service_Provider" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="ORG_Service_UploadItem" EntityType="Self.ORG_Service_UploadItem" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ORG_SubOrganization" EntityType="Self.ORG_SubOrganization" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Sec_IP" EntityType="Self.Sec_IP" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Sec_Message" EntityType="Self.Sec_Message" Schema="dbo" store:Type="Tables" />
@@ -649,25 +658,26 @@
           <EntitySet Name="AspNetUsers" EntityType="ICD_DBModel1.AspNetUsers" />
           <EntitySet Name="BaseDic_Area" EntityType="ICD_DBModel1.BaseDic_Area" />
           <EntitySet Name="BaseDic_City" EntityType="ICD_DBModel1.BaseDic_City" />
+          <EntitySet Name="BaseDic_Code" EntityType="ICD_DBModel1.BaseDic_Code" />
           <EntitySet Name="BaseDic_ICD_Repository" EntityType="ICD_DBModel1.BaseDic_ICD_Repository" />
           <EntitySet Name="BaseDic_ICD_Version" EntityType="ICD_DBModel1.BaseDic_ICD_Version" />
           <EntitySet Name="BaseDic_Province" EntityType="ICD_DBModel1.BaseDic_Province" />
           <EntitySet Name="Code_Order" EntityType="ICD_DBModel1.Code_Order" />
           <EntitySet Name="Code_Order_Audit" EntityType="ICD_DBModel1.Code_Order_Audit" />
           <EntitySet Name="Code_Order_Diagnosis" EntityType="ICD_DBModel1.Code_Order_Diagnosis" />
-          <EntitySet Name="Code_Order_Item" EntityType="ICD_DBModel1.Code_Order_Item" />
           <EntitySet Name="Code_Order_Operate" EntityType="ICD_DBModel1.Code_Order_Operate" />
+          <EntitySet Name="Code_Order_UploadedItem" EntityType="ICD_DBModel1.Code_Order_UploadedItem" />
+          <EntitySet Name="Dic_Item" EntityType="ICD_DBModel1.Dic_Item" />
           <EntitySet Name="Dic_Menu" EntityType="ICD_DBModel1.Dic_Menu" />
           <EntitySet Name="Dic_Organization" EntityType="ICD_DBModel1.Dic_Organization" />
           <EntitySet Name="Dic_Service" EntityType="ICD_DBModel1.Dic_Service" />
           <EntitySet Name="Dic_Service_Claim" EntityType="ICD_DBModel1.Dic_Service_Claim" />
+          <EntitySet Name="Dic_Service_Item" EntityType="ICD_DBModel1.Dic_Service_Item" />
           <EntitySet Name="Dic_Service_Menu" EntityType="ICD_DBModel1.Dic_Service_Menu" />
-          <EntitySet Name="Dic_Service_UploadItem" EntityType="ICD_DBModel1.Dic_Service_UploadItem" />
-          <EntitySet Name="Dic_UploadItem" EntityType="ICD_DBModel1.Dic_UploadItem" />
           <EntitySet Name="ORG_Attach" EntityType="ICD_DBModel1.ORG_Attach" />
           <EntitySet Name="ORG_Service_Config" EntityType="ICD_DBModel1.ORG_Service_Config" />
+          <EntitySet Name="ORG_Service_Item" EntityType="ICD_DBModel1.ORG_Service_Item" />
           <EntitySet Name="ORG_Service_Provider" EntityType="ICD_DBModel1.ORG_Service_Provider" />
-          <EntitySet Name="ORG_Service_UploadItem" EntityType="ICD_DBModel1.ORG_Service_UploadItem" />
           <EntitySet Name="ORG_SubOrganization" EntityType="ICD_DBModel1.ORG_SubOrganization" />
           <EntitySet Name="Sec_IP" EntityType="ICD_DBModel1.Sec_IP" />
           <EntitySet Name="Sec_Message" EntityType="ICD_DBModel1.Sec_Message" />
@@ -802,6 +812,14 @@
           <Property Name="PinyinShort" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="LastModifyStamp" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
         </EntityType>
+        <EntityType Name="BaseDic_Code">
+          <Key>
+            <PropertyRef Name="Code" />
+          </Key>
+          <Property Name="Code" Type="String" Nullable="false" MaxLength="7" FixedLength="false" Unicode="true" />
+          <Property Name="LastModifyTime" Type="DateTime" Precision="3" />
+          <Property Name="LastModifyStamp" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+        </EntityType>
         <EntityType Name="BaseDic_ICD_Repository">
           <Key>
             <PropertyRef Name="ICDID" />
@@ -892,23 +910,6 @@
           <Property Name="DeleteFlag" Type="Int32" />
           <Property Name="LastModifyStamp" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
         </EntityType>
-        <EntityType Name="Code_Order_Item">
-          <Key>
-            <PropertyRef Name="CodeOrderItemID" />
-          </Key>
-          <Property Name="CodeOrderItemID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="CodeOrderID" Type="Int32" />
-          <Property Name="UploadItemID" Type="Int32" />
-          <Property Name="GIndex" Type="Int32" />
-          <Property Name="ContentType" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="AttachURL" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="CreateTime" Type="DateTime" Precision="3" />
-          <Property Name="CreateUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="LastModifyTime" Type="DateTime" Precision="3" />
-          <Property Name="LastModifyUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="DeleteFlag" Type="Int32" />
-          <Property Name="LastModifyStamp" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
-        </EntityType>
         <EntityType Name="Code_Order_Operate">
           <Key>
             <PropertyRef Name="CodeOrderOperateID" />
@@ -925,6 +926,40 @@
           <Property Name="Anesthesia" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Anesthesiologist" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="OperateIndex" Type="Int32" />
+          <Property Name="CreateTime" Type="DateTime" Precision="3" />
+          <Property Name="CreateUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="LastModifyTime" Type="DateTime" Precision="3" />
+          <Property Name="LastModifyUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="DeleteFlag" Type="Int32" />
+          <Property Name="LastModifyStamp" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+        </EntityType>
+        <EntityType Name="Code_Order_UploadedItem">
+          <Key>
+            <PropertyRef Name="CodeOrderUploadedItemID" />
+          </Key>
+          <Property Name="CodeOrderUploadedItemID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CodeOrderID" Type="Int32" />
+          <Property Name="ItemID" Type="Int32" />
+          <Property Name="GIndex" Type="Int32" />
+          <Property Name="ContentType" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="AttachURL" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CreateTime" Type="DateTime" Precision="3" />
+          <Property Name="CreateUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="LastModifyTime" Type="DateTime" Precision="3" />
+          <Property Name="LastModifyUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="DeleteFlag" Type="Int32" />
+          <Property Name="LastModifyStamp" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+        </EntityType>
+        <EntityType Name="Dic_Item">
+          <Key>
+            <PropertyRef Name="ItemID" />
+          </Key>
+          <Property Name="ItemID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ItemName" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="ItemDescription" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="PinyinShort" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="ParentID" Type="Int32" />
+          <Property Name="ItemIndex" Type="Int32" />
           <Property Name="CreateTime" Type="DateTime" Precision="3" />
           <Property Name="CreateUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="LastModifyTime" Type="DateTime" Precision="3" />
@@ -1006,6 +1041,20 @@
           <Property Name="DeleteFlag" Type="Int32" />
           <Property Name="LastModifyStamp" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
         </EntityType>
+        <EntityType Name="Dic_Service_Item">
+          <Key>
+            <PropertyRef Name="Service_UploadItemID" />
+          </Key>
+          <Property Name="Service_UploadItemID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ServiceID" Type="Int32" />
+          <Property Name="ItemID" Type="Int32" />
+          <Property Name="CreateTime" Type="DateTime" Precision="3" />
+          <Property Name="CreateUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="LastModifyTime" Type="DateTime" Precision="3" />
+          <Property Name="LastModifyUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="DeleteFlag" Type="Int32" />
+          <Property Name="LastModifyStamp" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+        </EntityType>
         <EntityType Name="Dic_Service_Menu">
           <Key>
             <PropertyRef Name="Service_Menu_ID" />
@@ -1013,37 +1062,6 @@
           <Property Name="Service_Menu_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ServiceID" Type="Int32" />
           <Property Name="MenuID" Type="Int32" />
-          <Property Name="CreateTime" Type="DateTime" Precision="3" />
-          <Property Name="CreateUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="LastModifyTime" Type="DateTime" Precision="3" />
-          <Property Name="LastModifyUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="DeleteFlag" Type="Int32" />
-          <Property Name="LastModifyStamp" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
-        </EntityType>
-        <EntityType Name="Dic_Service_UploadItem">
-          <Key>
-            <PropertyRef Name="Service_UploadItemID" />
-          </Key>
-          <Property Name="Service_UploadItemID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ServiceID" Type="Int32" />
-          <Property Name="UploadItemID" Type="Int32" />
-          <Property Name="CreateTime" Type="DateTime" Precision="3" />
-          <Property Name="CreateUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="LastModifyTime" Type="DateTime" Precision="3" />
-          <Property Name="LastModifyUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="DeleteFlag" Type="Int32" />
-          <Property Name="LastModifyStamp" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
-        </EntityType>
-        <EntityType Name="Dic_UploadItem">
-          <Key>
-            <PropertyRef Name="UploadItemID" />
-          </Key>
-          <Property Name="UploadItemID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="UploadItemName" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
-          <Property Name="UploadItemDescription" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="PinyinShort" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
-          <Property Name="ParentID" Type="Int32" />
-          <Property Name="UploadItemIndex" Type="Int32" />
           <Property Name="CreateTime" Type="DateTime" Precision="3" />
           <Property Name="CreateUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="LastModifyTime" Type="DateTime" Precision="3" />
@@ -1083,6 +1101,23 @@
           <Property Name="DeleteFlag" Type="Int32" />
           <Property Name="LastModifyStamp" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
         </EntityType>
+        <EntityType Name="ORG_Service_Item">
+          <Key>
+            <PropertyRef Name="ORG_Service_ItemID" />
+          </Key>
+          <Property Name="ORG_Service_ItemID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ServiceID" Type="Int32" />
+          <Property Name="ORGID" Type="Int32" />
+          <Property Name="Sub_ORGID" Type="Int32" />
+          <Property Name="ItemID" Type="Int32" />
+          <Property Name="Required" Type="Boolean" />
+          <Property Name="CreateTime" Type="DateTime" Precision="3" />
+          <Property Name="CreateUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="LastModifyTime" Type="DateTime" Precision="3" />
+          <Property Name="LastModifyUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="DeleteFlag" Type="Int32" />
+          <Property Name="LastModifyStamp" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+        </EntityType>
         <EntityType Name="ORG_Service_Provider">
           <Key>
             <PropertyRef Name="ORG_ServiceID" />
@@ -1096,23 +1131,6 @@
           <Property Name="CreateUserID" Type="Int32" />
           <Property Name="LastModifyTime" Type="DateTime" Precision="3" />
           <Property Name="LastModifyUserID" Type="Int32" />
-          <Property Name="DeleteFlag" Type="Int32" />
-          <Property Name="LastModifyStamp" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
-        </EntityType>
-        <EntityType Name="ORG_Service_UploadItem">
-          <Key>
-            <PropertyRef Name="ORG_Service_UploadItemID" />
-          </Key>
-          <Property Name="ORG_Service_UploadItemID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ServiceID" Type="Int32" />
-          <Property Name="ORGID" Type="Int32" />
-          <Property Name="Sub_ORGID" Type="Int32" />
-          <Property Name="UploadItemID" Type="Int32" />
-          <Property Name="Required" Type="Boolean" />
-          <Property Name="CreateTime" Type="DateTime" Precision="3" />
-          <Property Name="CreateUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="LastModifyTime" Type="DateTime" Precision="3" />
-          <Property Name="LastModifyUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="DeleteFlag" Type="Int32" />
           <Property Name="LastModifyStamp" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
         </EntityType>
@@ -1270,7 +1288,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-      </Schema>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -1382,6 +1400,15 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="BaseDic_Code">
+            <EntityTypeMapping TypeName="ICD_DBModel1.BaseDic_Code">
+              <MappingFragment StoreEntitySet="BaseDic_Code">
+                <ScalarProperty Name="LastModifyStamp" ColumnName="LastModifyStamp" />
+                <ScalarProperty Name="LastModifyTime" ColumnName="LastModifyTime" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="BaseDic_ICD_Repository">
             <EntityTypeMapping TypeName="ICD_DBModel1.BaseDic_ICD_Repository">
               <MappingFragment StoreEntitySet="BaseDic_ICD_Repository">
@@ -1478,24 +1505,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Code_Order_Item">
-            <EntityTypeMapping TypeName="ICD_DBModel1.Code_Order_Item">
-              <MappingFragment StoreEntitySet="Code_Order_Item">
-                <ScalarProperty Name="LastModifyStamp" ColumnName="LastModifyStamp" />
-                <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
-                <ScalarProperty Name="LastModifyUserID" ColumnName="LastModifyUserID" />
-                <ScalarProperty Name="LastModifyTime" ColumnName="LastModifyTime" />
-                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
-                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
-                <ScalarProperty Name="AttachURL" ColumnName="AttachURL" />
-                <ScalarProperty Name="ContentType" ColumnName="ContentType" />
-                <ScalarProperty Name="GIndex" ColumnName="GIndex" />
-                <ScalarProperty Name="UploadItemID" ColumnName="UploadItemID" />
-                <ScalarProperty Name="CodeOrderID" ColumnName="CodeOrderID" />
-                <ScalarProperty Name="CodeOrderItemID" ColumnName="CodeOrderItemID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Code_Order_Operate">
             <EntityTypeMapping TypeName="ICD_DBModel1.Code_Order_Operate">
               <MappingFragment StoreEntitySet="Code_Order_Operate">
@@ -1517,6 +1526,42 @@
                 <ScalarProperty Name="ICDCode" ColumnName="ICDCode" />
                 <ScalarProperty Name="CodeOrderID" ColumnName="CodeOrderID" />
                 <ScalarProperty Name="CodeOrderOperateID" ColumnName="CodeOrderOperateID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Code_Order_UploadedItem">
+            <EntityTypeMapping TypeName="ICD_DBModel1.Code_Order_UploadedItem">
+              <MappingFragment StoreEntitySet="Code_Order_UploadedItem">
+                <ScalarProperty Name="LastModifyStamp" ColumnName="LastModifyStamp" />
+                <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
+                <ScalarProperty Name="LastModifyUserID" ColumnName="LastModifyUserID" />
+                <ScalarProperty Name="LastModifyTime" ColumnName="LastModifyTime" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="AttachURL" ColumnName="AttachURL" />
+                <ScalarProperty Name="ContentType" ColumnName="ContentType" />
+                <ScalarProperty Name="GIndex" ColumnName="GIndex" />
+                <ScalarProperty Name="ItemID" ColumnName="ItemID" />
+                <ScalarProperty Name="CodeOrderID" ColumnName="CodeOrderID" />
+                <ScalarProperty Name="CodeOrderUploadedItemID" ColumnName="CodeOrderUploadedItemID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Dic_Item">
+            <EntityTypeMapping TypeName="ICD_DBModel1.Dic_Item">
+              <MappingFragment StoreEntitySet="Dic_Item">
+                <ScalarProperty Name="LastModifyStamp" ColumnName="LastModifyStamp" />
+                <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
+                <ScalarProperty Name="LastModifyUserID" ColumnName="LastModifyUserID" />
+                <ScalarProperty Name="LastModifyTime" ColumnName="LastModifyTime" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="ItemIndex" ColumnName="ItemIndex" />
+                <ScalarProperty Name="ParentID" ColumnName="ParentID" />
+                <ScalarProperty Name="PinyinShort" ColumnName="PinyinShort" />
+                <ScalarProperty Name="ItemDescription" ColumnName="ItemDescription" />
+                <ScalarProperty Name="ItemName" ColumnName="ItemName" />
+                <ScalarProperty Name="ItemID" ColumnName="ItemID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1598,6 +1643,21 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="Dic_Service_Item">
+            <EntityTypeMapping TypeName="ICD_DBModel1.Dic_Service_Item">
+              <MappingFragment StoreEntitySet="Dic_Service_Item">
+                <ScalarProperty Name="LastModifyStamp" ColumnName="LastModifyStamp" />
+                <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
+                <ScalarProperty Name="LastModifyUserID" ColumnName="LastModifyUserID" />
+                <ScalarProperty Name="LastModifyTime" ColumnName="LastModifyTime" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="ItemID" ColumnName="ItemID" />
+                <ScalarProperty Name="ServiceID" ColumnName="ServiceID" />
+                <ScalarProperty Name="Service_UploadItemID" ColumnName="Service_UploadItemID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Dic_Service_Menu">
             <EntityTypeMapping TypeName="ICD_DBModel1.Dic_Service_Menu">
               <MappingFragment StoreEntitySet="Dic_Service_Menu">
@@ -1610,39 +1670,6 @@
                 <ScalarProperty Name="MenuID" ColumnName="MenuID" />
                 <ScalarProperty Name="ServiceID" ColumnName="ServiceID" />
                 <ScalarProperty Name="Service_Menu_ID" ColumnName="Service_Menu_ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Dic_Service_UploadItem">
-            <EntityTypeMapping TypeName="ICD_DBModel1.Dic_Service_UploadItem">
-              <MappingFragment StoreEntitySet="Dic_Service_UploadItem">
-                <ScalarProperty Name="LastModifyStamp" ColumnName="LastModifyStamp" />
-                <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
-                <ScalarProperty Name="LastModifyUserID" ColumnName="LastModifyUserID" />
-                <ScalarProperty Name="LastModifyTime" ColumnName="LastModifyTime" />
-                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
-                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
-                <ScalarProperty Name="UploadItemID" ColumnName="UploadItemID" />
-                <ScalarProperty Name="ServiceID" ColumnName="ServiceID" />
-                <ScalarProperty Name="Service_UploadItemID" ColumnName="Service_UploadItemID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Dic_UploadItem">
-            <EntityTypeMapping TypeName="ICD_DBModel1.Dic_UploadItem">
-              <MappingFragment StoreEntitySet="Dic_UploadItem">
-                <ScalarProperty Name="LastModifyStamp" ColumnName="LastModifyStamp" />
-                <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
-                <ScalarProperty Name="LastModifyUserID" ColumnName="LastModifyUserID" />
-                <ScalarProperty Name="LastModifyTime" ColumnName="LastModifyTime" />
-                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
-                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
-                <ScalarProperty Name="UploadItemIndex" ColumnName="UploadItemIndex" />
-                <ScalarProperty Name="ParentID" ColumnName="ParentID" />
-                <ScalarProperty Name="PinyinShort" ColumnName="PinyinShort" />
-                <ScalarProperty Name="UploadItemDescription" ColumnName="UploadItemDescription" />
-                <ScalarProperty Name="UploadItemName" ColumnName="UploadItemName" />
-                <ScalarProperty Name="UploadItemID" ColumnName="UploadItemID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1680,6 +1707,24 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="ORG_Service_Item">
+            <EntityTypeMapping TypeName="ICD_DBModel1.ORG_Service_Item">
+              <MappingFragment StoreEntitySet="ORG_Service_Item">
+                <ScalarProperty Name="LastModifyStamp" ColumnName="LastModifyStamp" />
+                <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
+                <ScalarProperty Name="LastModifyUserID" ColumnName="LastModifyUserID" />
+                <ScalarProperty Name="LastModifyTime" ColumnName="LastModifyTime" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="Required" ColumnName="Required" />
+                <ScalarProperty Name="ItemID" ColumnName="ItemID" />
+                <ScalarProperty Name="Sub_ORGID" ColumnName="Sub_ORGID" />
+                <ScalarProperty Name="ORGID" ColumnName="ORGID" />
+                <ScalarProperty Name="ServiceID" ColumnName="ServiceID" />
+                <ScalarProperty Name="ORG_Service_ItemID" ColumnName="ORG_Service_ItemID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="ORG_Service_Provider">
             <EntityTypeMapping TypeName="ICD_DBModel1.ORG_Service_Provider">
               <MappingFragment StoreEntitySet="ORG_Service_Provider">
@@ -1694,24 +1739,6 @@
                 <ScalarProperty Name="ServiceID" ColumnName="ServiceID" />
                 <ScalarProperty Name="ORGID" ColumnName="ORGID" />
                 <ScalarProperty Name="ORG_ServiceID" ColumnName="ORG_ServiceID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ORG_Service_UploadItem">
-            <EntityTypeMapping TypeName="ICD_DBModel1.ORG_Service_UploadItem">
-              <MappingFragment StoreEntitySet="ORG_Service_UploadItem">
-                <ScalarProperty Name="LastModifyStamp" ColumnName="LastModifyStamp" />
-                <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
-                <ScalarProperty Name="LastModifyUserID" ColumnName="LastModifyUserID" />
-                <ScalarProperty Name="LastModifyTime" ColumnName="LastModifyTime" />
-                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
-                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
-                <ScalarProperty Name="Required" ColumnName="Required" />
-                <ScalarProperty Name="UploadItemID" ColumnName="UploadItemID" />
-                <ScalarProperty Name="Sub_ORGID" ColumnName="Sub_ORGID" />
-                <ScalarProperty Name="ORGID" ColumnName="ORGID" />
-                <ScalarProperty Name="ServiceID" ColumnName="ServiceID" />
-                <ScalarProperty Name="ORG_Service_UploadItemID" ColumnName="ORG_Service_UploadItemID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

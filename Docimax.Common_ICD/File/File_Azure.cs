@@ -3,6 +3,7 @@ using Microsoft.Azure;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
 using System;
+using System.IO;
 using System.Web;
 
 namespace Docimax.Common_ICD.File
@@ -28,6 +29,23 @@ namespace Docimax.Common_ICD.File
             CloudBlockBlob blockBlob = container.GetBlockBlobReference(filePath);
             blockBlob.UploadFromStream(file.InputStream);
             return filePath;
+        }
+        /// <summary>
+        /// 从指定的地址下载文件
+        /// </summary>
+        /// <param name="fileURL"></param>
+        /// <returns></returns>
+        public byte[] GetFile(string fileURL)
+        {
+            CloudStorageAccount storageAccount = CloudStorageAccount.Parse(CloudConfigurationManager.GetSetting("StorageConnectionString"));
+            CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
+            CloudBlobContainer container = blobClient.GetContainerReference(Container);
+            CloudBlockBlob blockBlob = container.GetBlockBlobReference(fileURL);
+            using (var stream = new MemoryStream())
+            {
+                blockBlob.DownloadToStream(stream);
+                return stream.ToArray();
+            }
         }
     }
 }

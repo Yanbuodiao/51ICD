@@ -59,6 +59,7 @@
     <Compile Include="Model\Configurations\SMSConfig.cs" />
     <Compile Include="Model\CodeOrderModel.cs" />
     <Compile Include="Model\Menu\ICDMenu.cs" />
+    <Compile Include="Model\Public\BaseModel.cs" />
     <Compile Include="Model\Public\ICDExcuteResult.cs" />
     <Compile Include="Model\Public\ICDFile.cs">
       <SubType>Code</SubType>
@@ -67,7 +68,8 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Model\Security\SecurityIPModel.cs" />
-    <Compile Include="Model\UploadItemModel.cs" />
+    <Compile Include="Model\ItemModel.cs" />
+    <Compile Include="Model\UploadedItemModel.cs" />
     <Compile Include="Model\UserInfoModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

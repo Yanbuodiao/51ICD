@@ -1,4 +1,5 @@
-﻿using Docimax.Data_ICD.DAL;
+﻿using Docimax.Common_ICD.File;
+using Docimax.Data_ICD.DAL;
 using Docimax.Interface_ICD.Interface;
 using Docimax.Interface_ICD.Model;
 using Microsoft.AspNet.Identity;
@@ -27,6 +28,19 @@ namespace Docimax.Web_ICD.Controllers
         {
             if (ModelState.IsValid)
             {
+                for (int i = 0; i < Request.Files.Count; i++)
+                {
+                    var file = Request.Files[i];
+                    if (file != null && file.ContentLength > 0)
+                    {
+                        var icdFile = new ICDFile
+                        {
+                            FileURL = FileHelper.SaveUserAttachFile(file),
+                            ContentType = file.ContentType,
+                            AttachType = int.Parse(Request.Files.AllKeys[i]),
+                        };
+                    }
+                }
             }
             return View(model);
         }

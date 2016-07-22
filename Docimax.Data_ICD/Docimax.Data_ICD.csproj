@@ -81,6 +81,9 @@
     <Compile Include="Entity\BaseDic_City.cs">
       <DependentUpon>Entity_Read.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entity\BaseDic_Code.cs">
+      <DependentUpon>Entity_Read.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entity\BaseDic_ICD_Repository.cs">
       <DependentUpon>Entity_Read.tt</DependentUpon>
     </Compile>
@@ -99,13 +102,16 @@
     <Compile Include="Entity\Code_Order_Diagnosis.cs">
       <DependentUpon>Entity_Read.tt</DependentUpon>
     </Compile>
-    <Compile Include="Entity\Code_Order_Item.cs">
-      <DependentUpon>Entity_Read.tt</DependentUpon>
-    </Compile>
     <Compile Include="Entity\Code_Order_Operate.cs">
       <DependentUpon>Entity_Read.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entity\Code_Order_UploadedItem.cs">
+      <DependentUpon>Entity_Read.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entity\C__MigrationHistory.cs">
+      <DependentUpon>Entity_Read.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\Dic_Item.cs">
       <DependentUpon>Entity_Read.tt</DependentUpon>
     </Compile>
     <Compile Include="Entity\Dic_Menu.cs">
@@ -120,13 +126,10 @@
     <Compile Include="Entity\Dic_Service_Claim.cs">
       <DependentUpon>Entity_Read.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entity\Dic_Service_Item.cs">
+      <DependentUpon>Entity_Read.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entity\Dic_Service_Menu.cs">
-      <DependentUpon>Entity_Read.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Entity\Dic_Service_UploadItem.cs">
-      <DependentUpon>Entity_Read.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Entity\Dic_UploadItem.cs">
       <DependentUpon>Entity_Read.tt</DependentUpon>
     </Compile>
     <Compile Include="Entity\Entity_Read.Context.cs">
@@ -165,10 +168,10 @@
     <Compile Include="Entity\ORG_Service_Config.cs">
       <DependentUpon>Entity_Read.tt</DependentUpon>
     </Compile>
-    <Compile Include="Entity\ORG_Service_Provider.cs">
+    <Compile Include="Entity\ORG_Service_Item.cs">
       <DependentUpon>Entity_Read.tt</DependentUpon>
     </Compile>
-    <Compile Include="Entity\ORG_Service_UploadItem.cs">
+    <Compile Include="Entity\ORG_Service_Provider.cs">
       <DependentUpon>Entity_Read.tt</DependentUpon>
     </Compile>
     <Compile Include="Entity\ORG_SubOrganization.cs">

@@ -6,16 +6,16 @@ using System.Threading.Tasks;
 
 namespace Docimax.Interface_ICD.Model
 {
-    public class UploadItemModel
+    public class ItemModel
     {
-        public int UploadItemID { get; set; }
-        public string UploadItemName { get; set; }
-        public string UploadItemDescription { get; set; }
+        public int ItemID { get; set; }
+        public string ItemName { get; set; }
+        public string ItemDescription { get; set; }
         public string PinyinShort { get; set; }
         public Nullable<int> ParentID { get; set; }
-        public Nullable<int> UploadItemIndex { get; set; }
+        public Nullable<int> ItemIndex { get; set; }
         public Nullable<System.DateTime> CreateTime { get; set; }
         public string CreateUserID { get; set; }
-        public List<UploadItemModel> ChildrenList { get; set; }
+        public List<ItemModel> ChildrenList { get; set; }
     }
 }

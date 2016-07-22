@@ -23,6 +23,13 @@ namespace Docimax.Interface_ICD.Model
         public DateTime LastModifyTime { get; set; }
         public string LastModifyUserID { get; set; }
         public int DeleteFlag { get; set; }
-        public List<UploadItemModel> UpLoadItemList { get; set; }
+        /// <summary>
+        /// 需要上传的上传项目列表
+        /// </summary>
+        public List<ItemModel> ItemList { get; set; }
+        /// <summary>
+        /// 用户上传的项目列表
+        /// </summary>
+        public List<UploadedItemModel> UploadedList { get; set; }
     }
 }

@@ -11,5 +11,11 @@ namespace Docimax.Interface_ICD.Interface
         /// <param name="virtualDirectory">要保存到的文件目录（不含文件名称）</param>
         /// <returns>文件保存后返回的地址</returns>
         string SaveFile(HttpPostedFileBase file, string virtualDirectory);
+        /// <summary>
+        /// 从指定的地址下载文件
+        /// </summary>
+        /// <param name="fileURL"></param>
+        /// <returns></returns>
+        byte[] GetFile(string fileURL);
     }
 }

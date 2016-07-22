@@ -33,25 +33,26 @@ namespace Docimax.Data_ICD.Entity
         public virtual DbSet<AspNetUsers> AspNetUsers { get; set; }
         public virtual DbSet<BaseDic_Area> BaseDic_Area { get; set; }
         public virtual DbSet<BaseDic_City> BaseDic_City { get; set; }
+        public virtual DbSet<BaseDic_Code> BaseDic_Code { get; set; }
         public virtual DbSet<BaseDic_ICD_Repository> BaseDic_ICD_Repository { get; set; }
         public virtual DbSet<BaseDic_ICD_Version> BaseDic_ICD_Version { get; set; }
         public virtual DbSet<BaseDic_Province> BaseDic_Province { get; set; }
         public virtual DbSet<Code_Order> Code_Order { get; set; }
         public virtual DbSet<Code_Order_Audit> Code_Order_Audit { get; set; }
         public virtual DbSet<Code_Order_Diagnosis> Code_Order_Diagnosis { get; set; }
-        public virtual DbSet<Code_Order_Item> Code_Order_Item { get; set; }
         public virtual DbSet<Code_Order_Operate> Code_Order_Operate { get; set; }
+        public virtual DbSet<Code_Order_UploadedItem> Code_Order_UploadedItem { get; set; }
+        public virtual DbSet<Dic_Item> Dic_Item { get; set; }
         public virtual DbSet<Dic_Menu> Dic_Menu { get; set; }
         public virtual DbSet<Dic_Organization> Dic_Organization { get; set; }
         public virtual DbSet<Dic_Service> Dic_Service { get; set; }
         public virtual DbSet<Dic_Service_Claim> Dic_Service_Claim { get; set; }
+        public virtual DbSet<Dic_Service_Item> Dic_Service_Item { get; set; }
         public virtual DbSet<Dic_Service_Menu> Dic_Service_Menu { get; set; }
-        public virtual DbSet<Dic_Service_UploadItem> Dic_Service_UploadItem { get; set; }
-        public virtual DbSet<Dic_UploadItem> Dic_UploadItem { get; set; }
         public virtual DbSet<ORG_Attach> ORG_Attach { get; set; }
         public virtual DbSet<ORG_Service_Config> ORG_Service_Config { get; set; }
+        public virtual DbSet<ORG_Service_Item> ORG_Service_Item { get; set; }
         public virtual DbSet<ORG_Service_Provider> ORG_Service_Provider { get; set; }
-        public virtual DbSet<ORG_Service_UploadItem> ORG_Service_UploadItem { get; set; }
         public virtual DbSet<ORG_SubOrganization> ORG_SubOrganization { get; set; }
         public virtual DbSet<Sec_IP> Sec_IP { get; set; }
         public virtual DbSet<Sec_Message> Sec_Message { get; set; }

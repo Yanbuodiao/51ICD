@@ -12,14 +12,11 @@ namespace Docimax.Data_ICD.Entity
     using System;
     using System.Collections.Generic;
     
-    public partial class ORG_Service_UploadItem
+    public partial class Dic_Service_Item
     {
-        public int ORG_Service_UploadItemID { get; set; }
+        public int Service_UploadItemID { get; set; }
         public Nullable<int> ServiceID { get; set; }
-        public Nullable<int> ORGID { get; set; }
-        public Nullable<int> Sub_ORGID { get; set; }
-        public Nullable<int> UploadItemID { get; set; }
-        public Nullable<bool> Required { get; set; }
+        public Nullable<int> ItemID { get; set; }
         public Nullable<System.DateTime> CreateTime { get; set; }
         public string CreateUserID { get; set; }
         public Nullable<System.DateTime> LastModifyTime { get; set; }

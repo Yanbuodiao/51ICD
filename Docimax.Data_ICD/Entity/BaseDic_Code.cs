@@ -12,16 +12,10 @@ namespace Docimax.Data_ICD.Entity
     using System;
     using System.Collections.Generic;
     
-    public partial class Dic_Service_UploadItem
+    public partial class BaseDic_Code
     {
-        public int Service_UploadItemID { get; set; }
-        public Nullable<int> ServiceID { get; set; }
-        public Nullable<int> UploadItemID { get; set; }
-        public Nullable<System.DateTime> CreateTime { get; set; }
-        public string CreateUserID { get; set; }
+        public string Code { get; set; }
         public Nullable<System.DateTime> LastModifyTime { get; set; }
-        public string LastModifyUserID { get; set; }
-        public Nullable<int> DeleteFlag { get; set; }
         public byte[] LastModifyStamp { get; set; }
     }
 }
