@@ -9,6 +9,8 @@ namespace Docimax.Interface_ICD.Interface
 {
     public interface ICode_Order
     {
-        CodeOrderModel GetNewCodeOrder(string userID,string serviceName);
+        CodeOrderModel GetNewCodeOrder(string userID, string serviceName);
+
+        ICDExcuteResult SaveNewCodeOrder(CodeOrderModel newCodeOrder);
     }
 }

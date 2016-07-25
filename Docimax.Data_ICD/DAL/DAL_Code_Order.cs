@@ -1,4 +1,6 @@
-﻿using Docimax.Data_ICD.Entity;
+﻿using Docimax.CodeOrder.Data;
+using Docimax.CodeOrder.Interface;
+using Docimax.Data_ICD.Entity;
 using Docimax.Interface_ICD.Enum;
 using Docimax.Interface_ICD.Interface;
 using Docimax.Interface_ICD.Model;
@@ -42,10 +44,75 @@ namespace Docimax.Data_ICD.DAL
                 result.ForEach(e => e.ChildrenList = GetUploadItemList(e.ItemID, query));
                 return new CodeOrderModel
                 {
-                    ORGID = user.ORGID??0,
-                    ORGSubID = user.SubORGID??0,
+                    ORGID = user.ORGID ?? 0,
+                    ORGSubID = user.SubORGID ?? 0,
                     ItemList = result
                 };
+            }
+        }
+
+        public ICDExcuteResult SaveNewCodeOrder(CodeOrderModel newCodeOrder)
+        {
+            using (var entity = new Entity_Write())
+            {
+                using (var trasanction = entity.Database.BeginTransaction())
+                {
+                    if (newCodeOrder == null)
+                    {
+                        return new ICDExcuteResult { Result = false, ErrorStr = "订单实体不能为空" };
+                    }
+                    try
+                    {
+                        var model = entity.Code_Order.FirstOrDefault(e => e.CaseNum == newCodeOrder.CaseNum && e.ORGID == newCodeOrder.ORGID && e.ORGSubID == newCodeOrder.ORGSubID);
+                        if (model != null)
+                        {
+                            model.LastModifyTime = newCodeOrder.LastModifyTime;
+                            model.LastModifyUserID = newCodeOrder.LastModifyUserID;
+                        }
+                        else
+                        {
+                            ICodeNum codeNumBuilder = new CodeNum_Access();
+                            var stateInt = ICDOrderState.新创建.GetHashCode();
+                            model = new Code_Order
+                            {
+                                CaseNum = newCodeOrder.CaseNum,
+                                Createtime = newCodeOrder.Createtime,
+                                CreateUserID = newCodeOrder.CreateUserID,
+                                LastModifyTime = newCodeOrder.LastModifyTime,
+                                LastModifyUserID = newCodeOrder.LastModifyUserID,
+                                ORGID = newCodeOrder.ORGID,
+                                ORGSubID = newCodeOrder.ORGSubID,
+                                PlatformOrderCode = codeNumBuilder.InitCodeNum("01"),
+                                OrderStatus = stateInt,
+                            };
+                            entity.Code_Order.Add(model);
+                            entity.SaveChanges();
+                        }
+                        foreach (var item in newCodeOrder.UploadedList)
+                        {
+                            var newUploadedItem = new Code_Order_UploadedItem
+                            {
+                                AttachURL = item.AttachURL,
+                                CodeOrderID = model.CodeOrderID,
+                                ContentType = item.ContentType,
+                                CreateTime = item.CreateTime,
+                                CreateUserID = item.CreateUserID,
+                                GIndex = item.GIndex,
+                                ItemID = item.ItemID,
+                            };
+                            entity.Code_Order_UploadedItem.Add(newUploadedItem);
+                        }
+                        entity.SaveChanges();
+                        trasanction.Commit();
+                    }
+                    catch (Exception ex)
+                    {
+                        trasanction.Rollback();
+                        //todo 记录错误日志
+                        return new ICDExcuteResult { Result = false, ErrorStr = "系统正忙，稍候再试" };
+                    }
+                    return new ICDExcuteResult { Result = true };
+                }
             }
         }
 

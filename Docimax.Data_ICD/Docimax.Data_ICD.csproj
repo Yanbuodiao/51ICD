@@ -239,6 +239,10 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Docimax.CodeOrder\Docimax.CodeOrder.csproj">
+      <Project>{f362f8ce-69c7-45d1-99ac-e3f4e7f31e6e}</Project>
+      <Name>Docimax.CodeOrder</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Docimax.Interface_ICD\Docimax.Interface_ICD.csproj">
       <Project>{9f9c5d91-3cb0-45a0-9587-d79e42f1c444}</Project>
       <Name>Docimax.Interface_ICD</Name>

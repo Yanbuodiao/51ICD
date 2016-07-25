@@ -3,11 +3,15 @@ using Docimax.Data_ICD.DAL;
 using Docimax.Interface_ICD.Interface;
 using Docimax.Interface_ICD.Model;
 using Microsoft.AspNet.Identity;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web.Mvc;
+using System.Web.Routing;
 
 namespace Docimax.Web_ICD.Controllers
 {
+    [Authorize]
     public class UploadItemController : Controller
     {
         // GET: ICDItem
@@ -16,8 +20,12 @@ namespace Docimax.Web_ICD.Controllers
             IEnumerable<CodeOrderModel> model = new List<CodeOrderModel>();
             return View(model);
         }
-        public ActionResult Create()
+        public ActionResult Create(string caseNum = null, string notifyStr = null)
         {
+            if (!string.IsNullOrWhiteSpace(caseNum))
+            {
+                ViewBag.StatusMessage = string.Format("病案号：{0}{1}", caseNum, notifyStr);
+            }
             ICode_Order code_Order_Access = new DAL_Code_Order();
             var model = code_Order_Access.GetNewCodeOrder(User.Identity.GetUserId(), "ICD编码服务");
             return View(model);
@@ -28,19 +36,40 @@ namespace Docimax.Web_ICD.Controllers
         {
             if (ModelState.IsValid)
             {
+                model.UploadedList = new List<UploadedItemModel>();
+                model.Createtime = DateTime.Now;
+                model.LastModifyTime = DateTime.Now;
+                model.CreateUserID = User.Identity.GetUserId();
+                model.LastModifyUserID = User.Identity.GetUserId();
                 for (int i = 0; i < Request.Files.Count; i++)
                 {
                     var file = Request.Files[i];
                     if (file != null && file.ContentLength > 0)
                     {
-                        var icdFile = new ICDFile
+                        var itemID = int.Parse(Request.Files.AllKeys[i]);
+                        var uploadedFile = new UploadedItemModel
                         {
-                            FileURL = FileHelper.SaveUserAttachFile(file),
+                            AttachURL = FileHelper.SaveUserAttachFile(file),
                             ContentType = file.ContentType,
-                            AttachType = int.Parse(Request.Files.AllKeys[i]),
+                            ItemID = itemID,
+                            GIndex = model.UploadedList.Count(e => e.ItemID == itemID),
+                            CreateTime = DateTime.Now,
+                            LastModifyTime = DateTime.Now,
+                            CreateUserID = User.Identity.GetUserId(),
+                            LastModifyUserID = User.Identity.GetUserId(),
                         };
+                        model.UploadedList.Add(uploadedFile);
                     }
                 }
+                ICode_Order codeOrderAccess = new DAL_Code_Order();
+                var result = codeOrderAccess.SaveNewCodeOrder(model);
+                if (result.Result)
+                {
+                    //return RedirectToAction("Create", "UploadItem", new RouteValueDictionary(new Dictionary<string, string> { { "caseNum", model.CaseNum }, { "notifyStr", "保存成功" } }));
+                    return RedirectToAction("Create", "UploadItem", new { caseNum = model.CaseNum, notifyStr = "保存成功" });
+                }
+                ModelState.AddModelError("", result.ErrorStr);
+                return View(model);
             }
             return View(model);
         }

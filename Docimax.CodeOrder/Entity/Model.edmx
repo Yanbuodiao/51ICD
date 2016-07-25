@@ -1,0 +1,100 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="ICD_DBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="BaseDic_Code">
+          <Key>
+            <PropertyRef Name="Code" />
+          </Key>
+          <Property Name="Code" Type="nvarchar" MaxLength="7" Nullable="false" />
+          <Property Name="LastModifyTime" Type="datetime" />
+          <Property Name="LastModifyStamp" Type="timestamp" StoreGeneratedPattern="Computed" />
+        </EntityType>
+        <EntityType Name="BaseDic_Code_History">
+          <Key>
+            <PropertyRef Name="CodeHistoryID" />
+          </Key>
+          <Property Name="CodeHistoryID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CodeNum" Type="nvarchar" MaxLength="20" />
+          <Property Name="CreateDateTime" Type="datetime" />
+        </EntityType>
+        <EntityContainer Name="ICD_DBModelStoreContainer">
+          <EntitySet Name="BaseDic_Code" EntityType="Self.BaseDic_Code" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BaseDic_Code_History" EntityType="Self.BaseDic_Code_History" Schema="dbo" store:Type="Tables" />
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ICD_DBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="BaseDic_Code">
+          <Key>
+            <PropertyRef Name="Code" />
+          </Key>
+          <Property Name="Code" Type="String" MaxLength="7" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="LastModifyTime" Type="DateTime" Precision="3" />
+          <Property Name="LastModifyStamp" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+        </EntityType>
+        <EntityType Name="BaseDic_Code_History">
+          <Key>
+            <PropertyRef Name="CodeHistoryID" />
+          </Key>
+          <Property Name="CodeHistoryID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CodeNum" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="CreateDateTime" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityContainer Name="Code_Entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="BaseDic_Code" EntityType="Self.BaseDic_Code" />
+          <EntitySet Name="BaseDic_Code_History" EntityType="Self.BaseDic_Code_History" />
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ICD_DBModelStoreContainer" CdmEntityContainer="Code_Entities">
+          <EntitySetMapping Name="BaseDic_Code">
+            <EntityTypeMapping TypeName="ICD_DBModel.BaseDic_Code">
+              <MappingFragment StoreEntitySet="BaseDic_Code">
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="LastModifyTime" ColumnName="LastModifyTime" />
+                <ScalarProperty Name="LastModifyStamp" ColumnName="LastModifyStamp" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BaseDic_Code_History">
+            <EntityTypeMapping TypeName="ICD_DBModel.BaseDic_Code_History">
+              <MappingFragment StoreEntitySet="BaseDic_Code_History">
+                <ScalarProperty Name="CodeHistoryID" ColumnName="CodeHistoryID" />
+                <ScalarProperty Name="CodeNum" ColumnName="CodeNum" />
+                <ScalarProperty Name="CreateDateTime" ColumnName="CreateDateTime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="false" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="无" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

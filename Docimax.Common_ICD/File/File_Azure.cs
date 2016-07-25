@@ -33,8 +33,8 @@ namespace Docimax.Common_ICD.File
         /// <summary>
         /// 从指定的地址下载文件
         /// </summary>
-        /// <param name="fileURL"></param>
-        /// <returns></returns>
+        /// <param name="fileURL">要查看的文件路径（虚拟路径）</param>
+        /// <returns>返回文件字节流</returns>
         public byte[] GetFile(string fileURL)
         {
             CloudStorageAccount storageAccount = CloudStorageAccount.Parse(CloudConfigurationManager.GetSetting("StorageConnectionString"));
