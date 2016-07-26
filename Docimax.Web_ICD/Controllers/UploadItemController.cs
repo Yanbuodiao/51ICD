@@ -32,7 +32,7 @@ namespace Docimax.Web_ICD.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(CodeOrderModel model)
+        public ActionResult Create(CodeOrderModel model, string submit)
         {
             if (ModelState.IsValid)
             {
@@ -49,7 +49,7 @@ namespace Docimax.Web_ICD.Controllers
                         var itemID = int.Parse(Request.Files.AllKeys[i]);
                         var uploadedFile = new UploadedItemModel
                         {
-                            AttachURL = FileHelper.SaveUserAttachFile(file),
+                            AttachURL = FileHelper.SaveMedicalRecord(file, model.ORGCode, model.CaseNum),
                             ContentType = file.ContentType,
                             ItemID = itemID,
                             GIndex = model.UploadedList.Count(e => e.ItemID == itemID),
@@ -62,10 +62,9 @@ namespace Docimax.Web_ICD.Controllers
                     }
                 }
                 ICode_Order codeOrderAccess = new DAL_Code_Order();
-                var result = codeOrderAccess.SaveNewCodeOrder(model);
+                var result = codeOrderAccess.SaveNewCodeOrder(model, !string.IsNullOrWhiteSpace(submit));
                 if (result.Result)
                 {
-                    //return RedirectToAction("Create", "UploadItem", new RouteValueDictionary(new Dictionary<string, string> { { "caseNum", model.CaseNum }, { "notifyStr", "保存成功" } }));
                     return RedirectToAction("Create", "UploadItem", new { caseNum = model.CaseNum, notifyStr = "保存成功" });
                 }
                 ModelState.AddModelError("", result.ErrorStr);

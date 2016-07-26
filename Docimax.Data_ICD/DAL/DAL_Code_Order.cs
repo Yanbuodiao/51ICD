@@ -19,12 +19,14 @@ namespace Docimax.Data_ICD.DAL
             using (var entity = new Entity_Read())
             {
                 var serviceAuditStatusInt = CertificateState.认证成功.GetHashCode();
-                var user = entity.AspNetUsers.FirstOrDefault(e => e.Id == userID);
+                var userModel = (from u in entity.AspNetUsers.Where(e => e.Id == userID)
+                                 join o in entity.Dic_Organization on u.ORGID equals o.OrganizationID
+                                 select new { u.ORGID, u.SubORGID, o.OrganizationCode }).FirstOrDefault();
                 var query = (from org_service in entity.ORG_Service_Config.Where(e => e.ServiceAuditStatus == serviceAuditStatusInt)
                              join org_service_upload in entity.ORG_Service_Item.Where(e => e.DeleteFlag != 1) on org_service.ORGID equals org_service_upload.ORGID
                              join service in entity.Dic_Service.Where(e => e.ServiceName == serviceName) on org_service_upload.ServiceID equals service.ServiceID
                              join upload in entity.Dic_Item on org_service_upload.ItemID equals upload.ItemID
-                             where user.ORGID == org_service.ORGID && ((org_service_upload.Sub_ORGID ?? 0) == (user.SubORGID ?? 0))
+                             where userModel.ORGID == org_service.ORGID && ((org_service_upload.Sub_ORGID ?? 0) == (userModel.SubORGID ?? 0))
                              select new
                              {
                                  upload.ItemID,
@@ -44,14 +46,15 @@ namespace Docimax.Data_ICD.DAL
                 result.ForEach(e => e.ChildrenList = GetUploadItemList(e.ItemID, query));
                 return new CodeOrderModel
                 {
-                    ORGID = user.ORGID ?? 0,
-                    ORGSubID = user.SubORGID ?? 0,
+                    ORGID = userModel.ORGID ?? 0,
+                    ORGSubID = userModel.SubORGID ?? 0,
+                    ORGCode = userModel.OrganizationCode,
                     ItemList = result
                 };
             }
         }
 
-        public ICDExcuteResult SaveNewCodeOrder(CodeOrderModel newCodeOrder)
+        public ICDExcuteResult SaveNewCodeOrder(CodeOrderModel newCodeOrder, bool isSubmit)
         {
             using (var entity = new Entity_Write())
             {
@@ -61,6 +64,7 @@ namespace Docimax.Data_ICD.DAL
                     {
                         return new ICDExcuteResult { Result = false, ErrorStr = "订单实体不能为空" };
                     }
+                    var stateInt = isSubmit ? ICDOrderState.待抢单.GetHashCode() : ICDOrderState.新创建.GetHashCode();
                     try
                     {
                         var model = entity.Code_Order.FirstOrDefault(e => e.CaseNum == newCodeOrder.CaseNum && e.ORGID == newCodeOrder.ORGID && e.ORGSubID == newCodeOrder.ORGSubID);
@@ -68,11 +72,14 @@ namespace Docimax.Data_ICD.DAL
                         {
                             model.LastModifyTime = newCodeOrder.LastModifyTime;
                             model.LastModifyUserID = newCodeOrder.LastModifyUserID;
+                            if (isSubmit)
+                            {
+                                model.OrderStatus = stateInt;
+                            }
                         }
                         else
                         {
                             ICodeNum codeNumBuilder = new CodeNum_Access();
-                            var stateInt = ICDOrderState.新创建.GetHashCode();
                             model = new Code_Order
                             {
                                 CaseNum = newCodeOrder.CaseNum,

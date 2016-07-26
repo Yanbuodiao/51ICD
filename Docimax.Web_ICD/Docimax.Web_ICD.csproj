@@ -151,6 +151,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ServiceItemController.cs" />
+    <Compile Include="Controllers\TestController.cs" />
     <Compile Include="Controllers\UnRobItemController.cs" />
     <Compile Include="Controllers\UploadItemController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -250,6 +251,7 @@
     <Folder Include="Views\Menu\" />
     <Folder Include="Views\RolesAdmin\" />
     <Folder Include="Views\ServiceItem\" />
+    <Folder Include="Views\Test\" />
     <Folder Include="Views\UnRobItem\" />
   </ItemGroup>
   <ItemGroup>
