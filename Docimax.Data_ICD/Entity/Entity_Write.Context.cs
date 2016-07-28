@@ -34,6 +34,7 @@ namespace Docimax.Data_ICD.Entity
         public virtual DbSet<BaseDic_Area> BaseDic_Area { get; set; }
         public virtual DbSet<BaseDic_City> BaseDic_City { get; set; }
         public virtual DbSet<BaseDic_Code> BaseDic_Code { get; set; }
+        public virtual DbSet<BaseDic_Code_History> BaseDic_Code_History { get; set; }
         public virtual DbSet<BaseDic_ICD_Repository> BaseDic_ICD_Repository { get; set; }
         public virtual DbSet<BaseDic_ICD_Version> BaseDic_ICD_Version { get; set; }
         public virtual DbSet<BaseDic_Province> BaseDic_Province { get; set; }

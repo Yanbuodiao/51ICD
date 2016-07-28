@@ -14,10 +14,23 @@ namespace Docimax.Web_ICD.Controllers
     [Authorize]
     public class UploadItemController : Controller
     {
-        // GET: ICDItem
-        public ActionResult Index()
+        public ActionResult Index(PagedList<CodeOrderSearchModel, CodeOrderModel> model = null)
         {
-            IEnumerable<CodeOrderModel> model = new List<CodeOrderModel>();
+            if (model == null || model.SearchModel == null)
+            {
+                model = new PagedList<CodeOrderSearchModel, CodeOrderModel>
+                {
+                    BeginDate = DateTime.Now.Date.AddDays(-2),
+                    EndDate = DateTime.Now.Date,
+                    SearchModel = new CodeOrderSearchModel { },
+                    CurrentPage = 1,
+                    TextFilter = string.Empty,
+                    PageSize = 10,
+                };
+            }
+            model.SearchModel.UserID = User.Identity.GetUserId();
+            ICode_Order access = new DAL_Code_Order();
+            model = access.GetCodeOrderList(model);
             return View(model);
         }
         public ActionResult Create(string caseNum = null, string notifyStr = null)
@@ -37,7 +50,7 @@ namespace Docimax.Web_ICD.Controllers
             if (ModelState.IsValid)
             {
                 model.UploadedList = new List<UploadedItemModel>();
-                model.Createtime = DateTime.Now;
+                model.CreateTime = DateTime.Now;
                 model.LastModifyTime = DateTime.Now;
                 model.CreateUserID = User.Identity.GetUserId();
                 model.LastModifyUserID = User.Identity.GetUserId();
@@ -50,6 +63,7 @@ namespace Docimax.Web_ICD.Controllers
                         var uploadedFile = new UploadedItemModel
                         {
                             AttachURL = FileHelper.SaveMedicalRecord(file, model.ORGCode, model.CaseNum),
+                            AttachFileName = file.FileName,
                             ContentType = file.ContentType,
                             ItemID = itemID,
                             GIndex = model.UploadedList.Count(e => e.ItemID == itemID),

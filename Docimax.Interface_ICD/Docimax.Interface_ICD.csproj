@@ -55,6 +55,7 @@
     <Compile Include="Interface\ISecurity.cs" />
     <Compile Include="Interface\ISMS.cs" />
     <Compile Include="Interface\IUserAccess.cs" />
+    <Compile Include="Model\CodeOrderSearchModel.cs" />
     <Compile Include="Model\Configurations\MailConfig.cs" />
     <Compile Include="Model\Configurations\SMSConfig.cs" />
     <Compile Include="Model\CodeOrderModel.cs" />
@@ -64,6 +65,7 @@
     <Compile Include="Model\Public\ICDFile.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Model\Public\PagedList.cs" />
     <Compile Include="Model\Public\VerifyIdentityModel.cs">
       <SubType>Code</SubType>
     </Compile>

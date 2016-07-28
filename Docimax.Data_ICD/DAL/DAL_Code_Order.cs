@@ -83,7 +83,7 @@ namespace Docimax.Data_ICD.DAL
                             model = new Code_Order
                             {
                                 CaseNum = newCodeOrder.CaseNum,
-                                Createtime = newCodeOrder.Createtime,
+                                Createtime = newCodeOrder.CreateTime,
                                 CreateUserID = newCodeOrder.CreateUserID,
                                 LastModifyTime = newCodeOrder.LastModifyTime,
                                 LastModifyUserID = newCodeOrder.LastModifyUserID,
@@ -100,6 +100,7 @@ namespace Docimax.Data_ICD.DAL
                             var newUploadedItem = new Code_Order_UploadedItem
                             {
                                 AttachURL = item.AttachURL,
+                                AttachName = item.AttachFileName,
                                 CodeOrderID = model.CodeOrderID,
                                 ContentType = item.ContentType,
                                 CreateTime = item.CreateTime,
@@ -121,6 +122,46 @@ namespace Docimax.Data_ICD.DAL
                     return new ICDExcuteResult { Result = true };
                 }
             }
+        }
+
+        public PagedList<CodeOrderSearchModel, CodeOrderModel> GetCodeOrderList(PagedList<CodeOrderSearchModel, CodeOrderModel> queryModel)
+        {
+            using (var entity = new Entity_Read())
+            {
+                var endDate = queryModel.EndDate.AddDays(1);
+                var stateInt = queryModel.SearchModel.OrderState.GetHashCode();
+                var query = (from u in entity.AspNetUsers.Where(e => e.Id == queryModel.SearchModel.UserID)
+                             join o in entity.Code_Order on u.ORGID equals o.ORGID
+                             where o.Createtime >= queryModel.BeginDate &&
+                             o.Createtime <= endDate &&
+                             (stateInt == 0 ? true : o.OrderStatus == stateInt) &&
+                             ((o.ORGSubID ?? 0) == (u.SubORGID ?? 0))&&
+                             (string.IsNullOrEmpty(queryModel.TextFilter) ? true : (o.CaseNum.Contains(queryModel.TextFilter) || o.PlatformOrderCode.Contains(queryModel.TextFilter)))
+                             select new
+                             {
+                                 o.CaseNum,
+                                 o.PlatformOrderCode,
+                                 o.OrderStatus,
+                                 o.Createtime,
+                                 o.ORGID,
+                                 o.ORGSubID,
+                                 o.CodeOrderID
+                             }).OrderByDescending(e => e.Createtime);
+                var resultQuery = query.Skip((queryModel.CurrentPage - 1) * queryModel.PageSize)
+                    .Take(queryModel.PageSize)
+                    .ToList().Select(e => new CodeOrderModel
+                    {
+                        CaseNum = e.CaseNum,
+                        PlatformOrderCode = e.PlatformOrderCode,
+                        CreateTime = e.Createtime ?? DateTime.Now,
+                        CodeOrderID = e.CodeOrderID,
+                        ORGID = e.ORGID ?? 0,
+                        OrderStatus = (ICDOrderState)(e.OrderStatus ?? 1000),
+                    }).ToList();
+                queryModel.TotalRecords = query.Count();
+                queryModel.Content = resultQuery;
+            }
+            return queryModel;
         }
 
         private List<ItemModel> GetUploadItemList(int parentID, List<ItemModel> allResultUploadItems)

@@ -1,50 +1,75 @@
-﻿@model IEnumerable<Docimax.Interface_ICD.Model.CodeOrderModel>
+﻿@using Docimax.Interface_ICD.Model
+@model PagedList<CodeOrderSearchModel, CodeOrderModel>
 
 @{
     ViewBag.Title = "编码订单列表";
 }
-
+<link href="~/Content/bootstrap-datepicker.css" rel="stylesheet" />
+<script type="text/javascript" src="~/Scripts/bootstrap-datepicker.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $('.datepicker').datepicker();
+    });
+</script>
 <h2>@ViewBag.Title</h2>
 
 <p>
-    @Html.ActionLink("上传新订单", "Create")
+    @Html.ActionLink("上传新订单", "Create", new { @class = "btn-primary" })
 </p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayName("病案号")
-        </th>
-        <th>
-            @Html.DisplayName("订单号")
-        </th>
-        <th>
-            @Html.DisplayName("状态")
-        </th>
-        <th>
-            @Html.DisplayName("创建时间")
-        </th>
-        <th></th>
-    </tr>
+@using (Html.BeginForm("index", "UploadItem", FormMethod.Post))
+{
+    <div class="row">
+        <div class="col-sm-11">
+            <div class="form-inline">
+                @Html.TextBoxFor(model => model.TextFilter, new { @class = "form-control", @placeholder = "请输入病案号或平台订单号" })
+                @Html.EnumDropDownListFor(model => model.SearchModel.OrderState, "请选择订单状态", new { @class = "form-control" })
+                创建时间在 @Html.TextBoxFor(model => model.BeginDate, new { @class = "form-control datepicker ", @Value = Model.BeginDate.ToString("yyyy/MM/dd") })
+                和 @Html.TextBoxFor(model => model.EndDate, new { @class = "form-control datepicker", @Value = Model.EndDate.ToString("yyyy/MM/dd") })
+                之间
+            </div>
+        </div>
+        <div class="pull-right col-lg-1">
+            <button class="btn btn-default" type="submit">
+                查询
+                <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+            </button>
+        </div>
+    </div>
+    <div style="margin-top:17px;">
+        @if (Model != null && Model.Content != null)
+        {
+            var grid = new WebGrid(
+                       canPage: true,
+                       rowsPerPage: Model.PageSize,
+                       canSort: true,
+                       ajaxUpdateContainerId: "grid");
 
-    @foreach (var item in Model)
-    {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.CaseNum)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PlatformOrderCode)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Createtime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Createtime)
-            </td>
-            <td>
-                @Html.ActionLink("补充信息", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("详情", "Details", new { /* id=item.PrimaryKey */ })
-            </td>
-        </tr>
-    }
-</table>
+            grid.Bind(Model.Content, rowCount: Model.TotalRecords, autoSortAndPage: false);
+            grid.Pager(WebGridPagerModes.Numeric);
+
+            @grid.GetHtml(htmlAttributes: new { id = "grid" },   // id for ajaxUpdateContainerId parameter
+            fillEmptyRows: false,
+            tableStyle: "table table-bordered table-hover",
+            mode: WebGridPagerModes.All,
+            columns: grid.Columns(
+                                 grid.Column("CaseNum", "病案号", canSort: false),
+                                 grid.Column("PlatformOrderCode", "订单号", style: "col-lg-4", canSort: false),
+                                 grid.Column("OrderStatus", "状态", style: "col-lg-3", canSort: false),
+                                 grid.Column("Createtime", header: "创建时间", format: @<text>@item.Createtime.ToString("yyyy-MM-dd") </text>, canSort: false),
+                                 grid.Column(header: "操作", canSort: false, style: "action",
+                format: @<text>
+                                    <a href="@Url.Action("Action", "Controller")" class="btn btn-default">
+                                        详情
+                                    </a>
+                                    <a href="@Url.Action("Action", "Controller")" class="btn btn-default">
+                                        补充信息
+                                        <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                                    </a>
+                </text>)));
+        }
+        else
+        {
+            //todo  提示没有数据
+        }
+    </div>
+}

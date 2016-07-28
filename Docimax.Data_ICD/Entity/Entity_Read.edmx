@@ -116,6 +116,14 @@
           <Property Name="LastModifyTime" Type="datetime" />
           <Property Name="LastModifyStamp" Type="timestamp" StoreGeneratedPattern="Computed" />
         </EntityType>
+        <EntityType Name="BaseDic_Code_History">
+          <Key>
+            <PropertyRef Name="CodeHistoryID" />
+          </Key>
+          <Property Name="CodeHistoryID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CodeNum" Type="nvarchar" MaxLength="20" />
+          <Property Name="CreateDateTime" Type="datetime" />
+        </EntityType>
         <EntityType Name="BaseDic_ICD_Repository">
           <Key>
             <PropertyRef Name="ICDID" />
@@ -161,7 +169,7 @@
           </Key>
           <Property Name="CodeOrderID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="PlatformOrderCode" Type="varchar" MaxLength="15" />
-          <Property Name="CaseNum" Type="nvarchar(max)" />
+          <Property Name="CaseNum" Type="nvarchar" MaxLength="500" />
           <Property Name="OrderStatus" Type="int" />
           <Property Name="ORGID" Type="int" />
           <Property Name="ORGSubID" Type="int" />
@@ -239,6 +247,7 @@
           <Property Name="GIndex" Type="int" />
           <Property Name="ContentType" Type="nvarchar(max)" />
           <Property Name="AttachURL" Type="nvarchar(max)" />
+          <Property Name="AttachName" Type="nvarchar(max)" />
           <Property Name="CreateTime" Type="datetime" />
           <Property Name="CreateUserID" Type="nvarchar" MaxLength="128" />
           <Property Name="LastModifyTime" Type="datetime" />
@@ -602,6 +611,7 @@
           <EntitySet Name="BaseDic_Area" EntityType="Self.BaseDic_Area" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BaseDic_City" EntityType="Self.BaseDic_City" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BaseDic_Code" EntityType="Self.BaseDic_Code" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BaseDic_Code_History" EntityType="Self.BaseDic_Code_History" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BaseDic_ICD_Repository" EntityType="Self.BaseDic_ICD_Repository" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BaseDic_ICD_Version" EntityType="Self.BaseDic_ICD_Version" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BaseDic_Province" EntityType="Self.BaseDic_Province" Schema="dbo" store:Type="Tables" />
@@ -659,6 +669,7 @@
           <EntitySet Name="BaseDic_Area" EntityType="ICD_DBModel.BaseDic_Area" />
           <EntitySet Name="BaseDic_City" EntityType="ICD_DBModel.BaseDic_City" />
           <EntitySet Name="BaseDic_Code" EntityType="ICD_DBModel.BaseDic_Code" />
+          <EntitySet Name="BaseDic_Code_History" EntityType="ICD_DBModel.BaseDic_Code_History" />
           <EntitySet Name="BaseDic_ICD_Repository" EntityType="ICD_DBModel.BaseDic_ICD_Repository" />
           <EntitySet Name="BaseDic_ICD_Version" EntityType="ICD_DBModel.BaseDic_ICD_Version" />
           <EntitySet Name="BaseDic_Province" EntityType="ICD_DBModel.BaseDic_Province" />
@@ -820,6 +831,14 @@
           <Property Name="LastModifyTime" Type="DateTime" Precision="3" />
           <Property Name="LastModifyStamp" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
         </EntityType>
+        <EntityType Name="BaseDic_Code_History">
+          <Key>
+            <PropertyRef Name="CodeHistoryID" />
+          </Key>
+          <Property Name="CodeHistoryID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CodeNum" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="CreateDateTime" Type="DateTime" Precision="3" />
+        </EntityType>
         <EntityType Name="BaseDic_ICD_Repository">
           <Key>
             <PropertyRef Name="ICDID" />
@@ -865,7 +884,7 @@
           </Key>
           <Property Name="CodeOrderID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="PlatformOrderCode" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
-          <Property Name="CaseNum" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CaseNum" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="OrderStatus" Type="Int32" />
           <Property Name="ORGID" Type="Int32" />
           <Property Name="ORGSubID" Type="Int32" />
@@ -943,6 +962,7 @@
           <Property Name="GIndex" Type="Int32" />
           <Property Name="ContentType" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="AttachURL" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="AttachName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="CreateTime" Type="DateTime" Precision="3" />
           <Property Name="CreateUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="LastModifyTime" Type="DateTime" Precision="3" />
@@ -1409,6 +1429,15 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="BaseDic_Code_History">
+            <EntityTypeMapping TypeName="ICD_DBModel.BaseDic_Code_History">
+              <MappingFragment StoreEntitySet="BaseDic_Code_History">
+                <ScalarProperty Name="CreateDateTime" ColumnName="CreateDateTime" />
+                <ScalarProperty Name="CodeNum" ColumnName="CodeNum" />
+                <ScalarProperty Name="CodeHistoryID" ColumnName="CodeHistoryID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="BaseDic_ICD_Repository">
             <EntityTypeMapping TypeName="ICD_DBModel.BaseDic_ICD_Repository">
               <MappingFragment StoreEntitySet="BaseDic_ICD_Repository">
@@ -1538,6 +1567,7 @@
                 <ScalarProperty Name="LastModifyTime" ColumnName="LastModifyTime" />
                 <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
                 <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="AttachName" ColumnName="AttachName" />
                 <ScalarProperty Name="AttachURL" ColumnName="AttachURL" />
                 <ScalarProperty Name="ContentType" ColumnName="ContentType" />
                 <ScalarProperty Name="GIndex" ColumnName="GIndex" />

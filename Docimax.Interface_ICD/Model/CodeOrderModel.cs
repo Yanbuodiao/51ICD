@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Docimax.Interface_ICD.Model
 {
-    public class CodeOrderModel
+    public class CodeOrderModel : BaseModel
     {
         public int CodeOrderID { get; set; }
         public string PlatformOrderCode { get; set; }
@@ -17,13 +17,10 @@ namespace Docimax.Interface_ICD.Model
         public string CaseNum { get; set; }
         public ICDOrderState OrderStatus { get; set; }
         public string ORGCode { get; set; }
+        public string ORGName { get; set; }
+        public string ORGSubName { get; set; }
         public int ORGID { get; set; }
         public int ORGSubID { get; set; }
-        public DateTime Createtime { get; set; }
-        public string CreateUserID { get; set; }
-        public DateTime LastModifyTime { get; set; }
-        public string LastModifyUserID { get; set; }
-        public int DeleteFlag { get; set; }
         /// <summary>
         /// 需要上传的上传项目列表
         /// </summary>

@@ -20,6 +20,7 @@ namespace Docimax.Data_ICD.Entity
         public Nullable<int> GIndex { get; set; }
         public string ContentType { get; set; }
         public string AttachURL { get; set; }
+        public string AttachName { get; set; }
         public Nullable<System.DateTime> CreateTime { get; set; }
         public string CreateUserID { get; set; }
         public Nullable<System.DateTime> LastModifyTime { get; set; }

@@ -23,5 +23,7 @@ namespace Docimax.Interface_ICD.Interface
         /// <param name="isSubmit">是否直接提交 true：直接提交进入待抢单列表  false：部分上传文件 未真正提交</param>
         /// <returns>创建结果</returns>
         ICDExcuteResult SaveNewCodeOrder(CodeOrderModel newCodeOrder, bool isSubmit);
+
+        PagedList<CodeOrderSearchModel, CodeOrderModel> GetCodeOrderList(PagedList<CodeOrderSearchModel, CodeOrderModel> queryModel);
     }
 }
