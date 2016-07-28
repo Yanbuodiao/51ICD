@@ -332,6 +332,8 @@
     <Content Include="Views\UploadItem\Index.cshtml" />
     <Content Include="Views\UploadItem\Create.cshtml" />
     <Content Include="Views\UnRobItem\Index.cshtml" />
+    <Content Include="Views\UploadItem\Detail.cshtml" />
+    <Content Include="Views\UploadItem\Update.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

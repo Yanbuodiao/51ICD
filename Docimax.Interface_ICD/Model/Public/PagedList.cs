@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Docimax.Interface_ICD.Model
 {
-    public class PagedList<S, T>
+    public class ICDPagedList<S, T>
     {
         /// <summary>
         /// 除基本查询条件（时间段和基本模糊查询）外的查询条件实体类

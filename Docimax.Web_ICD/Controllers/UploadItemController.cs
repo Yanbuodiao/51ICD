@@ -1,5 +1,6 @@
 ﻿using Docimax.Common_ICD.File;
 using Docimax.Data_ICD.DAL;
+using Docimax.Interface_ICD.Enum;
 using Docimax.Interface_ICD.Interface;
 using Docimax.Interface_ICD.Model;
 using Microsoft.AspNet.Identity;
@@ -14,19 +15,20 @@ namespace Docimax.Web_ICD.Controllers
     [Authorize]
     public class UploadItemController : Controller
     {
-        public ActionResult Index(PagedList<CodeOrderSearchModel, CodeOrderModel> model = null)
+        public ActionResult Index(string TextFilter = null, int page = 1, int pageSize = 10, DateTime? BeginDate = null, DateTime? EndDate = null, ICDOrderState? OrderState = null)
         {
-            if (model == null || model.SearchModel == null)
+            var model = new ICDPagedList<CodeOrderSearchModel, CodeOrderModel>
             {
-                model = new PagedList<CodeOrderSearchModel, CodeOrderModel>
-                {
-                    BeginDate = DateTime.Now.Date.AddDays(-2),
-                    EndDate = DateTime.Now.Date,
-                    SearchModel = new CodeOrderSearchModel { },
-                    CurrentPage = 1,
-                    TextFilter = string.Empty,
-                    PageSize = 10,
-                };
+                BeginDate = BeginDate ?? DateTime.Now.Date.AddDays(-2),
+                EndDate = EndDate ?? DateTime.Now.Date,
+                SearchModel = new CodeOrderSearchModel { },
+                CurrentPage = page,
+                TextFilter = TextFilter,
+                PageSize = pageSize,
+            };
+            if (OrderState != null)
+            {
+                model.SearchModel.OrderState = OrderState ?? ICDOrderState.新创建;
             }
             model.SearchModel.UserID = User.Identity.GetUserId();
             ICode_Order access = new DAL_Code_Order();
@@ -84,6 +86,16 @@ namespace Docimax.Web_ICD.Controllers
                 ModelState.AddModelError("", result.ErrorStr);
                 return View(model);
             }
+            return View(model);
+        }
+        public ActionResult Detail(int orderID)
+        {
+            var model = new CodeOrderModel();
+            return View(model);
+        }
+        public ActionResult Update(int orderID)
+        {
+            var model = new CodeOrderModel();
             return View(model);
         }
     }

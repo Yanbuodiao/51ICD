@@ -1,5 +1,5 @@
 ﻿@using Docimax.Interface_ICD.Model
-@model PagedList<CodeOrderSearchModel, CodeOrderModel>
+@model ICDPagedList<CodeOrderSearchModel, CodeOrderModel>
 
 @{
     ViewBag.Title = "编码订单列表";
@@ -35,19 +35,20 @@
             </button>
         </div>
     </div>
-    <div style="margin-top:17px;">
-        @if (Model != null && Model.Content != null)
-        {
-            var grid = new WebGrid(
-                       canPage: true,
-                       rowsPerPage: Model.PageSize,
-                       canSort: true,
-                       ajaxUpdateContainerId: "grid");
+}
+<div style="margin-top:17px;">
+    @if (Model != null && Model.Content != null)
+    {
+        var grid = new WebGrid(
+                   canPage: true,
+                   rowsPerPage: Model.PageSize,
+                   canSort: true,
+                   ajaxUpdateContainerId: "grid");
 
-            grid.Bind(Model.Content, rowCount: Model.TotalRecords, autoSortAndPage: false);
-            grid.Pager(WebGridPagerModes.Numeric);
+        grid.Bind(Model.Content, rowCount: Model.TotalRecords, autoSortAndPage: false);
+        grid.Pager(WebGridPagerModes.All);
 
-            @grid.GetHtml(htmlAttributes: new { id = "grid" },   // id for ajaxUpdateContainerId parameter
+        @grid.GetHtml(htmlAttributes: new { id = "grid" },   // id for ajaxUpdateContainerId parameter
             fillEmptyRows: false,
             tableStyle: "table table-bordered table-hover",
             mode: WebGridPagerModes.All,
@@ -58,18 +59,18 @@
                                  grid.Column("Createtime", header: "创建时间", format: @<text>@item.Createtime.ToString("yyyy-MM-dd") </text>, canSort: false),
                                  grid.Column(header: "操作", canSort: false, style: "action",
                 format: @<text>
-                                    <a href="@Url.Action("Action", "Controller")" class="btn btn-default">
+                                    <a href="@Url.Action("Detail", "UploadItem", new { orderID = @item.CodeOrderID })" class="btn btn-default">
                                         详情
                                     </a>
-                                    <a href="@Url.Action("Action", "Controller")" class="btn btn-default">
+                                    <a href="@Url.Action("Update", "UploadItem", new { orderID = @item.CodeOrderID })" class="btn btn-default">
                                         补充信息
                                         <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
                                     </a>
                 </text>)));
-        }
-        else
-        {
-            //todo  提示没有数据
-        }
-    </div>
-}
+    }
+    else
+    {
+        //todo  提示没有数据
+    }
+</div>
+

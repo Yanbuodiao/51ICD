@@ -24,6 +24,6 @@ namespace Docimax.Interface_ICD.Interface
         /// <returns>创建结果</returns>
         ICDExcuteResult SaveNewCodeOrder(CodeOrderModel newCodeOrder, bool isSubmit);
 
-        PagedList<CodeOrderSearchModel, CodeOrderModel> GetCodeOrderList(PagedList<CodeOrderSearchModel, CodeOrderModel> queryModel);
+        ICDPagedList<CodeOrderSearchModel, CodeOrderModel> GetCodeOrderList(ICDPagedList<CodeOrderSearchModel, CodeOrderModel> queryModel);
     }
 }

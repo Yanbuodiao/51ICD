@@ -124,7 +124,7 @@ namespace Docimax.Data_ICD.DAL
             }
         }
 
-        public PagedList<CodeOrderSearchModel, CodeOrderModel> GetCodeOrderList(PagedList<CodeOrderSearchModel, CodeOrderModel> queryModel)
+        public ICDPagedList<CodeOrderSearchModel, CodeOrderModel> GetCodeOrderList(ICDPagedList<CodeOrderSearchModel, CodeOrderModel> queryModel)
         {
             using (var entity = new Entity_Read())
             {
