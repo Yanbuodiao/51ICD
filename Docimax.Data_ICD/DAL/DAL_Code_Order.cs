@@ -21,7 +21,7 @@ namespace Docimax.Data_ICD.DAL
                 var serviceAuditStatusInt = CertificateState.认证成功.GetHashCode();
                 var userModel = (from u in entity.AspNetUsers.Where(e => e.Id == userID)
                                  join o in entity.Dic_Organization on u.ORGID equals o.OrganizationID
-                                 select new { u.ORGID, u.SubORGID, o.OrganizationCode }).FirstOrDefault();
+                                 select new { u.ORGID, u.SubORGID, o.OrganizationName, o.OrganizationCode }).FirstOrDefault();
                 var query = (from org_service in entity.ORG_Service_Config.Where(e => e.ServiceAuditStatus == serviceAuditStatusInt)
                              join org_service_upload in entity.ORG_Service_Item.Where(e => e.DeleteFlag != 1) on org_service.ORGID equals org_service_upload.ORGID
                              join service in entity.Dic_Service.Where(e => e.ServiceName == serviceName) on org_service_upload.ServiceID equals service.ServiceID
@@ -47,6 +47,7 @@ namespace Docimax.Data_ICD.DAL
                 return new CodeOrderModel
                 {
                     ORGID = userModel.ORGID ?? 0,
+                    ORGName = userModel.OrganizationName,
                     ORGSubID = userModel.SubORGID ?? 0,
                     ORGCode = userModel.OrganizationCode,
                     ItemList = result
@@ -135,7 +136,7 @@ namespace Docimax.Data_ICD.DAL
                              where o.Createtime >= queryModel.BeginDate &&
                              o.Createtime <= endDate &&
                              (stateInt == 0 ? true : o.OrderStatus == stateInt) &&
-                             ((o.ORGSubID ?? 0) == (u.SubORGID ?? 0))&&
+                             ((o.ORGSubID ?? 0) == (u.SubORGID ?? 0)) &&
                              (string.IsNullOrEmpty(queryModel.TextFilter) ? true : (o.CaseNum.Contains(queryModel.TextFilter) || o.PlatformOrderCode.Contains(queryModel.TextFilter)))
                              select new
                              {
@@ -151,10 +152,45 @@ namespace Docimax.Data_ICD.DAL
                     .Take(queryModel.PageSize)
                     .ToList().Select(e => new CodeOrderModel
                     {
+                        CodeOrderID = e.CodeOrderID,
                         CaseNum = e.CaseNum,
                         PlatformOrderCode = e.PlatformOrderCode,
                         CreateTime = e.Createtime ?? DateTime.Now,
+                        ORGID = e.ORGID ?? 0,
+                        OrderStatus = (ICDOrderState)(e.OrderStatus ?? 1000),
+                    }).ToList();
+                queryModel.TotalRecords = query.Count();
+                queryModel.Content = resultQuery;
+            }
+            return queryModel;
+        }
+
+        public ICDPagedList<CodeOrderSearchModel, CodeOrderModel> GetUnClaimOrderList(ICDPagedList<CodeOrderSearchModel, CodeOrderModel> queryModel)
+        {
+            using (var entity = new Entity_Read())
+            {
+                var stateInt = queryModel.SearchModel.OrderState.GetHashCode();
+                var query = (from org in entity.Dic_Organization
+                             join o in entity.Code_Order on org.OrganizationID equals o.ORGID
+                             where o.OrderStatus == stateInt
+                             select new
+                             {
+                                 o.PlatformOrderCode,
+                                 org.OrganizationName,
+                                 o.OrderStatus,
+                                 o.Createtime,
+                                 o.ORGID,
+                                 o.ORGSubID,
+                                 o.CodeOrderID
+                             }).OrderByDescending(e => e.Createtime);
+                var resultQuery = query.Skip((queryModel.CurrentPage - 1) * queryModel.PageSize)
+                    .Take(queryModel.PageSize)
+                    .ToList().Select(e => new CodeOrderModel
+                    {
                         CodeOrderID = e.CodeOrderID,
+                        PlatformOrderCode = e.PlatformOrderCode,
+                        ORGName = e.OrganizationName,
+                        CreateTime = e.Createtime ?? DateTime.Now,
                         ORGID = e.ORGID ?? 0,
                         OrderStatus = (ICDOrderState)(e.OrderStatus ?? 1000),
                     }).ToList();

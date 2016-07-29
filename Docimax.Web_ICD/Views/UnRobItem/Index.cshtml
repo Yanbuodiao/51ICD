@@ -1,42 +1,44 @@
-﻿@model IEnumerable<Docimax.Interface_ICD.Model.CodeOrderModel>
+﻿@using Docimax.Interface_ICD.Model
+@model ICDPagedList<CodeOrderSearchModel, CodeOrderModel>
 
 @{
-    ViewBag.Title = "待抢单列表";
+    ViewBag.Title = "编码抢单列表";
 }
-
 <h2>@ViewBag.Title</h2>
-
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayName("订单号")
-        </th>
-        <th>
-            @Html.DisplayName("创建时间")
-        </th>
-        <th>
-            @Html.DisplayName("订单所属医院")
-        </th>
-        <th></th>
-    </tr>
-
-    @foreach (var item in Model)
+<div style="margin-top:17px;">
+    @if (Model != null && Model.Content != null)
     {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.PlatformOrderCode)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreateTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ORGName)
-            </td>
+        var grid = new WebGrid(
+                   canPage: true,
+                   rowsPerPage: Model.PageSize,
+                   canSort: true,
+                   ajaxUpdateContainerId: "grid");
 
-            <td>
-                @Html.ActionLink("Edit", "领单", new { /* id=item.PrimaryKey */ })
-            </td>
-        </tr>
+        grid.Bind(Model.Content, rowCount: Model.TotalRecords, autoSortAndPage: false);
+        grid.Pager(WebGridPagerModes.All);
+
+        @grid.GetHtml(htmlAttributes: new { id = "grid" },   // id for ajaxUpdateContainerId parameter
+            fillEmptyRows: false,
+            tableStyle: "table table-bordered table-hover",
+            mode: WebGridPagerModes.All,
+            columns: grid.Columns(
+                                 grid.Column("PlatformOrderCode", "订单号", style: "col-lg-3", canSort: false),
+                                 grid.Column("ORGName", "订单所属医院", style: "col-lg-4", canSort: false),
+                                 grid.Column("Createtime", header: "创建时间", format: @<text>@item.Createtime.ToString("yyyy-MM-dd") </text>, canSort: false),
+                                 grid.Column(header: "操作", canSort: false, style: "action",
+                format: @<text>
+                                    <a href="@Url.Action("Detail", "UploadItem", new { orderID = @item.CodeOrderID })" class="btn btn-default">
+                                        详情
+                                    </a>
+                                    <a href="@Url.Action("Claim", "UnRobItem", new { orderID = @item.CodeOrderID })" class="btn btn-default">
+                                        领单
+                                        <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                                    </a>
+                </text>)));
     }
+    else
+    {
+        //todo  提示没有数据
+    }
+</div>
 
-</table>

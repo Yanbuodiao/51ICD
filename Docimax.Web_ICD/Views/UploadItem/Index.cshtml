@@ -1,4 +1,7 @@
 ﻿@using Docimax.Interface_ICD.Model
+@using PagedList.Mvc
+@using Docimax.Common
+
 @model ICDPagedList<CodeOrderSearchModel, CodeOrderModel>
 
 @{
@@ -14,9 +17,9 @@
 <h2>@ViewBag.Title</h2>
 
 <p>
-    @Html.ActionLink("上传新订单", "Create", new { @class = "btn-primary" })
+    @Html.ActionLink("上传新订单", "Create", null, new { @class = "btn btn-primary", @role = "button" })
 </p>
-@using (Html.BeginForm("index", "UploadItem", FormMethod.Post))
+@using (Html.BeginForm("index", "UploadItem", FormMethod.Get))
 {
     <div class="row">
         <div class="col-sm-11">
@@ -35,28 +38,25 @@
             </button>
         </div>
     </div>
-}
-<div style="margin-top:17px;">
-    @if (Model != null && Model.Content != null)
-    {
-        var grid = new WebGrid(
-                   canPage: true,
-                   rowsPerPage: Model.PageSize,
-                   canSort: true,
-                   ajaxUpdateContainerId: "grid");
-
-        grid.Bind(Model.Content, rowCount: Model.TotalRecords, autoSortAndPage: false);
-        grid.Pager(WebGridPagerModes.All);
-
-        @grid.GetHtml(htmlAttributes: new { id = "grid" },   // id for ajaxUpdateContainerId parameter
+    <div style="margin-top:17px;">
+        @if (Model != null && Model.Content != null)
+        {
+            var grid = new WebGrid(
+                       canPage: true,
+                       rowsPerPage: Model.PageSize,
+                       canSort: false,
+                       ajaxUpdateContainerId: "grid");
+            grid.Bind(Model.Content, rowCount: Model.TotalRecords, autoSortAndPage: false);
+            grid.Pager(WebGridPagerModes.All);
+            @grid.GetHtml(htmlAttributes: new { id = "grid"},  
             fillEmptyRows: false,
             tableStyle: "table table-bordered table-hover",
             mode: WebGridPagerModes.All,
             columns: grid.Columns(
-                                 grid.Column("CaseNum", "病案号", canSort: false),
-                                 grid.Column("PlatformOrderCode", "订单号", style: "col-lg-4", canSort: false),
-                                 grid.Column("OrderStatus", "状态", style: "col-lg-3", canSort: false),
-                                 grid.Column("Createtime", header: "创建时间", format: @<text>@item.Createtime.ToString("yyyy-MM-dd") </text>, canSort: false),
+                                 grid.Column("CaseNum", "病案号", style: "col-lg-3", canSort: false),
+                                 grid.Column("PlatformOrderCode", "订单号", style: "col-lg-2", canSort: false),
+                                 grid.Column("OrderStatus", "状态", style: "col-lg-2", canSort: false),
+                                 grid.Column("Createtime", header: "创建时间", style: "col-lg-2", format: @<text>@item.Createtime.ToString("yyyy-MM-dd") </text>, canSort: false),
                                  grid.Column(header: "操作", canSort: false, style: "action",
                 format: @<text>
                                     <a href="@Url.Action("Detail", "UploadItem", new { orderID = @item.CodeOrderID })" class="btn btn-default">
@@ -67,10 +67,20 @@
                                         <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
                                     </a>
                 </text>)));
-    }
-    else
-    {
-        //todo  提示没有数据
-    }
-</div>
+            @*<div class="pagination">
+                            @Html.PagedListPager(Model.PageList, page => Url.Action("Index", new RouteValueDictionary {
+                       { "Page", page },
+                        //{ "ProductName", Model.ProductName },
+                        //{ "Price", Model.Price }
+                       }),
+                PagedListRenderOptions.PageNumbersOnly)
+        </div>*@
+            @*@grid.PagerList(mode: WebGridPagerModes.All, paginationStyle: "pagination pagination-small pagination-right")*@
+        }
+        else
+        {
+            //todo  提示没有数据
+        }
+        </div>
+}
 

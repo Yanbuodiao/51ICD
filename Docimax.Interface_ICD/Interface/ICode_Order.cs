@@ -23,7 +23,18 @@ namespace Docimax.Interface_ICD.Interface
         /// <param name="isSubmit">是否直接提交 true：直接提交进入待抢单列表  false：部分上传文件 未真正提交</param>
         /// <returns>创建结果</returns>
         ICDExcuteResult SaveNewCodeOrder(CodeOrderModel newCodeOrder, bool isSubmit);
-
+        /// <summary>
+        /// 编码需求方根据一定的查询条件查询符合条件的订单列表
+        /// </summary>
+        /// <param name="queryModel">含查询条件和查询结果的实体</param>
+        /// <returns>符合条件的订单列表</returns>
         ICDPagedList<CodeOrderSearchModel, CodeOrderModel> GetCodeOrderList(ICDPagedList<CodeOrderSearchModel, CodeOrderModel> queryModel);
+
+        /// <summary>
+        /// 获取待抢单的编码订单列表
+        /// </summary>
+        /// <param name="queryModel">含查询条件和查询结果的实体</param>
+        /// <returns>符合条件的订单列表</returns>
+        ICDPagedList<CodeOrderSearchModel, CodeOrderModel> GetUnClaimOrderList(ICDPagedList<CodeOrderSearchModel, CodeOrderModel> queryModel);
     }
 }

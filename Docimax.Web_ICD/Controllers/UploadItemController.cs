@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using PagedList;
 using System.Web.Routing;
 
 namespace Docimax.Web_ICD.Controllers
@@ -15,7 +16,7 @@ namespace Docimax.Web_ICD.Controllers
     [Authorize]
     public class UploadItemController : Controller
     {
-        public ActionResult Index(string TextFilter = null, int page = 1, int pageSize = 10, DateTime? BeginDate = null, DateTime? EndDate = null, ICDOrderState? OrderState = null)
+        public ActionResult Index(string TextFilter = null, int page = 1, int pageSize = 10, DateTime? BeginDate = null, DateTime? EndDate = null, string OrderState = null)
         {
             var model = new ICDPagedList<CodeOrderSearchModel, CodeOrderModel>
             {
@@ -28,11 +29,12 @@ namespace Docimax.Web_ICD.Controllers
             };
             if (OrderState != null)
             {
-                model.SearchModel.OrderState = OrderState ?? ICDOrderState.新创建;
+                //model.SearchModel.OrderState = OrderState ?? ICDOrderState.新创建;
             }
             model.SearchModel.UserID = User.Identity.GetUserId();
             ICode_Order access = new DAL_Code_Order();
             model = access.GetCodeOrderList(model);
+            model.PageList = model.Content.ToPagedList(page, pageSize);
             return View(model);
         }
         public ActionResult Create(string caseNum = null, string notifyStr = null)

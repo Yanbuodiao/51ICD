@@ -1,4 +1,5 @@
 ﻿using System;
+using PagedList;
 using System.Collections.Generic;
 
 namespace Docimax.Interface_ICD.Model
@@ -13,6 +14,7 @@ namespace Docimax.Interface_ICD.Model
         /// 结果实体列表
         /// </summary>
         public List<T> Content { get; set; }
+        public IPagedList<T> PageList { get; set; }
         /// <summary>
         /// 查询条件的开始时间
         /// </summary>
