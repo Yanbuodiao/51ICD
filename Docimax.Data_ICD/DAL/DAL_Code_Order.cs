@@ -148,7 +148,7 @@ namespace Docimax.Data_ICD.DAL
                                  o.ORGSubID,
                                  o.CodeOrderID
                              }).OrderByDescending(e => e.Createtime);
-                var resultQuery = query.Skip((queryModel.CurrentPage - 1) * queryModel.PageSize)
+                var resultQuery = query.Skip((queryModel.Page - 1) * queryModel.PageSize)
                     .Take(queryModel.PageSize)
                     .ToList().Select(e => new CodeOrderModel
                     {
@@ -183,7 +183,7 @@ namespace Docimax.Data_ICD.DAL
                                  o.ORGSubID,
                                  o.CodeOrderID
                              }).OrderByDescending(e => e.Createtime);
-                var resultQuery = query.Skip((queryModel.CurrentPage - 1) * queryModel.PageSize)
+                var resultQuery = query.Skip((queryModel.Page - 1) * queryModel.PageSize)
                     .Take(queryModel.PageSize)
                     .ToList().Select(e => new CodeOrderModel
                     {

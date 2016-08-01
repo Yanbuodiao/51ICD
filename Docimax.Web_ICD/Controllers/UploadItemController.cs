@@ -16,25 +16,18 @@ namespace Docimax.Web_ICD.Controllers
     [Authorize]
     public class UploadItemController : Controller
     {
-        public ActionResult Index(string TextFilter = null, int page = 1, int pageSize = 10, DateTime? BeginDate = null, DateTime? EndDate = null, string OrderState = null)
+        public ActionResult Index(ICDPagedList<CodeOrderSearchModel, CodeOrderModel> model)
         {
-            var model = new ICDPagedList<CodeOrderSearchModel, CodeOrderModel>
+            if (model.SearchModel == null)
             {
-                BeginDate = BeginDate ?? DateTime.Now.Date.AddDays(-2),
-                EndDate = EndDate ?? DateTime.Now.Date,
-                SearchModel = new CodeOrderSearchModel { },
-                CurrentPage = page,
-                TextFilter = TextFilter,
-                PageSize = pageSize,
-            };
-            if (OrderState != null)
-            {
-                //model.SearchModel.OrderState = OrderState ?? ICDOrderState.新创建;
+                model.SearchModel = new CodeOrderSearchModel();
             }
+            model.BeginDate = model.BeginDate < DateTime.Now.AddYears(-50) ? DateTime.Now.Date.AddDays(-2) : model.BeginDate;
+            model.EndDate = model.EndDate < DateTime.Now.AddYears(-50) ? DateTime.Now.Date : model.EndDate;
             model.SearchModel.UserID = User.Identity.GetUserId();
             ICode_Order access = new DAL_Code_Order();
             model = access.GetCodeOrderList(model);
-            model.PageList = model.Content.ToPagedList(page, pageSize);
+            model.PageList = model.Content.ToPagedList(model.Page, model.PageSize);
             return View(model);
         }
         public ActionResult Create(string caseNum = null, string notifyStr = null)

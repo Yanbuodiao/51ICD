@@ -19,7 +19,7 @@ namespace Docimax.Web_ICD.Controllers
                 BeginDate = DateTime.Now.Date.AddDays(-30),
                 EndDate = DateTime.Now.Date,
                 SearchModel = new CodeOrderSearchModel { OrderState = ICDOrderState.待抢单 },
-                CurrentPage = page,
+                Page = page,
                 PageSize = pageSize,
             };
             model.SearchModel.UserID = User.Identity.GetUserId();

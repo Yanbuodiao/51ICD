@@ -28,23 +28,23 @@ namespace Docimax.Interface_ICD.Model
         /// </summary>
         public string TextFilter { get; set; }
 
-        private int currentPage;
+        private int page;
         /// <summary>
         /// 当前页数
         /// </summary>
-        public int CurrentPage
+        public int Page
         {
             get
             {
-                if (currentPage == 0)
+                if (page == 0)
                 {
-                    currentPage = 1;
+                    page = 1;
                 }
-                return currentPage;
+                return page;
             }
             set
             {
-                currentPage = value;
+                page = value;
             }
         }
 
