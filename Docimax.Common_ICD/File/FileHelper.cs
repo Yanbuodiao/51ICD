@@ -89,11 +89,13 @@ namespace Docimax.Common_ICD.File
         /// <returns>上传后文件地址</returns>
         public static string SaveMedicalRecord(HttpPostedFileBase file, string organizationCode, string medicalRecord)
         {
-            return fileAccess.SaveFile(file, string.Format("{0}/{1}/", HttpUtility.UrlEncode(organizationCode, Encoding.UTF8), HttpUtility.UrlEncode(medicalRecord, Encoding.UTF8)));
+            //return fileAccess.SaveFile(file, string.Format("{0}/{1}/", HttpUtility.UrlEncode(organizationCode, Encoding.UTF8), HttpUtility.UrlEncode(medicalRecord, Encoding.UTF8)));
+            return fileAccess.SaveFile(file, string.Format("{0}/{1}/", organizationCode, medicalRecord));
         }
 
         public static byte[] GetFile(string fileURL)
         {
+            //return fileAccess.GetFile(HttpUtility.UrlEncode(fileURL, Encoding.UTF8));
             return fileAccess.GetFile(fileURL);
         }
 

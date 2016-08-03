@@ -20,6 +20,10 @@
         @grid.GetHtml(htmlAttributes: new { id = "grid" },   // id for ajaxUpdateContainerId parameter
             fillEmptyRows: false,
             tableStyle: "table table-bordered table-hover",
+            firstText: "第一页",
+            previousText: "上一页",
+            nextText: "下一页",
+            lastText: "最后一页",
             mode: WebGridPagerModes.All,
             columns: grid.Columns(
                                  grid.Column("PlatformOrderCode", "订单号", style: "col-lg-3", canSort: false),
@@ -27,9 +31,6 @@
                                  grid.Column("Createtime", header: "创建时间", format: @<text>@item.Createtime.ToString("yyyy-MM-dd") </text>, canSort: false),
                                  grid.Column(header: "操作", canSort: false, style: "action",
                 format: @<text>
-                                    <a href="@Url.Action("Detail", "UploadItem", new { orderID = @item.CodeOrderID })" class="btn btn-default">
-                                        详情
-                                    </a>
                                     <a href="@Url.Action("Claim", "UnRobItem", new { orderID = @item.CodeOrderID })" class="btn btn-default">
                                         领单
                                         <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>

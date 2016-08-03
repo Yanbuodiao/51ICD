@@ -17,6 +17,7 @@ namespace Docimax.Data_ICD.Entity
         public int Service_Menu_ID { get; set; }
         public Nullable<int> ServiceID { get; set; }
         public Nullable<int> MenuID { get; set; }
+        public Nullable<int> ServiceType { get; set; }
         public Nullable<System.DateTime> CreateTime { get; set; }
         public string CreateUserID { get; set; }
         public Nullable<System.DateTime> LastModifyTime { get; set; }

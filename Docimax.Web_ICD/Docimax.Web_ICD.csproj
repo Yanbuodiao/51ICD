@@ -343,6 +343,7 @@
     <Content Include="Views\UnRobItem\Index.cshtml" />
     <Content Include="Views\UploadItem\Detail.cshtml" />
     <Content Include="Views\UploadItem\Update.cshtml" />
+    <Content Include="Views\ServiceItem\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -356,7 +357,6 @@
     <Folder Include="Views\ICDItem\" />
     <Folder Include="Views\Menu\" />
     <Folder Include="Views\RolesAdmin\" />
-    <Folder Include="Views\ServiceItem\" />
     <Folder Include="Views\Test\" />
   </ItemGroup>
   <ItemGroup>

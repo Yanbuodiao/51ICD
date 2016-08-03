@@ -3,6 +3,8 @@ using Microsoft.Azure;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
 using System;
+using System.Drawing.Imaging;
+using System.Drawing;
 using System.IO;
 using System.Web;
 
@@ -44,8 +46,41 @@ namespace Docimax.Common_ICD.File
             using (var stream = new MemoryStream())
             {
                 blockBlob.DownloadToStream(stream);
+                using (var img = Image.FromStream(stream))
+                {
+                    if (IsPixelFormatIndexed(img.PixelFormat))
+                    {
+                        using (Bitmap bmp = new Bitmap(img.Width, img.Height, PixelFormat.Format32bppArgb))
+                        {
+                            using (Graphics g = Graphics.FromImage(bmp))
+                            {
+                                g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+                                g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+                                g.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
+                                g.DrawImage(img, new Rectangle(0, 0, img.Width, img.Height), 0, 0, img.Width, img.Height, GraphicsUnit.Pixel);
+                                ImageConverter converter = new ImageConverter();
+                                return (byte[])converter.ConvertTo(bmp, typeof(byte[]));
+                            }
+                        }
+                    }
+                }
                 return stream.ToArray();
             }
         }
+        private static bool IsPixelFormatIndexed(PixelFormat imgPixelFormat)
+        {
+            foreach (PixelFormat pf in indexedPixelFormats)
+            {
+                if (pf.Equals(imgPixelFormat)) return true;
+            }
+            return false;
+        }
+        private static PixelFormat[] indexedPixelFormats = { 
+                                                               PixelFormat.Undefined, 
+                                                               PixelFormat.DontCare,
+                                                               PixelFormat.Format16bppArgb1555,
+                                                               PixelFormat.Format1bppIndexed,
+                                                               PixelFormat.Format4bppIndexed,
+                                                               PixelFormat.Format8bppIndexed };
     }
 }

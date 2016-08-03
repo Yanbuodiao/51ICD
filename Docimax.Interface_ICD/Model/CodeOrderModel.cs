@@ -21,6 +21,9 @@ namespace Docimax.Interface_ICD.Model
         public string ORGSubName { get; set; }
         public int ORGID { get; set; }
         public int ORGSubID { get; set; }
+        public DateTime PickedTime { get; set; }
+        public string PickedUserID { get; set; }
+        public int ServiceID { get; set; }
         /// <summary>
         /// 需要上传的上传项目列表
         /// </summary>

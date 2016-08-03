@@ -14,19 +14,50 @@ namespace Docimax.Data_ICD.DAL
 {
     public class DAL_Code_Order : ICode_Order
     {
+        public CodeOrderModel GetCodeOrderDetail(string userID, int codeOrderID, string serviceName = "ICD编码服务")
+        {
+            var result = GetNewCodeOrder(userID, serviceName);
+            using (var entity = new Entity_Read())
+            {
+                var codeModel = entity.Code_Order.FirstOrDefault(e => e.CodeOrderID == codeOrderID);
+                if (codeModel != null)
+                {
+                    result.CaseNum = codeModel.CaseNum;
+                    result.PlatformOrderCode = codeModel.PlatformOrderCode;
+                    result.CreateTime = codeModel.Createtime;
+                }
+                var codeItems = entity.Code_Order_UploadedItem.Where(e => e.CodeOrderID == codeOrderID && e.DeleteFlag != 1).ToList().Select(p => new UploadedItemModel
+                {
+                    AttachFileName = p.AttachName,
+                    AttachURL = p.AttachURL,
+                    CodeOrderID = codeOrderID,
+                    CodeOrderItemID = p.CodeOrderUploadedItemID,
+                    ContentType = p.ContentType,
+                    ItemID = p.ItemID ?? 0,
+                    GIndex = p.GIndex ?? 0,
+                }).ToList();
+                result.ItemList.ForEach(e => e.UploadedItemList = buildUploadedItems(e, codeItems));
+            }
+            return result;
+        }
+
         public CodeOrderModel GetNewCodeOrder(string userID, string serviceName)
         {
             using (var entity = new Entity_Read())
             {
                 var serviceAuditStatusInt = CertificateState.认证成功.GetHashCode();
-                var userModel = (from u in entity.AspNetUsers.Where(e => e.Id == userID)
-                                 join o in entity.Dic_Organization on u.ORGID equals o.OrganizationID
-                                 select new { u.ORGID, u.SubORGID, o.OrganizationName, o.OrganizationCode }).FirstOrDefault();
+                var orgModel = (from u in entity.AspNetUsers.Where(e => e.Id == userID)
+                                join o in entity.Dic_Organization on u.ORGID equals o.OrganizationID
+                                select new { u.ORGID, u.SubORGID, o.OrganizationName, o.OrganizationCode }).FirstOrDefault();
+                if (orgModel == null)
+                {
+                    return null;
+                }
                 var query = (from org_service in entity.ORG_Service_Config.Where(e => e.ServiceAuditStatus == serviceAuditStatusInt)
                              join org_service_upload in entity.ORG_Service_Item.Where(e => e.DeleteFlag != 1) on org_service.ORGID equals org_service_upload.ORGID
                              join service in entity.Dic_Service.Where(e => e.ServiceName == serviceName) on org_service_upload.ServiceID equals service.ServiceID
                              join upload in entity.Dic_Item on org_service_upload.ItemID equals upload.ItemID
-                             where userModel.ORGID == org_service.ORGID && ((org_service_upload.Sub_ORGID ?? 0) == (userModel.SubORGID ?? 0))
+                             where orgModel.ORGID == org_service.ORGID && ((org_service_upload.Sub_ORGID ?? 0) == (orgModel.SubORGID ?? 0))
                              select new
                              {
                                  upload.ItemID,
@@ -43,13 +74,13 @@ namespace Docimax.Data_ICD.DAL
                                  ItemName = e.ItemName,
                              }).ToList();
                 var result = query.Where(e => e.ParentID == 0).OrderBy(t => t.ItemIndex).ToList();
-                result.ForEach(e => e.ChildrenList = GetUploadItemList(e.ItemID, query));
+                result.ForEach(e => e.ChildrenList = getChildrenItemList(e.ItemID, query));
                 return new CodeOrderModel
                 {
-                    ORGID = userModel.ORGID ?? 0,
-                    ORGName = userModel.OrganizationName,
-                    ORGSubID = userModel.SubORGID ?? 0,
-                    ORGCode = userModel.OrganizationCode,
+                    ORGID = orgModel.ORGID ?? 0,
+                    ORGName = orgModel.OrganizationName,
+                    ORGSubID = orgModel.SubORGID ?? 0,
+                    ORGCode = orgModel.OrganizationCode,
                     ItemList = result
                 };
             }
@@ -73,10 +104,7 @@ namespace Docimax.Data_ICD.DAL
                         {
                             model.LastModifyTime = newCodeOrder.LastModifyTime;
                             model.LastModifyUserID = newCodeOrder.LastModifyUserID;
-                            if (isSubmit)
-                            {
-                                model.OrderStatus = stateInt;
-                            }
+                            if (isSubmit) { model.OrderStatus = stateInt; }
                         }
                         else
                         {
@@ -88,6 +116,7 @@ namespace Docimax.Data_ICD.DAL
                                 CreateUserID = newCodeOrder.CreateUserID,
                                 LastModifyTime = newCodeOrder.LastModifyTime,
                                 LastModifyUserID = newCodeOrder.LastModifyUserID,
+                                ServiceID = newCodeOrder.ServiceID,
                                 ORGID = newCodeOrder.ORGID,
                                 ORGSubID = newCodeOrder.ORGSubID,
                                 PlatformOrderCode = codeNumBuilder.InitCodeNum("01"),
@@ -96,21 +125,7 @@ namespace Docimax.Data_ICD.DAL
                             entity.Code_Order.Add(model);
                             entity.SaveChanges();
                         }
-                        foreach (var item in newCodeOrder.UploadedList)
-                        {
-                            var newUploadedItem = new Code_Order_UploadedItem
-                            {
-                                AttachURL = item.AttachURL,
-                                AttachName = item.AttachFileName,
-                                CodeOrderID = model.CodeOrderID,
-                                ContentType = item.ContentType,
-                                CreateTime = item.CreateTime,
-                                CreateUserID = item.CreateUserID,
-                                GIndex = item.GIndex,
-                                ItemID = item.ItemID,
-                            };
-                            entity.Code_Order_UploadedItem.Add(newUploadedItem);
-                        }
+                        codeOrderSaveUploadedItem(newCodeOrder, entity, model);
                         entity.SaveChanges();
                         trasanction.Commit();
                     }
@@ -125,7 +140,7 @@ namespace Docimax.Data_ICD.DAL
             }
         }
 
-        public ICDPagedList<CodeOrderSearchModel, CodeOrderModel> GetCodeOrderList(ICDPagedList<CodeOrderSearchModel, CodeOrderModel> queryModel)
+        public ICDPagedList<CodeOrderSearchModel, CodeOrderModel> GetUpLoadedCodeOrderList(ICDPagedList<CodeOrderSearchModel, CodeOrderModel> queryModel)
         {
             using (var entity = new Entity_Read())
             {
@@ -200,11 +215,84 @@ namespace Docimax.Data_ICD.DAL
             return queryModel;
         }
 
-        private List<ItemModel> GetUploadItemList(int parentID, List<ItemModel> allResultUploadItems)
+        public ICDPagedList<CodeOrderSearchModel, CodeOrderModel> GetMyCodeOrderList(ICDPagedList<CodeOrderSearchModel, CodeOrderModel> queryModel)
         {
-            var result = allResultUploadItems.Where(p => p.ParentID == parentID).OrderBy(e => e.ItemIndex).ToList();
-            result.ForEach(e => e.ChildrenList = GetUploadItemList(e.ItemID, allResultUploadItems));
+            using (var entity = new Entity_Read())
+            {
+                var endDate = queryModel.EndDate.AddDays(1);
+                var stateInt = queryModel.SearchModel.OrderState.GetHashCode();
+                var query = (from o in entity.Code_Order.Where(e => e.PickedUserID == queryModel.SearchModel.UserID)
+                             where o.Createtime >= queryModel.BeginDate &&
+                             o.Createtime <= endDate &&
+                             (stateInt == 0 ? true : o.OrderStatus == stateInt) &&
+                             (string.IsNullOrEmpty(queryModel.TextFilter) ? true : (o.CaseNum.Contains(queryModel.TextFilter) || o.PlatformOrderCode.Contains(queryModel.TextFilter)))
+                             select new
+                             {
+                                 o.CaseNum,
+                                 o.PlatformOrderCode,
+                                 o.OrderStatus,
+                                 o.Createtime,
+                                 o.ORGID,
+                                 o.ORGSubID,
+                                 o.CodeOrderID
+                             }).OrderByDescending(e => e.Createtime);
+                var resultQuery = query.Skip((queryModel.Page - 1) * queryModel.PageSize)
+                    .Take(queryModel.PageSize)
+                    .ToList().Select(e => new CodeOrderModel
+                    {
+                        CodeOrderID = e.CodeOrderID,
+                        CaseNum = e.CaseNum,
+                        PlatformOrderCode = e.PlatformOrderCode,
+                        CreateTime = e.Createtime ?? DateTime.Now,
+                        ORGID = e.ORGID ?? 0,
+                        OrderStatus = (ICDOrderState)(e.OrderStatus ?? 1000),
+                    }).ToList();
+                queryModel.TotalRecords = query.Count();
+                queryModel.Content = resultQuery;
+            }
+            return queryModel;
+
+        }
+
+        #region Private Function
+
+        private List<ItemModel> getChildrenItemList(int parentID, List<ItemModel> allResultNeedUploadItems)
+        {
+            var result = allResultNeedUploadItems.Where(p => p.ParentID == parentID).OrderBy(e => e.ItemIndex).ToList();
+            result.ForEach(e => e.ChildrenList = getChildrenItemList(e.ItemID, allResultNeedUploadItems));
             return result;
         }
+        private List<UploadedItemModel> buildUploadedItems(ItemModel item, List<UploadedItemModel> allUploadedItemList)
+        {
+            if (item != null)
+            {
+                if (item.ChildrenList != null && item.ChildrenList.Count > 0)
+                {
+                    item.ChildrenList.ForEach(e => e.UploadedItemList = buildUploadedItems(e, allUploadedItemList));
+                }
+                return allUploadedItemList.Where(e => e.ItemID == item.ItemID).OrderBy(p => p.GIndex).ToList();
+            }
+            return null;
+        }
+        private static void codeOrderSaveUploadedItem(CodeOrderModel newCodeOrder, Entity_Write entity, Code_Order model)
+        {
+            foreach (var item in newCodeOrder.UploadedList)
+            {
+                var newUploadedItem = new Code_Order_UploadedItem
+                {
+                    AttachURL = item.AttachURL,
+                    AttachName = item.AttachFileName,
+                    CodeOrderID = model.CodeOrderID,
+                    ContentType = item.ContentType,
+                    CreateTime = item.CreateTime,
+                    CreateUserID = item.CreateUserID,
+                    GIndex = item.GIndex,
+                    ItemID = item.ItemID,
+                };
+                entity.Code_Order_UploadedItem.Add(newUploadedItem);
+            }
+        }
+
+        #endregion
     }
 }

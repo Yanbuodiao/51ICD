@@ -1,6 +1,5 @@
 ﻿using Docimax.Common_ICD.File;
 using Docimax.Data_ICD.DAL;
-using Docimax.Interface_ICD.Enum;
 using Docimax.Interface_ICD.Interface;
 using Docimax.Interface_ICD.Model;
 using Microsoft.AspNet.Identity;
@@ -8,8 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
-using PagedList;
-using System.Web.Routing;
 
 namespace Docimax.Web_ICD.Controllers
 {
@@ -26,18 +23,30 @@ namespace Docimax.Web_ICD.Controllers
             model.EndDate = model.EndDate < DateTime.Now.AddYears(-50) ? DateTime.Now.Date : model.EndDate;
             model.SearchModel.UserID = User.Identity.GetUserId();
             ICode_Order access = new DAL_Code_Order();
-            model = access.GetCodeOrderList(model);
-            model.PageList = model.Content.ToPagedList(model.Page, model.PageSize);
+            model = access.GetUpLoadedCodeOrderList(model);
+            //model.PageList = model.Content.ToPagedList(model.Page, model.PageSize);
             return View(model);
         }
-        public ActionResult Create(string caseNum = null, string notifyStr = null)
+        public ActionResult Create(int orderID = 0, string caseNum = null, string notifyStr = null)
         {
             if (!string.IsNullOrWhiteSpace(caseNum))
             {
                 ViewBag.StatusMessage = string.Format("病案号：{0}{1}", caseNum, notifyStr);
             }
             ICode_Order code_Order_Access = new DAL_Code_Order();
-            var model = code_Order_Access.GetNewCodeOrder(User.Identity.GetUserId(), "ICD编码服务");
+            CodeOrderModel model = null;
+            if (orderID == 0)
+            {
+                model = code_Order_Access.GetNewCodeOrder(User.Identity.GetUserId(), "ICD编码服务");
+                ViewBag.Title = "创建新订单";
+                ViewBag.CaseNumDisabled = true;
+            }
+            else
+            {
+                model = code_Order_Access.GetCodeOrderDetail(User.Identity.GetUserId(), orderID);
+                ViewBag.Title = "订单更新";
+                ViewBag.CaseNumDisabled = false;
+            }
             return View(model);
         }
         [HttpPost]
@@ -51,6 +60,7 @@ namespace Docimax.Web_ICD.Controllers
                 model.LastModifyTime = DateTime.Now;
                 model.CreateUserID = User.Identity.GetUserId();
                 model.LastModifyUserID = User.Identity.GetUserId();
+                model.ServiceID = 1;
                 for (int i = 0; i < Request.Files.Count; i++)
                 {
                     var file = Request.Files[i];
@@ -85,13 +95,20 @@ namespace Docimax.Web_ICD.Controllers
         }
         public ActionResult Detail(int orderID)
         {
-            var model = new CodeOrderModel();
+            ICode_Order access = new DAL_Code_Order();
+            var model = access.GetCodeOrderDetail(User.Identity.GetUserId(), orderID);
             return View(model);
         }
         public ActionResult Update(int orderID)
         {
-            var model = new CodeOrderModel();
+            ICode_Order access = new DAL_Code_Order();
+            var model = access.GetCodeOrderDetail(User.Identity.GetUserId(), orderID);
             return View(model);
+        }
+
+        public ActionResult ShowPic(string picURL, string contentType)
+        {
+            return File(FileHelper.GetFile(picURL), contentType);
         }
     }
 }

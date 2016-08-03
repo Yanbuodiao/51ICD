@@ -16,48 +16,34 @@ namespace Docimax.Data_ICD.DAL
         {
             using (var entity = new Entity_Read())
             {
-                var resultMenus = entity.Dic_Menu.Where(e => (e.RoleControl ?? 0) == 0).Select(p =>
-                    new
-                    {
-                        p.MenuID,
-                        p.DisplayName,
-                        p.AreaName,
-                        p.ControllerName,
-                        p.ActionName,
-                        p.MenuIndex,
-                        p.ParentMenuID,
-                    }).ToList();
+                var resultMenus = entity.Dic_Menu.Where(e => (e.RoleControl ?? 0) == 0);
                 if (!string.IsNullOrWhiteSpace(userID))
                 {
-                    var serviceAuditStatusInt = (int)CertificateState.认证成功;
+                    var serviceAuditStatusInt = CertificateState.认证成功.GetHashCode();
+                    var requestInt = ServiceType.Request.GetHashCode();
+                    var providerInt = ServiceType.Provider.GetHashCode();
                     var userModel = entity.AspNetUsers.FirstOrDefault(e => e.Id == userID && e.CertificationFlag == serviceAuditStatusInt);
                     if (userModel != null)
                     {
-                        var requestService = (from org in entity.Dic_Organization.Where(e => e.DeleteFlag != 1
-                                                  && e.CertificationFlag == serviceAuditStatusInt && e.OrganizationID == userModel.ORGID)
-                                             join org_service in entity.ORG_Service_Config.Where(e => e.ServiceAuditStatus == serviceAuditStatusInt
-                                                  && e.DeleteFlag != 1) on org.OrganizationID equals org_service.ORGID
-                                             select org_service.ServiceID ?? 0).ToList();
-                        var allService = entity.User_Service_Provider.Where(e => e.DeleteFlag != 1 && e.CertificationStatus == serviceAuditStatusInt && e.UserID == userID).
-                                              Select(e => e.ServiceID ?? 0).Concat(requestService).ToList();
-                        resultMenus = resultMenus.Union(from p in entity.Dic_Menu.Where(e => e.DeleteFlag != 1 && (e.RoleControl ?? 0) != 0)
-                                                        join service_menu in entity.Dic_Service_Menu.Where(e => e.DeleteFlag != 1)
-                                                             on p.MenuID equals service_menu.MenuID
-                                                        join service in entity.Dic_Service.Where(e => e.DeleteFlag != 1) on service_menu.ServiceID equals service.ServiceID
-                                                        join s in allService on service.ServiceID equals s
-                                                        select new
-                                                        {
-                                                            p.MenuID,
-                                                            p.DisplayName,
-                                                            p.AreaName,
-                                                            p.ControllerName,
-                                                            p.ActionName,
-                                                            p.MenuIndex,
-                                                            p.ParentMenuID,
-                                                        }).ToList();
+                        var requestMenuIDs = (from org in entity.Dic_Organization.Where(e => e.DeleteFlag != 1
+                                                   && e.CertificationFlag == serviceAuditStatusInt && e.OrganizationID == userModel.ORGID)
+                                              join org_service in entity.ORG_Service_Config.Where(e => e.ServiceAuditStatus == serviceAuditStatusInt
+                                                   && e.DeleteFlag != 1) on org.OrganizationID equals org_service.ORGID
+                                              join service_menu in entity.Dic_Service_Menu.Where(e => e.DeleteFlag != 1 && e.ServiceType == requestInt)
+                                                   on org_service.ServiceID equals service_menu.ServiceID
+                                              select service_menu.MenuID);
+                        var userMenuIDs = (from userProvider in entity.User_Service_Provider.Where(e => e.DeleteFlag != 1
+                                               && e.CertificationStatus == serviceAuditStatusInt && e.UserID == userID)
+                                           join service_menu in entity.Dic_Service_Menu.Where(e => e.DeleteFlag != 1 && e.ServiceType == providerInt)
+                                                on userProvider.ServiceID equals service_menu.ServiceID
+                                           select service_menu.MenuID).Union(requestMenuIDs);
+                        var userMenus=from menuID in userMenuIDs
+                                      join menu in entity.Dic_Menu on menuID equals menu.MenuID
+                                      select menu;
+                        resultMenus = resultMenus.Union(userMenus);
                     }
                 }
-                var allResult = resultMenus.Select(e =>
+                var allResult = resultMenus.ToList().Select(e =>
                   new ICDMenu
                   {
                       MenuID = e.MenuID,

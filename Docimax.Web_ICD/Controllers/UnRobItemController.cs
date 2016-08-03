@@ -12,16 +12,12 @@ namespace Docimax.Web_ICD.Controllers
     public class UnRobItemController : Controller
     {
         // GET: UnRobItem
-        public ActionResult Index(int page = 1, int pageSize = 10)
+        public ActionResult Index(ICDPagedList<CodeOrderSearchModel, CodeOrderModel> model)
         {
-            var model = new ICDPagedList<CodeOrderSearchModel, CodeOrderModel>
+            if (model.SearchModel == null)
             {
-                BeginDate = DateTime.Now.Date.AddDays(-30),
-                EndDate = DateTime.Now.Date,
-                SearchModel = new CodeOrderSearchModel { OrderState = ICDOrderState.待抢单 },
-                Page = page,
-                PageSize = pageSize,
-            };
+                model.SearchModel = new CodeOrderSearchModel { OrderState = ICDOrderState.待抢单 };
+            }
             model.SearchModel.UserID = User.Identity.GetUserId();
             ICode_Order access = new DAL_Code_Order();
             model = access.GetUnClaimOrderList(model);

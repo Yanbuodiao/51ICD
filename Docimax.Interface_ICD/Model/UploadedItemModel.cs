@@ -15,8 +15,5 @@ namespace Docimax.Interface_ICD.Model
         public string ContentType { get; set; }
         public string AttachURL { get; set; }
         public string AttachFileName { get; set; }
-        public string ItemName { get; set; }
-        public string ItemDescription { get; set; }
-        public string PinyinShort { get; set; }
     }
 }
