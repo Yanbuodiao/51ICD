@@ -9,6 +9,6 @@ namespace Docimax.Interface_ICD.Model
         public Nullable<DateTime> LastModifyTime { get; set; }
         public string LastModifyUserID { get; set; }
         public Nullable<int> DeleteFlag { get; set; }
-        public byte[] LastModifyStamp { get; set; }
+        public string LastModifyStamp { get; set; }
     }
 }

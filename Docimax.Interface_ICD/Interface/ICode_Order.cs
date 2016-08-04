@@ -50,5 +50,6 @@ namespace Docimax.Interface_ICD.Interface
         /// <param name="queryModel">查询条件</param>
         /// <returns>符合条件的订单列表</returns>
         ICDPagedList<CodeOrderSearchModel, CodeOrderModel> GetMyCodeOrderList(ICDPagedList<CodeOrderSearchModel, CodeOrderModel> queryModel);
+        ICDExcuteResult<int> ClaimCodeOrder(string userID, string stamp,int codeOrderID);
     }
 }

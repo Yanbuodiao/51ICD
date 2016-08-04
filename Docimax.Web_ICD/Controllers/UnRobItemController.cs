@@ -24,11 +24,16 @@ namespace Docimax.Web_ICD.Controllers
             return View(model);
         }
 
-        public ActionResult Claim(int orderID)
+        public ActionResult Claim(int orderID, string stamp)
         {
             ICode_Order access = new DAL_Code_Order();
-            var model = access.GetCodeOrderDetail(User.Identity.GetUserId(), orderID);
-            return View(model);
+            var result = access.ClaimCodeOrder(User.Identity.GetUserId(), stamp, orderID);
+            if (result.Result)
+            {
+                var model = access.GetCodeOrderDetail(User.Identity.GetUserId(), orderID);
+                return View(model);
+            }
+            return Content(result.ErrorStr);
         }
     }
 }

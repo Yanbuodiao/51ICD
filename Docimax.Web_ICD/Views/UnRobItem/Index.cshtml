@@ -31,7 +31,7 @@
                                  grid.Column("Createtime", header: "创建时间", format: @<text>@item.Createtime.ToString("yyyy-MM-dd") </text>, canSort: false),
                                  grid.Column(header: "操作", canSort: false, style: "action",
                 format: @<text>
-                                    <a href="@Url.Action("Claim", "UnRobItem", new { orderID = @item.CodeOrderID })" class="btn btn-default">
+                                    <a href="@Url.Action("Claim", "UnRobItem", new { orderID = @item.CodeOrderID, stamp = @item.LastModifyStamp })" class="btn btn-default">
                                         领单
                                         <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
                                     </a>

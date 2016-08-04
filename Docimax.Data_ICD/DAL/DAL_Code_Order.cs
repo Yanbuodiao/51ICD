@@ -31,6 +31,7 @@ namespace Docimax.Data_ICD.DAL
                         result.PlatformOrderCode = codeModel.PlatformOrderCode;
                         result.CreateTime = codeModel.Createtime;
                         result.OrderStatus = (ICDOrderState)codeModel.OrderStatus;
+                        result.LastModifyStamp = Convert.ToBase64String(codeModel.LastModifyStamp);
                     }
                     var codeItems = entity.Code_Order_UploadedItem.Where(e => e.CodeOrderID == codeOrderID && e.DeleteFlag != 1).ToList().Select(p => new UploadedItemModel
                     {
@@ -181,7 +182,8 @@ namespace Docimax.Data_ICD.DAL
                                  o.Createtime,
                                  o.ORGID,
                                  o.ORGSubID,
-                                 o.CodeOrderID
+                                 o.CodeOrderID,
+                                 o.LastModifyStamp,
                              }).OrderByDescending(e => e.Createtime);
                 var resultQuery = query.Skip((queryModel.Page - 1) * queryModel.PageSize)
                     .Take(queryModel.PageSize)
@@ -193,6 +195,7 @@ namespace Docimax.Data_ICD.DAL
                         CreateTime = e.Createtime ?? DateTime.Now,
                         ORGID = e.ORGID ?? 0,
                         OrderStatus = (ICDOrderState)(e.OrderStatus ?? 1000),
+                        LastModifyStamp = Convert.ToBase64String(e.LastModifyStamp),
                     }).ToList();
                 queryModel.TotalRecords = query.Count();
                 queryModel.Content = resultQuery;
@@ -237,6 +240,37 @@ namespace Docimax.Data_ICD.DAL
             }
             return queryModel;
 
+        }
+
+        public ICDExcuteResult<int> ClaimCodeOrder(string userID, string stamp, int codeOrderID)
+        {
+            using (var entity = new Entity_Write())
+            {
+                using (var trasanction = entity.Database.BeginTransaction())
+                {
+                    var originStateInt = ICDOrderState.待抢单.GetHashCode();
+                    var newStateInt = ICDOrderState.已接单.GetHashCode();
+                    var model = entity.Code_Order.FirstOrDefault(e => e.CodeOrderID == codeOrderID);
+                    if (model == null)
+                    {
+                        trasanction.Rollback();
+                        return new ICDExcuteResult<int> { Result = false, ErrorStr = "未找到相应的订单" };
+                    }
+                    if (model.OrderStatus != originStateInt || Convert.ToBase64String(model.LastModifyStamp) != stamp)
+                    {
+                        trasanction.Rollback();
+                        return new ICDExcuteResult<int> { Result = false, ErrorStr = "很遗憾，您没有抢到" };
+                    }
+                    model.LastModifyUserID = userID;
+                    model.LastModifyTime = DateTime.Now;
+                    model.OrderStatus = newStateInt;
+                    model.PickedUserID = userID;
+                    model.PickedTime = DateTime.Now;
+                    entity.SaveChanges();
+                    trasanction.Commit();
+                }
+                return new ICDExcuteResult<int> { Result = true, TResult = codeOrderID };
+            }
         }
 
         #region Private Function
