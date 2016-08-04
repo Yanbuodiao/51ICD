@@ -1,0 +1,72 @@
+﻿@model Docimax.Interface_ICD.Model.CodeOrderModel
+@{
+    ViewBag.Title = "订单编码";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<div class="form-horizontal">
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.CodeOrderID)
+    <div class="form-group">
+        @Html.Label("病案号", htmlAttributes: new { @class = "control-label col-md-3" })
+        <div class="col-md-9">
+            @Html.EditorFor(model => model.CaseNum, new { htmlAttributes = new { @class = "form-control", @id = "caseNum", @disabled = "true" } })
+        </div>
+    </div>
+    @if (Model != null && Model.ItemList != null)
+    {
+        foreach (var item in Model.ItemList)
+        {
+            if (item.ChildrenList != null && item.ChildrenList.Count > 0)
+            {
+                <div class="form-group">
+                    @Html.Label(item.ItemName, htmlAttributes: new { @class = "control-label col-md-3" })
+                </div>
+                foreach (var uploaditem in item.ChildrenList)
+                {
+                    <div class="form-group">
+                        @Html.Label(uploaditem.ItemName, htmlAttributes: new { @class = "control-label col-md-5" })
+                    </div>
+                    foreach (var file in uploaditem.UploadedItemList)
+                    {
+                        <div class="col-md-offset-5">
+                            <a style="cursor: pointer;" data-url="@file.AttachURL" data-contenttype="@file.ContentType" onclick="showPic(this)">@file.AttachFileName</a>
+                        </div>
+                    }
+                }
+            }
+            else
+            {
+                <div class="form-group">
+                    @Html.Label(item.ItemName, htmlAttributes: new { @class = "control-label col-md-3" })
+                </div>
+                foreach (var file in item.UploadedItemList)
+                {
+                    <div class="col-md-offset-3">
+                        <a style="cursor: pointer;" data-url="@file.AttachURL" data-contenttype="@file.ContentType" onclick="showPic(this)">@file.AttachFileName</a>
+                    </div>
+                }
+            }
+        }
+    }
+</div>
+
+<div class="modal  fade" id="showPixModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <img id="pic" class="img-thumbnail" onclick="hidePix()" />
+    </div>
+</div>
+<script type="text/javascript">
+    function showPic(el) {
+        var picURL = $(el).attr("data-url");
+        var contentType = $(el).attr("data-contenttype");
+        var newSrc = "@Url.Action("ShowPic", "UploadItem")?picURL=" + picURL + "&contentType=" + contentType;
+        $("#showPixModal").modal('show');
+        $("#pic").attr("src", newSrc);
+    };
+    function hidePix() {
+        $("#showPixModal").modal('hide');
+    }
+</script>

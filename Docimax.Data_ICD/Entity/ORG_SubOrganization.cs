@@ -18,7 +18,7 @@ namespace Docimax.Data_ICD.Entity
         public Nullable<int> SubORGCode { get; set; }
         public string SubORGName { get; set; }
         public string SubORGAddress { get; set; }
-        public string ORGID { get; set; }
+        public Nullable<int> ORGID { get; set; }
         public Nullable<System.DateTime> CreateTime { get; set; }
         public string CreateUserID { get; set; }
         public Nullable<System.DateTime> LastModifyTime { get; set; }

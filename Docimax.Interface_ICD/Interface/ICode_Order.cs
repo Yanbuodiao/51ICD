@@ -14,9 +14,8 @@ namespace Docimax.Interface_ICD.Interface
         /// </summary>
         /// <param name="userID">当前登录用户ID</param>
         /// <param name="codeOrderID">订单号</param>
-        /// <param name="serviceName">订单所属服务名称</param>
         /// <returns>订单详情实体</returns>
-        CodeOrderModel GetCodeOrderDetail(string userID, int codeOrderID, string serviceName = "ICD编码服务");
+        CodeOrderModel GetCodeOrderDetail(string userID, int codeOrderID);
         /// <summary>
         /// 根据用户ID和用户使用的服务获取该服务下的订单模板（主要指含需要上传的文件列表）
         /// </summary>
@@ -30,7 +29,7 @@ namespace Docimax.Interface_ICD.Interface
         /// <param name="newCodeOrder">新订单实体类</param>
         /// <param name="isSubmit">是否直接提交 true：直接提交进入待抢单列表  false：部分上传文件 未真正提交</param>
         /// <returns>创建结果</returns>
-        ICDExcuteResult SaveNewCodeOrder(CodeOrderModel newCodeOrder, bool isSubmit);
+        ICDExcuteResult<int> SaveNewCodeOrder(CodeOrderModel newCodeOrder, bool isSubmit);
         /// <summary>
         /// 编码需求方根据一定的查询条件查询符合条件的订单列表
         /// </summary>

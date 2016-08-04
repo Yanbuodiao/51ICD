@@ -69,7 +69,7 @@
                                     </a>
                                     @if (item.OrderStatus.GetHashCode() < 10000)
                                     {
-                                        <a href="@Url.Action("Create", "UploadItem", new { orderID = @item.CodeOrderID })" class="btn btn-default">
+                                        <a href="@Url.Action("Update", "UploadItem", new { orderID = @item.CodeOrderID })" class="btn btn-default">
                                             补充信息
                                             <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
                                         </a>

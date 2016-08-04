@@ -7,6 +7,7 @@ using Docimax.Interface_ICD.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -14,31 +15,38 @@ namespace Docimax.Data_ICD.DAL
 {
     public class DAL_Code_Order : ICode_Order
     {
-        public CodeOrderModel GetCodeOrderDetail(string userID, int codeOrderID, string serviceName = "ICD编码服务")
+        public CodeOrderModel GetCodeOrderDetail(string userID, int codeOrderID)
         {
-            var result = GetNewCodeOrder(userID, serviceName);
             using (var entity = new Entity_Read())
             {
                 var codeModel = entity.Code_Order.FirstOrDefault(e => e.CodeOrderID == codeOrderID);
-                if (codeModel != null)
+                if (checkUserCanViewOrder(userID, codeModel))
                 {
-                    result.CaseNum = codeModel.CaseNum;
-                    result.PlatformOrderCode = codeModel.PlatformOrderCode;
-                    result.CreateTime = codeModel.Createtime;
+                    var result = getCodeOrderTemplate((e => e.OrganizationID == codeModel.ORGID),
+                        (e => e.ServiceID == codeModel.ServiceID),
+                        (e => e.SubORGID == codeModel.ORGSubID));
+                    if (codeModel != null)
+                    {
+                        result.CaseNum = codeModel.CaseNum;
+                        result.PlatformOrderCode = codeModel.PlatformOrderCode;
+                        result.CreateTime = codeModel.Createtime;
+                        result.OrderStatus = (ICDOrderState)codeModel.OrderStatus;
+                    }
+                    var codeItems = entity.Code_Order_UploadedItem.Where(e => e.CodeOrderID == codeOrderID && e.DeleteFlag != 1).ToList().Select(p => new UploadedItemModel
+                    {
+                        AttachFileName = p.AttachName,
+                        AttachURL = p.AttachURL,
+                        CodeOrderID = codeOrderID,
+                        CodeOrderItemID = p.CodeOrderUploadedItemID,
+                        ContentType = p.ContentType,
+                        ItemID = p.ItemID ?? 0,
+                        GIndex = p.GIndex ?? 0,
+                    }).ToList();
+                    result.ItemList.ForEach(e => e.UploadedItemList = buildUploadedItems(e, codeItems));
+                    return result;
                 }
-                var codeItems = entity.Code_Order_UploadedItem.Where(e => e.CodeOrderID == codeOrderID && e.DeleteFlag != 1).ToList().Select(p => new UploadedItemModel
-                {
-                    AttachFileName = p.AttachName,
-                    AttachURL = p.AttachURL,
-                    CodeOrderID = codeOrderID,
-                    CodeOrderItemID = p.CodeOrderUploadedItemID,
-                    ContentType = p.ContentType,
-                    ItemID = p.ItemID ?? 0,
-                    GIndex = p.GIndex ?? 0,
-                }).ToList();
-                result.ItemList.ForEach(e => e.UploadedItemList = buildUploadedItems(e, codeItems));
+                return null;
             }
-            return result;
         }
 
         public CodeOrderModel GetNewCodeOrder(string userID, string serviceName)
@@ -53,40 +61,13 @@ namespace Docimax.Data_ICD.DAL
                 {
                     return null;
                 }
-                var query = (from org_service in entity.ORG_Service_Config.Where(e => e.ServiceAuditStatus == serviceAuditStatusInt)
-                             join org_service_upload in entity.ORG_Service_Item.Where(e => e.DeleteFlag != 1) on org_service.ORGID equals org_service_upload.ORGID
-                             join service in entity.Dic_Service.Where(e => e.ServiceName == serviceName) on org_service_upload.ServiceID equals service.ServiceID
-                             join upload in entity.Dic_Item on org_service_upload.ItemID equals upload.ItemID
-                             where orgModel.ORGID == org_service.ORGID && ((org_service_upload.Sub_ORGID ?? 0) == (orgModel.SubORGID ?? 0))
-                             select new
-                             {
-                                 upload.ItemID,
-                                 upload.ItemIndex,
-                                 upload.ItemName,
-                                 ParentID = upload.ParentID ?? 0,
-                                 upload.ItemDescription
-                             }).ToList().Select(e => new ItemModel
-                             {
-                                 ParentID = e.ParentID,
-                                 ItemDescription = e.ItemDescription,
-                                 ItemID = e.ItemID,
-                                 ItemIndex = e.ItemIndex,
-                                 ItemName = e.ItemName,
-                             }).ToList();
-                var result = query.Where(e => e.ParentID == 0).OrderBy(t => t.ItemIndex).ToList();
-                result.ForEach(e => e.ChildrenList = getChildrenItemList(e.ItemID, query));
-                return new CodeOrderModel
-                {
-                    ORGID = orgModel.ORGID ?? 0,
-                    ORGName = orgModel.OrganizationName,
-                    ORGSubID = orgModel.SubORGID ?? 0,
-                    ORGCode = orgModel.OrganizationCode,
-                    ItemList = result
-                };
+                return getCodeOrderTemplate((e => e.OrganizationID == orgModel.ORGID),
+                         (e => e.ServiceName == serviceName),
+                         (e => e.SubORGID == orgModel.SubORGID));
             }
         }
 
-        public ICDExcuteResult SaveNewCodeOrder(CodeOrderModel newCodeOrder, bool isSubmit)
+        public ICDExcuteResult<int> SaveNewCodeOrder(CodeOrderModel newCodeOrder, bool isSubmit)
         {
             using (var entity = new Entity_Write())
             {
@@ -94,17 +75,20 @@ namespace Docimax.Data_ICD.DAL
                 {
                     if (newCodeOrder == null)
                     {
-                        return new ICDExcuteResult { Result = false, ErrorStr = "订单实体不能为空" };
+                        return new ICDExcuteResult<int> { Result = false, ErrorStr = "订单实体不能为空" };
                     }
                     var stateInt = isSubmit ? ICDOrderState.待抢单.GetHashCode() : ICDOrderState.新创建.GetHashCode();
                     try
                     {
-                        var model = entity.Code_Order.FirstOrDefault(e => e.CaseNum == newCodeOrder.CaseNum && e.ORGID == newCodeOrder.ORGID && e.ORGSubID == newCodeOrder.ORGSubID);
+                        var model = entity.Code_Order.FirstOrDefault(e => (newCodeOrder.CodeOrderID > 0) ? e.CodeOrderID == newCodeOrder.CodeOrderID : e.CaseNum == newCodeOrder.CaseNum && e.ORGID == newCodeOrder.ORGID && e.ORGSubID == newCodeOrder.ORGSubID);
                         if (model != null)
                         {
                             model.LastModifyTime = newCodeOrder.LastModifyTime;
                             model.LastModifyUserID = newCodeOrder.LastModifyUserID;
-                            if (isSubmit) { model.OrderStatus = stateInt; }
+                            if (model.OrderStatus <= stateInt)
+                            {
+                                model.OrderStatus = stateInt;
+                            }
                         }
                         else
                         {
@@ -124,6 +108,7 @@ namespace Docimax.Data_ICD.DAL
                             };
                             entity.Code_Order.Add(model);
                             entity.SaveChanges();
+                            newCodeOrder.CodeOrderID = model.CodeOrderID;
                         }
                         codeOrderSaveUploadedItem(newCodeOrder, entity, model);
                         entity.SaveChanges();
@@ -133,9 +118,9 @@ namespace Docimax.Data_ICD.DAL
                     {
                         trasanction.Rollback();
                         //todo 记录错误日志
-                        return new ICDExcuteResult { Result = false, ErrorStr = "系统正忙，稍候再试" };
+                        return new ICDExcuteResult<int> { Result = false, ErrorStr = "系统正忙，稍候再试" };
                     }
-                    return new ICDExcuteResult { Result = true };
+                    return new ICDExcuteResult<int> { Result = true, TResult = newCodeOrder.CodeOrderID };
                 }
             }
         }
@@ -290,6 +275,64 @@ namespace Docimax.Data_ICD.DAL
                     ItemID = item.ItemID,
                 };
                 entity.Code_Order_UploadedItem.Add(newUploadedItem);
+            }
+        }
+        private CodeOrderModel getCodeOrderTemplate(Expression<Func<Dic_Organization, bool>> org_Conditions,
+            Expression<Func<Dic_Service, bool>> s_Conditions,
+            Expression<Func<ORG_SubOrganization, bool>> sub_Conditions)
+        {
+            using (var entity = new Entity_Read())
+            {
+                var successStatusInt = CertificateState.认证成功.GetHashCode();
+                var orgModel = (from org in entity.Dic_Organization.Where(e => e.DeleteFlag != 1).Where(org_Conditions)
+                                join sub in entity.ORG_SubOrganization.Where(e => e.DeleteFlag != 1).Where(sub_Conditions)
+                                     on org.OrganizationID equals sub.ORGID into newSubOrganization
+                                from p in newSubOrganization.DefaultIfEmpty()
+                                select new { org.OrganizationID, SubORGID = p != null ? p.SubORGID : 0, org.OrganizationName, org.OrganizationCode }).FirstOrDefault();
+                if (orgModel == null)
+                {
+                    return null;
+                }
+                var query = (from org_Ser in entity.ORG_Service_Config.Where(e => e.ServiceAuditStatus == successStatusInt && e.EndTime > DateTime.Now)
+                             join ser in entity.Dic_Service.Where(s_Conditions).Where(e => e.DeleteFlag != 1) on org_Ser.ServiceID equals ser.ServiceID
+                             join org_Ser_item in entity.ORG_Service_Item.Where(e => e.DeleteFlag != 1) on org_Ser.ORGID equals org_Ser_item.ORGID
+                             join upload in entity.Dic_Item on org_Ser_item.ItemID equals upload.ItemID
+                             where orgModel.OrganizationID == org_Ser.ORGID && ((org_Ser_item.Sub_ORGID ?? 0) == orgModel.SubORGID)
+                             select upload).ToList().Select(e => new ItemModel
+                             {
+                                 ParentID = e.ParentID ?? 0,
+                                 ItemDescription = e.ItemDescription,
+                                 ItemID = e.ItemID,
+                                 ItemIndex = e.ItemIndex,
+                                 ItemName = e.ItemName,
+                             }).ToList();
+                var result = query.Where(e => e.ParentID == 0).OrderBy(t => t.ItemIndex).ToList();
+                result.ForEach(e => e.ChildrenList = getChildrenItemList(e.ItemID, query));
+                return new CodeOrderModel
+                {
+                    ORGID = orgModel.OrganizationID,
+                    ORGName = orgModel.OrganizationName,
+                    ORGSubID = orgModel.SubORGID,
+                    ORGCode = orgModel.OrganizationCode,
+                    ItemList = result
+                };
+            }
+        }
+
+        private bool checkUserCanViewOrder(string userID, Code_Order order)
+        {
+            if (order.PickedUserID == userID)
+            {
+                return true;
+            }
+            using (var entity = new Entity_Read())
+            {
+                var user = entity.AspNetUsers.FirstOrDefault(e => e.Id == userID);
+                if (user != null)
+                {
+                    return user.ORGID == order.ORGID && ((user.SubORGID ?? 0) == (order.ORGSubID ?? 0));
+                }
+                return false;
             }
         }
 

@@ -450,7 +450,7 @@
           <Property Name="SubORGCode" Type="int" />
           <Property Name="SubORGName" Type="nvarchar" MaxLength="300" />
           <Property Name="SubORGAddress" Type="nvarchar" MaxLength="300" />
-          <Property Name="ORGID" Type="nvarchar" MaxLength="300" />
+          <Property Name="ORGID" Type="int" />
           <Property Name="CreateTime" Type="datetime" />
           <Property Name="CreateUserID" Type="nvarchar" MaxLength="128" />
           <Property Name="LastModifyTime" Type="datetime" />
@@ -1168,7 +1168,7 @@
           <Property Name="SubORGCode" Type="Int32" />
           <Property Name="SubORGName" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
           <Property Name="SubORGAddress" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
-          <Property Name="ORGID" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="ORGID" Type="Int32" />
           <Property Name="CreateTime" Type="DateTime" Precision="3" />
           <Property Name="CreateUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="LastModifyTime" Type="DateTime" Precision="3" />

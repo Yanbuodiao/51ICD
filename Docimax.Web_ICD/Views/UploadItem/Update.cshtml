@@ -1,8 +1,64 @@
 ﻿@model Docimax.Interface_ICD.Model.CodeOrderModel
 
-@{
-    ViewBag.Title = "补充信息";
-}
-
 <h2>@ViewBag.Title</h2>
+<p class="text-success">@ViewBag.StatusMessage</p>
 
+@using (Html.BeginForm("Update", "UploadItem", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.CodeOrderID)
+    <div class="form-horizontal">
+        <hr />
+        <div class="navbar-fixed-bottom icd-fixed-bottom">
+            <div class="col-md-offset-8 col-md-5">
+                <input type="submit" value="保存" name="save" id="save" class="btn btn-primary" />
+                @if (Model.OrderStatus == Docimax.Interface_ICD.Enum.ICDOrderState.新创建)
+                {
+                    <input type="submit" value="提交" name="submit" id="submit" class=" btn btn-default" />
+                }
+            </div>
+        </div>
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.Label("病案号", htmlAttributes: new { @class = "control-label col-md-3" })
+            <div class="col-md-9">
+                @Html.EditorFor(model => model.CaseNum, new { htmlAttributes = new { @class = "form-control", @id = "caseNum", @disabled = "true" } })
+                @Html.HiddenFor(model => model.CaseNum)
+            </div>
+        </div>
+        @if (Model != null && Model.ItemList != null)
+        {
+            foreach (var item in Model.ItemList)
+            {
+                if (item.ChildrenList != null && item.ChildrenList.Count > 0)
+                {
+                    <div class="form-group">
+                        @Html.Label(item.ItemName, htmlAttributes: new { @class = "control-label col-md-3" })
+                    </div>
+                    foreach (var uploaditem in item.ChildrenList)
+                    {
+                        <div class="row form-group">
+                            @Html.Label(uploaditem.ItemName, htmlAttributes: new { @class = "control-label col-md-5" })
+                            <input type="file" d=@uploaditem.ItemID name=@uploaditem.ItemID accept=".tif,.jpg,jpeg,.jpe,.jp2" multiple class="form-control" />
+                        </div>
+                    }
+                }
+                else
+                {
+                    <div class="form-group">
+                        @Html.Label(item.ItemName, htmlAttributes: new { @class = "control-label col-md-3" })
+                        <div class="col-md-9">
+                            <input type="file" id=@item.ItemID name=@item.ItemID accept=".jpg,jpeg,.jpe,.jp2,.tif" multiple class="form-control" />
+                        </div>
+                    </div>
+                }
+            }
+        }
+    </div>
+}
+<div>
+    @Html.ActionLink("返回订单列表", "Index")
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

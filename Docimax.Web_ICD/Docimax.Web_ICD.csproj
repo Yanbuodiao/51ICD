@@ -344,6 +344,7 @@
     <Content Include="Views\UploadItem\Detail.cshtml" />
     <Content Include="Views\UploadItem\Update.cshtml" />
     <Content Include="Views\ServiceItem\Index.cshtml" />
+    <Content Include="Views\UnRobItem\Claim.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

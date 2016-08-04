@@ -9,7 +9,7 @@ namespace Docimax.Interface_ICD.Model
     /// <summary>
     /// 执行结果类
     /// </summary>
-    public class ICDExcuteResult
+    public class ICDExcuteResult<T>
     {
         /// <summary>
         /// 执行结果
@@ -19,5 +19,7 @@ namespace Docimax.Interface_ICD.Model
         /// 出现错误时，错误提示
         /// </summary>
         public string ErrorStr { get; set; }
+
+        public T TResult { get; set; }
     }
 }

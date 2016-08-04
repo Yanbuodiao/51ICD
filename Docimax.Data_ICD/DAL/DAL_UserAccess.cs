@@ -8,7 +8,7 @@ namespace Docimax.Data_ICD.DAL
 {
     public class DAL_UserAccess : IUserAccess
     {
-        public ICDExcuteResult ApplyIdentityVerify(VerifyIdentityModel model)
+        public ICDExcuteResult<int> ApplyIdentityVerify(VerifyIdentityModel model)
         {
             using (var entity = new Entity_Write())
             {
@@ -17,12 +17,12 @@ namespace Docimax.Data_ICD.DAL
                     var user = entity.AspNetUsers.FirstOrDefault(e => e.Id == model.UserID);
                     if (user == null)
                     {
-                        return new ICDExcuteResult { Result = false, ErrorStr = "未获得当前用户信息", };
+                        return new ICDExcuteResult<int> { Result = false, ErrorStr = "未获得当前用户信息", };
                     }
                     var applyInt = CertificateState.未认证.GetHashCode();
                     if (user.CertificationFlag != model.CertificateFlag.GetHashCode())
                     {
-                        return new ICDExcuteResult { Result = false, ErrorStr = "已经发起过实名认证申请", };
+                        return new ICDExcuteResult<int> { Result = false, ErrorStr = "已经发起过实名认证申请", };
                     }
                     user.CertificationFlag = model.CertificateFlag.GetHashCode();
                     user.RealName = model.RealName;
@@ -43,7 +43,7 @@ namespace Docimax.Data_ICD.DAL
                         entity.User_Attach.Add(userAttach);
                     }
                     entity.SaveChanges();
-                    return new ICDExcuteResult { Result = true };
+                    return new ICDExcuteResult<int> { Result = true };
                 }
             }
         }
