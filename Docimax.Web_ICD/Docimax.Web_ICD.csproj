@@ -296,6 +296,9 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\_references.js" />
+    <Content Include="Views\ServiceItem\Code.cshtml">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="Views\Web.config" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
@@ -344,7 +347,6 @@
     <Content Include="Views\UploadItem\Detail.cshtml" />
     <Content Include="Views\UploadItem\Update.cshtml" />
     <Content Include="Views\ServiceItem\Index.cshtml" />
-    <Content Include="Views\UnRobItem\Claim.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

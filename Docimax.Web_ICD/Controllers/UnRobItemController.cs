@@ -30,8 +30,7 @@ namespace Docimax.Web_ICD.Controllers
             var result = access.ClaimCodeOrder(User.Identity.GetUserId(), stamp, orderID);
             if (result.Result)
             {
-                var model = access.GetCodeOrderDetail(User.Identity.GetUserId(), orderID);
-                return View(model);
+                return RedirectToAction("Code", "ServiceItem", new { orderID = orderID });
             }
             return Content(result.ErrorStr);
         }

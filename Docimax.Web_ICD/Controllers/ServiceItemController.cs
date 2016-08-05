@@ -24,5 +24,12 @@ namespace Docimax.Web_ICD.Controllers
             model = access.GetMyCodeOrderList(model);
             return View(model);
         }
+
+        public ActionResult Code(int orderID)
+        {
+            ICode_Order access = new DAL_Code_Order();
+            var model = access.GetCodeOrderDetail(User.Identity.GetUserId(), orderID);
+            return View(model);
+        }
     }
 }
