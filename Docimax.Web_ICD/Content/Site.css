@@ -6,7 +6,7 @@
 /* Set padding to keep content from hitting the edges */
 .body-content {
     padding-left: 15px;
-    padding-right: 0px;
+    padding-right: 15px;
 }
 
 /* Override the default bootstrap behavior where horizontal description lists 
@@ -50,9 +50,10 @@ textarea {
     width: 220px;
     min-height: 20px;
     padding-top: 2px;
-    margin-bottom: 20px;
     background-color: #f5f5f5;
     border: 1px solid #e3e3e3;
+    margin-left: 0px;
+    margin-bottom: 15px;
     border-radius: 4px;
     -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .05);
     box-shadow: inset 0 1px 1px rgba(0, 0, 0, .05);
@@ -60,7 +61,7 @@ textarea {
 
 @media (min-width: 1200px) {
     .span3 {
-        width: 260px;
+        width: 230px;
     }
 }
 
@@ -73,7 +74,7 @@ textarea {
 }
 
 .nav-list {
-    padding-left: 10px;
+    padding-left: 0px;
     padding-right: 0px;
     margin-bottom: 0;
 }
@@ -87,15 +88,17 @@ textarea {
     font-size: 13px;
     font-weight: bold;
     line-height: 20px;
-    /*color: #999999;*/
-    /*text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);*/
-    /*text-transform: uppercase;*/
 }
+
+    .nav-header.first-level {
+        padding-left: 5px;
+        padding-top: 0px;
+    }
 
 .nav.nav-list > li > a {
     position: relative;
     display: block;
-    padding-left: 20px;
+    padding-left: 30px;
     padding-top: 3px;
     padding-bottom: 0px;
 }

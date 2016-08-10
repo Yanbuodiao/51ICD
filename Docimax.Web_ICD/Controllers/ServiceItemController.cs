@@ -29,6 +29,23 @@ namespace Docimax.Web_ICD.Controllers
         {
             ICode_Order access = new DAL_Code_Order();
             var model = access.GetCodeOrderDetail(User.Identity.GetUserId(), orderID);
+            model.OperateList = new System.Collections.Generic.List<Code_Operate> { 
+                new Code_Operate{},
+                new Code_Operate{},
+                new Code_Operate{},
+            };
+            model.DiagnosisList = new System.Collections.Generic.List<Code_Diagnosis> { 
+                new Code_Diagnosis{},
+                new Code_Diagnosis{},
+                new Code_Diagnosis{}
+            };
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Code(CodeOrderModel model)
+        {
             return View(model);
         }
     }
