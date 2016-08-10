@@ -33,11 +33,15 @@ namespace Docimax.Web_ICD.Controllers
                 new Code_Operate{},
                 new Code_Operate{},
                 new Code_Operate{},
+                new Code_Operate{},
+                new Code_Operate{},
             };
             model.DiagnosisList = new System.Collections.Generic.List<Code_Diagnosis> { 
                 new Code_Diagnosis{},
                 new Code_Diagnosis{},
-                new Code_Diagnosis{}
+                new Code_Diagnosis{},
+                new Code_Diagnosis{},
+                new Code_Diagnosis{},
             };
             return View(model);
         }

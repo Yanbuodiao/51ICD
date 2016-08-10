@@ -51,6 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DAL\DAL_Code_Order.cs" />
+    <Compile Include="DAL\DAL_ICDRepository.cs" />
     <Compile Include="DAL\DAL_Menu.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -87,7 +88,10 @@
     <Compile Include="Entity\BaseDic_Code_History.cs">
       <DependentUpon>Entity_Read.tt</DependentUpon>
     </Compile>
-    <Compile Include="Entity\BaseDic_ICD_Repository.cs">
+    <Compile Include="Entity\BaseDic_ICD_Diagnosis_Repository.cs">
+      <DependentUpon>Entity_Read.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\BaseDic_ICD_Operate_Repository.cs">
       <DependentUpon>Entity_Read.tt</DependentUpon>
     </Compile>
     <Compile Include="Entity\BaseDic_ICD_Version.cs">

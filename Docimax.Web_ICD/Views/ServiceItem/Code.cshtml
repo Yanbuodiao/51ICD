@@ -1,6 +1,6 @@
 ﻿@model Docimax.Interface_ICD.Model.CodeOrderModel
-<script type="text/javascript" src="~/Scripts/bootstrap-datepicker.js"></script>
 <script type="text/javascript" src="~/Scripts/typeahead.bundle.js"></script>
+<script type="text/javascript" src="~/Scripts/handlebars.js"></script>
 <h2>@ViewBag.Title</h2>
 <p class="text-success">@ViewBag.StatusMessage</p>
 <script>
@@ -8,7 +8,29 @@
         $('.tree-toggle').click(function () {
             $(this).parent().children('ul.tree').toggle(200);
         });
+
+        var remote_cities = new Bloodhound({
+            datumTokenizer: Bloodhound.tokenizers.obj.whitespace('CityName'),
+            queryTokenizer: Bloodhound.tokenizers.whitespace,
+            // 在文本框输入字符时才发起请求 '/Test/GetCities?q=%QUERY'
+            remote: {
+                url: '/Dictionary/ICD_Diagnosis_Typeahead?queryStr=%QUERY',
+                wildcard: '%QUERY'
+            },
+        });
+
+        remote_cities.initialize();
+
+        $('.typeahead').typeahead(null, {
+            name: 'diagnosis',
+            display: 'DisplayText',
+            source: remote_cities.ttAdapter(),
+            templates: {
+                suggestion: Handlebars.compile('<div><strong>{{ICD_Code}}</strong> – {{ICD_Name}}</div>')
+            }
+        });
     });
+
     function showPic(el) {
         var picURL = $(el).attr("data-url");
         var contentType = $(el).attr("data-contenttype");
@@ -73,16 +95,12 @@
         <div style="padding-left:3px;padding-right:3px;display:inline">
             <img id="pic" src="" width="600" height="800" style="border:1px;" />
         </div>
-        <div style="display:inline-block; position: fixed;">
+        <div class="col-md-5" style="display:inline-block; position: fixed;">
             <h4>出院诊断</h4>
             @for (var themeIndex = 0; themeIndex < Model.DiagnosisList.Count(); themeIndex++)
             {
-                <div class="form-group">
-                    <div class="col-md-4">
-                        @Html.TextBoxFor(model => model.DiagnosisList[themeIndex].ICD_Code, new { @class = "form-control", @placeholder = "ICD编码" })
-                    </div>
-                    @Html.TextBoxFor(model => model.DiagnosisList[themeIndex].ICD_Content, new { @class = "form-control", @placeholder = "诊断" })
-                </div>
+                @Html.TextBoxFor(model => model.DiagnosisList[themeIndex].ICD_Content, new { @class = "form-control typeahead", @placeholder = "请输出诊断或编码", @style = "max-width: 480px;" })
+
             }
             <h4>手术操作</h4>
             @for (var themeIndex = 0; themeIndex < Model.OperateList.Count(); themeIndex++)

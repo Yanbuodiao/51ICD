@@ -124,7 +124,7 @@
           <Property Name="CodeNum" Type="nvarchar" MaxLength="20" />
           <Property Name="CreateDateTime" Type="datetime" />
         </EntityType>
-        <EntityType Name="BaseDic_ICD_Repository">
+        <EntityType Name="BaseDic_ICD_Diagnosis_Repository">
           <Key>
             <PropertyRef Name="ICDID" />
           </Key>
@@ -132,6 +132,25 @@
           <Property Name="ICD_Code" Type="nvarchar" MaxLength="300" />
           <Property Name="ICD_Name" Type="nvarchar" MaxLength="300" />
           <Property Name="ICD_VersionID" Type="int" />
+          <Property Name="ICD_Description" Type="nvarchar" MaxLength="500" />
+          <Property Name="PinyinShort" Type="nvarchar" MaxLength="300" />
+          <Property Name="CreateTime" Type="datetime" />
+          <Property Name="CreateUserID" Type="nvarchar" MaxLength="128" />
+          <Property Name="LastModifyTime" Type="datetime" />
+          <Property Name="LastModifyUserID" Type="nvarchar" MaxLength="128" />
+          <Property Name="DeleteFlag" Type="int" />
+          <Property Name="LastModifyStamp" Type="timestamp" StoreGeneratedPattern="Computed" />
+        </EntityType>
+        <EntityType Name="BaseDic_ICD_Operate_Repository">
+          <Key>
+            <PropertyRef Name="ICDID" />
+          </Key>
+          <Property Name="ICDID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ICD_Code" Type="nvarchar" MaxLength="300" />
+          <Property Name="ICD_Name" Type="nvarchar" MaxLength="300" />
+          <Property Name="ICD_VersionID" Type="int" />
+          <Property Name="ICD_Description" Type="nvarchar" MaxLength="500" />
+          <Property Name="PinyinShort" Type="nvarchar" MaxLength="300" />
           <Property Name="CreateTime" Type="datetime" />
           <Property Name="CreateUserID" Type="nvarchar" MaxLength="128" />
           <Property Name="LastModifyTime" Type="datetime" />
@@ -615,7 +634,8 @@
           <EntitySet Name="BaseDic_City" EntityType="Self.BaseDic_City" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BaseDic_Code" EntityType="Self.BaseDic_Code" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BaseDic_Code_History" EntityType="Self.BaseDic_Code_History" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="BaseDic_ICD_Repository" EntityType="Self.BaseDic_ICD_Repository" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BaseDic_ICD_Diagnosis_Repository" EntityType="Self.BaseDic_ICD_Diagnosis_Repository" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BaseDic_ICD_Operate_Repository" EntityType="Self.BaseDic_ICD_Operate_Repository" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BaseDic_ICD_Version" EntityType="Self.BaseDic_ICD_Version" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BaseDic_Province" EntityType="Self.BaseDic_Province" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Code_Order" EntityType="Self.Code_Order" Schema="dbo" store:Type="Tables" />
@@ -673,7 +693,8 @@
           <EntitySet Name="BaseDic_City" EntityType="ICD_DBModel1.BaseDic_City" />
           <EntitySet Name="BaseDic_Code" EntityType="ICD_DBModel1.BaseDic_Code" />
           <EntitySet Name="BaseDic_Code_History" EntityType="ICD_DBModel1.BaseDic_Code_History" />
-          <EntitySet Name="BaseDic_ICD_Repository" EntityType="ICD_DBModel1.BaseDic_ICD_Repository" />
+          <EntitySet Name="BaseDic_ICD_Diagnosis_Repository" EntityType="ICD_DBModel1.BaseDic_ICD_Diagnosis_Repository" />
+          <EntitySet Name="BaseDic_ICD_Operate_Repository" EntityType="ICD_DBModel1.BaseDic_ICD_Operate_Repository" />
           <EntitySet Name="BaseDic_ICD_Version" EntityType="ICD_DBModel1.BaseDic_ICD_Version" />
           <EntitySet Name="BaseDic_Province" EntityType="ICD_DBModel1.BaseDic_Province" />
           <EntitySet Name="Code_Order" EntityType="ICD_DBModel1.Code_Order" />
@@ -842,7 +863,7 @@
           <Property Name="CodeNum" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="CreateDateTime" Type="DateTime" Precision="3" />
         </EntityType>
-        <EntityType Name="BaseDic_ICD_Repository">
+        <EntityType Name="BaseDic_ICD_Diagnosis_Repository">
           <Key>
             <PropertyRef Name="ICDID" />
           </Key>
@@ -850,6 +871,25 @@
           <Property Name="ICD_Code" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
           <Property Name="ICD_Name" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
           <Property Name="ICD_VersionID" Type="Int32" />
+          <Property Name="ICD_Description" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="PinyinShort" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="CreateTime" Type="DateTime" Precision="3" />
+          <Property Name="CreateUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="LastModifyTime" Type="DateTime" Precision="3" />
+          <Property Name="LastModifyUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="DeleteFlag" Type="Int32" />
+          <Property Name="LastModifyStamp" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+        </EntityType>
+        <EntityType Name="BaseDic_ICD_Operate_Repository">
+          <Key>
+            <PropertyRef Name="ICDID" />
+          </Key>
+          <Property Name="ICDID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ICD_Code" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="ICD_Name" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="ICD_VersionID" Type="Int32" />
+          <Property Name="ICD_Description" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="PinyinShort" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
           <Property Name="CreateTime" Type="DateTime" Precision="3" />
           <Property Name="CreateUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="LastModifyTime" Type="DateTime" Precision="3" />
@@ -1444,15 +1484,35 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="BaseDic_ICD_Repository">
-            <EntityTypeMapping TypeName="ICD_DBModel1.BaseDic_ICD_Repository">
-              <MappingFragment StoreEntitySet="BaseDic_ICD_Repository">
+          <EntitySetMapping Name="BaseDic_ICD_Diagnosis_Repository">
+            <EntityTypeMapping TypeName="ICD_DBModel1.BaseDic_ICD_Diagnosis_Repository">
+              <MappingFragment StoreEntitySet="BaseDic_ICD_Diagnosis_Repository">
                 <ScalarProperty Name="LastModifyStamp" ColumnName="LastModifyStamp" />
                 <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
                 <ScalarProperty Name="LastModifyUserID" ColumnName="LastModifyUserID" />
                 <ScalarProperty Name="LastModifyTime" ColumnName="LastModifyTime" />
                 <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
                 <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="PinyinShort" ColumnName="PinyinShort" />
+                <ScalarProperty Name="ICD_Description" ColumnName="ICD_Description" />
+                <ScalarProperty Name="ICD_VersionID" ColumnName="ICD_VersionID" />
+                <ScalarProperty Name="ICD_Name" ColumnName="ICD_Name" />
+                <ScalarProperty Name="ICD_Code" ColumnName="ICD_Code" />
+                <ScalarProperty Name="ICDID" ColumnName="ICDID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BaseDic_ICD_Operate_Repository">
+            <EntityTypeMapping TypeName="ICD_DBModel1.BaseDic_ICD_Operate_Repository">
+              <MappingFragment StoreEntitySet="BaseDic_ICD_Operate_Repository">
+                <ScalarProperty Name="LastModifyStamp" ColumnName="LastModifyStamp" />
+                <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
+                <ScalarProperty Name="LastModifyUserID" ColumnName="LastModifyUserID" />
+                <ScalarProperty Name="LastModifyTime" ColumnName="LastModifyTime" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="PinyinShort" ColumnName="PinyinShort" />
+                <ScalarProperty Name="ICD_Description" ColumnName="ICD_Description" />
                 <ScalarProperty Name="ICD_VersionID" ColumnName="ICD_VersionID" />
                 <ScalarProperty Name="ICD_Name" ColumnName="ICD_Name" />
                 <ScalarProperty Name="ICD_Code" ColumnName="ICD_Code" />

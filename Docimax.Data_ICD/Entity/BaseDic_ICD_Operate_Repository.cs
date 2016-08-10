@@ -12,12 +12,14 @@ namespace Docimax.Data_ICD.Entity
     using System;
     using System.Collections.Generic;
     
-    public partial class BaseDic_ICD_Repository
+    public partial class BaseDic_ICD_Operate_Repository
     {
         public int ICDID { get; set; }
         public string ICD_Code { get; set; }
         public string ICD_Name { get; set; }
         public Nullable<int> ICD_VersionID { get; set; }
+        public string ICD_Description { get; set; }
+        public string PinyinShort { get; set; }
         public Nullable<System.DateTime> CreateTime { get; set; }
         public string CreateUserID { get; set; }
         public Nullable<System.DateTime> LastModifyTime { get; set; }
