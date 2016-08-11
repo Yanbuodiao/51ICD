@@ -100,14 +100,12 @@ textarea {
 .tt-query,
 .tt-hint {
     width: 400px;
-    padding: 8px 12px;
-    font-size: 14px;
-    line-height: 20px;
     border: 1px solid #ccc;
     -webkit-border-radius: 8px;
     -moz-border-radius: 8px;
     border-radius: 8px;
     outline: none;
+    margin-bottom: 3px;
 }
 
 .typeahead {
@@ -128,9 +126,9 @@ textarea {
     color: #999;
 }
 
-.tt-dropdown-menu {
-    width: 450px;
-    margin-top: 12px;
+
+.tt-dataset {
+    margin-top: 5px;
     padding: 8px 0;
     background-color: #fff;
     border: 1px solid #ccc;

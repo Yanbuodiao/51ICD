@@ -9,22 +9,43 @@
             $(this).parent().children('ul.tree').toggle(200);
         });
 
-        var remote_cities = new Bloodhound({
-            datumTokenizer: Bloodhound.tokenizers.obj.whitespace('CityName'),
+        var remote_diagnosis = new Bloodhound({
+            datumTokenizer: Bloodhound.tokenizers.obj.whitespace('diagnosis'),
             queryTokenizer: Bloodhound.tokenizers.whitespace,
-            // 在文本框输入字符时才发起请求 '/Test/GetCities?q=%QUERY'
             remote: {
                 url: '/Dictionary/ICD_Diagnosis_Typeahead?queryStr=%QUERY',
                 wildcard: '%QUERY'
             },
         });
 
-        remote_cities.initialize();
+        remote_diagnosis.initialize();
 
-        $('.typeahead').typeahead(null, {
+        $('#diagnosis .typeahead').typeahead(null, {
             name: 'diagnosis',
             display: 'DisplayText',
-            source: remote_cities.ttAdapter(),
+            source: remote_diagnosis.ttAdapter(),
+            
+            templates: {
+                suggestion: Handlebars.compile('<div><strong>{{ICD_Code}}</strong> – {{ICD_Name}}</div>')
+            }
+        });
+
+
+        var remote_operates = new Bloodhound({
+            datumTokenizer: Bloodhound.tokenizers.obj.whitespace('operates'),
+            queryTokenizer: Bloodhound.tokenizers.whitespace,
+            remote: {
+                url: '/Dictionary/ICD_Operate_Typeahead?queryStr=%QUERY',
+                wildcard: '%QUERY'
+            },
+        });
+
+        remote_operates.initialize();
+
+        $('#operate .typeahead').typeahead(null, {
+            name: 'diagnosis',
+            display: 'DisplayText',
+            source: remote_operates.ttAdapter(),
             templates: {
                 suggestion: Handlebars.compile('<div><strong>{{ICD_Code}}</strong> – {{ICD_Name}}</div>')
             }
@@ -53,42 +74,42 @@
             <div class="span3">
                 @if (Model != null && Model.ItemList != null)
                 {
-                    <ul class="nav nav-list">
-                        @foreach (var item in Model.ItemList)
+                <ul class="nav nav-list">
+                    @foreach (var item in Model.ItemList)
                         {
-                            <li>
-                                @Html.Label(item.ItemName, htmlAttributes: new { @class = "tree-toggle nav-header first-level" })
-                                <ul class="nav nav-list tree">
-                                    @if (item.ChildrenList != null && item.ChildrenList.Count > 0)
+                        <li>
+                            @Html.Label(item.ItemName, htmlAttributes: new { @class = "tree-toggle nav-header first-level" })
+                            <ul class="nav nav-list tree">
+                                @if (item.ChildrenList != null && item.ChildrenList.Count > 0)
                                     {
                                         foreach (var sunItem in item.ChildrenList)
                                         {
-                                            <li class="tree">
-                                                @Html.Label(sunItem.ItemName, htmlAttributes: new { @class = "tree-toggle nav-header" })
-                                                <ul class="nav nav-list tree">
-                                                    @foreach (var file in sunItem.UploadedItemList)
+                                    <li class="tree">
+                                        @Html.Label(sunItem.ItemName, htmlAttributes: new { @class = "tree-toggle nav-header" })
+                                        <ul class="nav nav-list tree">
+                                            @foreach (var file in sunItem.UploadedItemList)
                                                     {
-                                                        <li>
-                                                            <a style="cursor: pointer;" class="tree-nav-a" data-url="@file.AttachURL" data-contenttype="@file.ContentType" onclick="showPic(this)">@file.AttachFileName</a>
-                                                        </li>
+                                                    <li>
+                                                        <a style="cursor: pointer;" class="tree-nav-a" data-url="@file.AttachURL" data-contenttype="@file.ContentType" onclick="showPic(this)">@file.AttachFileName</a>
+                                                    </li>
                                                     }
-                                                </ul>
-                                            </li>
+                                        </ul>
+                                    </li>
                                         }
                                     }
                                     else
                                     {
                                         foreach (var file in item.UploadedItemList)
                                         {
-                                            <li class="tree">
-                                                <a style="cursor: pointer;" class="tree-nav-a" data-url="@file.AttachURL" data-contenttype="@file.ContentType" onclick="showPic(this)">@file.AttachFileName</a>
-                                            </li>
+                                    <li class="tree">
+                                        <a style="cursor: pointer;" class="tree-nav-a" data-url="@file.AttachURL" data-contenttype="@file.ContentType" onclick="showPic(this)">@file.AttachFileName</a>
+                                    </li>
                                         }
                                     }
-                                </ul>
-                            </li>
+                            </ul>
+                        </li>
                         }
-                    </ul>
+                </ul>
                 }
             </div>
         </div>
@@ -96,22 +117,21 @@
             <img id="pic" src="" width="600" height="800" style="border:1px;" />
         </div>
         <div class="col-md-5" style="display:inline-block; position: fixed;">
-            <h4>出院诊断</h4>
-            @for (var themeIndex = 0; themeIndex < Model.DiagnosisList.Count(); themeIndex++)
-            {
-                @Html.TextBoxFor(model => model.DiagnosisList[themeIndex].ICD_Content, new { @class = "form-control typeahead", @placeholder = "请输出诊断或编码", @style = "max-width: 480px;" })
+            <div class="form-group" id="diagnosis">
+                <h4>出院诊断</h4>
+                @for (var themeIndex = 0; themeIndex < Model.DiagnosisList.Count(); themeIndex++)
+                {
+                    @Html.TextBoxFor(model => model.DiagnosisList[themeIndex].ICD_Content, new { @class = "form-control typeahead", @placeholder = "诊断或编码", @style = "max-width: 480px;" })
+                }
+            </div>
+            <div class="form-group" id="operate">
+                <h4>手术操作</h4>
+                @for (var themeIndex = 0; themeIndex < Model.OperateList.Count(); themeIndex++)
+                {
+                    @Html.TextBoxFor(model => model.OperateList[themeIndex].ICDContent, new { @class = "form-control typeahead", @placeholder = "操作或编码", @style = "max-width: 480px;" })
 
-            }
-            <h4>手术操作</h4>
-            @for (var themeIndex = 0; themeIndex < Model.OperateList.Count(); themeIndex++)
-            {
-                <div class="form-group">
-                    <div class="col-md-4">
-                        @Html.TextBoxFor(model => model.OperateList[themeIndex].ICDCode, new { @class = "form-control", @placeholder = "ICD编码" })
-                    </div>
-                    @Html.TextBoxFor(model => model.OperateList[themeIndex].ICDContent, new { @class = "form-control", @placeholder = "手术操作" })
-                </div>
-            }
+                }
+            </div>
             <div class="form-group">
                 <div class="form-horizontal col-md-4">
                     <input type="submit" value="保存" name="save" id="save" class="btn btn-primary" />

@@ -16,5 +16,10 @@ namespace Docimax.Web_ICD.Controllers
             IICDRepository icdRepositoryAccess = new DAL_ICDRepository();
             return Json(icdRepositoryAccess.GetICD_Diagnosis_ModelList(queryStr, 1), JsonRequestBehavior.AllowGet);
         }
+        public ActionResult ICD_Operate_Typeahead(string queryStr = null)
+        {
+            IICDRepository icdRepositoryAccess = new DAL_ICDRepository();
+            return Json(icdRepositoryAccess.GetICD_Operate_ModelList(queryStr, 2), JsonRequestBehavior.AllowGet);
+        }
     }
 }
