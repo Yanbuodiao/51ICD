@@ -7,8 +7,8 @@
       <Diagram DiagramId="669295853ba74d618f11ab8edaa5e5cc" Name="Diagram1">
         <EntityTypeShape EntityType="ICD_DBModel1.C__MigrationHistory" Width="1.5" PointX="5.75" PointY="0.75" />
         <EntityTypeShape EntityType="ICD_DBModel1.AspNetRoles" Width="1.5" PointX="3.75" PointY="10.375" />
-        <EntityTypeShape EntityType="ICD_DBModel1.AspNetUserClaims" Width="1.5" PointX="3" PointY="2.5" />
-        <EntityTypeShape EntityType="ICD_DBModel1.AspNetUserLogins" Width="1.5" PointX="3" PointY="7.75" />
+        <EntityTypeShape EntityType="ICD_DBModel1.AspNetUserClaims" Width="1.5" PointX="3" PointY="7.75" />
+        <EntityTypeShape EntityType="ICD_DBModel1.AspNetUserLogins" Width="1.5" PointX="3" PointY="2.5" />
         <EntityTypeShape EntityType="ICD_DBModel1.AspNetUserRoles" Width="1.5" PointX="6" PointY="3.75" />
         <EntityTypeShape EntityType="ICD_DBModel1.AspNetUsers" Width="1.5" PointX="0.75" PointY="1.5" />
         <EntityTypeShape EntityType="ICD_DBModel1.BaseDic_Area" Width="1.5" PointX="5.75" PointY="6.75" />

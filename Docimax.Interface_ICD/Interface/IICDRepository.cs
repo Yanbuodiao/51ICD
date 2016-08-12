@@ -11,5 +11,6 @@ namespace Docimax.Interface_ICD.Interface
     {
         List<ICDModel> GetICD_Diagnosis_ModelList(string queryStr, int icd_VersionID);
         List<ICDModel> GetICD_Operate_ModelList(string queryStr, int icd_VersionID);
+        ICDVersionModel GetICDVersionWithICD(int icd_VersionID);
     }
 }

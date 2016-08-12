@@ -42,8 +42,7 @@ namespace Docimax.Data_ICD.DAL
                 }).ToList();
             }
         }
-
-        public List<ICDModel> GetICD_Operate_ModelList(string queryStr, int icd_VersionID=2)
+        public List<ICDModel> GetICD_Operate_ModelList(string queryStr, int icd_VersionID = 2)
         {
             using (var entity = new Entity_Read())
             {
@@ -74,6 +73,50 @@ namespace Docimax.Data_ICD.DAL
                     ICD_Description = e.ICD_Description,
                     PinyinShort = e.PinyinShort,
                 }).ToList();
+            }
+        }
+        public ICDVersionModel GetICDVersionWithICD(int icd_VersionID)
+        {
+            using (var entity = new Entity_Read())
+            {
+                var icdVersion = entity.BaseDic_ICD_Version.FirstOrDefault(e => e.ICD_VersionID == icd_VersionID);
+                if (icdVersion == null)
+                {
+                    return null;
+                }
+                var resultOperate = entity.BaseDic_ICD_Operate_Repository.Where(e => e.ICD_VersionID == icd_VersionID).ToList();
+                var resultDiagnosis = entity.BaseDic_ICD_Diagnosis_Repository.Where(e => e.ICD_VersionID == icd_VersionID).ToList();
+                var result = new ICDVersionModel
+                {
+                    ICD_VersionID = icdVersion.ICD_VersionID,
+                    ICD_VersionName = icdVersion.ICD_VersionName,
+                    ICD_Description = icdVersion.ICD_Description,
+                };
+                if (resultOperate != null && resultOperate.Count > 0)
+                {
+                    result.ICDList = resultOperate.Select(e => new ICDModel
+                    {
+                        ICDID = e.ICDID,
+                        ICD_Code = e.ICD_Code,
+                        ICD_Name = e.ICD_Name,
+                        ICD_VersionID = e.ICD_VersionID ?? 0,
+                        ICD_Description = e.ICD_Description,
+                        PinyinShort = e.PinyinShort,
+                    }).ToList();
+                }
+                if (resultDiagnosis != null && resultDiagnosis.Count > 0)
+                {
+                    result.ICDList = resultDiagnosis.Select(e => new ICDModel
+                    {
+                        ICDID = e.ICDID,
+                        ICD_Code = e.ICD_Code,
+                        ICD_Name = e.ICD_Name,
+                        ICD_VersionID = e.ICD_VersionID ?? 0,
+                        ICD_Description = e.ICD_Description,
+                        PinyinShort = e.PinyinShort,
+                    }).ToList();
+                }
+                return result;
             }
         }
     }

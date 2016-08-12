@@ -13,6 +13,6 @@ namespace Docimax.Interface_ICD.Model
         public int DiagnosisIndex { get; set; }
         public string ICD_Code { get; set; }
         public string ICD_Content { get; set; }
-
+        public string Description { get; set; }
     }
 }

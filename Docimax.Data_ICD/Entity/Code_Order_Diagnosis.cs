@@ -14,7 +14,7 @@ namespace Docimax.Data_ICD.Entity
     
     public partial class Code_Order_Diagnosis
     {
-        public int CodeResultID { get; set; }
+        public int CodeDiagnosisResultID { get; set; }
         public Nullable<int> CodeOrderID { get; set; }
         public Nullable<int> DiagnosisIndex { get; set; }
         public string ICD_Code { get; set; }

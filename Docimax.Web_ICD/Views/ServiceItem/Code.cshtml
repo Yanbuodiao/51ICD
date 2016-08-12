@@ -9,6 +9,7 @@
             $(this).parent().children('ul.tree').toggle(200);
         });
 
+
         var remote_diagnosis = new Bloodhound({
             datumTokenizer: Bloodhound.tokenizers.obj.whitespace('diagnosis'),
             queryTokenizer: Bloodhound.tokenizers.whitespace,
@@ -17,14 +18,11 @@
                 wildcard: '%QUERY'
             },
         });
-
         remote_diagnosis.initialize();
-
         $('#diagnosis .typeahead').typeahead(null, {
             name: 'diagnosis',
             display: 'DisplayText',
             source: remote_diagnosis.ttAdapter(),
-            
             templates: {
                 suggestion: Handlebars.compile('<div><strong>{{ICD_Code}}</strong> – {{ICD_Name}}</div>')
             }
@@ -39,9 +37,7 @@
                 wildcard: '%QUERY'
             },
         });
-
         remote_operates.initialize();
-
         $('#operate .typeahead').typeahead(null, {
             name: 'diagnosis',
             display: 'DisplayText',
@@ -64,9 +60,13 @@
     @Html.AntiForgeryToken()
     @Html.HiddenFor(model => model.CodeOrderID)
     @Html.HiddenFor(model => model.LastModifyStamp)
+    @Html.HiddenFor(model => model.CaseNum)
+    @Html.HiddenFor(model => model.PickedUserID)
     <div style="display:inline">
         @Html.Label("订单号：", htmlAttributes: new { @class = "control-label" })
         @Html.DisplayTextFor(model => model.PlatformOrderCode)
+        @Html.Label("病案号：", htmlAttributes: new { @class = "control-label" })
+        @Html.DisplayTextFor(model => model.CaseNum)
         <hr />
     </div>
     <div style="display:inline">
@@ -74,42 +74,42 @@
             <div class="span3">
                 @if (Model != null && Model.ItemList != null)
                 {
-                <ul class="nav nav-list">
-                    @foreach (var item in Model.ItemList)
+                    <ul class="nav nav-list">
+                        @foreach (var item in Model.ItemList)
                         {
-                        <li>
-                            @Html.Label(item.ItemName, htmlAttributes: new { @class = "tree-toggle nav-header first-level" })
-                            <ul class="nav nav-list tree">
-                                @if (item.ChildrenList != null && item.ChildrenList.Count > 0)
+                            <li>
+                                @Html.Label(item.ItemName, htmlAttributes: new { @class = "tree-toggle nav-header first-level" })
+                                <ul class="nav nav-list tree">
+                                    @if (item.ChildrenList != null && item.ChildrenList.Count > 0)
                                     {
                                         foreach (var sunItem in item.ChildrenList)
                                         {
-                                    <li class="tree">
-                                        @Html.Label(sunItem.ItemName, htmlAttributes: new { @class = "tree-toggle nav-header" })
-                                        <ul class="nav nav-list tree">
-                                            @foreach (var file in sunItem.UploadedItemList)
+                                            <li class="tree">
+                                                @Html.Label(sunItem.ItemName, htmlAttributes: new { @class = "tree-toggle nav-header" })
+                                                <ul class="nav nav-list tree">
+                                                    @foreach (var file in sunItem.UploadedItemList)
                                                     {
-                                                    <li>
-                                                        <a style="cursor: pointer;" class="tree-nav-a" data-url="@file.AttachURL" data-contenttype="@file.ContentType" onclick="showPic(this)">@file.AttachFileName</a>
-                                                    </li>
+                                                        <li>
+                                                            <a style="cursor: pointer;" class="tree-nav-a" data-url="@file.AttachURL" data-contenttype="@file.ContentType" onclick="showPic(this)">@file.AttachFileName</a>
+                                                        </li>
                                                     }
-                                        </ul>
-                                    </li>
+                                                </ul>
+                                            </li>
                                         }
                                     }
                                     else
                                     {
                                         foreach (var file in item.UploadedItemList)
                                         {
-                                    <li class="tree">
-                                        <a style="cursor: pointer;" class="tree-nav-a" data-url="@file.AttachURL" data-contenttype="@file.ContentType" onclick="showPic(this)">@file.AttachFileName</a>
-                                    </li>
+                                            <li class="tree">
+                                                <a style="cursor: pointer;" class="tree-nav-a" data-url="@file.AttachURL" data-contenttype="@file.ContentType" onclick="showPic(this)">@file.AttachFileName</a>
+                                            </li>
                                         }
                                     }
-                            </ul>
-                        </li>
+                                </ul>
+                            </li>
                         }
-                </ul>
+                    </ul>
                 }
             </div>
         </div>
@@ -117,25 +117,35 @@
             <img id="pic" src="" width="600" height="800" style="border:1px;" />
         </div>
         <div class="col-md-5" style="display:inline-block; position: fixed;">
+            @Html.ValidationSummary("", new { @class = "text-danger" })
             <div class="form-group" id="diagnosis">
                 <h4>出院诊断</h4>
                 @for (var themeIndex = 0; themeIndex < Model.DiagnosisList.Count(); themeIndex++)
                 {
-                    @Html.TextBoxFor(model => model.DiagnosisList[themeIndex].ICD_Content, new { @class = "form-control typeahead", @placeholder = "诊断或编码", @style = "max-width: 480px;" })
+                    @Html.TextBoxFor(model => model.DiagnosisList[themeIndex].ICD_Content, new
+               {
+                   @class = "form-control typeahead",
+                   @placeholder = (!string.IsNullOrWhiteSpace(@Model.DiagnosisList[themeIndex].Description)) ? @Model.DiagnosisList[themeIndex].Description : "诊断或编码",
+                   @style = "max-width: 480px;"
+               })
                 }
             </div>
             <div class="form-group" id="operate">
                 <h4>手术操作</h4>
                 @for (var themeIndex = 0; themeIndex < Model.OperateList.Count(); themeIndex++)
                 {
-                    @Html.TextBoxFor(model => model.OperateList[themeIndex].ICDContent, new { @class = "form-control typeahead", @placeholder = "操作或编码", @style = "max-width: 480px;" })
-
+                    @Html.TextBoxFor(model => model.OperateList[themeIndex].ICDContent, new
+               {
+                   @class = "form-control typeahead",
+                   @placeholder = "操作或编码",
+                   @style = "max-width: 480px;"
+               })
                 }
             </div>
             <div class="form-group">
                 <div class="form-horizontal col-md-4">
                     <input type="submit" value="保存" name="save" id="save" class="btn btn-primary" />
-                    @if (Model.OrderStatus.GetHashCode() == Docimax.Interface_ICD.Enum.ICDOrderState.编码中.GetHashCode())
+                    @if (Model.OrderStatus.GetHashCode() >= Docimax.Interface_ICD.Enum.ICDOrderState.已接单.GetHashCode() || Model.OrderStatus.GetHashCode() <= Docimax.Interface_ICD.Enum.ICDOrderState.验收未通过.GetHashCode())
                     {
                         <input type="submit" value="提交" name="submit" id="submit" class=" btn btn-default" />
                     }

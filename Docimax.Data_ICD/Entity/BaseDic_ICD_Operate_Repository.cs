@@ -20,6 +20,8 @@ namespace Docimax.Data_ICD.Entity
         public Nullable<int> ICD_VersionID { get; set; }
         public string ICD_Description { get; set; }
         public string PinyinShort { get; set; }
+        public string Property { get; set; }
+        public string InputOption { get; set; }
         public Nullable<System.DateTime> CreateTime { get; set; }
         public string CreateUserID { get; set; }
         public Nullable<System.DateTime> LastModifyTime { get; set; }

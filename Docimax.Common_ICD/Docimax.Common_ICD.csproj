@@ -75,6 +75,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Dictionary\ICDVersionList.cs" />
     <Compile Include="File\FileHelper.cs" />
     <Compile Include="File\File_Azure.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

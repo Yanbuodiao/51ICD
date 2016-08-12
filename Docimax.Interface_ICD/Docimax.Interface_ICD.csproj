@@ -71,6 +71,7 @@
     <Compile Include="Model\Configurations\SMSConfig.cs" />
     <Compile Include="Model\CodeOrderModel.cs" />
     <Compile Include="Model\ICDModel.cs" />
+    <Compile Include="Model\ICDVersionModel.cs" />
     <Compile Include="Model\Menu\ICDMenu.cs" />
     <Compile Include="Model\Public\BaseModel.cs" />
     <Compile Include="Model\Public\ICDExcuteResult.cs" />

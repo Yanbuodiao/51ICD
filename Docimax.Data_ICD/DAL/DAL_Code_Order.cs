@@ -27,6 +27,8 @@ namespace Docimax.Data_ICD.DAL
                         (e => e.SubORGID == codeModel.ORGSubID));
                     if (codeModel != null)
                     {
+                        result.CodeOrderID = codeOrderID;
+                        result.PickedUserID = codeModel.PickedUserID;
                         result.CaseNum = codeModel.CaseNum;
                         result.PlatformOrderCode = codeModel.PlatformOrderCode;
                         result.CreateTime = codeModel.Createtime;
@@ -210,6 +212,7 @@ namespace Docimax.Data_ICD.DAL
                 var endDate = queryModel.EndDate.AddDays(1);
                 var stateInt = queryModel.SearchModel.OrderState.GetHashCode();
                 var query = (from o in entity.Code_Order.Where(e => e.PickedUserID == queryModel.SearchModel.UserID)
+                             join or in entity.Dic_Organization on o.ORGID equals or.OrganizationID
                              where o.Createtime >= queryModel.BeginDate &&
                              o.Createtime <= endDate &&
                              (stateInt == 0 ? true : o.OrderStatus == stateInt) &&
@@ -222,6 +225,7 @@ namespace Docimax.Data_ICD.DAL
                                  o.Createtime,
                                  o.ORGID,
                                  o.ORGSubID,
+                                 or.OrganizationName,
                                  o.CodeOrderID
                              }).OrderByDescending(e => e.Createtime);
                 var resultQuery = query.Skip((queryModel.Page - 1) * queryModel.PageSize)
@@ -233,6 +237,7 @@ namespace Docimax.Data_ICD.DAL
                         PlatformOrderCode = e.PlatformOrderCode,
                         CreateTime = e.Createtime ?? DateTime.Now,
                         ORGID = e.ORGID ?? 0,
+                        ORGName = e.OrganizationName,
                         OrderStatus = (ICDOrderState)(e.OrderStatus ?? 1000),
                     }).ToList();
                 queryModel.TotalRecords = query.Count();
@@ -271,6 +276,103 @@ namespace Docimax.Data_ICD.DAL
                 }
                 return new ICDExcuteResult<int> { Result = true, TResult = codeOrderID };
             }
+        }
+
+        public ICDExcuteResult<int> SaveCodeResult(CodeOrderModel model)
+        {
+            using (var entity = new Entity_Write())
+            {
+                using (var trasanction = entity.Database.BeginTransaction())
+                {
+                    var dbDiagnosis = entity.Code_Order_Diagnosis.Where(e => e.CodeOrderID == model.CodeOrderID).ToList();
+                    var dbOperate = entity.Code_Order_Operate.Where(e => e.CodeOrderID == model.CodeOrderID).ToList();
+
+                    #region 诊断处理
+
+                    dbDiagnosis.ForEach(e =>
+                    {
+                        var diagnosis = model.DiagnosisList.FirstOrDefault(t => t.ICD_Code == e.ICD_Code);
+                        if (diagnosis == null)//数据库有  新上传的没有  数据库中删除
+                        {
+                            entity.Code_Order_Diagnosis.Remove(e);
+                        }
+                        else
+                        {
+                            if (diagnosis.DiagnosisIndex != e.DiagnosisIndex)
+                            {
+                                e.DiagnosisIndex = diagnosis.DiagnosisIndex;
+                                e.LastModifyTime = diagnosis.LastModifyTime;
+                            }
+                        }
+                    });
+                    model.DiagnosisList.Where(p => !string.IsNullOrWhiteSpace(p.ICD_Content)).ToList().ForEach(e =>
+                    {
+                        var diagnosis = dbDiagnosis.FirstOrDefault(t => t.ICD_Code == e.ICD_Code);
+                        if (diagnosis == null)//新上传的有 数据库没有   数据库增加
+                        {
+                            var newDiagnosis = new Code_Order_Diagnosis
+                            {
+                                CodeOrderID = model.CodeOrderID,
+                                CreateTime = e.CreateTime,
+                                CreateUserID = e.CreateUserID,
+                                DiagnosisIndex = e.DiagnosisIndex,
+                                ICD_Code = e.ICD_Code,
+                                ICD_Content = e.ICD_Content,
+                                LastModifyTime = e.LastModifyTime,
+                                LastModifyUserID = e.LastModifyUserID,
+                            };
+                            entity.Code_Order_Diagnosis.Add(newDiagnosis);
+                        }
+                    });
+
+                    #endregion
+
+                    #region 手术操作处理
+
+                    dbOperate.ForEach(e =>
+                    {
+                        var operate = model.OperateList.FirstOrDefault(t => t.ICDCode == e.ICDCode);
+                        if (operate == null)//数据库有  新上传的没有  数据库中删除
+                        {
+                            entity.Code_Order_Operate.Remove(e);
+                        }
+                        else
+                        {
+                            if (operate.OperateIndex != e.OperateIndex)
+                            {
+                                e.OperateIndex = operate.OperateIndex;
+                                e.LastModifyUserID = operate.LastModifyUserID;
+                                e.LastModifyTime = operate.LastModifyTime;
+                            }
+                        }
+                    });
+                    model.OperateList.Where(p => !string.IsNullOrWhiteSpace(p.ICDContent)).ToList().ForEach(e =>
+                    {
+                        var operate = dbOperate.FirstOrDefault(t => t.ICDCode == e.ICDCode);
+                        if (operate == null)//新上传的有 数据库没有   数据库增加
+                        {
+                            var newOperate = new Code_Order_Operate
+                            {
+                                CodeOrderID = model.CodeOrderID,
+                                CreateTime = e.CreateTime,
+                                CreateUserID = e.CreateUserID,
+                                OperateIndex = e.OperateIndex,
+                                ICDCode = e.ICDCode,
+                                ICDContent = e.ICDContent,
+                                LastModifyTime = e.LastModifyTime,
+                                LastModifyUserID = e.LastModifyUserID,
+                            };
+                            entity.Code_Order_Operate.Add(newOperate);
+                        }
+                    });
+
+                    #endregion
+
+                    entity.SaveChanges();
+                    trasanction.Commit();
+                }
+            }
+            return new ICDExcuteResult<int> { Result = true, TResult = model.CodeOrderID };
         }
 
         #region Private Function
