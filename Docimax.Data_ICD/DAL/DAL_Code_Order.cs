@@ -35,16 +35,35 @@ namespace Docimax.Data_ICD.DAL
                         result.OrderStatus = (ICDOrderState)codeModel.OrderStatus;
                         result.LastModifyStamp = Convert.ToBase64String(codeModel.LastModifyStamp);
                     }
-                    var codeItems = entity.Code_Order_UploadedItem.Where(e => e.CodeOrderID == codeOrderID && e.DeleteFlag != 1).ToList().Select(p => new UploadedItemModel
-                    {
-                        AttachFileName = p.AttachName,
-                        AttachURL = p.AttachURL,
-                        CodeOrderID = codeOrderID,
-                        CodeOrderItemID = p.CodeOrderUploadedItemID,
-                        ContentType = p.ContentType,
-                        ItemID = p.ItemID ?? 0,
-                        GIndex = p.GIndex ?? 0,
-                    }).ToList();
+                    var dbDiagnosis = entity.Code_Order_Diagnosis.Where(e => e.CodeOrderID == codeOrderID)
+                        .ToList().Select(e => new Code_Diagnosis
+                        {
+                            CodeOrderID = codeOrderID,
+                            ICD_Code = e.ICD_Code,
+                            ICD_Content = e.ICD_Content,
+                            DiagnosisIndex = e.DiagnosisIndex ?? 0,
+                        }).ToList();
+                    var dbOperate = entity.Code_Order_Operate.Where(e => e.CodeOrderID == codeOrderID)
+                        .ToList().Select(e => new Code_Operate
+                        {
+                            CodeOrderID = codeOrderID,
+                            ICDCode = e.ICDCode,
+                            ICDContent = e.ICDContent,
+                            OperateIndex = e.OperateIndex,
+                        }).ToList();
+                    result.OperateList = dbOperate;
+                    result.DiagnosisList = dbDiagnosis;
+                    var codeItems = entity.Code_Order_UploadedItem.Where(e => e.CodeOrderID == codeOrderID && e.DeleteFlag != 1)
+                        .ToList().Select(p => new UploadedItemModel
+                        {
+                            AttachFileName = p.AttachName,
+                            AttachURL = p.AttachURL,
+                            CodeOrderID = codeOrderID,
+                            CodeOrderItemID = p.CodeOrderUploadedItemID,
+                            ContentType = p.ContentType,
+                            ItemID = p.ItemID ?? 0,
+                            GIndex = p.GIndex ?? 0,
+                        }).ToList();
                     result.ItemList.ForEach(e => e.UploadedItemList = buildUploadedItems(e, codeItems));
                     return result;
                 }
@@ -284,6 +303,20 @@ namespace Docimax.Data_ICD.DAL
             {
                 using (var trasanction = entity.Database.BeginTransaction())
                 {
+                    var orderModel = entity.Code_Order.FirstOrDefault(e => e.CodeOrderID == model.CodeOrderID);
+                    if (orderModel == null)
+                    {
+                        trasanction.Rollback();
+                        return new ICDExcuteResult<int> { Result = false, ErrorStr = "未找到相应的订单" };
+                    }
+                    if (Convert.ToBase64String(orderModel.LastModifyStamp) != model.LastModifyStamp)
+                    {
+                        trasanction.Rollback();
+                        return new ICDExcuteResult<int> { Result = false, ErrorStr = "很遗憾，已经有人在您前面提交" };
+                    }
+                    orderModel.OrderStatus = model.OrderStatus.GetHashCode();
+                    orderModel.LastModifyUserID = model.LastModifyUserID;
+                    orderModel.LastModifyTime = DateTime.Now;
                     var dbDiagnosis = entity.Code_Order_Diagnosis.Where(e => e.CodeOrderID == model.CodeOrderID).ToList();
                     var dbOperate = entity.Code_Order_Operate.Where(e => e.CodeOrderID == model.CodeOrderID).ToList();
 

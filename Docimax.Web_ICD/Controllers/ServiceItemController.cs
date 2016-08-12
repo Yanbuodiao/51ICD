@@ -30,20 +30,8 @@ namespace Docimax.Web_ICD.Controllers
         {
             ICode_Order access = new DAL_Code_Order();
             var model = access.GetCodeOrderDetail(User.Identity.GetUserId(), orderID);
-            model.DiagnosisList = new System.Collections.Generic.List<Code_Diagnosis> { 
-                new Code_Diagnosis{Description="主要诊断"},
-                new Code_Diagnosis{Description="其他诊断"},
-                new Code_Diagnosis{},
-                new Code_Diagnosis{},
-                new Code_Diagnosis{},
-            };
-            model.OperateList = new System.Collections.Generic.List<Code_Operate> { 
-                new Code_Operate{},
-                new Code_Operate{},
-                new Code_Operate{},
-                new Code_Operate{},
-                new Code_Operate{},
-            };
+            initalDiagnosis(model);
+            initialOperate(model);
             return View(model);
         }
 
@@ -59,6 +47,10 @@ namespace Docimax.Web_ICD.Controllers
                 ModelState.AddModelError("", validateResult);
                 return returnOriginModel(model, access, userID);
             }
+
+            model.LastModifyUserID = userID;
+            model.LastModifyTime = DateTime.Now;
+
             var result = access.SaveCodeResult(model);
             if (result.Result)
             {
@@ -66,12 +58,73 @@ namespace Docimax.Web_ICD.Controllers
                 {
                     return RedirectToAction("Index", "ServiceItem");
                 }
+                model = access.GetCodeOrderDetail(userID, model.CodeOrderID);
                 return View(model);
             }
             ModelState.AddModelError("", result.ErrorStr);
             return returnOriginModel(model, access, userID);
         }
 
+        #region private Function
+
+        private static void initialOperate(CodeOrderModel model)
+        {
+            if (model.OperateList == null || model.OperateList.Count == 0)
+            {
+                model.OperateList = new System.Collections.Generic.List<Code_Operate> { 
+                    new Code_Operate{},
+                    new Code_Operate{},
+                    new Code_Operate{},
+                    new Code_Operate{},
+                    new Code_Operate{},};
+                return;
+            }
+            var newOperateList = new System.Collections.Generic.List<Code_Operate>();
+            var maxIndex = model.OperateList.Max(e => e.OperateIndex) > 5 ? model.OperateList.Max(e => e.OperateIndex) : 5;
+            for (int i = 0; i < maxIndex; i++)
+            {
+                var item = model.OperateList.FirstOrDefault(e => e.OperateIndex == i);
+                if (item != null)
+                {
+                    newOperateList.Add(item);
+                }
+                else
+                {
+                    newOperateList.Add(new Code_Operate());
+                }
+            }
+            model.OperateList = newOperateList;
+        }
+
+        private void initalDiagnosis(CodeOrderModel model)
+        {
+            if (model.DiagnosisList == null || model.DiagnosisList.Count == 0)
+            {
+                model.DiagnosisList = new System.Collections.Generic.List<Code_Diagnosis> { 
+                    new Code_Diagnosis{Description="主要诊断"},
+                    new Code_Diagnosis{Description="其他诊断"},
+                    new Code_Diagnosis{},
+                    new Code_Diagnosis{},
+                    new Code_Diagnosis{},
+                };
+                return;
+            }
+            var newDiagnosisList = new System.Collections.Generic.List<Code_Diagnosis>();
+            var maxIndex = model.DiagnosisList.Max(e => e.DiagnosisIndex) > 5 ? model.DiagnosisList.Max(e => e.DiagnosisIndex) : 5;
+            for (int i = 0; i < maxIndex; i++)
+            {
+                var item = model.DiagnosisList.FirstOrDefault(e => e.DiagnosisIndex == i);
+                if (item != null)
+                {
+                    newDiagnosisList.Add(item);
+                }
+                else
+                {
+                    newDiagnosisList.Add(new Code_Diagnosis { Description = i == 0 ? "主要诊断" : (i == 1 ? "其他诊断" : null) });
+                }
+            }
+            model.DiagnosisList = newDiagnosisList;
+        }
         private ActionResult returnOriginModel(CodeOrderModel model, ICode_Order access, string userID)
         {
             var newModel = access.GetCodeOrderDetail(userID, model.CodeOrderID);
@@ -139,5 +192,7 @@ namespace Docimax.Web_ICD.Controllers
             }
             return string.Empty;
         }
+
+        #endregion
     }
 }
