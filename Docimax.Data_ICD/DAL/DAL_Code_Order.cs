@@ -41,6 +41,7 @@ namespace Docimax.Data_ICD.DAL
                             CodeOrderID = codeOrderID,
                             ICD_Code = e.ICD_Code,
                             ICD_Content = e.ICD_Content,
+                            DisplayText = string.Format("{0}-{1}", e.ICD_Code, e.ICD_Content),
                             DiagnosisIndex = e.DiagnosisIndex ?? 0,
                         }).ToList();
                     var dbOperate = entity.Code_Order_Operate.Where(e => e.CodeOrderID == codeOrderID)
@@ -49,6 +50,7 @@ namespace Docimax.Data_ICD.DAL
                             CodeOrderID = codeOrderID,
                             ICDCode = e.ICDCode,
                             ICDContent = e.ICDContent,
+                            DisplayText = string.Format("{0}-{1}", e.ICDCode, e.ICDContent),
                             OperateIndex = e.OperateIndex,
                         }).ToList();
                     result.OperateList = dbOperate;
@@ -314,7 +316,10 @@ namespace Docimax.Data_ICD.DAL
                         trasanction.Rollback();
                         return new ICDExcuteResult<int> { Result = false, ErrorStr = "很遗憾，已经有人在您前面提交" };
                     }
-                    orderModel.OrderStatus = model.OrderStatus.GetHashCode();
+                    if (orderModel.OrderStatus < model.OrderStatus.GetHashCode())
+                    {
+                        orderModel.OrderStatus = model.OrderStatus.GetHashCode();
+                    }
                     orderModel.LastModifyUserID = model.LastModifyUserID;
                     orderModel.LastModifyTime = DateTime.Now;
                     var dbDiagnosis = entity.Code_Order_Diagnosis.Where(e => e.CodeOrderID == model.CodeOrderID).ToList();

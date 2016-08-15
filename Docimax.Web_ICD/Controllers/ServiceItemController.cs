@@ -50,6 +50,7 @@ namespace Docimax.Web_ICD.Controllers
 
             model.LastModifyUserID = userID;
             model.LastModifyTime = DateTime.Now;
+            model.OrderStatus = string.IsNullOrWhiteSpace(submit) ? ICDOrderState.编码中 : ICDOrderState.编码完成;
 
             var result = access.SaveCodeResult(model);
             if (result.Result)
@@ -59,6 +60,9 @@ namespace Docimax.Web_ICD.Controllers
                     return RedirectToAction("Index", "ServiceItem");
                 }
                 model = access.GetCodeOrderDetail(userID, model.CodeOrderID);
+                ModelState.Remove("LastModifyStamp");
+                initalDiagnosis(model);
+                initialOperate(model);
                 return View(model);
             }
             ModelState.AddModelError("", result.ErrorStr);
@@ -67,7 +71,7 @@ namespace Docimax.Web_ICD.Controllers
 
         #region private Function
 
-        private static void initialOperate(CodeOrderModel model)
+        private void initialOperate(CodeOrderModel model)
         {
             if (model.OperateList == null || model.OperateList.Count == 0)
             {
@@ -125,6 +129,7 @@ namespace Docimax.Web_ICD.Controllers
             }
             model.DiagnosisList = newDiagnosisList;
         }
+
         private ActionResult returnOriginModel(CodeOrderModel model, ICode_Order access, string userID)
         {
             var newModel = access.GetCodeOrderDetail(userID, model.CodeOrderID);
@@ -139,19 +144,19 @@ namespace Docimax.Web_ICD.Controllers
             {
                 return "您无权编辑此订单";
             }
-            if (model.DiagnosisList.All(e => string.IsNullOrWhiteSpace(e.ICD_Content)))
+            if (model.DiagnosisList.All(e => string.IsNullOrWhiteSpace(e.DisplayText)))
             {
                 return "请输入至少一个诊断";
             }
-            if (model.OperateList.All(e => string.IsNullOrWhiteSpace(e.ICDContent)))
+            if (model.OperateList.All(e => string.IsNullOrWhiteSpace(e.DisplayText)))
             {
                 return "请输入至少一个操作";
             }
             for (int i = 0; i < model.DiagnosisList.Count; i++)
             {
-                var item = model.DiagnosisList[i]; if (!string.IsNullOrWhiteSpace(item.ICD_Content))
+                var item = model.DiagnosisList[i]; if (!string.IsNullOrWhiteSpace(item.DisplayText))
                 {
-                    var temp = item.ICD_Content.Split('-');
+                    var temp = item.DisplayText.Split('-');
                     if (temp.Length == 2)
                     {
                         item.ICD_Code = temp[0];
@@ -171,9 +176,9 @@ namespace Docimax.Web_ICD.Controllers
             for (int i = 0; i < model.OperateList.Count; i++)
             {
                 var item = model.OperateList[i];
-                if (!string.IsNullOrWhiteSpace(item.ICDContent))
+                if (!string.IsNullOrWhiteSpace(item.DisplayText))
                 {
-                    var temp = item.ICDContent.Split('-');
+                    var temp = item.DisplayText.Split('-');
                     if (temp.Length == 2)
                     {
                         item.ICDCode = temp[0];

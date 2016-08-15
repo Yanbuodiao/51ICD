@@ -12,6 +12,7 @@ namespace Docimax.Interface_ICD.Model
         public int CodeOrderID { get; set; }
         public string ICDCode { get; set; }
         public string ICDContent { get; set; }
+        public string DisplayText { get; set; }
         public string Description { get; set; }
         public Nullable<System.DateTime> OperateTime { get; set; }
         public string OperateLevel { get; set; }
