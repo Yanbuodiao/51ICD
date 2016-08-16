@@ -54,6 +54,8 @@
     <Compile Include="Enum\CodeResultType.cs" />
     <Compile Include="Enum\ICDOrderState.cs" />
     <Compile Include="Enum\ItemState.cs" />
+    <Compile Include="Enum\ServiceClaimOpereateType.cs" />
+    <Compile Include="Enum\ServiceClaimType.cs" />
     <Compile Include="Enum\ServiceType.cs" />
     <Compile Include="Enum\UserAttachType.cs" />
     <Compile Include="Enum\UserOperateTarget.cs" />

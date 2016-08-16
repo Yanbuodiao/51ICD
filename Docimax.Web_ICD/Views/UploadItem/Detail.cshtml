@@ -5,57 +5,92 @@
 }
 
 <h2>@ViewBag.Title</h2>
-
-<div class="form-horizontal">
-    <hr />
-    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-    @Html.HiddenFor(model => model.ORGID)
-    @Html.HiddenFor(model => model.ORGSubID)
-    @Html.HiddenFor(model => model.ORGCode)
-    <div class="form-group">
-        @Html.Label("病案号", htmlAttributes: new { @class = "control-label col-md-3" })
-        <div class="col-md-9">
-            @Html.EditorFor(model => model.CaseNum, new { htmlAttributes = new { @class = "form-control", @id = "caseNum", @disabled = "true" } })
+<hr />
+<div class="row">
+    <div class="col-md-6 form-horizontal ">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.ORGID)
+        @Html.HiddenFor(model => model.ORGSubID)
+        @Html.HiddenFor(model => model.ORGCode)
+        <div class="form-group">
+            @Html.Label("病案号", htmlAttributes: new { @class = "control-label col-md-4" })
+            <div class="col-md-5">
+                @Html.EditorFor(model => model.CaseNum, new { htmlAttributes = new { @class = "form-control", @id = "caseNum", @disabled = "true" } })
+            </div>
         </div>
-    </div>
-    @if (Model != null && Model.ItemList != null)
-    {
-        foreach (var item in Model.ItemList)
+        @if (Model != null && Model.ItemList != null)
         {
-            if (item.ChildrenList != null && item.ChildrenList.Count > 0)
+            foreach (var item in Model.ItemList)
             {
-                <div class="form-group">
-                    @Html.Label(item.ItemName, htmlAttributes: new { @class = "control-label col-md-3" })
-                </div>
-                foreach (var uploaditem in item.ChildrenList)
+                if (item.ChildrenList != null && item.ChildrenList.Count > 0)
                 {
                     <div class="form-group">
-                        @Html.Label(uploaditem.ItemName, htmlAttributes: new { @class = "control-label col-md-5" })
+                        @Html.Label(item.ItemName, htmlAttributes: new { @class = "control-label col-md-4" })
                     </div>
-                    foreach (var file in uploaditem.UploadedItemList)
+                    foreach (var uploaditem in item.ChildrenList)
                     {
-                        <div class="col-md-offset-5">
+                        <div class="form-group">
+                            @Html.Label(uploaditem.ItemName, htmlAttributes: new { @class = "control-label col-md-5" })
+                        </div>
+                        foreach (var file in uploaditem.UploadedItemList)
+                        {
+                            <div class="col-md-offset-5">
+                                <a style="cursor: pointer;" data-url="@file.AttachURL" data-contenttype="@file.ContentType" onclick="showPic(this)">@file.AttachFileName</a>
+                            </div>
+                        }
+                    }
+                }
+                else
+                {
+                    <div class="form-group">
+                        @Html.Label(item.ItemName, htmlAttributes: new { @class = "control-label col-md-4" })
+                    </div>
+                    foreach (var file in item.UploadedItemList)
+                    {
+                        <div class="col-md-offset-3">
                             <a style="cursor: pointer;" data-url="@file.AttachURL" data-contenttype="@file.ContentType" onclick="showPic(this)">@file.AttachFileName</a>
                         </div>
                     }
                 }
             }
-            else
-            {
-                <div class="form-group">
-                    @Html.Label(item.ItemName, htmlAttributes: new { @class = "control-label col-md-3" })
-                </div>
-                foreach (var file in item.UploadedItemList)
-                {
-                    <div class="col-md-offset-3">
-                        <a style="cursor: pointer;" data-url="@file.AttachURL" data-contenttype="@file.ContentType" onclick="showPic(this)">@file.AttachFileName</a>
-                    </div>
-                }
-            }
         }
-    }
-</div>
+    </div>
+    <div class="col-md-6 form-horizontal" style="display: inline">
+        <div class="form-group" id="diagnosis">
+            <h4>出院诊断：</h4>
+            @for (var index = 0; index < Model.DiagnosisList.Count(); index++)
+            {
+                if (index == 0)
+                {
+                    @Html.Label("主要诊断：")
+                }
+                if (index == 1)
+                {
+                    @Html.Label("其他诊断：")
+                }
+                @Html.TextBoxFor(model => model.DiagnosisList[index].DisplayText, new
+               {
+                   @class = "form-control",
+                   @style = "max-width: 480px;",
+                   @disabled = "disabled"
+               })
+            }
+        </div>
+        <div class="form-group" id="operate">
+            <h4>手术操作：</h4>
+            @for (var index = 0; index < Model.OperateList.Count(); index++)
+            {
+                @Html.TextBoxFor(model => model.OperateList[index].DisplayText, new
+               {
+                   @class = "form-control",
+                   @style = "max-width: 480px;",
+                   @disabled = "disabled"
+               })
+            }
+        </div>
 
+    </div>
+</div>
 <div class="modal  fade" id="showPixModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <img id="pic" class="img-thumbnail" onclick="hidePix()" />
