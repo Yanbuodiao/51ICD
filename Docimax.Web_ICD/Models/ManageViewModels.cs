@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
 using Docimax.Interface_ICD.Enum;
+using Docimax.Interface_ICD.Model;
 
 namespace Docimax.Web_ICD.Models
 {
@@ -14,6 +15,7 @@ namespace Docimax.Web_ICD.Models
         public bool TwoFactor { get; set; }
         public bool BrowserRemembered { get; set; }
         public CertificateState CertificationFlag { get; set; }
+        public List<ProviderServiceModel> Services { get; set; }
     }
 
     public class ManageLoginsViewModel

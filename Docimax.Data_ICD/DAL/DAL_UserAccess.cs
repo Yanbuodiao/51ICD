@@ -53,11 +53,20 @@ namespace Docimax.Data_ICD.DAL
             using (var entity = new Entity_Read())
             {
                 var model = entity.AspNetUsers.FirstOrDefault(e => e.Id == userID);
+                var services = (from sp in entity.User_Service_Provider.Where(e => e.UserID == userID)
+                                join s in entity.Dic_Service on sp.ServiceID equals s.ServiceID
+                                select new
+                                {
+                                    s.ServiceID,
+                                    s.ServiceName,
+                                    s.Description,
+                                    sp.CertificationStatus,
+                                }).ToList();
                 if (model == null)
                 {
                     return new UserInfoModel();
                 }
-                return new UserInfoModel
+                var result = new UserInfoModel
                 {
                     UserID = userID,
                     CertificationFlag = (CertificateState)(model.CertificationFlag ?? 0),
@@ -65,6 +74,17 @@ namespace Docimax.Data_ICD.DAL
                     PhoneNumber = model.PhoneNumber,
                     TwoFactor = model.TwoFactorEnabled,
                 };
+                if (services != null)
+                {
+                    result.Services = services.Select(e => new ProviderServiceModel
+                    {
+                        ServiceID = e.ServiceID,
+                        ServiceName = e.ServiceName,
+                        Description = e.Description,
+                        CertificateStatus = (CertificateState)(e.CertificationStatus ?? 0)
+                    }).ToList();
+                }
+                return result;
             }
         }
     }

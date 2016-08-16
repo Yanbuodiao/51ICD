@@ -86,6 +86,7 @@
     </Compile>
     <Compile Include="Model\Security\SecurityIPModel.cs" />
     <Compile Include="Model\ItemModel.cs" />
+    <Compile Include="Model\ProviderServiceModel.cs" />
     <Compile Include="Model\UploadedItemModel.cs" />
     <Compile Include="Model\UserInfoModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

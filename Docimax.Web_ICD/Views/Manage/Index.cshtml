@@ -58,5 +58,21 @@
                     break;
             }
         </dd>
+        @if (Model.CertificationFlag == CertificateState.认证成功)
+        {
+            <dt>服务认证:</dt>
+            <dd>
+                @if (Model.Services != null && Model.Services.Count > 0)
+                {
+                    foreach (var item in Model.Services)
+                    {
+                    <dd>
+                        @item.ServiceName ------ @item.CertificateStatus
+                    </dd>
+                    }
+                }
+                <dd>[@Html.ActionLink("申请开通更多服务", "ServiceApply", "Service")]</dd>
+                </dd>
+        }
     </dl>
 </div>

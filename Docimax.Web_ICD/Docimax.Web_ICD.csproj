@@ -159,6 +159,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\DictionaryController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\Manage\ServiceController.cs" />
     <Compile Include="Controllers\ServiceItemController.cs" />
     <Compile Include="Controllers\TestController.cs" />
     <Compile Include="Controllers\UnRobItemController.cs" />
@@ -365,6 +366,7 @@
     <Content Include="Views\UploadItem\Update.cshtml" />
     <Content Include="Views\ServiceItem\Index.cshtml" />
     <Content Include="Views\Test\TypeaheadTest.cshtml" />
+    <Content Include="Views\Service\ServiceApply.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
