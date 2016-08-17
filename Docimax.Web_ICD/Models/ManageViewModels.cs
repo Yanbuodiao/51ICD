@@ -15,7 +15,7 @@ namespace Docimax.Web_ICD.Models
         public bool TwoFactor { get; set; }
         public bool BrowserRemembered { get; set; }
         public CertificateState CertificationFlag { get; set; }
-        public List<ProviderServiceModel> Services { get; set; }
+        public List<ServiceModel> Services { get; set; }
     }
 
     public class ManageLoginsViewModel

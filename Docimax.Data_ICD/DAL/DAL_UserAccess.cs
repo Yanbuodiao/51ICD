@@ -76,7 +76,7 @@ namespace Docimax.Data_ICD.DAL
                 };
                 if (services != null)
                 {
-                    result.Services = services.Select(e => new ProviderServiceModel
+                    result.Services = services.Select(e => new ServiceModel
                     {
                         ServiceID = e.ServiceID,
                         ServiceName = e.ServiceName,

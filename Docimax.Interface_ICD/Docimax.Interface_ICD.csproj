@@ -64,6 +64,7 @@
     <Compile Include="Interface\IICDRepository.cs" />
     <Compile Include="Interface\IMenu.cs" />
     <Compile Include="Interface\ISecurity.cs" />
+    <Compile Include="Interface\IService.cs" />
     <Compile Include="Interface\ISMS.cs" />
     <Compile Include="Interface\IUserAccess.cs" />
     <Compile Include="Model\CodeOrderSearchModel.cs" />
@@ -75,6 +76,9 @@
     <Compile Include="Model\ICDModel.cs" />
     <Compile Include="Model\ICDVersionModel.cs" />
     <Compile Include="Model\Menu\ICDMenu.cs" />
+    <Compile Include="Model\ServiceModel.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Model\Public\BaseModel.cs" />
     <Compile Include="Model\Public\ICDExcuteResult.cs" />
     <Compile Include="Model\Public\ICDFile.cs">
@@ -86,9 +90,10 @@
     </Compile>
     <Compile Include="Model\Security\SecurityIPModel.cs" />
     <Compile Include="Model\ItemModel.cs" />
-    <Compile Include="Model\ProviderServiceModel.cs" />
+    <Compile Include="Model\ServiceClaimModel.cs" />
     <Compile Include="Model\UploadedItemModel.cs" />
     <Compile Include="Model\UserInfoModel.cs" />
+    <Compile Include="Model\UserServiceApplyModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

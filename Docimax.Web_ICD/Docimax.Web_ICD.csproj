@@ -159,7 +159,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\DictionaryController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\Manage\ServiceController.cs" />
+    <Compile Include="Controllers\ServiceController.cs" />
     <Compile Include="Controllers\ServiceItemController.cs" />
     <Compile Include="Controllers\TestController.cs" />
     <Compile Include="Controllers\UnRobItemController.cs" />

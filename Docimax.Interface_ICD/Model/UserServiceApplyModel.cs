@@ -7,11 +7,10 @@ using System.Threading.Tasks;
 
 namespace Docimax.Interface_ICD.Model
 {
-    public class ProviderServiceModel
+    public class UserServiceApplyModel : BaseModel
     {
-        public int ServiceID { get; set; }
-        public string ServiceName { get; set; }
-        public string Description { get; set; }
+        public string UserID { get; set; }
+        public ServiceModel Service { get; set; }
         public CertificateState CertificateStatus { get; set; }
     }
 }

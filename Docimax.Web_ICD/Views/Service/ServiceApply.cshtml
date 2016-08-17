@@ -1,7 +1,19 @@
-﻿
+﻿@using Docimax.Common;
+@using Docimax.Common_ICD.Dictionary
+@model Docimax.Interface_ICD.Model.UserServiceApplyModel
 @{
     ViewBag.Title = "申请开通服务";
 }
 
 <h2>@ViewBag.Title</h2>
-
+@using (Html.BeginForm("ServiceApply", "Service", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="radio">
+        <label>
+            @Html.RadioButtonFor(model => model.Service.ServiceID, selectList: ServiceList.AvailableServices)
+            @*@Html.DropDownListFor*@
+        </label>
+    </div>
+    <input type="submit" value="提交" name="submit" id="submit" class=" btn btn-default" />
+}

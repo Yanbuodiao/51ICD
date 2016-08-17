@@ -119,22 +119,29 @@
         <div class="col-md-5" style="display:inline-block; position: fixed;">
             @Html.ValidationSummary("", new { @class = "text-danger" })
             <div class="form-group" id="diagnosis">
-                <h4>出院诊断</h4>
-                @for (var themeIndex = 0; themeIndex < Model.DiagnosisList.Count(); themeIndex++)
+                @*<h4>出院诊断</h4>*@
+                @for (var index = 0; index < Model.DiagnosisList.Count(); index++)
                 {
-                    @Html.TextBoxFor(model => model.DiagnosisList[themeIndex].DisplayText, new
+                    if (index == 0)
+                    {
+                        <h4>主要诊断</h4>
+                    }
+                    @Html.TextBoxFor(model => model.DiagnosisList[index].DisplayText, new
                {
                    @class = "form-control typeahead",
-                   @placeholder = (!string.IsNullOrWhiteSpace(@Model.DiagnosisList[themeIndex].Description)) ? @Model.DiagnosisList[themeIndex].Description : "诊断或编码",
+                   @placeholder = (!string.IsNullOrWhiteSpace(@Model.DiagnosisList[index].Description)) ? @Model.DiagnosisList[index].Description : "诊断或编码",
                    @style = "max-width: 480px;"
-               })
+               }) if (index == 0)
+                  {
+                    <h4>其他诊断</h4>
+                  }
                 }
             </div>
             <div class="form-group" id="operate">
                 <h4>手术操作</h4>
-                @for (var themeIndex = 0; themeIndex < Model.OperateList.Count(); themeIndex++)
+                @for (var index = 0; index < Model.OperateList.Count(); index++)
                 {
-                    @Html.TextBoxFor(model => model.OperateList[themeIndex].DisplayText, new
+                    @Html.TextBoxFor(model => model.OperateList[index].DisplayText, new
                {
                    @class = "form-control typeahead",
                    @placeholder = "操作或编码",
