@@ -131,6 +131,9 @@
     <Compile Include="Entity\Dic_Service.cs">
       <DependentUpon>Entity_Read.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entity\Dic_Service_Attach.cs">
+      <DependentUpon>Entity_Read.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entity\Dic_Service_Claim.cs">
       <DependentUpon>Entity_Read.tt</DependentUpon>
     </Compile>

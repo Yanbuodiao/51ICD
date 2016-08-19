@@ -15,12 +15,12 @@
             @Html.LabelForModel("申请服务：", new { @class = "col-md-2 control-label" })
         </div>
         <div class="col-md-5">
-            @for (int i = 0; i < ServiceList.AvailableServices.Count(); i++)
+            @for (int i = 0; i < ICDSelectList.AvailableServices.Count(); i++)
             {
                 <div class="radio">
                     <label style="font-size:16px;">
-                        @Html.RadioButtonFor(model =>model.ServiceID, ServiceList.AvailableServices.ToArray()[i].Value)
-                        @ServiceList.AvailableServices.ToArray()[i].Text
+                        @Html.RadioButtonFor(model => model.ServiceID, ICDSelectList.AvailableServices.ToArray()[i].Value)
+                        @ICDSelectList.AvailableServices.ToArray()[i].Text
                     </label>
                 </div>
             }

@@ -167,6 +167,7 @@
           <Property Name="ICD_VersionID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ICD_VersionName" Type="nvarchar" MaxLength="300" />
           <Property Name="ICD_Description" Type="nvarchar" MaxLength="300" />
+          <Property Name="ICD_Type" Type="int" />
           <Property Name="CreateTime" Type="datetime" />
           <Property Name="CreateUserID" Type="nvarchar" MaxLength="128" />
           <Property Name="LastModifyTime" Type="datetime" />
@@ -353,6 +354,20 @@
           <Property Name="DeleteFlag" Type="int" />
           <Property Name="LastModifyStamp" Type="timestamp" StoreGeneratedPattern="Computed" />
         </EntityType>
+        <EntityType Name="Dic_Service_Attach">
+          <Key>
+            <PropertyRef Name="Dic_Service_AttachID" />
+          </Key>
+          <Property Name="Dic_Service_AttachID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ServiceID" Type="int" />
+          <Property Name="AttachType" Type="int" />
+          <Property Name="CreateTime" Type="datetime" />
+          <Property Name="CreateUserID" Type="nvarchar" MaxLength="128" />
+          <Property Name="LastModifyTime" Type="datetime" />
+          <Property Name="LastModifyUserID" Type="nvarchar" MaxLength="128" />
+          <Property Name="DeleteFlag" Type="int" />
+          <Property Name="LastModifyStamp" Type="timestamp" StoreGeneratedPattern="Computed" />
+        </EntityType>
         <EntityType Name="Dic_Service_Claim">
           <Key>
             <PropertyRef Name="ServiceClaimID" />
@@ -360,8 +375,6 @@
           <Property Name="ServiceClaimID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ServiceID" Type="int" />
           <Property Name="ClaimType" Type="int" />
-          <Property Name="ClaimOperateType" Type="int" />
-          <Property Name="ClaimValue" Type="nvarchar" MaxLength="300" />
           <Property Name="CreateTime" Type="datetime" />
           <Property Name="CreateUserID" Type="nvarchar" MaxLength="128" />
           <Property Name="LastModifyTime" Type="datetime" />
@@ -549,6 +562,20 @@
           <Property Name="DeleteFlag" Type="int" />
           <Property Name="LastModifyStamp" Type="timestamp" StoreGeneratedPattern="Computed" />
         </EntityType>
+        <!--生成过程中发现错误:
+警告 6013: 表/视图“51ICD_DB.dbo.User_Service_Claim”未定义主键，并且无法推断有效的主键。已排除了此表/视图。若要使用实体，将需要检查您的架构、添加正确的键并取消对实体的注释。
+        <EntityType Name="User_Service_Claim">
+          <Property Name="User_Service_ClaimID" Type="int" />
+          <Property Name="User_ServiceID" Type="int" />
+          <Property Name="ClaimType" Type="int" />
+          <Property Name="ClaimOperateType" Type="int" />
+          <Property Name="ClaimValue" Type="nvarchar" MaxLength="500" />
+          <Property Name="CreateTime" Type="datetime" />
+          <Property Name="CreateUserID" Type="nvarchar" MaxLength="128" />
+          <Property Name="LastModifyTime" Type="datetime" />
+          <Property Name="DeleteFlag" Type="int" />
+          <Property Name="LastModifyStamp" Type="timestamp" StoreGeneratedPattern="Computed" />
+        </EntityType>-->
         <EntityType Name="User_Service_Provider">
           <Key>
             <PropertyRef Name="User_ServiceID" />
@@ -649,6 +676,7 @@
           <EntitySet Name="Dic_Menu" EntityType="Self.Dic_Menu" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Dic_Organization" EntityType="Self.Dic_Organization" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Dic_Service" EntityType="Self.Dic_Service" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Dic_Service_Attach" EntityType="Self.Dic_Service_Attach" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Dic_Service_Claim" EntityType="Self.Dic_Service_Claim" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Dic_Service_Item" EntityType="Self.Dic_Service_Item" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Dic_Service_Menu" EntityType="Self.Dic_Service_Menu" Schema="dbo" store:Type="Tables" />
@@ -708,6 +736,7 @@
           <EntitySet Name="Dic_Menu" EntityType="ICD_DBModel1.Dic_Menu" />
           <EntitySet Name="Dic_Organization" EntityType="ICD_DBModel1.Dic_Organization" />
           <EntitySet Name="Dic_Service" EntityType="ICD_DBModel1.Dic_Service" />
+          <EntitySet Name="Dic_Service_Attach" EntityType="ICD_DBModel1.Dic_Service_Attach" />
           <EntitySet Name="Dic_Service_Claim" EntityType="ICD_DBModel1.Dic_Service_Claim" />
           <EntitySet Name="Dic_Service_Item" EntityType="ICD_DBModel1.Dic_Service_Item" />
           <EntitySet Name="Dic_Service_Menu" EntityType="ICD_DBModel1.Dic_Service_Menu" />
@@ -908,6 +937,7 @@
           <Property Name="ICD_VersionID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ICD_VersionName" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
           <Property Name="ICD_Description" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="ICD_Type" Type="Int32" />
           <Property Name="CreateTime" Type="DateTime" Precision="3" />
           <Property Name="CreateUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="LastModifyTime" Type="DateTime" Precision="3" />
@@ -1094,6 +1124,20 @@
           <Property Name="DeleteFlag" Type="Int32" />
           <Property Name="LastModifyStamp" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
         </EntityType>
+        <EntityType Name="Dic_Service_Attach">
+          <Key>
+            <PropertyRef Name="Dic_Service_AttachID" />
+          </Key>
+          <Property Name="Dic_Service_AttachID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ServiceID" Type="Int32" />
+          <Property Name="AttachType" Type="Int32" />
+          <Property Name="CreateTime" Type="DateTime" Precision="3" />
+          <Property Name="CreateUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="LastModifyTime" Type="DateTime" Precision="3" />
+          <Property Name="LastModifyUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="DeleteFlag" Type="Int32" />
+          <Property Name="LastModifyStamp" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+        </EntityType>
         <EntityType Name="Dic_Service_Claim">
           <Key>
             <PropertyRef Name="ServiceClaimID" />
@@ -1101,8 +1145,6 @@
           <Property Name="ServiceClaimID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ServiceID" Type="Int32" />
           <Property Name="ClaimType" Type="Int32" />
-          <Property Name="ClaimOperateType" Type="Int32" />
-          <Property Name="ClaimValue" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
           <Property Name="CreateTime" Type="DateTime" Precision="3" />
           <Property Name="CreateUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="LastModifyTime" Type="DateTime" Precision="3" />
@@ -1535,6 +1577,7 @@
                 <ScalarProperty Name="LastModifyTime" ColumnName="LastModifyTime" />
                 <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
                 <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="ICD_Type" ColumnName="ICD_Type" />
                 <ScalarProperty Name="ICD_Description" ColumnName="ICD_Description" />
                 <ScalarProperty Name="ICD_VersionName" ColumnName="ICD_VersionName" />
                 <ScalarProperty Name="ICD_VersionID" ColumnName="ICD_VersionID" />
@@ -1730,6 +1773,21 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="Dic_Service_Attach">
+            <EntityTypeMapping TypeName="ICD_DBModel1.Dic_Service_Attach">
+              <MappingFragment StoreEntitySet="Dic_Service_Attach">
+                <ScalarProperty Name="LastModifyStamp" ColumnName="LastModifyStamp" />
+                <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
+                <ScalarProperty Name="LastModifyUserID" ColumnName="LastModifyUserID" />
+                <ScalarProperty Name="LastModifyTime" ColumnName="LastModifyTime" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="AttachType" ColumnName="AttachType" />
+                <ScalarProperty Name="ServiceID" ColumnName="ServiceID" />
+                <ScalarProperty Name="Dic_Service_AttachID" ColumnName="Dic_Service_AttachID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Dic_Service_Claim">
             <EntityTypeMapping TypeName="ICD_DBModel1.Dic_Service_Claim">
               <MappingFragment StoreEntitySet="Dic_Service_Claim">
@@ -1739,8 +1797,6 @@
                 <ScalarProperty Name="LastModifyTime" ColumnName="LastModifyTime" />
                 <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
                 <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
-                <ScalarProperty Name="ClaimValue" ColumnName="ClaimValue" />
-                <ScalarProperty Name="ClaimOperateType" ColumnName="ClaimOperateType" />
                 <ScalarProperty Name="ClaimType" ColumnName="ClaimType" />
                 <ScalarProperty Name="ServiceID" ColumnName="ServiceID" />
                 <ScalarProperty Name="ServiceClaimID" ColumnName="ServiceClaimID" />

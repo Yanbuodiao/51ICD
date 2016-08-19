@@ -77,7 +77,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Dictionary\ICDVersionList.cs" />
-    <Compile Include="Dictionary\ServiceList.cs" />
+    <Compile Include="Dictionary\ICDSelectList.cs" />
     <Compile Include="File\FileHelper.cs" />
     <Compile Include="File\File_Azure.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

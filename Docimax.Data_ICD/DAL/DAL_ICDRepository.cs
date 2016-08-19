@@ -119,5 +119,19 @@ namespace Docimax.Data_ICD.DAL
                 return result;
             }
         }
+        public List<ICDVersionModel> GetICDVersionList(int icdType)
+        {
+            using (var entity = new Entity_Read())
+            {
+                var query = entity.BaseDic_ICD_Version.Where(e => e.ICD_Type == icdType).ToList();
+                return query.Select(e => new ICDVersionModel
+                {
+                    ICD_VersionID = e.ICD_VersionID,
+                    ICD_Type = icdType,
+                    ICD_VersionName = e.ICD_VersionName,
+                    ICD_Description = e.ICD_Description,
+                }).ToList();
+            }
+        }
     }
 }

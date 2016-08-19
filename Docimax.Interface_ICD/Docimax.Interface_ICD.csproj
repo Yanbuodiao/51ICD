@@ -54,6 +54,7 @@
     <Compile Include="Enum\CodeResultType.cs" />
     <Compile Include="Enum\ICDOrderState.cs" />
     <Compile Include="Enum\ItemState.cs" />
+    <Compile Include="Enum\ServiceAttachType.cs" />
     <Compile Include="Enum\ServiceClaimOpereateType.cs" />
     <Compile Include="Enum\ServiceClaimType.cs" />
     <Compile Include="Enum\ServiceType.cs" />
@@ -76,6 +77,10 @@
     <Compile Include="Model\ICDModel.cs" />
     <Compile Include="Model\ICDVersionModel.cs" />
     <Compile Include="Model\Menu\ICDMenu.cs" />
+    <Compile Include="Model\ServiceAttachModel.cs" />
+    <Compile Include="Model\ServiceClaimModel.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Model\ServiceModel.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -90,7 +95,6 @@
     </Compile>
     <Compile Include="Model\Security\SecurityIPModel.cs" />
     <Compile Include="Model\ItemModel.cs" />
-    <Compile Include="Model\ServiceClaimModel.cs" />
     <Compile Include="Model\UploadedItemModel.cs" />
     <Compile Include="Model\UserInfoModel.cs" />
     <Compile Include="Model\UserServiceApplyModel.cs" />

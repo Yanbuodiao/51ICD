@@ -1,10 +1,12 @@
-﻿using Docimax.Common_ICD.File;
+﻿using Docimax.Common;
+using Docimax.Common_ICD.File;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Text;
 
 namespace Docimax.Web_ICD.Controllers
 {
@@ -53,6 +55,19 @@ namespace Docimax.Web_ICD.Controllers
             public int Id { get; set; }
             public string ProvinceName { get; set; }
             public string CityName { get; set; }
+        }
+
+        public ActionResult TestRandom()
+        {
+            var testStr = PlatformPwdHelper.CreatRadomPwd();
+            //var key="hMme7#lfW4pMP&eV";
+
+            //var key = "hMme7#l#d4pMP&eVYN8m5d0qcscfKrPD";
+
+            //var encryptStr = EncryptUtils.EncryptByAES(testStr, key);
+            //var decryptStr = EncryptUtils.DecryptByAES(encryptStr, key);
+            //return Content(string.Format(@"{0}<br>{1}<br>{2}", testStr, encryptStr, decryptStr));
+            return Content(testStr);
         }
     }
 }

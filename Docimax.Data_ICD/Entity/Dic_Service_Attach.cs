@@ -12,12 +12,11 @@ namespace Docimax.Data_ICD.Entity
     using System;
     using System.Collections.Generic;
     
-    public partial class BaseDic_ICD_Version
+    public partial class Dic_Service_Attach
     {
-        public int ICD_VersionID { get; set; }
-        public string ICD_VersionName { get; set; }
-        public string ICD_Description { get; set; }
-        public Nullable<int> ICD_Type { get; set; }
+        public int Dic_Service_AttachID { get; set; }
+        public Nullable<int> ServiceID { get; set; }
+        public Nullable<int> AttachType { get; set; }
         public Nullable<System.DateTime> CreateTime { get; set; }
         public string CreateUserID { get; set; }
         public Nullable<System.DateTime> LastModifyTime { get; set; }

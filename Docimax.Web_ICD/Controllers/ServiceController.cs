@@ -29,6 +29,11 @@ namespace Docimax.Web_ICD.Controllers.Manage
             var model = new UserServiceApplyModel { Service = service };
             return View(model);
         }
-
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ServiceApplyDetail(UserServiceApplyModel model)
+        {
+            return View(model);
+        }
     }
 }

@@ -17,8 +17,6 @@ namespace Docimax.Data_ICD.Entity
         public int ServiceClaimID { get; set; }
         public Nullable<int> ServiceID { get; set; }
         public Nullable<int> ClaimType { get; set; }
-        public Nullable<int> ClaimOperateType { get; set; }
-        public string ClaimValue { get; set; }
         public Nullable<System.DateTime> CreateTime { get; set; }
         public string CreateUserID { get; set; }
         public Nullable<System.DateTime> LastModifyTime { get; set; }

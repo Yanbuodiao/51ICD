@@ -11,5 +11,6 @@ namespace Docimax.Interface_ICD.Model
         public bool DeleteFlag { get; set; }
         public CertificateState CertificateStatus { get; set; }
         public List<ServiceClaimModel> ServiceClaims { get; set; }
+        public List<ServiceAttachModel> ServiceAttaches { get; set; }
     }
 }

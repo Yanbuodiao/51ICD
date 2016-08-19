@@ -13,8 +13,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Docimax.Interface_ICD", "Do
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Docimax.Common_ICD", "Docimax.Common_ICD\Docimax.Common_ICD.csproj", "{1BAE84AA-65E4-415A-8E89-76D3082E161B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Docimax.Common.Encryption", "Docimax.Common.Encryption\Docimax.Common.Encryption.csproj", "{9F872BEC-D45F-40A7-BE67-5396C4892E2E}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Docimax.CodeOrder", "Docimax.CodeOrder\Docimax.CodeOrder.csproj", "{F362F8CE-69C7-45D1-99AC-E3F4E7F31E6E}"
 EndProject
 Global
@@ -43,10 +41,6 @@ Global
 		{1BAE84AA-65E4-415A-8E89-76D3082E161B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1BAE84AA-65E4-415A-8E89-76D3082E161B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1BAE84AA-65E4-415A-8E89-76D3082E161B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9F872BEC-D45F-40A7-BE67-5396C4892E2E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9F872BEC-D45F-40A7-BE67-5396C4892E2E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9F872BEC-D45F-40A7-BE67-5396C4892E2E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9F872BEC-D45F-40A7-BE67-5396C4892E2E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F362F8CE-69C7-45D1-99AC-E3F4E7F31E6E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F362F8CE-69C7-45D1-99AC-E3F4E7F31E6E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F362F8CE-69C7-45D1-99AC-E3F4E7F31E6E}.Release|Any CPU.ActiveCfg = Release|Any CPU

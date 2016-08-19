@@ -31,6 +31,7 @@
         <div class="col-md-10">
             @Html.EditorFor(model => model.BankCardNO, new { htmlAttributes = new { @class = "form-control", @id = "bankCard" } })
             @Html.ValidationMessageFor(model => model.BankCardNO, "", new { @class = "text-danger" })
+            <p class="help-block">您的收益将会定期汇入该卡中，请务必保证输入准确.</p>
         </div>
     </div>
 

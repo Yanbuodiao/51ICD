@@ -36,11 +36,16 @@ namespace Docimax.Data_ICD.DAL
                 {
                     return new ServiceModel();
                 }
-                var claims = entity.Dic_Service_Claim.Where(e => e.ServiceID == serviceID).Select(t => new ServiceClaimModel
+                var claims = entity.Dic_Service_Claim.Where(e => e.ServiceID == serviceID).ToList().Select(t => new ServiceClaimModel
                 {
                     ServiceID = serviceID,
                     ClaimType = (ServiceClaimType)t.ClaimType,
                 }).ToList();
+                var attachs = entity.Dic_Service_Attach.Where(e => e.ServiceID == serviceID).ToList().Select(t => new ServiceAttachModel
+                    {
+                        AttachType = (ServiceAttachType)t.AttachType,
+                        ServiceID = serviceID,
+                    }).ToList();
                 return new ServiceModel
                 {
                     ServiceID = model.ServiceID,
@@ -48,6 +53,7 @@ namespace Docimax.Data_ICD.DAL
                     Description = model.Description,
                     DeleteFlag = model.DeleteFlag == 1,
                     ServiceClaims = claims,
+                    ServiceAttaches = attachs,
                 };
             }
         }
