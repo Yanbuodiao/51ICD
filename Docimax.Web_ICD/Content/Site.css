@@ -37,6 +37,12 @@ textarea {
 }
 
 
+.navbar-icd.navbar-inverse{
+  background-color: #57D2DD;
+  border-color: #57D2DD;
+}
+
+
 .span3 {
     width: 220px;
     min-height: 20px;

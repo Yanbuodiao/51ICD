@@ -21,9 +21,14 @@ namespace Docimax.Web_ICD.Controllers.Manage
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult ServiceApply(UserServiceApplyModel model)
+        public ActionResult ServiceApplyDetail(ServiceModel service)
         {
+            IService access = new DAL_Service();
+            service = access.GetServiceByID(service.ServiceID);
+            ViewBag.Title = service.ServiceName;
+            var model = new UserServiceApplyModel { Service = service };
             return View(model);
         }
+
     }
 }

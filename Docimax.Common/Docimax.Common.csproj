@@ -67,7 +67,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="HTMLRadioCheckExtensions.cs" />
     <Compile Include="WebGridExtensions.cs" />
     <Compile Include="ConstStrHelper.cs" />
     <Compile Include="HttpHelper.cs" />

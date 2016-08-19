@@ -14,5 +14,12 @@ namespace Docimax.Interface_ICD.Interface
         /// </summary>
         /// <returns></returns>
         List<ServiceModel> GetAllSerevice();
+
+        /// <summary>
+        /// 根据服务ID获取服务详情，含服务配置详情
+        /// </summary>
+        /// <param name="serviceID">服务ID</param>
+        /// <returns></returns>
+        ServiceModel GetServiceByID(int serviceID);
     }
 }

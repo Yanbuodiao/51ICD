@@ -367,6 +367,7 @@
     <Content Include="Views\ServiceItem\Index.cshtml" />
     <Content Include="Views\Test\TypeaheadTest.cshtml" />
     <Content Include="Views\Service\ServiceApply.cshtml" />
+    <Content Include="Views\Service\ServiceApplyDetail.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -12,16 +12,22 @@ namespace Docimax.Common_ICD.Dictionary
 {
     public static class ServiceList
     {
+        private static IEnumerable<SelectListItem> availableServices;
         public static IEnumerable<SelectListItem> AvailableServices
         {
             get
             {
-                IService access = new DAL_Service();
-                var services = access.GetAllSerevice();
-                return services.Where(e => !e.DeleteFlag).Select(t => new SelectListItem {
-                    Text=t.ServiceName,
-                    Value=t.ServiceID.ToString(),                   
-                });
+                if (availableServices == null)
+                {
+                    IService access = new DAL_Service();
+                    var services = access.GetAllSerevice();
+                    availableServices = services.Where(e => !e.DeleteFlag).Select(t => new SelectListItem
+                    {
+                        Text = t.ServiceName,
+                        Value = t.ServiceID.ToString(),
+                    });
+                }
+                return availableServices;
             }
         }
     }
