@@ -99,6 +99,7 @@ namespace Docimax.Data_ICD.DAL
                 {
                     if (newCodeOrder == null)
                     {
+                        trasanction.Rollback();
                         return new ICDExcuteResult<int> { Result = false, ErrorStr = "订单实体不能为空" };
                     }
                     var stateInt = isSubmit ? ICDOrderState.待抢单.GetHashCode() : ICDOrderState.新创建.GetHashCode();

@@ -2,6 +2,7 @@
 using Docimax.Interface_ICD.Enum;
 using Docimax.Interface_ICD.Interface;
 using Docimax.Interface_ICD.Model;
+using System;
 using System.Linq;
 
 namespace Docimax.Data_ICD.DAL
@@ -17,11 +18,13 @@ namespace Docimax.Data_ICD.DAL
                     var user = entity.AspNetUsers.FirstOrDefault(e => e.Id == model.UserID);
                     if (user == null)
                     {
+                        transaction.Rollback();
                         return new ICDExcuteResult<int> { Result = false, ErrorStr = "未获得当前用户信息", };
                     }
                     var applyInt = CertificateState.未认证.GetHashCode();
-                    if (user.CertificationFlag != model.CertificateFlag.GetHashCode())
+                    if (user.CertificationFlag != null && user.CertificationFlag != applyInt)
                     {
+                        transaction.Rollback();
                         return new ICDExcuteResult<int> { Result = false, ErrorStr = "已经发起过实名认证申请", };
                     }
                     user.CertificationFlag = model.CertificateFlag.GetHashCode();
@@ -43,6 +46,7 @@ namespace Docimax.Data_ICD.DAL
                         entity.User_Attach.Add(userAttach);
                     }
                     entity.SaveChanges();
+                    transaction.Commit();
                     return new ICDExcuteResult<int> { Result = true };
                 }
             }
@@ -85,6 +89,86 @@ namespace Docimax.Data_ICD.DAL
                     }).ToList();
                 }
                 return result;
+            }
+        }
+
+        public ICDExcuteResult<int> ApplyServiceProvider(UserServiceApplyModel model)
+        {
+            using (var entity = new Entity_Write())
+            {
+                using (var transaction = entity.Database.BeginTransaction())
+                {
+                    entity.SaveChanges();
+                    var userService = entity.User_Service_Provider.FirstOrDefault(e => e.UserID == model.UserID && e.ServiceID == model.Service.ServiceID);
+                    if (userService != null)
+                    {
+                        if (userService.CertificationStatus != null)
+                        {
+                            switch ((CertificateState)userService.CertificationStatus)//以下状态不允许再次发起申请
+                            {
+                                case CertificateState.发起认证申请:
+                                case CertificateState.平台人员二次审核通过:
+                                case CertificateState.平台人员一次审核通过:
+                                case CertificateState.认证成功:
+                                case CertificateState.冻结:
+                                    return new ICDExcuteResult<int> { Result = false, ErrorStr = userService.CertificationStatus.ToString() };
+                            }
+                        }
+                    }
+                    else
+                    {
+                        userService = new User_Service_Provider
+                        {
+                            UserID = model.UserID,
+                            ServiceID = model.Service.ServiceID,
+                            ApplyTime = DateTime.Now,
+                            LastModityTime = DateTime.Now,
+                            LastModifyUserID = model.UserID,
+                            CreateTime = DateTime.Now,
+                            CreateUserID = model.UserID,
+                        };
+                        entity.User_Service_Provider.Add(userService);
+                        entity.SaveChanges();
+                    }
+                    userService.CertificationStatus = model.Service.CertificateStatus.GetHashCode();
+                    var userServiceClaims = entity.User_Service_Claim.Where(t => t.User_ServiceID == userService.User_ServiceID).ToList();
+                    model.Service.ServiceClaims.ForEach(e =>
+                    {
+                        var claim = userServiceClaims.FirstOrDefault(t => t.ClaimType == e.ClaimType.GetHashCode());
+                        if (claim == null)
+                        {
+                            claim = new User_Service_Claim
+                            {
+                                CreateUserID = model.UserID,
+                                CreateTime = DateTime.Now,
+                                ClaimType = e.ClaimType.GetHashCode(),
+                                User_ServiceID = userService.User_ServiceID
+                            };
+                            entity.User_Service_Claim.Add(claim);
+                        }
+                        claim.ClaimOperateType = e.ClaimOpereateType.GetHashCode();
+                        claim.ClaimValue = e.ClaimValue;
+                        claim.LastModifyTime = DateTime.Now;
+                    });
+                    model.Service.ServiceAttaches.ForEach(e =>
+                    {
+                        var userServiceAttach = new User_Service_Attach
+                        {
+                            User_ServiceID = userService.User_ServiceID,
+                            AttachURL = e.FileURL,
+                            AttachType = e.AttachType.GetHashCode(),
+                            ContentType = e.ContentType,
+                            CreateTime = DateTime.Now,
+                            CreateUserID = model.UserID,
+                            LastModifyUserID = model.UserID,
+                            LastModityTime = DateTime.Now,
+                        };
+                        entity.User_Service_Attach.Add(userServiceAttach);
+                    });
+                    entity.SaveChanges();
+                    transaction.Commit();
+                    return new ICDExcuteResult<int> { Result = true };
+                }
             }
         }
     }

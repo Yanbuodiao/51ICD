@@ -6,7 +6,7 @@
 
 <h2>@ViewBag.Title</h2>
 <hr />
-@using (Html.BeginForm("ServiceApplyDetail", "Service", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
+@using (Html.BeginForm("ServiceApply", "Service", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary("", new { @class = "text-danger" })

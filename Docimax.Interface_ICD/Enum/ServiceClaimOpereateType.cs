@@ -10,6 +10,5 @@ namespace Docimax.Interface_ICD.Enum
     {
         等于 = 10,
         不等于 = 20,
-        
     }
 }

@@ -562,10 +562,11 @@
           <Property Name="DeleteFlag" Type="int" />
           <Property Name="LastModifyStamp" Type="timestamp" StoreGeneratedPattern="Computed" />
         </EntityType>
-        <!--生成过程中发现错误:
-警告 6013: 表/视图“51ICD_DB.dbo.User_Service_Claim”未定义主键，并且无法推断有效的主键。已排除了此表/视图。若要使用实体，将需要检查您的架构、添加正确的键并取消对实体的注释。
         <EntityType Name="User_Service_Claim">
-          <Property Name="User_Service_ClaimID" Type="int" />
+          <Key>
+            <PropertyRef Name="User_Service_ClaimID" />
+          </Key>
+          <Property Name="User_Service_ClaimID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="User_ServiceID" Type="int" />
           <Property Name="ClaimType" Type="int" />
           <Property Name="ClaimOperateType" Type="int" />
@@ -575,7 +576,7 @@
           <Property Name="LastModifyTime" Type="datetime" />
           <Property Name="DeleteFlag" Type="int" />
           <Property Name="LastModifyStamp" Type="timestamp" StoreGeneratedPattern="Computed" />
-        </EntityType>-->
+        </EntityType>
         <EntityType Name="User_Service_Provider">
           <Key>
             <PropertyRef Name="User_ServiceID" />
@@ -690,6 +691,7 @@
           <EntitySet Name="User_Attach" EntityType="Self.User_Attach" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User_ChangeAuditLog" EntityType="Self.User_ChangeAuditLog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User_Service_Attach" EntityType="Self.User_Service_Attach" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="User_Service_Claim" EntityType="Self.User_Service_Claim" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User_Service_Provider" EntityType="Self.User_Service_Provider" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
@@ -750,6 +752,7 @@
           <EntitySet Name="User_Attach" EntityType="ICD_DBModel1.User_Attach" />
           <EntitySet Name="User_ChangeAuditLog" EntityType="ICD_DBModel1.User_ChangeAuditLog" />
           <EntitySet Name="User_Service_Attach" EntityType="ICD_DBModel1.User_Service_Attach" />
+          <EntitySet Name="User_Service_Claim" EntityType="ICD_DBModel1.User_Service_Claim" />
           <EntitySet Name="User_Service_Provider" EntityType="ICD_DBModel1.User_Service_Provider" />
           <AssociationSet Name="FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId" Association="ICD_DBModel1.FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId">
             <End Role="AspNetRoles" EntitySet="AspNetRoles" />
@@ -1329,6 +1332,21 @@
           <Property Name="CreateUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="LastModityTime" Type="DateTime" Precision="3" />
           <Property Name="LastModifyUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="DeleteFlag" Type="Int32" />
+          <Property Name="LastModifyStamp" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+        </EntityType>
+        <EntityType Name="User_Service_Claim">
+          <Key>
+            <PropertyRef Name="User_Service_ClaimID" />
+          </Key>
+          <Property Name="User_Service_ClaimID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="User_ServiceID" Type="Int32" />
+          <Property Name="ClaimType" Type="Int32" />
+          <Property Name="ClaimOperateType" Type="Int32" />
+          <Property Name="ClaimValue" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="CreateTime" Type="DateTime" Precision="3" />
+          <Property Name="CreateUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="LastModifyTime" Type="DateTime" Precision="3" />
           <Property Name="DeleteFlag" Type="Int32" />
           <Property Name="LastModifyStamp" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
         </EntityType>
@@ -1992,6 +2010,22 @@
                 <ScalarProperty Name="AttachType" ColumnName="AttachType" />
                 <ScalarProperty Name="User_ServiceID" ColumnName="User_ServiceID" />
                 <ScalarProperty Name="UserServiceAttachID" ColumnName="UserServiceAttachID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="User_Service_Claim">
+            <EntityTypeMapping TypeName="ICD_DBModel1.User_Service_Claim">
+              <MappingFragment StoreEntitySet="User_Service_Claim">
+                <ScalarProperty Name="LastModifyStamp" ColumnName="LastModifyStamp" />
+                <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
+                <ScalarProperty Name="LastModifyTime" ColumnName="LastModifyTime" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="ClaimValue" ColumnName="ClaimValue" />
+                <ScalarProperty Name="ClaimOperateType" ColumnName="ClaimOperateType" />
+                <ScalarProperty Name="ClaimType" ColumnName="ClaimType" />
+                <ScalarProperty Name="User_ServiceID" ColumnName="User_ServiceID" />
+                <ScalarProperty Name="User_Service_ClaimID" ColumnName="User_Service_ClaimID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

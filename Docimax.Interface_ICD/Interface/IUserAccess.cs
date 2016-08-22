@@ -4,7 +4,8 @@ namespace Docimax.Interface_ICD.Interface
 {
     public interface IUserAccess
     {
-        ICDExcuteResult<int> ApplyIdentityVerify(VerifyIdentityModel Model);
+        ICDExcuteResult<int> ApplyIdentityVerify(VerifyIdentityModel model);
         UserInfoModel GetUserInfo(string userID);
+        ICDExcuteResult<int> ApplyServiceProvider(UserServiceApplyModel model);
     }
 }

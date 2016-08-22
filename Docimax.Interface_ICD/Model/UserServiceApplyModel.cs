@@ -11,6 +11,5 @@ namespace Docimax.Interface_ICD.Model
     {
         public string UserID { get; set; }
         public ServiceModel Service { get; set; }
-        public CertificateState CertificateStatus { get; set; }
     }
 }

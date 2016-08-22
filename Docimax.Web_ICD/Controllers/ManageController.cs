@@ -59,7 +59,7 @@ namespace Docimax.Web_ICD.Controllers
                 : message == ManageMessageId.SetPasswordSuccess ? "已设置你的密码。"
                 : message == ManageMessageId.SetTwoFactorSuccess ? "已设置你的双重身份验证提供程序。"
                 : message == ManageMessageId.Error ? "出现错误。"
-                : message == ManageMessageId.AddPhoneSuccess ? "已添加你的电话号码。"
+                : message == ManageMessageId.AddPhoneSuccess ? "已认证你的电话号码。"
                 : message == ManageMessageId.RemovePhoneSuccess ? "已删除你的电话号码。"
                 : message == ManageMessageId.ApplyCertifacationSuccess ? "已受理你的实名认证请求。"
                 : "";
@@ -311,6 +311,7 @@ namespace Docimax.Web_ICD.Controllers
                 model.UserID = User.Identity.GetUserId();
                 model.ApplyTime = DateTime.Now;
                 model.FileList = new List<ICDFile>();
+                model.CertificateFlag = CertificateState.发起认证申请;
                 for (int i = 0; i < Request.Files.Count; i++)
                 {
                     var file = Request.Files[i];
@@ -409,6 +410,7 @@ namespace Docimax.Web_ICD.Controllers
             RemoveLoginSuccess,
             RemovePhoneSuccess,
             ApplyCertifacationSuccess,
+            ApplyServiceSuccess,
             Error
         }
 

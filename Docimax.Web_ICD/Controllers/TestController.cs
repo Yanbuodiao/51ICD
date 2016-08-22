@@ -1,12 +1,9 @@
 ﻿using Docimax.Common;
+using Docimax.Common.Encryption;
 using Docimax.Common_ICD.File;
-using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-using System.Text;
 
 namespace Docimax.Web_ICD.Controllers
 {
@@ -59,15 +56,15 @@ namespace Docimax.Web_ICD.Controllers
 
         public ActionResult TestRandom()
         {
-            var testStr = PlatformPwdHelper.CreatRadomPwd();
-            //var key="hMme7#lfW4pMP&eV";
+            //var testStr = PlatformPwdHelper.CreatRadomPwd();
+            var testStr = "啊的粉红色的方式的好看";
 
-            //var key = "hMme7#l#d4pMP&eVYN8m5d0qcscfKrPD";
+            var encryptStr = ICD_EncryptUtils.EncryptByAES(testStr);
+            var decryptStr = ICD_EncryptUtils.DecryptByAES(encryptStr);
 
-            //var encryptStr = EncryptUtils.EncryptByAES(testStr, key);
-            //var decryptStr = EncryptUtils.DecryptByAES(encryptStr, key);
-            //return Content(string.Format(@"{0}<br>{1}<br>{2}", testStr, encryptStr, decryptStr));
-            return Content(testStr);
+            return Content(string.Format(@"{0}<br>{1}<br>{2}", testStr, encryptStr, decryptStr));
+
+            //return Content(testStr);
         }
     }
 }

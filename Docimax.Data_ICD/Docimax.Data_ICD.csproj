@@ -203,6 +203,9 @@
     <Compile Include="Entity\User_Service_Attach.cs">
       <DependentUpon>Entity_Read.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entity\User_Service_Claim.cs">
+      <DependentUpon>Entity_Read.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entity\User_Service_Provider.cs">
       <DependentUpon>Entity_Read.tt</DependentUpon>
     </Compile>

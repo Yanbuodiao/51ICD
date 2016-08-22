@@ -62,6 +62,7 @@ namespace Docimax.Data_ICD.Entity
         public virtual DbSet<User_Attach> User_Attach { get; set; }
         public virtual DbSet<User_ChangeAuditLog> User_ChangeAuditLog { get; set; }
         public virtual DbSet<User_Service_Attach> User_Service_Attach { get; set; }
+        public virtual DbSet<User_Service_Claim> User_Service_Claim { get; set; }
         public virtual DbSet<User_Service_Provider> User_Service_Provider { get; set; }
     }
 }

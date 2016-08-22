@@ -1,4 +1,5 @@
-﻿using Docimax.Interface_ICD.Model;
+﻿using Docimax.Common.Encryption;
+using Docimax.Interface_ICD.Model;
 using Docimax.Web_ICD.Models;
 using System;
 using System.Collections.Generic;
@@ -14,9 +15,9 @@ namespace Docimax.Web_ICD.Convert
             return new VerifyIdentityModel
             {
                 UserID = model.UserID,
-                IDCardNo = model.IDCardNo,
-                RealName = model.RealName,
-                BankCardNO = model.BankCardNO,
+                IDCardNo = ICD_EncryptUtils.EncryptByAES(model.IDCardNo),
+                RealName = ICD_EncryptUtils.EncryptByAES(model.RealName),
+                BankCardNO = ICD_EncryptUtils.EncryptByAES(model.BankCardNO),
                 ApplyTime = model.ApplyTime,
                 FileList = model.FileList,
                 CertificateFlag = model.CertificateFlag,
