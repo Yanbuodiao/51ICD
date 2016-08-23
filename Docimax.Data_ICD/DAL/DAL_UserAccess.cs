@@ -21,11 +21,17 @@ namespace Docimax.Data_ICD.DAL
                         transaction.Rollback();
                         return new ICDExcuteResult<int> { Result = false, ErrorStr = "未获得当前用户信息", };
                     }
-                    var applyInt = CertificateState.未认证.GetHashCode();
-                    if (user.CertificationFlag != null && user.CertificationFlag != applyInt)
+                    if (user.CertificationFlag != null)
                     {
-                        transaction.Rollback();
-                        return new ICDExcuteResult<int> { Result = false, ErrorStr = "已经发起过实名认证申请", };
+                        switch ((CertificateState)user.CertificationFlag)//以下状态不允许再次发起申请
+                        {
+                            case CertificateState.发起认证申请:
+                            case CertificateState.平台人员二次审核通过:
+                            case CertificateState.平台人员一次审核通过:
+                            case CertificateState.认证成功:
+                            case CertificateState.冻结:
+                                return new ICDExcuteResult<int> { Result = false, ErrorStr = "已经发起过实名认证申请", };
+                        }
                     }
                     user.CertificationFlag = model.CertificateFlag.GetHashCode();
                     user.RealName = model.RealName;
@@ -98,7 +104,6 @@ namespace Docimax.Data_ICD.DAL
             {
                 using (var transaction = entity.Database.BeginTransaction())
                 {
-                    entity.SaveChanges();
                     var userService = entity.User_Service_Provider.FirstOrDefault(e => e.UserID == model.UserID && e.ServiceID == model.Service.ServiceID);
                     if (userService != null)
                     {
@@ -111,7 +116,7 @@ namespace Docimax.Data_ICD.DAL
                                 case CertificateState.平台人员一次审核通过:
                                 case CertificateState.认证成功:
                                 case CertificateState.冻结:
-                                    return new ICDExcuteResult<int> { Result = false, ErrorStr = userService.CertificationStatus.ToString() };
+                                    return new ICDExcuteResult<int> { Result = false, ErrorStr = "已经发起过服务认证申请" };
                             }
                         }
                     }
@@ -169,6 +174,28 @@ namespace Docimax.Data_ICD.DAL
                     transaction.Commit();
                     return new ICDExcuteResult<int> { Result = true };
                 }
+            }
+        }
+
+        public ICDPagedList<UserCertificationSearch, VerifyIdentityModel> GetUpLoadedCodeOrderList(ICDPagedList<UserCertificationSearch, VerifyIdentityModel> queryModel)
+        {
+            using (var entity = new Entity_Read())
+            {
+                var stateInt = queryModel.SearchModel.CertificateStatus.GetHashCode();
+                var query = entity.AspNetUsers.Where(e => (stateInt == 0 ? true : e.CertificationFlag == stateInt) &&
+                    string.IsNullOrEmpty(queryModel.TextFilter) ? true : (e.UserName.StartsWith(queryModel.TextFilter))).OrderBy(e => e.CertificationFlag).Skip((queryModel.Page - 1) * queryModel.PageSize)
+                    .Take(queryModel.PageSize)
+                    .ToList();
+                var resultQuery = query.Select(e => new VerifyIdentityModel
+                {
+                    UserID = e.Id,
+                    UserName = e.UserName,
+                    RealName = e.RealName,
+                    CertificateFlag = (CertificateState)e.CertificationFlag,
+                }).ToList();
+                queryModel.TotalRecords = query.Count();
+                queryModel.Content = resultQuery;
+                return queryModel;
             }
         }
     }

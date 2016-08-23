@@ -16,6 +16,7 @@
     @*通过身份验证并确认用户属于Admin角色显示管理菜单*@
     @if (Request.IsAuthenticated && User.IsInRole("DocimaxAdmins"))
     {
+        <li>@Html.ActionLink("实名认证管理", "Index", "ManageUserService")</li>
         <li>@Html.ActionLink("用户管理", "Index", "UsersAdmin")</li>
         <li>@Html.ActionLink("角色管理", "Index", "RoleAdmin")</li>
     }

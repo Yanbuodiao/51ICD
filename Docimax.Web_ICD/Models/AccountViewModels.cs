@@ -91,6 +91,11 @@ namespace Docimax.Web_ICD.Models
         /// 用户ID
         /// </summary>
         public string UserID { get; set; }
+
+        /// <summary>
+        /// 用户名
+        /// </summary>
+        public string UserName { get; set; }
         [Required]
         [StringLength(18, ErrorMessage = "请输出正确的身份证号码。", MinimumLength = 15)]
         [Display(Name = "身份证号")]

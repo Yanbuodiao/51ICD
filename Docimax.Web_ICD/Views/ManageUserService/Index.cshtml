@@ -1,0 +1,69 @@
+﻿@using Docimax.Interface_ICD.Model
+@using PagedList.Mvc
+@using Docimax.Common
+
+@model ICDPagedList<UserCertificationSearch, Docimax.Web_ICD.Models.VerifyIdentityViewModel>
+@{
+    ViewBag.Title = "实名认证列表";
+}
+
+<h2>@ViewBag.Title</h2>
+@using (Html.BeginForm("index", "ManageUserService", FormMethod.Get))
+{
+    <div class="row">
+        <div class="col-sm-11">
+            <div class="form-inline">
+                @Html.TextBoxFor(model => model.TextFilter, new { @class = "form-control", @placeholder = "请输入病案号或平台订单号" })
+                @Html.EnumDropDownListFor(model => model.SearchModel.CertificateStatus, "请选择申请状态", new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="pull-right col-lg-1">
+            <button class="btn btn-default" type="submit">
+                查询
+                <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+            </button>
+        </div>
+    </div>
+}
+<div style="margin-top:17px;">
+    @if (Model != null && Model.Content != null)
+    {
+        var grid = new WebGrid(
+                   canPage: true,
+                   rowsPerPage: Model.PageSize,
+                   canSort: false,
+                   ajaxUpdateContainerId: "grid");
+        grid.Bind(Model.Content, rowCount: Model.TotalRecords, autoSortAndPage: false);
+        grid.Pager(WebGridPagerModes.All);
+        @grid.GetHtml(htmlAttributes: new { id = "grid" },
+            fillEmptyRows: false,
+            tableStyle: "table table-bordered table-hover",
+            mode: WebGridPagerModes.All,
+            firstText: "第一页",
+            previousText: "上一页",
+            nextText: "下一页",
+            lastText: "最后一页",
+            columns: grid.Columns(
+            grid.Column("UserName", "用户名", style: "col-lg-3", canSort: false),
+            grid.Column("RealName", "真实姓名", style: "col-lg-2", canSort: false),
+            grid.Column("CertificateFlag", "状态", style: "col-lg-2", canSort: false),
+            grid.Column(header: "操作", canSort: false, style: "action",
+                format: @<text>
+                <a href="@Url.Action("Detail", "UploadItem", new { orderID = @item.UserID })" clas class="btn btn-default">
+                    详情
+                </a>
+                @*@if (item.OrderStatus.GetHashCode() < 10000)
+                {
+                    <a href="@Url.Action("Update", "UploadItem", new { orderID = @item.UserID })" clas class="btn btn-default">
+                        补充信息
+                        <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                    </a>
+
+                }*@
+                </text>)));
+    }
+    else
+    {
+        //todo  提示没有数据
+    }
+</div>

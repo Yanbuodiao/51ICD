@@ -6,7 +6,7 @@ namespace Docimax.Interface_ICD.Enum
     /// </summary>
     public enum CertificateState
     {
-        未认证 = 0,
+        未申请 = 10,
         发起认证申请 = 20,
         平台人员一次审核失败 = 55,//预留
         平台人员一次审核通过 = 100,//预留

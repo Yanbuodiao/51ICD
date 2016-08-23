@@ -1,12 +1,10 @@
-﻿using System.Data.Entity;
-using System.Net;
-using System.Linq;
-using System.Web;
-using System.Threading.Tasks;
-using Docimax.Web_ICD.Models;
-using Microsoft.AspNet.Identity;
+﻿using Docimax.Web_ICD.Models;
 using Microsoft.AspNet.Identity.Owin;
-using Microsoft.AspNet.Identity.EntityFramework;
+using System.Data.Entity;
+using System.Linq;
+using System.Net;
+using System.Threading.Tasks;
+using System.Web;
 using System.Web.Mvc;
 
 namespace Docimax.Web_ICD.Controllers

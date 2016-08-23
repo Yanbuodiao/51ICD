@@ -50,6 +50,7 @@ namespace Docimax.Web_ICD.Models
         /// 最后登录时间
         /// </summary>
         public DateTime? LastLoginTime { get; set; }
+
         /// <summary>
         /// 创建时间
         /// </summary>

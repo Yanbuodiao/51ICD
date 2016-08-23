@@ -14,6 +14,10 @@ namespace Docimax.Interface_ICD.Model
         /// </summary>
         public string UserID { get; set; }
         /// <summary>
+        /// 用户名
+        /// </summary>
+        public string UserName { get; set; }
+        /// <summary>
         /// 用户身证号
         /// </summary>
         public string IDCardNo { get; set; }
