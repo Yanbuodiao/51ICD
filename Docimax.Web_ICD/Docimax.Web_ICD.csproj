@@ -162,12 +162,14 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\DictionaryController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\RoleAdminController.cs" />
     <Compile Include="Controllers\ServiceController.cs" />
     <Compile Include="Controllers\ServiceItemController.cs" />
     <Compile Include="Controllers\TestController.cs" />
     <Compile Include="Controllers\UnRobItemController.cs" />
     <Compile Include="Controllers\UploadItemController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\UsersAdminController.cs" />
     <Compile Include="Controllers\VerificationCodeController.cs" />
     <Compile Include="Controllers_Manage\MenuController.cs" />
     <Compile Include="Controllers_Manage\RolesAdminController.cs" />
@@ -371,6 +373,13 @@
     <Content Include="Views\Test\TypeaheadTest.cshtml" />
     <Content Include="Views\Service\ServiceApply.cshtml" />
     <Content Include="Views\Service\ServiceApplyDetail.cshtml" />
+    <Content Include="Views\RoleAdmin\Index.cshtml" />
+    <Content Include="Views\RoleAdmin\Create.cshtml" />
+    <Content Include="Views\RoleAdmin\Edit.cshtml" />
+    <Content Include="Views\RoleAdmin\Details.cshtml" />
+    <Content Include="Views\UsersAdmin\Index.cshtml" />
+    <Content Include="Views\UsersAdmin\Edit.cshtml" />
+    <Content Include="Views\UsersAdmin\Details.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -39,6 +39,7 @@ namespace Docimax.Web_ICD.Controllers.Manage
         [ValidateAntiForgeryToken]
         public ActionResult ServiceApplyDetail(UserServiceApplyModel model)
         {
+
             var allFileTags = new List<string> { "100" };
             IService sAccess = new DAL_Service();
             if (allFileTags.Any(e => Request.Files[e] == null || Request.Files[e].ContentLength == 0))

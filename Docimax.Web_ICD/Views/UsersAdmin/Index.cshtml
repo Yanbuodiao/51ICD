@@ -1,0 +1,32 @@
+﻿@model IEnumerable<Docimax.Web_ICD.Models.ApplicationUser>
+@{
+    ViewBag.Title = "用户列表";
+}
+
+<h2>用户列表</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayName("用户名")
+        </th>
+        <th>
+
+        </th>
+    </tr>
+
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserName)
+            </td>
+            <td>
+                @Html.ActionLink("编辑用户", "Edit", new { id = item.Id }) |
+                @Html.ActionLink("用户详情", "Details", new { id = item.Id })
+                @*|@Html.ActionLink("冻结用户", "Delete", new { id = item.Id })*@
+            </td>
+        </tr>
+    }
+</table>

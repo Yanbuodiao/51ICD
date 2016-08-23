@@ -113,11 +113,6 @@ namespace Docimax.Web_ICD
             }
             return manager;
         }
-
-        //public CertificateState GetCertificateState(string Uid)
-        //{
- 
-        //}
     }
     public class ApplicationRoleManager : RoleManager<IdentityRole>
     {
