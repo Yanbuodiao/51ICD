@@ -385,6 +385,7 @@
     <Content Include="Views\UsersAdmin\Edit.cshtml" />
     <Content Include="Views\UsersAdmin\Details.cshtml" />
     <Content Include="Views\ManageUserService\Index.cshtml" />
+    <Content Include="Views\ManageUserService\ApproveDetail.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

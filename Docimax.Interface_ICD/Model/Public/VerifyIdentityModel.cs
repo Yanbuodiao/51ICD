@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Docimax.Interface_ICD.Model
 {
-    public class VerifyIdentityModel
+    public class VerifyIdentityModel : BaseModel
     {
         /// <summary>
         /// 用户ID

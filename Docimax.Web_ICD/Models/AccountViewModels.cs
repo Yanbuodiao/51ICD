@@ -85,7 +85,7 @@ namespace Docimax.Web_ICD.Models
 
         public bool NeedVarify { get; set; }
     }
-    public class VerifyIdentityViewModel
+    public class VerifyIdentityViewModel:BaseModel
     {
         /// <summary>
         /// 用户ID

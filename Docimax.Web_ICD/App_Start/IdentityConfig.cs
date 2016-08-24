@@ -171,7 +171,14 @@ namespace Docimax.Web_ICD
             var user = userManager.FindByName(userName);
             if (user == null)
             {
-                user = new ApplicationUser { UserName = userName, Email = userName, IsFirstLogin = 1, EmailConfirmed = true };
+                user = new ApplicationUser
+                {
+                    UserName = userName,
+                    Email = userName,
+                    IsFirstLogin = 1,
+                    EmailConfirmed = true,
+                    CertificationFlag = CertificateState.认证成功.GetHashCode(),
+                };
                 var result = userManager.Create(user, password);
                 result = userManager.SetLockoutEnabled(user.Id, false);
             }

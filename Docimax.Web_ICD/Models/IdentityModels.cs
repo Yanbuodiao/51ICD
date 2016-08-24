@@ -4,6 +4,7 @@ using System;
 using System.Data.Entity;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 
 namespace Docimax.Web_ICD.Models
 {
@@ -67,6 +68,9 @@ namespace Docimax.Web_ICD.Models
         /// 最后修改人ID
         /// </summary>
         public int? LastModityUserID { get; set; }
+
+       [Timestamp]
+        public byte[] LastModifyStamp { get; set; }
     }
     public class ApplicationRole : IdentityRole
     {

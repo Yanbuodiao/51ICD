@@ -74,6 +74,7 @@
           <Property Name="CreateUserID" Type="int" />
           <Property Name="LastModtifyTime" Type="datetime" />
           <Property Name="LastModityUserID" Type="int" />
+          <Property Name="LastModifyStamp" Type="timestamp" StoreGeneratedPattern="Computed" Nullable="false" />
           <Property Name="Email" Type="nvarchar" MaxLength="256" />
           <Property Name="EmailConfirmed" Type="bit" Nullable="false" />
           <Property Name="PasswordHash" Type="nvarchar(max)" />
@@ -518,6 +519,7 @@
           </Key>
           <Property Name="UserAttachID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UserID" Type="nvarchar" MaxLength="128" />
+          <Property Name="FileName" Type="nvarchar(max)" />
           <Property Name="AttachType" Type="int" />
           <Property Name="ContentType" Type="nvarchar(max)" />
           <Property Name="AttachURL" Type="nvarchar(max)" />
@@ -552,6 +554,7 @@
           </Key>
           <Property Name="UserServiceAttachID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="User_ServiceID" Type="int" />
+          <Property Name="FileName" Type="nvarchar(max)" />
           <Property Name="AttachType" Type="int" />
           <Property Name="ContentType" Type="nvarchar(max)" />
           <Property Name="AttachURL" Type="nvarchar(max)" />
@@ -844,6 +847,7 @@
           <Property Name="CreateUserID" Type="Int32" />
           <Property Name="LastModtifyTime" Type="DateTime" Precision="3" />
           <Property Name="LastModityUserID" Type="Int32" />
+          <Property Name="LastModifyStamp" Type="Binary" Nullable="false" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
           <Property Name="Email" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
           <Property Name="EmailConfirmed" Type="Boolean" Nullable="false" />
           <Property Name="PasswordHash" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
@@ -1291,6 +1295,7 @@
           </Key>
           <Property Name="UserAttachID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="UserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="FileName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="AttachType" Type="Int32" />
           <Property Name="ContentType" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="AttachURL" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
@@ -1325,6 +1330,7 @@
           </Key>
           <Property Name="UserServiceAttachID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="User_ServiceID" Type="Int32" />
+          <Property Name="FileName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="AttachType" Type="Int32" />
           <Property Name="ContentType" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="AttachURL" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
@@ -1489,6 +1495,7 @@
                 <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
                 <ScalarProperty Name="EmailConfirmed" ColumnName="EmailConfirmed" />
                 <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="LastModifyStamp" ColumnName="LastModifyStamp" />
                 <ScalarProperty Name="LastModityUserID" ColumnName="LastModityUserID" />
                 <ScalarProperty Name="LastModtifyTime" ColumnName="LastModtifyTime" />
                 <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
@@ -1973,6 +1980,7 @@
                 <ScalarProperty Name="AttachURL" ColumnName="AttachURL" />
                 <ScalarProperty Name="ContentType" ColumnName="ContentType" />
                 <ScalarProperty Name="AttachType" ColumnName="AttachType" />
+                <ScalarProperty Name="FileName" ColumnName="FileName" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="UserAttachID" ColumnName="UserAttachID" />
               </MappingFragment>
@@ -2008,6 +2016,7 @@
                 <ScalarProperty Name="AttachURL" ColumnName="AttachURL" />
                 <ScalarProperty Name="ContentType" ColumnName="ContentType" />
                 <ScalarProperty Name="AttachType" ColumnName="AttachType" />
+                <ScalarProperty Name="FileName" ColumnName="FileName" />
                 <ScalarProperty Name="User_ServiceID" ColumnName="User_ServiceID" />
                 <ScalarProperty Name="UserServiceAttachID" ColumnName="UserServiceAttachID" />
               </MappingFragment>

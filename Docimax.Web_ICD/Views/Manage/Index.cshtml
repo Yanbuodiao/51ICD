@@ -39,7 +39,7 @@
         <dd>
             @switch (Model.CertificationFlag)
             {
-                case CertificateState.未认证:
+                case CertificateState.未申请:
                 default:
                     @Html.ActionLink("发起认证申请", "VerifyIdentity", routeValues: null)
                     break;

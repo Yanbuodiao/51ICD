@@ -42,5 +42,12 @@ namespace Docimax.Web_ICD.Controllers
             var model = access.GetVerifyIdentityModel(userID);
             return View(Model2ViewModel.Model2VerifyIdentityModel(model));
         }
+
+        public ActionResult ApproveDetail(string userID)
+        {
+            IUserAccess access = new DAL_UserAccess();
+            var model = access.GetVerifyIdentityModel(userID);
+            return View(Model2ViewModel.Model2VerifyIdentityModel(model));
+        }
     }
 }

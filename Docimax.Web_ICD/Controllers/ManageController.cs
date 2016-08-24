@@ -320,6 +320,7 @@ namespace Docimax.Web_ICD.Controllers
                         var icdFile = new ICDFile
                         {
                             FileURL = FileHelper.SaveUserAttachFile(file),
+                            FileName=file.FileName,
                             ContentType = file.ContentType,
                         };
                         switch (Request.Files.AllKeys[i])

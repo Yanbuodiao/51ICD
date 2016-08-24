@@ -2,7 +2,7 @@
 @using Docimax.Interface_ICD.Enum
 
 @{
-    ViewBag.Title = "实名认证详情";
+    ViewBag.Title = "实名认证";
 }
 
 <h2>@ViewBag.Title</h2>
@@ -80,9 +80,14 @@
             @Html.TextBoxFor(model => model.CertificateFlag, new { @class = "form-control", @disabled = "true" })
         </div>
     </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" class="btn btn-default" value="通过" />
+        </div>
+    </div>
 </div>
 <div>
-    @Html.ActionLink("返回", "Index")
+    @Html.ActionLink("返回列表", "Index")
 </div>
 <div class="modal fade" id="showPixModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">

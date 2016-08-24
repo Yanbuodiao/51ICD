@@ -153,6 +153,7 @@ namespace Docimax.Web_ICD.Controllers
         }
         public ActionResult ShowPic(string picURL, string contentType)
         {
+            //todo  增加授权认证，不是谁想看图片就看的
             return File(FileHelper.GetFile(picURL), contentType);
         }
     }

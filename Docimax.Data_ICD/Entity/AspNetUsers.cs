@@ -36,6 +36,7 @@ namespace Docimax.Data_ICD.Entity
         public Nullable<int> CreateUserID { get; set; }
         public Nullable<System.DateTime> LastModtifyTime { get; set; }
         public Nullable<int> LastModityUserID { get; set; }
+        public byte[] LastModifyStamp { get; set; }
         public string Email { get; set; }
         public bool EmailConfirmed { get; set; }
         public string PasswordHash { get; set; }

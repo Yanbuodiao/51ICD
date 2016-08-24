@@ -43,6 +43,8 @@ namespace Docimax.Data_ICD.DAL
                         {
                             UserID = model.UserID,
                             AttachType = item.AttachType,
+                            FileName = item.FileName,
+                            AttachURL = item.FileURL,
                             ContentType = item.ContentType,
                             CreateTime = model.ApplyTime,
                             CreateUserID = model.UserID,
@@ -186,12 +188,13 @@ namespace Docimax.Data_ICD.DAL
                     string.IsNullOrEmpty(queryModel.TextFilter) ? true : (e.UserName.StartsWith(queryModel.TextFilter))).OrderBy(e => e.CertificationFlag).Skip((queryModel.Page - 1) * queryModel.PageSize)
                     .Take(queryModel.PageSize)
                     .ToList();
+                var initInt = CertificateState.未申请.GetHashCode();
                 var resultQuery = query.Select(e => new VerifyIdentityModel
                 {
                     UserID = e.Id,
                     UserName = e.UserName,
                     RealName = e.RealName,
-                    CertificateFlag = (CertificateState)e.CertificationFlag,
+                    CertificateFlag = (CertificateState)(e.CertificationFlag ?? initInt),
                 }).ToList();
                 queryModel.TotalRecords = query.Count();
                 queryModel.Content = resultQuery;
@@ -208,6 +211,15 @@ namespace Docimax.Data_ICD.DAL
                 {
                     return new VerifyIdentityModel();
                 }
+                var fileList = entity.User_Attach.Where(t => t.UserID == userID && t.DeleteFlag != 1).ToList()
+                    .Select(p => new ICDFile
+                    {
+                        AttachType = p.AttachType ?? 0,
+                        FileName = p.FileName,
+                        ContentType = p.ContentType,
+                        FileURL = p.AttachURL,
+                    }).ToList();
+                var initInt = CertificateState.未申请.GetHashCode();
                 return new VerifyIdentityModel
                 {
                     UserID = e.Id,
@@ -215,7 +227,9 @@ namespace Docimax.Data_ICD.DAL
                     RealName = e.RealName,
                     IDCardNo = e.IDCardNo,
                     BankCardNO = e.BankCardNO,
-                    CertificateFlag = (CertificateState)e.CertificationFlag,
+                    CertificateFlag = (CertificateState)(e.CertificationFlag ?? initInt),
+                    LastModifyStamp = Convert.ToBase64String(e.LastModifyStamp),
+                    FileList = fileList,
                 };
             }
         }

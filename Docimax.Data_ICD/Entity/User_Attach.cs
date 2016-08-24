@@ -16,6 +16,7 @@ namespace Docimax.Data_ICD.Entity
     {
         public int UserAttachID { get; set; }
         public string UserID { get; set; }
+        public string FileName { get; set; }
         public Nullable<int> AttachType { get; set; }
         public string ContentType { get; set; }
         public string AttachURL { get; set; }
