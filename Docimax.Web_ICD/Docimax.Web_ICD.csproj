@@ -320,6 +320,9 @@
     <Content Include="Scripts\typeahead.jquery.js" />
     <Content Include="Scripts\typeahead.jquery.min.js" />
     <Content Include="Scripts\_references.js" />
+    <Content Include="Views\ManageUserService\Detail.cshtml">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="Views\ServiceItem\Code.cshtml">
       <SubType>Code</SubType>
     </Content>

@@ -1,6 +1,7 @@
 ﻿@using Docimax.Interface_ICD.Model
 @using PagedList.Mvc
 @using Docimax.Common
+@using Docimax.Interface_ICD.Enum
 
 @model ICDPagedList<UserCertificationSearch, Docimax.Web_ICD.Models.VerifyIdentityViewModel>
 @{
@@ -49,17 +50,37 @@
             grid.Column("CertificateFlag", "状态", style: "col-lg-2", canSort: false),
             grid.Column(header: "操作", canSort: false, style: "action",
                 format: @<text>
-                <a href="@Url.Action("Detail", "UploadItem", new { orderID = @item.UserID })" clas class="btn btn-default">
+                <a href="@Url.Action("Detail", "ManageUserService", new { userID = @item.UserID })" clas class="btn btn-default">
                     详情
                 </a>
-                @*@if (item.OrderStatus.GetHashCode() < 10000)
+                @switch ((CertificateState)item.CertificateFlag)
                 {
-                    <a href="@Url.Action("Update", "UploadItem", new { orderID = @item.UserID })" clas class="btn btn-default">
-                        补充信息
-                        <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                    case CertificateState.认证成功:
+                        <a href="@Url.Action("Detail", "ManageUserService", new { userID = @item.UserID })" clas class="btn btn-default">
+                            冻结
+                        </a>
+                        break;
+                    case CertificateState.发起认证申请:
+                    <a href="@Url.Action("Detail", "ManageUserService", new { userID = @item.UserID })" clas class="btn btn-default">
+                        审核
                     </a>
+                        break;
+                    case CertificateState.冻结:
+                    <a href="@Url.Action("Detail", "ManageUserService", new { userID = @item.UserID })" clas class="btn btn-default">
+                        解冻
+                    </a>
+                        break;
+                    default:
+                        break;
+                }
+                @*@if (item.OrderStatus.GetHashCode() < 10000)
+                    {
+                        <a href="@Url.Action("Update", "UploadItem", new { orderID = @item.UserID })" clas class="btn btn-default">
+                            补充信息
+                            <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                        </a>
 
-                }*@
+                    }*@
                 </text>)));
     }
     else

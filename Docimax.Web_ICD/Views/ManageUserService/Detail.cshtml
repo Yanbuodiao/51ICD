@@ -1,0 +1,87 @@
+﻿@model Docimax.Web_ICD.Models.VerifyIdentityViewModel
+
+@{
+    ViewBag.Title = "实名认证详情";
+}
+
+<h2>@ViewBag.Title</h2>
+<hr />
+<div class="form-horizontal">
+    <div class="form-group">
+        @Html.Label("用户名", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class=" col-md-10">
+            @Html.TextBoxFor(model => model.UserName, new { @class = "form-control", @disabled = "true" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.Label("姓名", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class=" col-md-10">
+            @Html.TextBoxFor(model => model.RealName, new { @class = "form-control", @disabled = "true" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.Label("身份证号", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class=" col-md-10">
+            @Html.TextBoxFor(model => model.IDCardNo, new { @class = "form-control", @disabled = "true" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.Label("银行卡号", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class=" col-md-10">
+            @Html.TextBoxFor(model => model.BankCardNO, new { @class = "form-control", @disabled = "true" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.Label("身份证正面照", new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            <input type="file" id="IDCardfront" name="IDCardfront" accept=".jpg,jpeg,.jpe,.jp2,.png,.gif" multiple />
+        </div>
+        <div class="col-md-10">
+            <p class="help-block">身份证正面照，请保证各信息清晰可读.</p>
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.Label("身份证背面照", new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            <input type="file" id="IDCardback" name="IDCardback" accept=".jpg,jpeg,.jpe,.jp2,.png,.gif" multiple />
+        </div>
+        <div class="col-md-10">
+            <p class="help-block">身份证背面照，请保证各信息清晰可读.</p>
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.Label("银行卡照片", new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            <input type="file" id="bankCard" name="bankCard" accept=".jpg,jpeg,.jpe,.jp2,.png,.gif" multiple />
+        </div>
+        <div class="col-md-10">
+            <p class="help-block">银行卡照片，请与填写的银行卡号一直并保证各信息清晰可读.后期收益将自动转入该卡片</p>
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.Label("认证状态", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class=" col-md-10">
+            @Html.TextBoxFor(model => model.CertificateFlag, new { @class = "form-control", @disabled = "true" })
+        </div>
+    </div>
+</div>
+<div>
+    @Html.ActionLink("返回", "Index")
+</div>
+<div class="modal  fade" id="showPixModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <img id="pic" class="img-thumbnail" onclick="hidePix()" />
+    </div>
+</div>
+<script type="text/javascript">
+    function showPic(el) {
+        var picURL = $(el).attr("data-url");
+        var contentType = $(el).attr("data-contenttype");
+        var newSrc = "@Url.Action("ShowPic", "UploadItem")?picURL=" + picURL + "&contentType=" + contentType;
+        $("#showPixModal").modal('show');
+        $("#pic").attr("src", newSrc);
+    };
+    function hidePix() {
+        $("#showPixModal").modal('hide');
+    }
+</script>

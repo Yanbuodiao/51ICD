@@ -198,5 +198,26 @@ namespace Docimax.Data_ICD.DAL
                 return queryModel;
             }
         }
+
+        public VerifyIdentityModel GetVerifyIdentityModel(string userID)
+        {
+            using (var entity = new Entity_Read())
+            {
+                var e = entity.AspNetUsers.FirstOrDefault(t => t.Id == userID);
+                if (e == null)
+                {
+                    return new VerifyIdentityModel();
+                }
+                return new VerifyIdentityModel
+                {
+                    UserID = e.Id,
+                    UserName = e.UserName,
+                    RealName = e.RealName,
+                    IDCardNo = e.IDCardNo,
+                    BankCardNO = e.BankCardNO,
+                    CertificateFlag = (CertificateState)e.CertificationFlag,
+                };
+            }
+        }
     }
 }

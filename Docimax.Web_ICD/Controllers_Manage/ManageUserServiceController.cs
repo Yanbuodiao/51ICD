@@ -35,5 +35,12 @@ namespace Docimax.Web_ICD.Controllers
             model.TotalRecords = queryModel.TotalRecords;
             return View(model);
         }
+
+        public ActionResult Detail(string userID)
+        {
+            IUserAccess access = new DAL_UserAccess();
+            var model = access.GetVerifyIdentityModel(userID);
+            return View(Model2ViewModel.Model2VerifyIdentityModel(model));
+        }
     }
 }
