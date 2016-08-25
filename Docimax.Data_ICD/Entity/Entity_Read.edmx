@@ -71,9 +71,9 @@
           <Property Name="LastLoginIP" Type="nvarchar(max)" />
           <Property Name="LastLoginTime" Type="datetime" />
           <Property Name="CreateTime" Type="datetime" />
-          <Property Name="CreateUserID" Type="int" />
+          <Property Name="CreateUserID" Type="nvarchar(max)" />
           <Property Name="LastModtifyTime" Type="datetime" />
-          <Property Name="LastModityUserID" Type="int" />
+          <Property Name="LastModityUserID" Type="nvarchar(max)" />
           <Property Name="LastModifyStamp" Type="timestamp" StoreGeneratedPattern="Computed" Nullable="false" />
           <Property Name="Email" Type="nvarchar" MaxLength="256" />
           <Property Name="EmailConfirmed" Type="bit" Nullable="false" />
@@ -844,9 +844,9 @@
           <Property Name="LastLoginIP" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="LastLoginTime" Type="DateTime" Precision="3" />
           <Property Name="CreateTime" Type="DateTime" Precision="3" />
-          <Property Name="CreateUserID" Type="Int32" />
+          <Property Name="CreateUserID" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="LastModtifyTime" Type="DateTime" Precision="3" />
-          <Property Name="LastModityUserID" Type="Int32" />
+          <Property Name="LastModityUserID" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="LastModifyStamp" Type="Binary" Nullable="false" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
           <Property Name="Email" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
           <Property Name="EmailConfirmed" Type="Boolean" Nullable="false" />

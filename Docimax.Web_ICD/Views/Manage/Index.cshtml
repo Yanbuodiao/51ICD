@@ -48,16 +48,16 @@
                 case CertificateState.平台人员二次审核通过:
                 @: 平台已收到申请，最多两个工作日认证完成，请耐心等候...
                     break;
-                case CertificateState.认证成功:
+                case CertificateState.认证通过:
                 @: 已认证
                     break;
                 case CertificateState.平台人员一次审核失败:
-                case CertificateState.认证失败:
+                case CertificateState.认证拒绝:
                 @: 未通过认证|&nbsp;@Html.ActionLink("发起认证申请", "VerifyIdentity", routeValues: null);
                     break;
             }
         </dd>
-        @if (Model.CertificationFlag == CertificateState.认证成功)
+        @if (Model.CertificationFlag == CertificateState.认证通过)
         {
             <dt>服务认证:</dt>
             <dd>

@@ -19,7 +19,7 @@ namespace Docimax.Data_ICD.DAL
                 var resultMenus = entity.Dic_Menu.Where(e => (e.RoleControl ?? 0) == 0);
                 if (!string.IsNullOrWhiteSpace(userID))
                 {
-                    var serviceAuditStatusInt = CertificateState.认证成功.GetHashCode();
+                    var serviceAuditStatusInt = CertificateState.认证通过.GetHashCode();
                     var requestInt = ServiceType.Request.GetHashCode();
                     var providerInt = ServiceType.Provider.GetHashCode();
                     var userModel = entity.AspNetUsers.FirstOrDefault(e => e.Id == userID && e.CertificationFlag == serviceAuditStatusInt);

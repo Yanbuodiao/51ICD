@@ -21,22 +21,38 @@ namespace Docimax.Data_ICD.DAL
                         transaction.Rollback();
                         return new ICDExcuteResult<int> { Result = false, ErrorStr = "未获得当前用户信息", };
                     }
-                    if (user.CertificationFlag != null)
+                    if (user.CertificationFlag == null)
                     {
-                        switch ((CertificateState)user.CertificationFlag)//以下状态不允许再次发起申请
-                        {
-                            case CertificateState.发起认证申请:
-                            case CertificateState.平台人员二次审核通过:
-                            case CertificateState.平台人员一次审核通过:
-                            case CertificateState.认证成功:
-                            case CertificateState.冻结:
-                                return new ICDExcuteResult<int> { Result = false, ErrorStr = "已经发起过实名认证申请", };
-                        }
+                        user.CertificationFlag = CertificateState.未申请.GetHashCode();
                     }
+                    switch ((CertificateState)user.CertificationFlag)//以下状态不允许再次发起申请
+                    {
+                        case CertificateState.发起认证申请:
+                        case CertificateState.平台人员二次审核通过:
+                        case CertificateState.平台人员一次审核通过:
+                        case CertificateState.认证通过:
+                        case CertificateState.冻结:
+                            return new ICDExcuteResult<int> { Result = false, ErrorStr = "已经发起过实名认证申请", };
+                    }
+                    var userLog = new User_ChangeAuditLog
+                    {
+                        CreateTime = DateTime.Now,
+                        UserID = model.UserID,
+                        Operatedatetime = DateTime.Now,
+                        OperateUserID = model.UserID,
+                        OperateTarget = UserChangeTargetType.实名认证.GetHashCode(),
+                        OperateType = model.CertificateFlag.GetHashCode(),
+                        OriginValue = user.CertificationFlag.ToString(),
+                        NewValue = model.CertificateFlag.GetHashCode().ToString(),
+                        LastModifyTime = DateTime.Now,
+                    };
+                    entity.User_ChangeAuditLog.Add(userLog);
                     user.CertificationFlag = model.CertificateFlag.GetHashCode();
                     user.RealName = model.RealName;
                     user.IDCardNo = model.IDCardNo;
                     user.BankCardNO = model.BankCardNO;
+                    user.LastModtifyTime = DateTime.Now;
+                    user.LastModityUserID = model.UserID;
                     foreach (var item in model.FileList)
                     {
                         var userAttach = new User_Attach
@@ -116,7 +132,7 @@ namespace Docimax.Data_ICD.DAL
                                 case CertificateState.发起认证申请:
                                 case CertificateState.平台人员二次审核通过:
                                 case CertificateState.平台人员一次审核通过:
-                                case CertificateState.认证成功:
+                                case CertificateState.认证通过:
                                 case CertificateState.冻结:
                                     return new ICDExcuteResult<int> { Result = false, ErrorStr = "已经发起过服务认证申请" };
                             }
@@ -231,6 +247,54 @@ namespace Docimax.Data_ICD.DAL
                     LastModifyStamp = Convert.ToBase64String(e.LastModifyStamp),
                     FileList = fileList,
                 };
+            }
+        }
+
+        public ICDExcuteResult<int> AuditIdentityVerify(VerifyIdentityModel model)
+        {
+            if (model == null)
+            {
+                return new ICDExcuteResult<int>
+                {
+                    Result = false,
+                    ErrorStr = "未找到相关用户"
+                };
+            }
+            using (var entity = new Entity_Write())
+            {
+                using (var transaction = entity.Database.BeginTransaction())
+                {
+                    var user = entity.AspNetUsers.FirstOrDefault(e => e.Id == model.UserID);
+                    if (user == null)
+                    {
+                        transaction.Rollback();
+                        return new ICDExcuteResult<int> { Result = false, ErrorStr = "未获得申请用户信息", };
+                    }
+                    if (Convert.ToBase64String(user.LastModifyStamp) != model.LastModifyStamp)
+                    {
+                        transaction.Rollback();
+                        return new ICDExcuteResult<int> { Result = false, ErrorStr = "用户信息已经发生变化", };
+                    }
+                    var userLog = new User_ChangeAuditLog
+                    {
+                        CreateTime = DateTime.Now,
+                        UserID = model.UserID,
+                        Operatedatetime = DateTime.Now,
+                        OperateUserID = model.LastModifyUserID,
+                        OperateTarget = UserChangeTargetType.实名认证.GetHashCode(),
+                        OperateType = model.CertificateFlag.GetHashCode(),
+                        OriginValue = user.CertificationFlag.ToString(),
+                        NewValue = model.CertificateFlag.GetHashCode().ToString(),
+                        LastModifyTime = DateTime.Now,
+                    };
+                    entity.User_ChangeAuditLog.Add(userLog);
+                    user.CertificationFlag = model.CertificateFlag.GetHashCode();
+                    user.LastModtifyTime = DateTime.Now;
+                    user.LastModityUserID = model.LastModifyUserID;
+                    entity.SaveChanges();
+                    transaction.Commit();
+                    return new ICDExcuteResult<int> { Result = true };
+                }
             }
         }
     }

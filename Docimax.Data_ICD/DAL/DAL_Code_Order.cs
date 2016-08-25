@@ -77,7 +77,7 @@ namespace Docimax.Data_ICD.DAL
         {
             using (var entity = new Entity_Read())
             {
-                var serviceAuditStatusInt = CertificateState.认证成功.GetHashCode();
+                var serviceAuditStatusInt = CertificateState.认证通过.GetHashCode();
                 var orgModel = (from u in entity.AspNetUsers.Where(e => e.Id == userID)
                                 join o in entity.Dic_Organization on u.ORGID equals o.OrganizationID
                                 select new { u.ORGID, u.SubORGID, o.OrganizationName, o.OrganizationCode }).FirstOrDefault();
@@ -458,7 +458,7 @@ namespace Docimax.Data_ICD.DAL
         {
             using (var entity = new Entity_Read())
             {
-                var successStatusInt = CertificateState.认证成功.GetHashCode();
+                var successStatusInt = CertificateState.认证通过.GetHashCode();
                 var orgModel = (from org in entity.Dic_Organization.Where(e => e.DeleteFlag != 1).Where(org_Conditions)
                                 join sub in entity.ORG_SubOrganization.Where(e => e.DeleteFlag != 1).Where(sub_Conditions)
                                      on org.OrganizationID equals sub.ORGID into newSubOrganization

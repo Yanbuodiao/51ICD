@@ -51,7 +51,6 @@ namespace Docimax.Web_ICD.Models
         /// 最后登录时间
         /// </summary>
         public DateTime? LastLoginTime { get; set; }
-
         /// <summary>
         /// 创建时间
         /// </summary>
@@ -59,7 +58,7 @@ namespace Docimax.Web_ICD.Models
         /// <summary>
         /// 创建人用户ID
         /// </summary>
-        public int? CreateUserID { get; set; }
+        public string CreateUserID { get; set; }
         /// <summary>
         /// 最后修改时间
         /// </summary>
@@ -67,9 +66,9 @@ namespace Docimax.Web_ICD.Models
         /// <summary>
         /// 最后修改人ID
         /// </summary>
-        public int? LastModityUserID { get; set; }
+        public string LastModityUserID { get; set; }
 
-       [Timestamp]
+        [Timestamp]
         public byte[] LastModifyStamp { get; set; }
     }
     public class ApplicationRole : IdentityRole

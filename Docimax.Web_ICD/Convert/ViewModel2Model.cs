@@ -22,6 +22,7 @@ namespace Docimax.Web_ICD.Convert
                 ApplyTime = model.ApplyTime,
                 FileList = model.FileList,
                 CertificateFlag = model.CertificateFlag,
+                LastModifyStamp = model.LastModifyStamp,
             };
         }
     }

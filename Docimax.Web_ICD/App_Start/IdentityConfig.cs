@@ -177,7 +177,7 @@ namespace Docimax.Web_ICD
                     Email = userName,
                     IsFirstLogin = 1,
                     EmailConfirmed = true,
-                    CertificationFlag = CertificateState.认证成功.GetHashCode(),
+                    CertificationFlag = CertificateState.认证通过.GetHashCode(),
                 };
                 var result = userManager.Create(user, password);
                 result = userManager.SetLockoutEnabled(user.Id, false);

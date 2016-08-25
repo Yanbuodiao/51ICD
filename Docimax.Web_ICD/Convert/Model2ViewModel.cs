@@ -15,13 +15,14 @@ namespace Docimax.Web_ICD.Convert
             return new VerifyIdentityViewModel
             {
                 UserID = model.UserID,
-                UserName=model.UserName,
+                UserName = model.UserName,
                 IDCardNo = ICD_EncryptUtils.DecryptByAES(model.IDCardNo),
                 RealName = ICD_EncryptUtils.DecryptByAES(model.RealName),
                 BankCardNO = ICD_EncryptUtils.DecryptByAES(model.BankCardNO),
                 ApplyTime = model.ApplyTime,
                 FileList = model.FileList,
                 CertificateFlag = model.CertificateFlag,
+                LastModifyStamp = model.LastModifyStamp,
             };
         }
     }

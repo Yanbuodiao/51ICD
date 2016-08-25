@@ -9,5 +9,6 @@ namespace Docimax.Interface_ICD.Interface
         ICDExcuteResult<int> ApplyServiceProvider(UserServiceApplyModel model);
         ICDPagedList<UserCertificationSearch, VerifyIdentityModel> GetUpLoadedCodeOrderList(ICDPagedList<UserCertificationSearch, VerifyIdentityModel> queryModel);
         VerifyIdentityModel GetVerifyIdentityModel(string userID);
+        ICDExcuteResult<int> AuditIdentityVerify(VerifyIdentityModel model);
     }
 }

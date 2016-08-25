@@ -33,9 +33,9 @@ namespace Docimax.Data_ICD.Entity
         public string LastLoginIP { get; set; }
         public Nullable<System.DateTime> LastLoginTime { get; set; }
         public Nullable<System.DateTime> CreateTime { get; set; }
-        public Nullable<int> CreateUserID { get; set; }
+        public string CreateUserID { get; set; }
         public Nullable<System.DateTime> LastModtifyTime { get; set; }
-        public Nullable<int> LastModityUserID { get; set; }
+        public string LastModityUserID { get; set; }
         public byte[] LastModifyStamp { get; set; }
         public string Email { get; set; }
         public bool EmailConfirmed { get; set; }
