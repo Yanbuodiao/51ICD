@@ -162,7 +162,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\DictionaryController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers_Manage\ManageUserServiceController.cs" />
+    <Compile Include="Controllers_Manage\ManageUserVeirfyController.cs" />
     <Compile Include="Controllers_Manage\RoleAdminController.cs" />
     <Compile Include="Controllers\ServiceController.cs" />
     <Compile Include="Controllers\ServiceItemController.cs" />
@@ -320,7 +320,7 @@
     <Content Include="Scripts\typeahead.jquery.js" />
     <Content Include="Scripts\typeahead.jquery.min.js" />
     <Content Include="Scripts\_references.js" />
-    <Content Include="Views\ManageUserService\Detail.cshtml">
+    <Content Include="Views\ManageUserVeirfy\Detail.cshtml">
       <SubType>Code</SubType>
     </Content>
     <Content Include="Views\ServiceItem\Code.cshtml">
@@ -384,8 +384,8 @@
     <Content Include="Views\UsersAdmin\Index.cshtml" />
     <Content Include="Views\UsersAdmin\Edit.cshtml" />
     <Content Include="Views\UsersAdmin\Details.cshtml" />
-    <Content Include="Views\ManageUserService\Index.cshtml" />
-    <Content Include="Views\ManageUserService\ApproveDetail.cshtml" />
+    <Content Include="Views\ManageUserVeirfy\Index.cshtml" />
+    <Content Include="Views\ManageUserVeirfy\ApproveDetail.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

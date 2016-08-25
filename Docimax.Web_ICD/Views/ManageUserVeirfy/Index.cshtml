@@ -10,7 +10,7 @@
 
 <h2>@ViewBag.Title</h2>
 <p class="text-success">@ViewBag.StatusMessage</p>
-@using (Html.BeginForm("index", "ManageUserService", FormMethod.Get))
+@using (Html.BeginForm("index", "ManageUserVeirfy", FormMethod.Get))
 {
     <div class="row">
         <div class="col-sm-11">
@@ -51,23 +51,23 @@
             grid.Column("CertificateFlag", "状态", style: "col-lg-2", canSort: false),
             grid.Column(header: "操作", canSort: false, style: "action",
                 format: @<text>
-                <a href="@Url.Action("Detail", "ManageUserService", new { userID = @item.UserID })" clas class="btn btn-default">
+                <a href="@Url.Action("Detail", "ManageUserVeirfy", new { userID = @item.UserID })" clas class="btn btn-default">
                     详情
                 </a>
                 @switch ((CertificateState)item.CertificateFlag)
                 {
                     case CertificateState.认证通过:
-                        <a href="@Url.Action("ApproveDetail", "ManageUserService", new { userID = @item.UserID })" clas class="btn btn-default">
+                        <a href="@Url.Action("ApproveDetail", "ManageUserVeirfy", new { userID = @item.UserID })" clas class="btn btn-default">
                             冻结
                         </a>
                         break;
                     case CertificateState.发起认证申请:
-                    <a href="@Url.Action("ApproveDetail", "ManageUserService", new { userID = @item.UserID })" clas class="btn btn-primary">
+                    <a href="@Url.Action("ApproveDetail", "ManageUserVeirfy", new { userID = @item.UserID })" clas class="btn btn-primary">
                         审核
                     </a>
                         break;
                     case CertificateState.冻结:
-                    <a href="@Url.Action("ApproveDetail", "ManageUserService", new { userID = @item.UserID })" clas class="btn btn-default">
+                    <a href="@Url.Action("ApproveDetail", "ManageUserVeirfy", new { userID = @item.UserID })" clas class="btn btn-default">
                         解冻
                     </a>
                         break;

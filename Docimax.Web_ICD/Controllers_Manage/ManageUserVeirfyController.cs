@@ -14,7 +14,7 @@ using System.Web.Mvc;
 namespace Docimax.Web_ICD.Controllers
 {
     [Authorize(Roles = "DocimaxAdmins")]
-    public class ManageUserServiceController : Controller
+    public class ManageUserVeirfyController : Controller
     {
         // GET: ManageUserService
         public ActionResult Index(ICDPagedList<UserCertificationSearch, VerifyIdentityViewModel> model, string message = "")
