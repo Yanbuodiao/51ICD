@@ -2,7 +2,7 @@
 
 namespace Docimax.Interface_ICD.Model
 {
-    public class UserCertificationSearch
+    public class UserServiceSearch
     {
         public CertificateState CertificateStatus { get; set; }
     }

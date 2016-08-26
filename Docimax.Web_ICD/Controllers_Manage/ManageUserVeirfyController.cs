@@ -33,7 +33,7 @@ namespace Docimax.Web_ICD.Controllers
                 PageSize = model.PageSize,
                 TextFilter = model.TextFilter,
             };
-            queryModel = access.GetUpLoadedCodeOrderList(queryModel);
+            queryModel = access.GetUserVerifyList(queryModel);
             model.Content = queryModel.Content.Select(e => Model2ViewModel.Model2VerifyIdentityModel(e)).ToList();
             model.TotalRecords = queryModel.TotalRecords;
             return View(model);
@@ -84,7 +84,7 @@ namespace Docimax.Web_ICD.Controllers
                 var newModel = access.GetVerifyIdentityModel(model.UserID);
                 return View(Model2ViewModel.Model2VerifyIdentityModel(newModel));
             }
-            return RedirectToAction("Index", new { message = string.Format("{0}{1}", model.UserName, identitymodel.CertificateFlag) });
+            return RedirectToAction("Index", new { message = string.Format("{0}实名认证{1}成功", model.UserName, identitymodel.CertificateFlag) });
         }
     }
 }

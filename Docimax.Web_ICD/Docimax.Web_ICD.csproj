@@ -162,6 +162,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\DictionaryController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers_Manage\ManageUserServiceController.cs" />
     <Compile Include="Controllers_Manage\ManageUserVeirfyController.cs" />
     <Compile Include="Controllers_Manage\RoleAdminController.cs" />
     <Compile Include="Controllers\ServiceController.cs" />
@@ -386,6 +387,9 @@
     <Content Include="Views\UsersAdmin\Details.cshtml" />
     <Content Include="Views\ManageUserVeirfy\Index.cshtml" />
     <Content Include="Views\ManageUserVeirfy\ApproveDetail.cshtml" />
+    <Content Include="Views\ManageUserService\Index.cshtml" />
+    <Content Include="Views\ManageUserService\Detail.cshtml" />
+    <Content Include="Views\ManageUserService\ApproveDetail.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

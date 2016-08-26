@@ -1,0 +1,91 @@
+﻿@model Docimax.Interface_ICD.Model.UserServiceModel
+@using Docimax.Interface_ICD.Enum
+
+@{
+    ViewBag.Title = "用户服务认证详情";
+}
+
+<h2>@ViewBag.Title</h2>
+<hr />
+<div class="form-horizontal">
+    <div class="form-group">
+        @Html.Label("申请的用户名", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class=" col-md-10">
+            @Html.TextBoxFor(model => model.UserName, new { @class = "form-control", @disabled = "true" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.Label("申请开通服务", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class=" col-md-10">
+            @Html.TextBoxFor(model => model.Service.ServiceName, new { @class = "form-control", @disabled = "true" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.Label("申请时间", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class=" col-md-10">
+            @Html.TextBoxFor(model => model.ApplyTime, new { @class = "form-control", @disabled = "true" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.Label("实名认证状态", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class=" col-md-10">
+            @Html.TextBoxFor(model => model.UserCertificateFlag, new { @class = "form-control", @disabled = "true" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.Label("附件信息", new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @{
+                var fileList = Model.Service.ServiceAttaches;
+                foreach (var file in fileList)
+                {
+                    <div class="form-group col-md-10" style="padding-top:7px;">
+                        <a style="cursor: pointer;" data-url="@file.FileURL" data-contenttype="@file.ContentType" onclick="showPic(this)">@file.FileName</a>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.Label("服务配置信息", new { @class = "control-label col-md-2" })
+    </div>
+    <div class="form-group">
+        <div class="col-md-offset-1 col-md-10">
+            @{
+                for (int i = 0; i < Model.Service.ServiceClaims.Count; i++)
+                {
+                    <dl class="dl-horizontal" style="padding-top:7px;">
+                        <dt style="font-weight:normal">@Model.Service.ServiceClaims[i].ClaimType.ToString():</dt>
+                        <dd>@Model.Service.ServiceClaims[i].ClaimValue</dd>
+                    </dl>
+                }
+            }
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.Label("认证状态", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(model => model.CertificateFlag, new { @class = "form-control", @disabled = "true" })
+        </div>
+    </div>
+</div>
+<div>
+    @Html.ActionLink("返回", "Index")
+</div>
+<div class="modal fade" id="showPixModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <img id="pic" class="img-thumbnail" onclick="hidePix()" />
+    </div>
+</div>
+<script type="text/javascript">
+    function showPic(el) {
+        var picURL = $(el).attr("data-url");
+        var contentType = $(el).attr("data-contenttype");
+        var newSrc = "@Url.Action("ShowPic", "UploadItem")?picURL=" + picURL + "&contentType=" + contentType;
+        $("#showPixModal").modal('show');
+        $("#pic").attr("src", newSrc);
+    };
+    function hidePix() {
+        $("#showPixModal").modal('hide');
+    }
+</script>

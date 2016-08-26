@@ -17,6 +17,7 @@
     @if (Request.IsAuthenticated && User.IsInRole("DocimaxAdmins"))
     {
         <li>@Html.ActionLink("实名认证管理", "Index", "ManageUserVeirfy")</li>
+        <li>@Html.ActionLink("服务认证管理", "Index", "ManageUserService")</li>
         <li>@Html.ActionLink("用户管理", "Index", "UsersAdmin")</li>
         <li>@Html.ActionLink("角色管理", "Index", "RoleAdmin")</li>
     }

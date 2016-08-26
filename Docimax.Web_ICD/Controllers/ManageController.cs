@@ -62,6 +62,7 @@ namespace Docimax.Web_ICD.Controllers
                 : message == ManageMessageId.AddPhoneSuccess ? "已认证你的电话号码。"
                 : message == ManageMessageId.RemovePhoneSuccess ? "已删除你的电话号码。"
                 : message == ManageMessageId.ApplyCertifacationSuccess ? "已受理你的实名认证请求。"
+                : message == ManageMessageId.ApplyServiceSuccess ? "已受理你的服务认证请求。"
                 : "";
 
             var userId = User.Identity.GetUserId();

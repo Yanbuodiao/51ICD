@@ -31,13 +31,13 @@ namespace Docimax.Web_ICD.Controllers.Manage
             IService access = new DAL_Service();
             service = access.GetServiceByID(service.ServiceID);
             ViewBag.Title = service.ServiceName;
-            var model = new UserServiceApplyModel { Service = service };
+            var model = new UserServiceModel { Service = service };
             return View("ServiceApplyDetail", model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult ServiceApplyDetail(UserServiceApplyModel model)
+        public ActionResult ServiceApplyDetail(UserServiceModel model)
         {
 
             var allFileTags = new List<string> { "100" };
@@ -60,6 +60,7 @@ namespace Docimax.Web_ICD.Controllers.Manage
                     {
                         ContentType = file.ContentType,
                         FileURL = FileHelper.SaveUserServiceAttachFile(file),
+                        FileName=file.FileName,
                     };
                     attach.AttachType = (ServiceAttachType)int.Parse(Request.Files.AllKeys[i]);
                     model.Service.ServiceAttaches.Add(attach);
@@ -70,7 +71,7 @@ namespace Docimax.Web_ICD.Controllers.Manage
             var result = access.ApplyServiceProvider(model);
             if (result.Result)
             {
-                return RedirectToAction("Index", "Manage", new { message = Docimax.Web_ICD.Controllers.ManageController.ManageMessageId.ApplyCertifacationSuccess });
+                return RedirectToAction("Index", "Manage", new { message = Docimax.Web_ICD.Controllers.ManageController.ManageMessageId.ApplyServiceSuccess });
             }
             ModelState.AddModelError("", result.ErrorStr);
             model.Service = sAccess.GetServiceByID(model.Service.ServiceID); ;

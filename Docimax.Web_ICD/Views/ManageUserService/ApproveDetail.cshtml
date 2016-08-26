@@ -1,48 +1,47 @@
-﻿@model Docimax.Web_ICD.Models.VerifyIdentityViewModel
+﻿@model Docimax.Interface_ICD.Model.UserServiceModel
 @using Docimax.Interface_ICD.Enum
 
 @{
-    ViewBag.Title = "实名认证";
+    ViewBag.Title = "用户服务认证";
 }
 
 <h2>@ViewBag.Title</h2>
 <hr />
-@using (Html.BeginForm("ApproveDetail", "ManageUserVeirfy", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
-{
+@using (Html.BeginForm("ApproveDetail", "ManageUserService", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
+{  
     @Html.AntiForgeryToken()
-    @Html.HiddenFor(model => model.UserID, new { @Cache = false })
-    @Html.HiddenFor(model => model.UserName, new { @Cache = false })
+    @Html.HiddenFor(model => model.User_ServiceID, new { @Cache = false })
+    @Html.HiddenFor(model => model.Service.ServiceName, new { @Cache = false })
     @Html.HiddenFor(model => model.LastModifyStamp, new { @Cache = false })
-    @Html.ValidationSummary("", new { @class = "text-danger" })
     <div class="form-group">
-        @Html.Label("用户名", htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.Label("申请的用户名", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class=" col-md-10">
             @Html.TextBoxFor(model => model.UserName, new { @class = "form-control", @disabled = "true" })
         </div>
     </div>
     <div class="form-group">
-        @Html.Label("姓名", htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.Label("申请开通服务", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class=" col-md-10">
-            @Html.TextBoxFor(model => model.RealName, new { @class = "form-control", @disabled = "true" })
+            @Html.TextBoxFor(model => model.Service.ServiceName, new { @class = "form-control", @disabled = "true" })
         </div>
     </div>
     <div class="form-group">
-        @Html.Label("身份证号", htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.Label("申请时间", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class=" col-md-10">
-            @Html.TextBoxFor(model => model.IDCardNo, new { @class = "form-control", @disabled = "true" })
+            @Html.TextBoxFor(model => model.ApplyTime, new { @class = "form-control", @disabled = "true" })
         </div>
     </div>
     <div class="form-group">
-        @Html.Label("银行卡号", htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.Label("实名认证状态", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class=" col-md-10">
-            @Html.TextBoxFor(model => model.BankCardNO, new { @class = "form-control", @disabled = "true" })
+            @Html.TextBoxFor(model => model.UserCertificateFlag, new { @class = "form-control", @disabled = "true" })
         </div>
     </div>
     <div class="form-group">
-        @Html.Label("身份证正面照", new { @class = "control-label col-md-2" })
+        @Html.Label("附件信息", new { @class = "control-label col-md-2" })
         <div class="col-md-10">
             @{
-    var fileList = Model.FileList.Where(e => e.AttachType == UserAttachType.身份证正面.GetHashCode()).ToList();
+    var fileList = Model.Service.ServiceAttaches;
     foreach (var file in fileList)
     {
         <div class="form-group col-md-10" style="padding-top:7px;">
@@ -53,36 +52,24 @@
         </div>
     </div>
     <div class="form-group">
-        @Html.Label("身份证背面照", new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @{
-    var fileList1 = Model.FileList.Where(e => e.AttachType == UserAttachType.身份证背面.GetHashCode()).ToList();
-    foreach (var file in fileList1)
-    {
-        <div class="form-group col-md-10" style="padding-top:7px;">
-            <a style="cursor: pointer;" class="tree-nav-a" data-url="@file.FileURL" data-contenttype="@file.ContentType" onclick="showPic(this)">@file.FileName</a>
-        </div>
-    }
-            }
-        </div>
+        @Html.Label("服务配置信息", new { @class = "control-label col-md-2" })
     </div>
     <div class="form-group">
-        @Html.Label("银行卡照片", new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
+        <div class="col-md-offset-1 col-md-10">
             @{
-    var fileList2 = Model.FileList.Where(e => e.AttachType == UserAttachType.银行卡.GetHashCode()).ToList();
-    foreach (var file in fileList2)
+    for (int i = 0; i < Model.Service.ServiceClaims.Count; i++)
     {
-        <div class="form-group col-md-10" style="padding-top:7px;">
-            <a style="cursor: pointer;" class="tree-nav-a" data-url="@file.FileURL" data-contenttype="@file.ContentType" onclick="showPic(this)">@file.FileName</a>
-        </div>
+        <dl class="dl-horizontal" style="padding-top:7px;">
+            <dt style="font-weight:normal">@Model.Service.ServiceClaims[i].ClaimType.ToString():</dt>
+            <dd>@Model.Service.ServiceClaims[i].ClaimValue</dd>
+        </dl>
     }
             }
         </div>
     </div>
     <div class="form-group">
         @Html.Label("认证状态", htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class=" col-md-10">
+        <div class="col-md-10">
             @Html.TextBoxFor(model => model.CertificateFlag, new { @class = "form-control", @disabled = "true" })
         </div>
     </div>
@@ -113,7 +100,7 @@
     </div>
 }
 <div>
-    @Html.ActionLink("返回列表", "Index")
+    @Html.ActionLink("返回", "Index")
 </div>
 <div class="modal fade" id="showPixModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">

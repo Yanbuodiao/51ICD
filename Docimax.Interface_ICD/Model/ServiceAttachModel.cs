@@ -12,6 +12,11 @@ namespace Docimax.Interface_ICD.Model
         public int ServiceID { get; set; }
 
         /// <summary>
+        /// 上传时文件名称
+        /// </summary>
+        public string FileName { get; set; }
+
+        /// <summary>
         /// 文件目录
         /// </summary>
         public string FileURL { get; set; }

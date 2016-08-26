@@ -590,9 +590,9 @@
           <Property Name="CertificationStatus" Type="int" />
           <Property Name="ApplyTime" Type="datetime" />
           <Property Name="PlatformAuditTime" Type="datetime" />
-          <Property Name="PlatformAuditUserID" Type="int" />
+          <Property Name="PlatformAuditUserID" Type="nvarchar" MaxLength="128" />
           <Property Name="PlatformAbendTime" Type="datetime" />
-          <Property Name="PlatformAbendUserID" Type="datetime" />
+          <Property Name="PlatformAbendUserID" Type="nvarchar" MaxLength="128" />
           <Property Name="CreateTime" Type="datetime" />
           <Property Name="CreateUserID" Type="nvarchar" MaxLength="128" />
           <Property Name="LastModityTime" Type="datetime" />
@@ -1366,9 +1366,9 @@
           <Property Name="CertificationStatus" Type="Int32" />
           <Property Name="ApplyTime" Type="DateTime" Precision="3" />
           <Property Name="PlatformAuditTime" Type="DateTime" Precision="3" />
-          <Property Name="PlatformAuditUserID" Type="Int32" />
+          <Property Name="PlatformAuditUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="PlatformAbendTime" Type="DateTime" Precision="3" />
-          <Property Name="PlatformAbendUserID" Type="DateTime" Precision="3" />
+          <Property Name="PlatformAbendUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="CreateTime" Type="DateTime" Precision="3" />
           <Property Name="CreateUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="LastModityTime" Type="DateTime" Precision="3" />

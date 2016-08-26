@@ -20,9 +20,9 @@ namespace Docimax.Data_ICD.Entity
         public Nullable<int> CertificationStatus { get; set; }
         public Nullable<System.DateTime> ApplyTime { get; set; }
         public Nullable<System.DateTime> PlatformAuditTime { get; set; }
-        public Nullable<int> PlatformAuditUserID { get; set; }
+        public string PlatformAuditUserID { get; set; }
         public Nullable<System.DateTime> PlatformAbendTime { get; set; }
-        public Nullable<System.DateTime> PlatformAbendUserID { get; set; }
+        public string PlatformAbendUserID { get; set; }
         public Nullable<System.DateTime> CreateTime { get; set; }
         public string CreateUserID { get; set; }
         public Nullable<System.DateTime> LastModityTime { get; set; }

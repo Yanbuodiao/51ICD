@@ -69,6 +69,7 @@
     <Compile Include="Interface\IService.cs" />
     <Compile Include="Interface\ISMS.cs" />
     <Compile Include="Interface\IUserAccess.cs" />
+    <Compile Include="Model\Public\UserServiceModel.cs" />
     <Compile Include="Model\SearchModel\CodeOrderSearchModel.cs" />
     <Compile Include="Model\Code_Diagnosis.cs" />
     <Compile Include="Model\Code_Operate.cs" />
@@ -79,6 +80,7 @@
     <Compile Include="Model\ICDVersionModel.cs" />
     <Compile Include="Model\Menu\ICDMenu.cs" />
     <Compile Include="Model\SearchModel\UserCertificationSearch.cs" />
+    <Compile Include="Model\SearchModel\UserServiceSearch.cs" />
     <Compile Include="Model\ServiceAttachModel.cs" />
     <Compile Include="Model\ServiceClaimModel.cs">
       <SubType>Code</SubType>
@@ -99,7 +101,6 @@
     <Compile Include="Model\ItemModel.cs" />
     <Compile Include="Model\UploadedItemModel.cs" />
     <Compile Include="Model\UserInfoModel.cs" />
-    <Compile Include="Model\UserServiceApplyModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
