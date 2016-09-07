@@ -37,7 +37,7 @@ namespace Docimax.Web_ICD.Controllers
             CodeOrderModel model = null;
             if (codeOrderID == 0)
             {
-                model = code_Order_Access.GetNewCodeOrder(User.Identity.GetUserId(), "ICD编码服务");
+                model = code_Order_Access.GetNewCodeOrder(User.Identity.GetUserId(), "ICD编码");
                 model.CaseNum = string.Empty;
                 ViewBag.Sign = "New";
             }
