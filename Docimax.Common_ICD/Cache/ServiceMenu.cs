@@ -1,23 +1,22 @@
-﻿using Docimax.Interface_ICD.Model;
+﻿using Docimax.Common;
+using Docimax.Data_ICD.DAL;
+using Docimax.Interface_ICD.Interface;
+using Docimax.Interface_ICD.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Web;
 using System.Web.Caching;
-using Docimax.Common;
-using Docimax.Interface_ICD.Interface;
-using Docimax.Data_ICD.DAL;
 
 namespace Docimax.Common_ICD.Cache
 {
     public class ServiceMenu
     {
-        static string serviceMenuKey;
-
-        static object lockObj = new object();
-
+        #region 私有变量及方法
+        
+        static string serviceMenuKey;//服务对应菜单的缓存Key
+        static object lockObj = new object();//锁对象
         static ServiceMenu()
         {
             if (string.IsNullOrEmpty(serviceMenuKey))
@@ -68,10 +67,13 @@ namespace Docimax.Common_ICD.Cache
             }
         }
 
+        #endregion
+
         public static List<ICDMenu> GetMenuList(string userID)
         {
             IService access = new DAL_Service();
             var userAvailable = access.GetUserAvailableService(userID);
+            //后期 视情况把用户及其对应的服务和菜单页放入到缓存中，要依赖于 serviceMenuKey
             var result = AvailableServiceMenuList.Where(c => userAvailable.AvaliableServices.Any(t => t.ServiceID == c.ServiceID && t.ServiceType == c.ServiceType)).SelectMany(p => p.MenuList).OrderBy(e => e.Index).ToList();
             return result;
         }

@@ -1,7 +1,5 @@
 ﻿using Docimax.Common;
 using Docimax.Common_ICD.Cache;
-using Docimax.Data_ICD.DAL;
-using Docimax.Interface_ICD.Interface;
 using Docimax.Web_ICD.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
