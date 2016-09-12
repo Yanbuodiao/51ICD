@@ -29,7 +29,7 @@ namespace Docimax.Web_ICD
             MailConfig mailConfig = (MailConfig)ConfigurationManager.GetSection("application/mail");
             if (mailConfig.RequireValid)
             {
-                var mail = new MailMessage(new MailAddress(mailConfig.Uid, "no-reply"), new MailAddress(message.Destination));
+                var mail = new MailMessage(new MailAddress(mailConfig.Uid, "51ICD"), new MailAddress(message.Destination));
                 mail.Subject = message.Subject;
                 mail.Body = message.Body;
                 mail.IsBodyHtml = true;
@@ -237,7 +237,7 @@ namespace Docimax.Web_ICD
             }
 
             var token = await UserManager.GenerateTwoFactorTokenAsync(userId, provider);
-            // See IdentityConfig.cs to plug in Email/SMS services to actually send the code
+
             await UserManager.NotifyTwoFactorTokenAsync(userId, provider, token);
             return true;
         }

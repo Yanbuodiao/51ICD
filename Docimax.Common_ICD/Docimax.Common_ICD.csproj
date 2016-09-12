@@ -76,6 +76,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Cache\ServiceMenu.cs" />
     <Compile Include="Dictionary\ICDVersionList.cs" />
     <Compile Include="Dictionary\ICDSelectList.cs" />
     <Compile Include="File\FileHelper.cs" />
@@ -85,6 +86,10 @@
     <Compile Include="SMS\SMS_Ihuyi.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Docimax.Common\Docimax.Common.csproj">
+      <Project>{de6fcd04-fb2a-41f9-b668-3caaa49cf341}</Project>
+      <Name>Docimax.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Docimax.Data_ICD\Docimax.Data_ICD.csproj">
       <Project>{900e11b2-c5d6-4e50-a2b4-1941f13e6bd5}</Project>
       <Name>Docimax.Data_ICD</Name>

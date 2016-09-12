@@ -19,5 +19,9 @@ namespace Docimax.Interface_ICD.Enum
         /// 服务需求方
         /// </summary>
         Request = 200,
+        /// <summary>
+        /// 公共服务
+        /// </summary>
+        Public=10000,
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Docimax.Common;
+using Docimax.Common_ICD.Cache;
 using Docimax.Data_ICD.DAL;
 using Docimax.Interface_ICD.Interface;
 using Docimax.Web_ICD.Models;
@@ -378,9 +379,14 @@ namespace Docimax.Web_ICD.Controllers
         [AllowAnonymous]
         public ActionResult MenuList()
         {
-            IMenu menuAccess = new DAL_Menu();
-            return PartialView(menuAccess.GetMenuListByUserID(User.Identity.GetUserId()));
+            //IMenu menuAccess = new DAL_Menu();
+            //return PartialView(menuAccess.GetMenuListByUserID(User.Identity.GetUserId()));
+
+
+
+            return PartialView(ServiceMenu.GetMenuList(User.Identity.GetUserId()));
         }
+
         #region 帮助程序
 
         private const string XsrfKey = "XsrfId";

@@ -85,6 +85,7 @@
     <Compile Include="Model\ServiceClaimModel.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Model\ServiceMenuModel.cs" />
     <Compile Include="Model\ServiceModel.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -101,6 +102,7 @@
     <Compile Include="Model\ItemModel.cs" />
     <Compile Include="Model\UploadedItemModel.cs" />
     <Compile Include="Model\UserInfoModel.cs" />
+    <Compile Include="Model\UserServiceModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

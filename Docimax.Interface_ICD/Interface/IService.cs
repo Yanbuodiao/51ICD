@@ -1,9 +1,5 @@
 ﻿using Docimax.Interface_ICD.Model;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Docimax.Interface_ICD.Interface
 {
@@ -21,5 +17,16 @@ namespace Docimax.Interface_ICD.Interface
         /// <param name="serviceID">服务ID</param>
         /// <returns></returns>
         ServiceModel GetServiceByID(int serviceID);
+        /// <summary>
+        /// 获取所有可用的服务及其可用Menu
+        /// </summary>
+        /// <returns></returns>
+        List<ServiceMenuModel> GetAvailableServiceMenu();
+        /// <summary>
+        /// 根据用户ID获取用户可得的Service（可提供的和可使用的）
+        /// </summary>
+        /// <param name="userID">用户ID</param>
+        /// <returns></returns>
+        UserAvailableServiceModel GetUserAvailableService(string userID);
     }
 }
