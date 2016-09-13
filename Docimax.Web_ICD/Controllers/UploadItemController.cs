@@ -1,4 +1,5 @@
-﻿using Docimax.Common_ICD.File;
+﻿using Docimax.Common_ICD;
+using Docimax.Common_ICD.File;
 using Docimax.Data_ICD.DAL;
 using Docimax.Interface_ICD.Interface;
 using Docimax.Interface_ICD.Model;
@@ -155,6 +156,14 @@ namespace Docimax.Web_ICD.Controllers
         {
             //todo  增加授权认证，不是谁想看图片就看的
             return File(FileHelper.GetFile(picURL), contentType);
+        }
+
+        [Authorize(Roles = ConstStr.PlatformRoleName)]
+        public ActionResult ShowUserPic(string picURL, string contentType)
+        {
+            //todo  增加授权认证，不是谁想看图片就看的
+            return File(FileHelper.GetFile(picURL), contentType);
+             
         }
     }
 }

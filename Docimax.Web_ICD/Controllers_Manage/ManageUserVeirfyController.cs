@@ -1,4 +1,5 @@
-﻿using Docimax.Data_ICD.DAL;
+﻿using Docimax.Common_ICD;
+using Docimax.Data_ICD.DAL;
 using Docimax.Interface_ICD.Enum;
 using Docimax.Interface_ICD.Interface;
 using Docimax.Interface_ICD.Model;
@@ -13,10 +14,9 @@ using System.Web.Mvc;
 
 namespace Docimax.Web_ICD.Controllers
 {
-    [Authorize(Roles = "DocimaxAdmins")]
+    [Authorize(Roles = ConstStr.PlatformRoleName)]
     public class ManageUserVeirfyController : Controller
     {
-        // GET: ManageUserService
         public ActionResult Index(ICDPagedList<UserCertificationSearch, VerifyIdentityViewModel> model, string message = "")
         {
             ViewBag.StatusMessage = message;

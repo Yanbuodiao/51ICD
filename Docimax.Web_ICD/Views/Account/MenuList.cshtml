@@ -14,7 +14,7 @@
         <li>@Html.ActionLink("联系方式", "Contact", "Home")</li>
     }
     @*通过身份验证并确认用户属于Admin角色显示管理菜单*@
-    @if (Request.IsAuthenticated && User.IsInRole("DocimaxAdmins"))
+    @if (Request.IsAuthenticated && User.IsInRole(Docimax.Common_ICD.ConstStr.PlatformRoleName))
     {
         <li>@Html.ActionLink("实名认证管理", "Index", "ManageUserVeirfy")</li>
         <li>@Html.ActionLink("服务认证管理", "Index", "ManageUserService")</li>

@@ -1,19 +1,15 @@
-﻿using Docimax.Data_ICD.DAL;
+﻿using Docimax.Common_ICD;
+using Docimax.Data_ICD.DAL;
 using Docimax.Interface_ICD.Enum;
 using Docimax.Interface_ICD.Interface;
 using Docimax.Interface_ICD.Model;
-using Docimax.Web_ICD.Convert;
-using Docimax.Web_ICD.Models;
 using Microsoft.AspNet.Identity;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace Docimax.Web_ICD.Controllers_Manage
 {
-    [Authorize(Roles = "DocimaxAdmins")]
+    [Authorize(Roles = ConstStr.PlatformRoleName)]
     public class ManageUserServiceController : Controller
     {
         public ActionResult Index(ICDPagedList<UserServiceSearch, UserServiceModel> model, string message = "")

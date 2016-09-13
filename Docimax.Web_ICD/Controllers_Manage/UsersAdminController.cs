@@ -1,4 +1,5 @@
-﻿using Docimax.Web_ICD.Models;
+﻿using Docimax.Common_ICD;
+using Docimax.Web_ICD.Models;
 using Microsoft.AspNet.Identity.Owin;
 using System.Data.Entity;
 using System.Linq;
@@ -9,7 +10,7 @@ using System.Web.Mvc;
 
 namespace Docimax.Web_ICD.Controllers
 {
-    [Authorize(Roles = "DocimaxAdmins")]
+    [Authorize(Roles = ConstStr.PlatformRoleName)]
     public class UsersAdminController : Controller
     {
         public UsersAdminController()

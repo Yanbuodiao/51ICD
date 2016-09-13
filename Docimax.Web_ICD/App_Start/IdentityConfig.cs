@@ -1,4 +1,5 @@
 ﻿using Docimax.Common;
+using Docimax.Common_ICD;
 using Docimax.Common_ICD.SMS;
 using Docimax.Interface_ICD.Configurations;
 using Docimax.Interface_ICD.Enum;
@@ -156,10 +157,10 @@ namespace Docimax.Web_ICD
             var roleManager = HttpContext.Current.GetOwinContext().Get<ApplicationRoleManager>();
             var userName = ConfigurationManager.AppSettings["DocimaxFirstAdmin"];//创建初始管理员的管理员用户名
             var password = PlatformPwdHelper.CreatRadomPwd();//随机密码
-            const string roleName = "DocimaxAdmins";//用户要添加到的角色组
+            const string roleName = ConstStr.PlatformRoleName;//用户要添加到的角色组
 
 
-            //如果没有DocimaxAdmins用户组则创建该组
+            //如果没有ConstStr.PlatformRoleName用户组则创建该组
             var role = roleManager.FindByName(roleName);
             if (role == null)
             {
