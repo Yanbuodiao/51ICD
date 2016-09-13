@@ -4,6 +4,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" />
     <title>@ViewBag.Title - 51ICD</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
@@ -12,9 +13,6 @@
 <body>
     <div class="navbar navbar-inverse icd navbar-fixed-top">
         <div class="container-fluid">
-            <div class="navbar-header">
-                @Html.ActionLink("51ICD", "Index", "Home", new { area = "" }, new { @class = "navbar-brand first-menu" })
-            </div>
             <div class="navbar-collapse collapse">
                 @{Html.RenderAction("MenuList", "Account");}
                 @Html.Partial("_LoginPartial")

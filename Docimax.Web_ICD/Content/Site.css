@@ -6,7 +6,7 @@
 /* Set padding to keep content from hitting the edges */
 .body-content {
     padding-left: 15px;
-    padding-right: 30px;
+    padding-right: 15px;
 }
 
 /* Override the default bootstrap behavior where horizontal description lists 
@@ -103,10 +103,6 @@ textarea {
 }
 
 
-.navbar-icd.navbar-inverse{
-  background-color: #57D2DD;
-  border-color: #57D2DD;
-}
 
 
 .span3 {
