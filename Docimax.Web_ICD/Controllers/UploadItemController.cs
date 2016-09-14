@@ -64,27 +64,7 @@ namespace Docimax.Web_ICD.Controllers
                 model.UploadedList = new List<UploadedItemModel>();
                 model.LastModifyTime = DateTime.Now;
                 model.LastModifyUserID = User.Identity.GetUserId();
-                for (int i = 0; i < Request.Files.Count; i++)
-                {
-                    var file = Request.Files[i];
-                    if (file != null && file.ContentLength > 0)
-                    {
-                        var itemID = int.Parse(Request.Files.AllKeys[i]);
-                        var uploadedFile = new UploadedItemModel
-                        {
-                            AttachURL = FileHelper.SaveMedicalRecord(file, model.ORGCode, model.CaseNum),
-                            AttachFileName = file.FileName,
-                            ContentType = file.ContentType,
-                            ItemID = itemID,
-                            GIndex = model.UploadedList.Count(e => e.ItemID == itemID),
-                            CreateTime = DateTime.Now,
-                            LastModifyTime = DateTime.Now,
-                            CreateUserID = User.Identity.GetUserId(),
-                            LastModifyUserID = User.Identity.GetUserId(),
-                        };
-                        model.UploadedList.Add(uploadedFile);
-                    }
-                }
+                handleFile(model);
                 ICode_Order codeOrderAccess = new DAL_Code_Order();
                 var result = codeOrderAccess.SaveNewCodeOrder(model, !string.IsNullOrWhiteSpace(submit));
                 if (result.Result)
@@ -115,16 +95,35 @@ namespace Docimax.Web_ICD.Controllers
             model.UploadedList = new List<UploadedItemModel>();
             model.LastModifyTime = DateTime.Now;
             model.LastModifyUserID = User.Identity.GetUserId();
+            handleFile(model);
+            ICode_Order codeOrderAccess = new DAL_Code_Order();
+            var result = codeOrderAccess.SaveNewCodeOrder(model, !string.IsNullOrWhiteSpace(submit));
+            if (result.Result)
+            {
+                return RedirectToAction("Index", "UploadItem", new { caseNum = model.CaseNum, notifyStr = string.IsNullOrWhiteSpace(submit) ? "保存成功" : "提交成功" });
+            }
+            ModelState.AddModelError("", result.ErrorStr);
+            return View(model);
+        }
+
+        private void handleFile(CodeOrderModel model)
+        {
             for (int i = 0; i < Request.Files.Count; i++)
             {
                 var file = Request.Files[i];
                 if (file != null && file.ContentLength > 0)
                 {
                     var itemID = int.Parse(Request.Files.AllKeys[i]);
+                    var fileNameIndex = file.FileName.LastIndexOf(@"\");
+                    var fileName =  file.FileName;
+                    if (fileNameIndex > 0)
+                    {
+                        fileName = fileName.Substring(fileNameIndex+1, fileName.Length - fileNameIndex-1);
+                    }
                     var uploadedFile = new UploadedItemModel
                     {
                         AttachURL = FileHelper.SaveMedicalRecord(file, model.ORGCode, model.CaseNum),
-                        AttachFileName = file.FileName,
+                        AttachFileName = fileName,
                         ContentType = file.ContentType,
                         ItemID = itemID,
                         GIndex = model.UploadedList.Count(e => e.ItemID == itemID),
@@ -136,14 +135,6 @@ namespace Docimax.Web_ICD.Controllers
                     model.UploadedList.Add(uploadedFile);
                 }
             }
-            ICode_Order codeOrderAccess = new DAL_Code_Order();
-            var result = codeOrderAccess.SaveNewCodeOrder(model, !string.IsNullOrWhiteSpace(submit));
-            if (result.Result)
-            {
-                return RedirectToAction("Index", "UploadItem", new { caseNum = model.CaseNum, notifyStr = string.IsNullOrWhiteSpace(submit) ? "保存成功" : "提交成功" });
-            }
-            ModelState.AddModelError("", result.ErrorStr);
-            return View(model);
         }
 
         public ActionResult Detail(int orderID)
@@ -163,7 +154,7 @@ namespace Docimax.Web_ICD.Controllers
         {
             //todo  增加授权认证，不是谁想看图片就看的
             return File(FileHelper.GetFile(picURL), contentType);
-             
+
         }
     }
 }
