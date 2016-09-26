@@ -25,5 +25,10 @@ namespace Docimax.Web_ICD.Controllers
         {
             return View();
         }
+
+        public ActionResult ShowDetail()
+        {
+            return View();
+        }
     }
 }

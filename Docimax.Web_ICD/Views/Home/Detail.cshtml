@@ -21,18 +21,20 @@
         <p>
             51ICD除提供简单的缺项检查外，通过维护一个简单逻辑的知识库，此处的简单逻辑指不需要专业的医学知识就能判断出来的逻辑，比如性别与有些诊断不能同时出现等；由于是基于云端维护的知识库，是一个增量的过程，一种新知识的增加惠及所有接入平台的医院。
         </p>
+        <p>@Html.ActionLink("去试试 >>", "ShowDetail", "Home", new { @class = "btn btn-default" })</p>
     </div>
     <div class="col-md-12">
         <a name="kk2" id="kk2" class="anchor"></a>
         <h2>病案内容形式质控</h2>
         <p>指对病案内的项目进行的简单逻辑缺项检查和病历项目排序</p>
-            <p>病案内项目简短逻辑缺项检查是维护一个针对于病案项目的的知识库，根据病案项目的依赖关系，确定哪些项目缺失，比如缺失病程记录，体温单等。</p>
-            <p>病历项目排序</p>
+        <p>病案内项目简短逻辑缺项检查是维护一个针对于病案项目的的知识库，根据病案项目的依赖关系，确定哪些项目缺失，比如缺失病程记录，体温单等。</p>
+        <p>病历项目排序</p>
+        <p>@Html.ActionLink("去试试 >>", "ShowDetail", "Home", new { @class = "btn btn-default" })</p>
     </div>
     <div class="col-md-12">
         <a name="kk3" id="kk3" class="anchor"></a>
         <h2>病案首页编码服务</h2>
-        <div class="col-md-4">
+        <div>
             <p>
                 主要针对于影响DRGs入组的各个项目主要诊断，次要诊断，并发症，合并症，主要操作，次要操作等进行精确选择和补充，上述各项以建议的方式给出，提高DRGs入组的准确和精确。
             </p>
@@ -43,8 +45,8 @@
                 右图形象的提现了上述编码结果对DRGs入组的影响，精确的编码结果能够更精确的落入到合适的DRGs的组合中，对医疗报销和相关评测例如CMI等产生巨大的影响。
             </p>
         </div>
-        <div class="col-md-8">
-            <img src="~/Img/DRGsEP.jpg" class="img-responsive" alt="Responsive image">
+        <div class="col-md-7">
+            <img src="~/Img/DRGsEP.jpg" width="300" height="300" class="img-responsive" alt="Responsive image">
         </div>
     </div>
 </div>

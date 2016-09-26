@@ -232,6 +232,9 @@
     <Content Include="Content\bootstrap-datepicker.css.map" />
     <Content Include="App_Readme\Handlebarsjs_README.md" />
     <Content Include="App_Readme\Handlebarsjs_LICENSE" />
+    <None Include="Properties\PublishProfiles\51icd - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\51icd - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\ftpPublish.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\handlebars.amd.js" />
     <Content Include="Scripts\handlebars.amd.min.js" />
@@ -392,6 +395,7 @@
     <Content Include="Views\ManageUserService\Index.cshtml" />
     <Content Include="Views\ManageUserService\Detail.cshtml" />
     <Content Include="Views\ManageUserService\ApproveDetail.cshtml" />
+    <Content Include="Views\Home\ShowDetail.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
