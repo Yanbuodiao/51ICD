@@ -24,71 +24,72 @@ textarea {
 }
 
 .navbar-inverse.icd {
-    background-color: #21cddd;
-    border-color: #21cddd;
+    background-color: #144566;
+    border-color: #144566;
 }
- .navbar-inverse.icd .navbar-brand {
-        color: #C9F5F9;
-    }
 
-        .navbar-inverse .navbar-brand:hover,
-        .navbar-inverse .navbar-brand:focus {
-            color: #fff;
-            background-color: transparent;
-        }
-
-    .navbar-inverse .navbar-text {
-        color: #C9F5F9;
-    }
-
-    .navbar-inverse .navbar-nav > li > a {
-        color: #C9F5F9;
-    }
-
-        .navbar-inverse .navbar-nav > li > a:hover,
-        .navbar-inverse .navbar-nav > li > a:focus {
-            color: #fff;
-            background-color: transparent;
-        }
-
-    .navbar-inverse .navbar-nav > .active > a,
-    .navbar-inverse .navbar-nav > .active > a:hover,
-    .navbar-inverse .navbar-nav > .active > a:focus {
+    .navbar-inverse.icd .navbar-brand {
         color: #fff;
-        background-color:#35c7d4;
     }
 
-    .navbar-inverse .navbar-nav > .disabled > a,
-    .navbar-inverse .navbar-nav > .disabled > a:hover,
-    .navbar-inverse .navbar-nav > .disabled > a:focus {
-        color: #444;
+.navbar-inverse .navbar-brand:hover,
+.navbar-inverse .navbar-brand:focus {
+    color: #1FCEDE;
+    background-color: transparent;
+}
+
+.navbar-inverse .navbar-text {
+    color: #fff;
+}
+
+.navbar-inverse .navbar-nav > li > a {
+    color: #fff;
+}
+
+    .navbar-inverse .navbar-nav > li > a:hover,
+    .navbar-inverse .navbar-nav > li > a:focus {
+        color: #1FCEDE;
         background-color: transparent;
     }
 
-    .navbar-inverse .navbar-toggle {
-        border-color: #333;
+.navbar-inverse .navbar-nav > .active > a,
+.navbar-inverse .navbar-nav > .active > a:hover,
+.navbar-inverse .navbar-nav > .active > a:focus {
+    color: #1FCEDE;
+    background-color: #35c7d4;
+}
+
+.navbar-inverse .navbar-nav > .disabled > a,
+.navbar-inverse .navbar-nav > .disabled > a:hover,
+.navbar-inverse .navbar-nav > .disabled > a:focus {
+    color: #444;
+    background-color: transparent;
+}
+
+.navbar-inverse .navbar-toggle {
+    border-color: #333;
+}
+
+    .navbar-inverse .navbar-toggle:hover,
+    .navbar-inverse .navbar-toggle:focus {
+        background-color: #333;
     }
 
-        .navbar-inverse .navbar-toggle:hover,
-        .navbar-inverse .navbar-toggle:focus {
-            background-color: #333;
-        }
-
-        .navbar-inverse .navbar-toggle .icon-bar {
-            background-color: #fff;
-        }
-
-    .navbar-inverse .navbar-collapse,
-    .navbar-inverse .navbar-form {
-        border-color: #101010;
+    .navbar-inverse .navbar-toggle .icon-bar {
+        background-color: #fff;
     }
 
-    .navbar-inverse .navbar-nav > .open > a,
-    .navbar-inverse .navbar-nav > .open > a:hover,
-    .navbar-inverse .navbar-nav > .open > a:focus {
-        color: #fff;
-        background-color: #080808;
-    }
+.navbar-inverse .navbar-collapse,
+.navbar-inverse .navbar-form {
+    border-color: #101010;
+}
+
+.navbar-inverse .navbar-nav > .open > a,
+.navbar-inverse .navbar-nav > .open > a:hover,
+.navbar-inverse .navbar-nav > .open > a:focus {
+    color: #fff;
+    background-color: #080808;
+}
 
 .form-control.validate {
     padding: 0px;
@@ -131,6 +132,19 @@ textarea {
         margin-left: 1px;
     }
 }
+
+@media (min-width: 980px) {
+    h1 {
+        font-size: 32px;
+    }
+
+    h2 {
+        font-size: 20px;
+        color:#323a45;
+        font-weight: 800;
+    }
+}
+
 
 .nav-list {
     padding-left: 0px;
@@ -228,4 +242,3 @@ textarea {
 .gist {
     font-size: 14px;
 }
-

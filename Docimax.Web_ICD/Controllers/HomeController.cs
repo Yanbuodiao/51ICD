@@ -2,7 +2,7 @@
 
 namespace Docimax.Web_ICD.Controllers
 {
-     [AllowAnonymous]
+    [AllowAnonymous]
     public class HomeController : Controller
     {
         public ActionResult Index()
@@ -27,6 +27,11 @@ namespace Docimax.Web_ICD.Controllers
         }
 
         public ActionResult ShowDetail()
+        {
+            return View();
+        }
+
+        public ActionResult Help()
         {
             return View();
         }
