@@ -81,6 +81,7 @@
     <Compile Include="Model\Menu\ICDMenu.cs" />
     <Compile Include="Model\SearchModel\UserCertificationSearch.cs" />
     <Compile Include="Model\SearchModel\UserServiceSearch.cs" />
+    <Compile Include="Model\Security\SecurityPhoneModel.cs" />
     <Compile Include="Model\ServiceAttachModel.cs" />
     <Compile Include="Model\ServiceClaimModel.cs">
       <SubType>Code</SubType>

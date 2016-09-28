@@ -29,6 +29,24 @@
 <script type="text/javascript">
     $(document).ready(function () {
         $("#mobile").focus();
+
+        var second =@(Model!=null? Model.DelaySecond:0);
+        if (second>0) {
+            $("#showBtn").attr("disabled", true);
+            $("#showBtn").attr("value",second+ "秒后重发");
+            var timer = null;
+            timer = setInterval(function () {
+                second -= 1;
+                if (second > 0) {
+                    $("#showBtn").attr("value",second+ "秒后重发");
+                } else {
+                    clearInterval(timer);
+                    $("#showBtn").removeAttr("disabled");
+                    $("#showBtn").attr("value", "发送短信");
+                }
+            }, 1000);
+        }
+
         $("#showBtn").click(function () {
             if (validatemobile($("#mobile").val())) {
                 $("#valicodetxt").focus();
@@ -57,6 +75,7 @@
         }
         return true;
     }
+
 
     function showError(errorStr) {
         var container = $(document).find("[data-valmsg-summary=true]");

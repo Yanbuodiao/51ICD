@@ -1,5 +1,6 @@
 ﻿using Docimax.Data_ICD.Entity;
 using Docimax.Interface_ICD.Interface;
+using Docimax.Interface_ICD.Model;
 using Docimax.Interface_ICD.Model.Security;
 using System;
 using System.Collections.Generic;
@@ -34,6 +35,41 @@ namespace Docimax.Data_ICD.DAL
             }
 
             return false;
+        }
+
+        public SecurityPhoneModel GetLastPhoneMessage(string phoneNumber)
+        {
+            using (var entity = new Entity_Read())
+            {
+                var model = entity.Sec_Message.Where(e => e.UserPhoneNumber == phoneNumber).OrderByDescending(e => e.SecurityMessage_ID).FirstOrDefault();
+                if (model == null)
+                {
+                    return null;
+                }
+                return new SecurityPhoneModel
+                {
+                    LastSendTime = model.CreateTime ?? DateTime.Now,
+                    SourceIP = model.SourceIP,
+                    PhoneNumber = model.UserPhoneNumber,
+                };
+            }
+        }
+
+        public void SavePhoneMessage(SecurityPhoneModel model)
+        {
+            using (var entity = new Entity_Write())
+            {
+                var newModel = new Sec_Message
+                {
+                    CreateTime=model.LastSendTime,
+                    LastModifyTime=model.LastSendTime,
+                    SourceIP=model.SourceIP,
+                    UserID=model.UserID,
+                    UserPhoneNumber=model.PhoneNumber,                    
+                };
+                entity.Sec_Message.Add(newModel);
+                entity.SaveChanges();
+            }
         }
     }
 }

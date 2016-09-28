@@ -4,6 +4,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
 using Docimax.Interface_ICD.Enum;
 using Docimax.Interface_ICD.Model;
+using System;
 
 namespace Docimax.Web_ICD.Models
 {
@@ -66,6 +67,11 @@ namespace Docimax.Web_ICD.Models
     {
         [Display(Name = "电话号码")]
         public string Number { get; set; }
+        public DateTime LastSendTime { get; set; }
+        /// <summary>
+        /// 延迟时间
+        /// </summary>
+        public int DelaySecond { get; set; }
     }
 
     public class VerifyPhoneNumberViewModel

@@ -1,4 +1,5 @@
-﻿using Docimax.Common_ICD.File;
+﻿using Docimax.Common;
+using Docimax.Common_ICD.File;
 using Docimax.Data_ICD.DAL;
 using Docimax.Interface_ICD.Enum;
 using Docimax.Interface_ICD.Interface;
@@ -115,8 +116,15 @@ namespace Docimax.Web_ICD.Controllers
             {
                 return View(model);
             }
+            var delaySecond = ValidateRepeat(model);
+            if (delaySecond > 0)
+            {
+                model.DelaySecond = delaySecond;
+                return View(model);
+            }
+            var userId = User.Identity.GetUserId();
             // 生成令牌并发送该令牌
-            var code = await UserManager.GenerateChangePhoneNumberTokenAsync(User.Identity.GetUserId(), model.Number);
+            var code = await UserManager.GenerateChangePhoneNumberTokenAsync(userId, model.Number);
             if (UserManager.SmsService != null)
             {
                 var message = new IdentityMessage
@@ -126,6 +134,14 @@ namespace Docimax.Web_ICD.Controllers
                 };
                 await UserManager.SmsService.SendAsync(message);
             }
+            ISecurity access = new DAL_Security();
+            access.SavePhoneMessage(new SecurityPhoneModel
+            {
+                LastSendTime = DateTime.Now,
+                PhoneNumber = model.Number,
+                UserID = userId,
+                SourceIP = HttpHelper.GetIPFromRequest(Request),
+            });
             return RedirectToAction("VerifyPhoneNumber", new { PhoneNumber = model.Number });
         }
 
@@ -321,7 +337,7 @@ namespace Docimax.Web_ICD.Controllers
                         var icdFile = new ICDFile
                         {
                             FileURL = FileHelper.SaveUserAttachFile(file),
-                            FileName=file.FileName,
+                            FileName = file.FileName,
                             ContentType = file.ContentType,
                         };
                         switch (Request.Files.AllKeys[i])
@@ -401,6 +417,20 @@ namespace Docimax.Web_ICD.Controllers
                 return user.PhoneNumber != null;
             }
             return false;
+        }
+
+        private int ValidateRepeat(AddPhoneNumberViewModel model)
+        {
+            ISecurity access = new DAL_Security();
+            var lastSendModel = access.GetLastPhoneMessage(model.Number);
+            if (lastSendModel != null)
+            {
+                if (lastSendModel.LastSendTime.AddSeconds(200) > DateTime.Now)
+                {
+                    return (int)(DateTime.Now - lastSendModel.LastSendTime).TotalSeconds;
+                }
+            }
+            return -1;
         }
 
         public enum ManageMessageId
