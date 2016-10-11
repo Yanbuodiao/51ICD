@@ -29,7 +29,7 @@ namespace Docimax.Interface_ICD.Model.UploadModel
         /// </summary>
         public DateTime RecieveTime { get; set; }
         /// <summary>
-        /// 请求体
+        /// 上传内容实体
         /// </summary>
         public T UploadContent { get; set; }
     }

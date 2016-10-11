@@ -425,9 +425,11 @@ namespace Docimax.Web_ICD.Controllers
             var lastSendModel = access.GetLastPhoneMessage(model.Number);
             if (lastSendModel != null)
             {
-                if (lastSendModel.LastSendTime.AddSeconds(200) > DateTime.Now)
+                var shouldDelaySecond = 150;
+                var spanTime=(int)(DateTime.Now - lastSendModel.LastSendTime).TotalSeconds;
+                if (shouldDelaySecond > spanTime)
                 {
-                    return (int)(DateTime.Now - lastSendModel.LastSendTime).TotalSeconds;
+                    return shouldDelaySecond - spanTime;
                 }
             }
             return -1;

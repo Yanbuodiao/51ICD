@@ -102,8 +102,8 @@
     <Compile Include="Model\Security\SecurityIPModel.cs" />
     <Compile Include="Model\ItemModel.cs" />
     <Compile Include="Model\UploadedItemModel.cs" />
-    <Compile Include="Model\UploadModel\CodeModel_HQMS.cs" />
-    <Compile Include="Model\UploadModel\CodeModel_N041.cs" />
+    <Compile Include="Model\UploadModel\HQMS\CodeModel_HQMS.cs" />
+    <Compile Include="Model\UploadModel\N041\CodeModel_N041.cs" />
     <Compile Include="Model\UploadModel\UploadModel.cs" />
     <Compile Include="Model\UserInfoModel.cs" />
     <Compile Include="Model\UserServiceModel.cs" />
