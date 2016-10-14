@@ -391,7 +391,7 @@ namespace Docimax.Interface_ICD.Model.UploadModel
         /// <summary>
         /// 麻醉方式
         /// </summary>
-        public string MZFS5 { get; set; }
+        public string MZFS4 { get; set; }
         /// <summary>
         /// 手术及操作日期  格式为：YYYYMMDD，例如：20131125
         /// </summary>
@@ -415,7 +415,7 @@ namespace Docimax.Interface_ICD.Model.UploadModel
         /// <summary>
         /// 麻醉方式
         /// </summary>
-        public string MZFS6 { get; set; }
+        public string MZFS5 { get; set; }
         /// <summary>
         /// 手术及操作日期  格式为：YYYYMMDD，例如：20131125
         /// </summary>
