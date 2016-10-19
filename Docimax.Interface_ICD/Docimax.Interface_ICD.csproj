@@ -103,10 +103,12 @@
     <Compile Include="Model\ItemModel.cs" />
     <Compile Include="Model\UploadedItemModel.cs" />
     <Compile Include="Model\UploadModel\HQMS\CodeModel_HQMS.cs" />
+    <Compile Include="Model\UploadModel\MedicalFileModel.cs" />
     <Compile Include="Model\UploadModel\N041\CodeModel_N041.cs" />
     <Compile Include="Model\UploadModel\N041\N041Enum.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Model\UploadModel\PatientModel.cs" />
     <Compile Include="Model\UploadModel\UploadModel.cs" />
     <Compile Include="Model\UserInfoModel.cs" />
     <Compile Include="Model\UserServiceModel.cs" />

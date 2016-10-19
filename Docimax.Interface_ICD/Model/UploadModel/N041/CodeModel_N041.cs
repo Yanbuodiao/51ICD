@@ -6,8 +6,13 @@ using System.Threading.Tasks;
 
 namespace Docimax.Interface_ICD.Model.UploadModel
 {
+    /// <summary>
+    /// 所有内容中，不出现患者姓名，身份证号，联系方式，医生姓名
+    /// </summary>
     public class CodeModel_N041
     {
+        #region 病案首页相关字段
+
         /// <summary>
         /// 机构名称
         /// </summary>
@@ -33,11 +38,11 @@ namespace Docimax.Interface_ICD.Model.UploadModel
         /// </summary>
         public string XB { get; set; }
         /// <summary>
-        /// 出生日期
+        /// 出生日期  格式为：YYYYMMDD，例如：20131125
         /// </summary>
         public string CSRQ { get; set; }
         /// <summary>
-        /// 年龄   格式为：YYYYMMDD，例如：20131125
+        /// 年龄   
         /// </summary>
         public int NL { get; set; }
         /// <summary>
@@ -628,5 +633,145 @@ namespace Docimax.Interface_ICD.Model.UploadModel
         public decimal QTF { get; set; }
 
         #endregion
+
+        #endregion
+
+        #region 入院记录
+        public 入院情况 入院记录 { get; set; }
+
+        #endregion
+
+        #region 病程记录
+
+        public string 首次病程记录 { get; set; }
+        public string 日常病程记录 { get; set; }
+        public string 上级医师查房记录 { get; set; }
+        public string 疑难病例讨论记录 { get; set; }
+        public string 交接班记录 { get; set; }
+        public string 转科记录 { get; set; }
+        public string 阶段小结 { get; set; }
+
+        #endregion
+
+        #region 术前讨论记录
+
+        public string 术前讨论记录 { get; set; }
+
+        #endregion
+
+        #region  术前小结
+
+        public string 术前小结 { get; set; }
+
+        #endregion
+
+        #region 麻醉术前访视记录
+
+        public string 麻醉前访视记录 { get; set; }
+
+        #endregion
+
+        #region 手术安全核查记录
+
+        public string 手术安全检查记录 { get; set; }
+
+        #endregion
+
+        #region 手术清点记录
+
+        public string 手术清点记录 { get; set; }
+
+        #endregion
+
+        #region 麻醉记录
+
+        public string 麻醉记录 { get; set; }
+
+        #endregion
+
+        #region 手术记录
+
+        public string 手术记录 { get; set; }
+
+        #endregion
+
+        #region 麻醉术后访视记录
+
+        public string 麻醉术后访视记录 { get; set; }
+
+        #endregion
+
+        #region 术后病程记录
+
+        public string 术后首次病程记录 { get; set; }
+
+        #endregion
+
+        #region 出院记录
+
+        public 出院情况 出院记录 { get; set; }
+
+        #endregion
+
+        #region 死亡记录
+
+        public 死亡情况 死亡记录 { get; set; }
+
+        #endregion
+
+        #region 死亡病例讨论记录
+
+        public string 死亡病例讨论记录 { get; set; }
+
+        #endregion
+
+        #region 有创诊疗操作记录
+
+        public string 有创诊疗操作记录 { get; set; }
+
+        #endregion
+
+        #region 会诊记录
+
+        public string 会诊记录 { get; set; }
+
+        #endregion
+
+        #region 病理资料
+
+        public string 病理资料 { get; set; }
+
+        #endregion
+
+        #region 辅助检查报告单
+
+        #endregion
+
+        #region 医学影像检查资料
+
+        #endregion
+
+        #region 抢救记录
+
+        public string 抢救记录 { get; set; }
+
+        #endregion
+
+        #region 体温单
+
+        #endregion
+
+        #region 医嘱单
+        public string 医嘱单 { get; set; }
+
+        #endregion
+
+        #region 病重（病危）患者护理记录
+
+        public string 病重病危患者护理记录 { get; set; }
+
+        #endregion
+
+        public List<MedicalFileModel> 医学文件 { get; set; }
     }
 }
