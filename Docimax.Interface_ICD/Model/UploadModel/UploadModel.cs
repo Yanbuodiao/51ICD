@@ -17,11 +17,19 @@ namespace Docimax.Interface_ICD.Model.UploadModel
         /// </summary>
         public string TicketID { get; set; }
         /// <summary>
-        /// 签名结果
+        /// 调用的接口版本，固定为：1.0
         /// </summary>
-        public string SignResult { get; set; }
+        public string version { get; set; }
         /// <summary>
-        /// 发起请求的时间
+        /// 接口名称
+        /// </summary>
+        public string Method { get; set; }
+        /// <summary>
+        /// 请求参数的签名串
+        /// </summary>
+        public string Sign { get; set; }
+        /// <summary>
+        ///发送请求的时间，格式"yyyy-MM-dd HH:mm:ss"
         /// </summary>
         public DateTime RequestTime { get; set; }
         /// <summary>

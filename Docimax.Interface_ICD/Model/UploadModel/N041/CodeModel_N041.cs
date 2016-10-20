@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace Docimax.Interface_ICD.Model.UploadModel
 {
@@ -709,7 +705,7 @@ namespace Docimax.Interface_ICD.Model.UploadModel
 
         #region 出院记录
 
-        public 出院情况 出院记录 { get; set; }
+        public 出院情况记录 出院记录 { get; set; }
 
         #endregion
 

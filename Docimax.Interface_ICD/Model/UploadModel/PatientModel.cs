@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Docimax.Interface_ICD.Model.UploadModel
 {
@@ -33,11 +30,11 @@ namespace Docimax.Interface_ICD.Model.UploadModel
 
         public List<入院情况> 再次或多次入院记录 { get; set; }
 
-        public 出院情况 _24小时内出院记录 { get; set; }
+        public 出院情况记录 _24小时内出院记录 { get; set; }
         public 死亡情况 _24小时内死亡记录 { get; set; }
     }
 
-    public class 出院情况
+    public class 出院情况记录
     {
         public DateTime 出院时间 { get; set; }
         public string 入院诊断 { get; set; }
