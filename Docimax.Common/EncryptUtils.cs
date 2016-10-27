@@ -7,7 +7,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace Docimax.Common.Encryption
+namespace Docimax.Common
 {
     public sealed class EncryptUtils
     {
