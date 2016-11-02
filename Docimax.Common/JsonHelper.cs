@@ -25,10 +25,24 @@ namespace Docimax.Common
             string output = JsonConvert.SerializeObject(o, settings);
             return output;
         }
+
+        public static  T DeserializeObject<T>(string value)
+        {
+            var settings = new JsonSerializerSettings
+            {
+                MissingMemberHandling = MissingMemberHandling.Ignore,
+                DefaultValueHandling = DefaultValueHandling.Ignore,
+                NullValueHandling = NullValueHandling.Ignore,
+                DateFormatString = "yyyy-MM-dd HH:mm:ss",
+                Converters = new List<JsonConverter> { new DecimalConverter() },
+                ContractResolver = new OrderedContractResolver(),
+            };
+            return JsonConvert.DeserializeObject<T>(value, settings);
+        }
     }
 
     /// <summary>
-    /// Decimal保留两位小数 5.00
+    /// Decimal保留两位小数 ep.:5.00
     /// </summary>
     class DecimalConverter : JsonConverter
     {
@@ -46,8 +60,7 @@ namespace Docimax.Common
             }
             if (token.Type == JTokenType.String)
             {
-                return Decimal.Parse(token.ToString(),
-                       System.Globalization.CultureInfo.GetCultureInfo("es-ES"));
+                return Decimal.Parse(token.ToString());
             }
             if (token.Type == JTokenType.Null && objectType == typeof(decimal?))
             {

@@ -1,15 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Docimax.Common;
+using Newtonsoft.Json;
+using System;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Collections.Generic;
+using System.Reflection;
 
 namespace Docimax.Interface_ICD.Model.UploadModel
 {
+    [JsonObject(MemberSerialization.OptOut)]
     public class UploadModel<T>
     {
         /// <summary>
-        /// 请求的机构Code
+        /// 请求的机构Code  会进行提前授权
         /// </summary>
         public string ORGCode { get; set; }
         /// <summary>
@@ -19,26 +21,57 @@ namespace Docimax.Interface_ICD.Model.UploadModel
         /// <summary>
         /// 调用的接口版本，固定为：1.0
         /// </summary>
-        public string version { get; set; }
+        public string Version { get; set; }
         /// <summary>
-        /// 接口名称
-        /// </summary>
-        public string Method { get; set; }
-        /// <summary>
-        /// 请求参数的签名串
-        /// </summary>
-        public string Sign { get; set; }
-        /// <summary>
-        ///发送请求的时间，格式"yyyy-MM-dd HH:mm:ss"
+        ///发送请求的时间，格式"yyyy-MM-dd HH:mm:ss.fff"
         /// </summary>
         public DateTime RequestTime { get; set; }
         /// <summary>
         /// 获得请求的时间
         /// </summary>
+        [JsonIgnore]
         public DateTime RecieveTime { get; set; }
         /// <summary>
         /// 上传内容实体
         /// </summary>
         public T UploadContent { get; set; }
+        /// <summary>
+        /// 异步通知地址
+        /// </summary>
+        public string AsynNotifyURL { get; set; }
+
+        public IDictionary<string, string> ToEncryDictionary()
+        {
+            var result = new Dictionary<string, string>
+            {
+                {"ORGCode",this.ORGCode},
+                {"TicketID",this.TicketID},
+                {"Version",this.Version},
+                {"RequestTime",this.RequestTime.ToString("yyyy-MM-dd HH:mm:ss.fff")},
+                {"UploadContent",JsonHelper.SerializeObject(this.UploadContent)},
+            };
+            if (!string.IsNullOrWhiteSpace(this.AsynNotifyURL))
+            {
+                result.Add("AsynNotifyURL", this.AsynNotifyURL);
+            }
+            return result;
+        }
+
+        public static UploadModel<T> DicToModel(Dictionary<string, string> dic)
+        {
+            var result = new UploadModel<T>
+            {
+                ORGCode = dic["ORGCode"],
+                TicketID = dic["TicketID"],
+                Version = dic["Version"],
+                RequestTime = DateTime.Parse(dic["RequestTime"]),
+                UploadContent = JsonHelper.DeserializeObject<T>(dic["UploadContent"]),
+            };
+            if (dic.Keys.Any(e => e == "AsynNotifyURL"))
+            {
+                result.AsynNotifyURL = dic["AsynNotifyURL"];
+            }
+            return result;
+        }
     }
 }

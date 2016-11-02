@@ -77,6 +77,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\BaseApiController.cs" />
+    <Compile Include="Controllers\UploadController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -93,8 +95,17 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Controllers\" />
     <Folder Include="Models\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Docimax.Common\Docimax.Common.csproj">
+      <Project>{de6fcd04-fb2a-41f9-b668-3caaa49cf341}</Project>
+      <Name>Docimax.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Docimax.Interface_ICD\Docimax.Interface_ICD.csproj">
+      <Project>{9f9c5d91-3cb0-45a0-9587-d79e42f1c444}</Project>
+      <Name>Docimax.Interface_ICD</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

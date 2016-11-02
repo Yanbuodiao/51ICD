@@ -73,6 +73,7 @@
   <ItemGroup>
     <Compile Include="EncryptUtils.cs" />
     <Compile Include="JsonHelper.cs" />
+    <Compile Include="RSAEncrypter.cs" />
     <Compile Include="SwitchHttpsAttribute.cs" />
     <Compile Include="WebGridExtensions.cs" />
     <Compile Include="ConstStrHelper.cs" />

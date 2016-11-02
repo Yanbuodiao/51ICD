@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace Docimax.Interface_ICD.Model.UploadModel
 {
@@ -52,11 +53,11 @@ namespace Docimax.Interface_ICD.Model.UploadModel
         /// <summary>
         /// 新生儿出生体重(克)
         /// </summary>
-        public int XSECSTZ { get; set; }
+        public decimal XSECSTZ { get; set; }
         /// <summary>
         /// 新生儿入院体重(克）
         /// </summary>
-        public int XSERYTZ { get; set; }
+        public decimal XSERYTZ { get; set; }
         /// <summary>
         /// 出生地
         /// </summary>
@@ -140,126 +141,7 @@ namespace Docimax.Interface_ICD.Model.UploadModel
         /// 入院病情
         /// </summary>
         public string RYBQ { get; set; }
-        /// <summary>
-        /// 其他诊断1
-        /// </summary>
-        public string QTZD1 { get; set; }
-        /// <summary>
-        /// 入院病情1
-        /// </summary>
-        public string RYBQ1 { get; set; }
-        /// <summary>
-        /// 其他诊断2
-        /// </summary>
-        public string QTZD2 { get; set; }
-        /// <summary>
-        /// 入院病情2
-        /// </summary>
-        public string RYBQ2 { get; set; }
-        /// <summary>
-        /// 其他诊断3
-        /// </summary>
-        public string QTZD3 { get; set; }
-        /// <summary>
-        /// 入院病情3
-        /// </summary>
-        public string RYBQ3 { get; set; }
-        /// <summary>
-        /// 其他诊断4
-        /// </summary>
-        public string QTZD4 { get; set; }
-        /// <summary>
-        /// 入院病情4
-        /// </summary>
-        public string RYBQ4 { get; set; }
-        /// <summary>
-        /// 其他诊断5
-        /// </summary>
-        public string QTZD5 { get; set; }
-        /// <summary>
-        /// 入院病情5
-        /// </summary>
-        public string RYBQ5 { get; set; }
-        /// <summary>
-        /// 其他诊断6
-        /// </summary>
-        public string QTZD6 { get; set; }
-        /// <summary>
-        /// 入院病情6
-        /// </summary>
-        public string RYBQ6 { get; set; }
-        /// <summary>
-        /// 其他诊断7
-        /// </summary>
-        public string QTZD7 { get; set; }
-        /// <summary>
-        /// 入院病情7
-        /// </summary>
-        public string RYBQ7 { get; set; }
-        /// <summary>
-        /// 其他诊断8
-        /// </summary>
-        public string QTZD8 { get; set; }
-        /// <summary>
-        /// 入院病情8
-        /// </summary>
-        public string RYBQ8 { get; set; }
-        /// <summary>
-        /// 其他诊断9
-        /// </summary>
-        public string QTZD9 { get; set; }
-        /// <summary>
-        /// 入院病情9
-        /// </summary>
-        public string RYBQ9 { get; set; }
-        /// <summary>
-        /// 其他诊断10
-        /// </summary>
-        public string QTZD10 { get; set; }
-        /// <summary>
-        /// 入院病情10
-        /// </summary>
-        public string RYBQ10 { get; set; }
-        /// <summary>
-        /// 其他诊断11
-        /// </summary>
-        public string QTZD11 { get; set; }
-        /// <summary>
-        /// 入院病情11
-        /// </summary>
-        public string RYBQ11 { get; set; }
-        /// <summary>
-        /// 其他诊断12
-        /// </summary>
-        public string QTZD12 { get; set; }
-        /// <summary>
-        /// 入院病情12
-        /// </summary>
-        public string RYBQ12 { get; set; }
-        /// <summary>
-        /// 其他诊断13
-        /// </summary>
-        public string QTZD13 { get; set; }
-        /// <summary>
-        /// 入院病情13
-        /// </summary>
-        public string RYBQ13 { get; set; }
-        /// <summary>
-        /// 其他诊断14
-        /// </summary>
-        public string QTZD14 { get; set; }
-        /// <summary>
-        /// 入院病情14
-        /// </summary>
-        public string RYBQ14 { get; set; }
-        /// <summary>
-        /// 其他诊断15
-        /// </summary>
-        public string QTZD15 { get; set; }
-        /// <summary>
-        /// 入院病情15
-        /// </summary>
-        public string RYBQ15 { get; set; }
+        public List<出院诊断详情> 出院诊断 { get; set; }
         #endregion
 
         /// <summary>
@@ -297,174 +179,176 @@ namespace Docimax.Interface_ICD.Model.UploadModel
 
         #region 手术
 
-        /// <summary>
-        /// 手术及操作日期  格式为：YYYYMMDD，例如：20131125
-        /// </summary>
-        public string SSJCZRQ1 { get; set; }
-        /// <summary>
-        /// 手术级别
-        /// </summary>
-        public string SSJB1 { get; set; }
-        /// <summary>
-        /// 手术及操作名称
-        /// </summary>
-        public string SSJCZMC1 { get; set; }
-        /// <summary>
-        /// 切口等级
-        /// </summary>
-        public string QKDJ1 { get; set; }
-        /// <summary>
-        /// 切口愈合类别
-        /// </summary>
-        public string QKYHLB1 { get; set; }
-        /// <summary>
-        /// 麻醉方式
-        /// </summary>
-        public string MZFS1 { get; set; }
-        /// <summary>
-        /// 手术及操作日期  格式为：YYYYMMDD，例如：20131125
-        /// </summary>
-        public string SSJCZRQ2 { get; set; }
-        /// <summary>
-        /// 手术级别
-        /// </summary>
-        public string SSJB2 { get; set; }
-        /// <summary>
-        /// 手术及操作名称
-        /// </summary>
-        public string SSJCZMC2 { get; set; }
-        /// <summary>
-        /// 切口等级
-        /// </summary>
-        public string QKDJ2 { get; set; }
-        /// <summary>
-        /// 切口愈合类别
-        /// </summary>
-        public string QKYHLB2 { get; set; }
-        /// <summary>
-        /// 麻醉方式
-        /// </summary>
-        public string MZFS2 { get; set; }
-        /// <summary>
-        /// 手术及操作日期  格式为：YYYYMMDD，例如：20131125
-        /// </summary>
-        public string SSJCZRQ3 { get; set; }
-        /// <summary>
-        /// 手术级别
-        /// </summary>
-        public string SSJB3 { get; set; }
-        /// <summary>
-        /// 手术及操作名称
-        /// </summary>
-        public string SSJCZMC3 { get; set; }
-        /// <summary>
-        /// 切口等级
-        /// </summary>
-        public string QKDJ3 { get; set; }
-        /// <summary>
-        /// 切口愈合类别
-        /// </summary>
-        public string QKYHLB3 { get; set; }
-        /// <summary>
-        /// 麻醉方式
-        /// </summary>
-        public string MZFS3 { get; set; }
-        /// <summary>
-        /// 手术及操作日期  格式为：YYYYMMDD，例如：20131125
-        /// </summary>
-        public string SSJCZRQ4 { get; set; }
-        /// <summary>
-        /// 手术级别
-        /// </summary>
-        public string SSJB4 { get; set; }
-        /// <summary>
-        /// 手术及操作名称
-        /// </summary>
-        public string SSJCZMC4 { get; set; }
-        /// <summary>
-        /// 切口等级
-        /// </summary>
-        public string QKDJ4 { get; set; }
-        /// <summary>
-        /// 切口愈合类别
-        /// </summary>
-        public string QKYHLB4 { get; set; }
-        /// <summary>
-        /// 麻醉方式
-        /// </summary>
-        public string MZFS4 { get; set; }
-        /// <summary>
-        /// 手术及操作日期  格式为：YYYYMMDD，例如：20131125
-        /// </summary>
-        public string SSJCZRQ5 { get; set; }
-        /// <summary>
-        /// 手术级别
-        /// </summary>
-        public string SSJB5 { get; set; }
-        /// <summary>
-        /// 手术及操作名称
-        /// </summary>
-        public string SSJCZMC5 { get; set; }
-        /// <summary>
-        /// 切口等级
-        /// </summary>
-        public string QKDJ5 { get; set; }
-        /// <summary>
-        /// 切口愈合类别
-        /// </summary>
-        public string QKYHLB5 { get; set; }
-        /// <summary>
-        /// 麻醉方式
-        /// </summary>
-        public string MZFS5 { get; set; }
-        /// <summary>
-        /// 手术及操作日期  格式为：YYYYMMDD，例如：20131125
-        /// </summary>
-        public string SSJCZRQ6 { get; set; }
-        /// <summary>
-        /// 手术级别
-        /// </summary>
-        public string SSJB6 { get; set; }
-        /// <summary>
-        /// 手术及操作名称
-        /// </summary>
-        public string SSJCZMC6 { get; set; }
-        /// <summary>
-        /// 切口等级
-        /// </summary>
-        public string QKDJ6 { get; set; }
-        /// <summary>
-        /// 切口愈合类别
-        /// </summary>
-        public string QKYHLB6 { get; set; }
-        /// <summary>
-        /// 麻醉方式
-        /// </summary>
-        public string MZFS6 { get; set; }
-        /// <summary>
-        /// 手术及操作日期  格式为：YYYYMMDD，例如：20131125
-        /// </summary>
-        public string SSJCZRQ7 { get; set; }
-        /// <summary>
-        /// 手术级别
-        /// </summary>
-        public string SSJB7 { get; set; }
-        /// <summary>
-        /// 手术及操作名称
-        /// </summary>
-        public string SSJCZMC7 { get; set; }
-        /// <summary>
-        /// 切口等级
-        /// </summary>
-        public string QKDJ7 { get; set; }
-        /// <summary>
-        /// 切口愈合类别
-        /// </summary>
-        public string QKYHLB7 { get; set; }
-        /// <summary>
-        /// 麻醉方式
-        /// </summary>
-        public string MZFS7 { get; set; }
+        public List<手术概要情况> 手术概要 { get; set; }
+
+        ///// <summary>
+        ///// 手术及操作日期  格式为：YYYYMMDD，例如：20131125
+        ///// </summary>
+        //public string SSJCZRQ1 { get; set; }
+        ///// <summary>
+        ///// 手术级别
+        ///// </summary>
+        //public string SSJB1 { get; set; }
+        ///// <summary>
+        ///// 手术及操作名称
+        ///// </summary>
+        //public string SSJCZMC1 { get; set; }
+        ///// <summary>
+        ///// 切口等级
+        ///// </summary>
+        //public string QKDJ1 { get; set; }
+        ///// <summary>
+        ///// 切口愈合类别
+        ///// </summary>
+        //public string QKYHLB1 { get; set; }
+        ///// <summary>
+        ///// 麻醉方式
+        ///// </summary>
+        //public string MZFS1 { get; set; }
+        ///// <summary>
+        ///// 手术及操作日期  格式为：YYYYMMDD，例如：20131125
+        ///// </summary>
+        //public string SSJCZRQ2 { get; set; }
+        ///// <summary>
+        ///// 手术级别
+        ///// </summary>
+        //public string SSJB2 { get; set; }
+        ///// <summary>
+        ///// 手术及操作名称
+        ///// </summary>
+        //public string SSJCZMC2 { get; set; }
+        ///// <summary>
+        ///// 切口等级
+        ///// </summary>
+        //public string QKDJ2 { get; set; }
+        ///// <summary>
+        ///// 切口愈合类别
+        ///// </summary>
+        //public string QKYHLB2 { get; set; }
+        ///// <summary>
+        ///// 麻醉方式
+        ///// </summary>
+        //public string MZFS2 { get; set; }
+        ///// <summary>
+        ///// 手术及操作日期  格式为：YYYYMMDD，例如：20131125
+        ///// </summary>
+        //public string SSJCZRQ3 { get; set; }
+        ///// <summary>
+        ///// 手术级别
+        ///// </summary>
+        //public string SSJB3 { get; set; }
+        ///// <summary>
+        ///// 手术及操作名称
+        ///// </summary>
+        //public string SSJCZMC3 { get; set; }
+        ///// <summary>
+        ///// 切口等级
+        ///// </summary>
+        //public string QKDJ3 { get; set; }
+        ///// <summary>
+        ///// 切口愈合类别
+        ///// </summary>
+        //public string QKYHLB3 { get; set; }
+        ///// <summary>
+        ///// 麻醉方式
+        ///// </summary>
+        //public string MZFS3 { get; set; }
+        ///// <summary>
+        ///// 手术及操作日期  格式为：YYYYMMDD，例如：20131125
+        ///// </summary>
+        //public string SSJCZRQ4 { get; set; }
+        ///// <summary>
+        ///// 手术级别
+        ///// </summary>
+        //public string SSJB4 { get; set; }
+        ///// <summary>
+        ///// 手术及操作名称
+        ///// </summary>
+        //public string SSJCZMC4 { get; set; }
+        ///// <summary>
+        ///// 切口等级
+        ///// </summary>
+        //public string QKDJ4 { get; set; }
+        ///// <summary>
+        ///// 切口愈合类别
+        ///// </summary>
+        //public string QKYHLB4 { get; set; }
+        ///// <summary>
+        ///// 麻醉方式
+        ///// </summary>
+        //public string MZFS4 { get; set; }
+        ///// <summary>
+        ///// 手术及操作日期  格式为：YYYYMMDD，例如：20131125
+        ///// </summary>
+        //public string SSJCZRQ5 { get; set; }
+        ///// <summary>
+        ///// 手术级别
+        ///// </summary>
+        //public string SSJB5 { get; set; }
+        ///// <summary>
+        ///// 手术及操作名称
+        ///// </summary>
+        //public string SSJCZMC5 { get; set; }
+        ///// <summary>
+        ///// 切口等级
+        ///// </summary>
+        //public string QKDJ5 { get; set; }
+        ///// <summary>
+        ///// 切口愈合类别
+        ///// </summary>
+        //public string QKYHLB5 { get; set; }
+        ///// <summary>
+        ///// 麻醉方式
+        ///// </summary>
+        //public string MZFS5 { get; set; }
+        ///// <summary>
+        ///// 手术及操作日期  格式为：YYYYMMDD，例如：20131125
+        ///// </summary>
+        //public string SSJCZRQ6 { get; set; }
+        ///// <summary>
+        ///// 手术级别
+        ///// </summary>
+        //public string SSJB6 { get; set; }
+        ///// <summary>
+        ///// 手术及操作名称
+        ///// </summary>
+        //public string SSJCZMC6 { get; set; }
+        ///// <summary>
+        ///// 切口等级
+        ///// </summary>
+        //public string QKDJ6 { get; set; }
+        ///// <summary>
+        ///// 切口愈合类别
+        ///// </summary>
+        //public string QKYHLB6 { get; set; }
+        ///// <summary>
+        ///// 麻醉方式
+        ///// </summary>
+        //public string MZFS6 { get; set; }
+        ///// <summary>
+        ///// 手术及操作日期  格式为：YYYYMMDD，例如：20131125
+        ///// </summary>
+        //public string SSJCZRQ7 { get; set; }
+        ///// <summary>
+        ///// 手术级别
+        ///// </summary>
+        //public string SSJB7 { get; set; }
+        ///// <summary>
+        ///// 手术及操作名称
+        ///// </summary>
+        //public string SSJCZMC7 { get; set; }
+        ///// <summary>
+        ///// 切口等级
+        ///// </summary>
+        //public string QKDJ7 { get; set; }
+        ///// <summary>
+        ///// 切口愈合类别
+        ///// </summary>
+        //public string QKYHLB7 { get; set; }
+        ///// <summary>
+        ///// 麻醉方式
+        ///// </summary>
+        //public string MZFS7 { get; set; }
 
         #endregion
 
@@ -649,59 +533,7 @@ namespace Docimax.Interface_ICD.Model.UploadModel
 
         #endregion
 
-        #region 术前讨论记录
-
-        public string 术前讨论记录 { get; set; }
-
-        #endregion
-
-        #region  术前小结
-
-        public string 术前小结 { get; set; }
-
-        #endregion
-
-        #region 麻醉术前访视记录
-
-        public string 麻醉前访视记录 { get; set; }
-
-        #endregion
-
-        #region 手术安全核查记录
-
-        public string 手术安全检查记录 { get; set; }
-
-        #endregion
-
-        #region 手术清点记录
-
-        public string 手术清点记录 { get; set; }
-
-        #endregion
-
-        #region 麻醉记录
-
-        public string 麻醉记录 { get; set; }
-
-        #endregion
-
-        #region 手术记录
-
-        public string 手术记录 { get; set; }
-
-        #endregion
-
-        #region 麻醉术后访视记录
-
-        public string 麻醉术后访视记录 { get; set; }
-
-        #endregion
-
-        #region 术后病程记录
-
-        public string 术后首次病程记录 { get; set; }
-
-        #endregion
+        public List<手术情况> 手术详细 { get; set; }
 
         #region 出院记录
 
@@ -723,7 +555,7 @@ namespace Docimax.Interface_ICD.Model.UploadModel
 
         #region 有创诊疗操作记录
 
-        public string 有创诊疗操作记录 { get; set; }
+        public List<有创诊疗记录> 所有有创诊疗记录 { get; set; }
 
         #endregion
 
@@ -769,5 +601,14 @@ namespace Docimax.Interface_ICD.Model.UploadModel
         #endregion
 
         public List<MedicalFileModel> 医学文件 { get; set; }
+
+        public override string ToString()
+        {
+            var settings = new JsonSerializerSettings();
+            settings.NullValueHandling = NullValueHandling.Ignore;
+            settings.DateFormatString = "yyyy-MM-dd HH:mm:ss";
+            string output = JsonConvert.SerializeObject(this, settings);
+            return output;
+        }
     }
 }

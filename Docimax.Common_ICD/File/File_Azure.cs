@@ -81,6 +81,7 @@ namespace Docimax.Common_ICD.File
                                                                PixelFormat.Format16bppArgb1555,
                                                                PixelFormat.Format1bppIndexed,
                                                                PixelFormat.Format4bppIndexed,
-                                                               PixelFormat.Format8bppIndexed };
+                                                               PixelFormat.Format8bppIndexed 
+                                                           };
     }
 }

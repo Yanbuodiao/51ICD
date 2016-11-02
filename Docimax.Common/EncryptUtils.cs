@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
-using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -15,10 +14,11 @@ namespace Docimax.Common
 
         #region MD5
         /// <summary>
-        /// MD5加密为32字符长度的16进制字符串
+        /// 把输入字符串按照指定编码格式进行MD5运算后进行Base64编码
         /// </summary>
-        /// <param name="input"></param>
-        /// <returns></returns>
+        /// <param name="input">需要进行MD5运算的内容</param>
+        /// <param name="charset">要对输入字符串进行的编码格式</param>
+        /// <returns>hash结果进行Base64编码</returns>
         public static string EncryptByMD5(string input, string charset = "utf-8")
         {
             MD5 md5Hasher = MD5.Create();
@@ -30,13 +30,13 @@ namespace Docimax.Common
         #endregion
 
         #region SHA1
-   
+
         /// <summary>
-        /// SHA1哈希加密
+        /// 把输入字符串按照指定编码格式进行SHA1运算后进行Base64编码
         /// </summary>
         /// <param name="input">被加密的字符串</param>
-        /// <param name="charset">编码方式</param>
-        /// <returns></returns>
+        /// <param name="charset">要对输入字符串进行的编码格式</param>
+        /// <returns>hash结果进行Base64编码</returns>
         public static string EncryptBySHA1(string input, string charset = "utf-8")
         {
             SHA1 sha = new SHA1CryptoServiceProvider();
@@ -204,15 +204,13 @@ namespace Docimax.Common
         /// <returns>加密后结果</returns>
         public static string AesEncrypt(string encryptKey, string encryptIV, string input, string charset = "utf-8")
         {
-
-            Byte[] keyArray = Encoding.UTF8.GetBytes(encryptKey.Substring(0, 32));
             Byte[] toEncryptArray = Encoding.GetEncoding(charset).GetBytes(input);
 
             System.Security.Cryptography.RijndaelManaged rDel = new System.Security.Cryptography.RijndaelManaged();
-            rDel.Key = keyArray;
+            rDel.Key = Encoding.UTF8.GetBytes(encryptKey.Substring(0, 32));
+            rDel.IV = Encoding.UTF8.GetBytes(encryptIV.Substring(0, 16));
             rDel.Mode = System.Security.Cryptography.CipherMode.CBC;
             rDel.Padding = System.Security.Cryptography.PaddingMode.PKCS7;
-            rDel.IV = Encoding.UTF8.GetBytes(encryptIV.Substring(0, 16));
 
             System.Security.Cryptography.ICryptoTransform cTransform = rDel.CreateEncryptor(rDel.Key, rDel.IV);
             Byte[] resultArray = cTransform.TransformFinalBlock(toEncryptArray, 0, toEncryptArray.Length);
@@ -230,14 +228,13 @@ namespace Docimax.Common
         /// <returns>解密后结果</returns>
         public static string AesDencrypt(string encryptKey, string encryptIV, string input, string charset = "utf-8")
         {
-            Byte[] keyArray = Encoding.UTF8.GetBytes(encryptKey.Substring(0, 32));
             Byte[] toEncryptArray = Convert.FromBase64String(input);
 
-            System.Security.Cryptography.RijndaelManaged rDel = new System.Security.Cryptography.RijndaelManaged();
-            rDel.Key = keyArray;
+            var rDel = new System.Security.Cryptography.RijndaelManaged();
+            rDel.Key = Encoding.UTF8.GetBytes(encryptKey.Substring(0, 32));
+            rDel.IV = Encoding.UTF8.GetBytes(encryptIV.Substring(0, 16));
             rDel.Mode = System.Security.Cryptography.CipherMode.CBC;
             rDel.Padding = System.Security.Cryptography.PaddingMode.PKCS7;
-            rDel.IV = Encoding.UTF8.GetBytes(encryptIV.Substring(0, 16));
 
             System.Security.Cryptography.ICryptoTransform cTransform = rDel.CreateDecryptor(rDel.Key, rDel.IV);
             Byte[] resultArray = cTransform.TransformFinalBlock(toEncryptArray, 0, toEncryptArray.Length);
@@ -252,16 +249,17 @@ namespace Docimax.Common
         #region 非对称加解密
 
         #region RSA
+
         /// <summary>
-        /// RSA加密
+        /// RSA加密（公钥加密）并进行Base64编码；对待加密内容用指定编码格式编码后进行加密，在进行Base64编码
         /// </summary>
-        /// <param name="plaintext">明文</param>
+        /// <param name="input">待加密内容</param>
         /// <param name="publicKey">公钥</param>
-        /// <returns>密文字符串</returns>
-        public static string EncryptByRSA(string plaintext, string publicKey)
+        /// <param name="charset">编码格式</param>
+        /// <returns>加密后进行过Base64编码的内容</returns>
+        public static string EncryptByRSA(string input, string publicKey, string charset = "utf-8")
         {
-            UnicodeEncoding ByteConverter = new UnicodeEncoding();
-            byte[] dataToEncrypt = ByteConverter.GetBytes(plaintext);
+            byte[] dataToEncrypt = Encoding.GetEncoding(charset).GetBytes(input);
             using (RSACryptoServiceProvider RSA = new RSACryptoServiceProvider())
             {
                 RSA.FromXmlString(publicKey);
@@ -270,58 +268,57 @@ namespace Docimax.Common
             }
         }
         /// <summary>
-        /// RSA解密
+        /// RSA解密（私钥解密）针对加密后进行过Base64编码的进行解码；
         /// </summary>
-        /// <param name="ciphertext">密文</param>
+        /// <param name="input">加密后进行过Base64编码的密文</param>
         /// <param name="privateKey">私钥</param>
-        /// <returns>明文字符串</returns>
-        public static string DecryptByRSA(string ciphertext, string privateKey)
+        /// <param name="charset">编码格式</param>
+        /// <returns>原文</returns>
+        public static string DecryptByRSA(string input, string privateKey, string charset = "utf-8")
         {
-            UnicodeEncoding byteConverter = new UnicodeEncoding();
             using (RSACryptoServiceProvider RSA = new RSACryptoServiceProvider())
             {
                 RSA.FromXmlString(privateKey);
-                byte[] encryptedData = Convert.FromBase64String(ciphertext);
+                byte[] encryptedData = Convert.FromBase64String(input);
                 byte[] decryptedData = RSA.Decrypt(encryptedData, false);
-                return byteConverter.GetString(decryptedData);
+                return Encoding.GetEncoding(charset).GetString(decryptedData);
             }
         }
 
         /// <summary>
         /// 数字签名
         /// </summary>
-        /// <param name="plaintext">原文</param>
+        /// <param name="input">原文</param>
         /// <param name="privateKey">私钥</param>
         /// <returns>签名</returns>
-        public static string HashAndSignString(string plaintext, string privateKey)
+        public static string HashAndSignString(string input, string privateKey, string charset = "utf-8")
         {
-            UnicodeEncoding ByteConverter = new UnicodeEncoding();
-            byte[] dataToEncrypt = ByteConverter.GetBytes(plaintext);
-
-            using (RSACryptoServiceProvider RSAalg = new RSACryptoServiceProvider())
+            byte[] dataToEncrypt = Encoding.GetEncoding(charset).GetBytes(input);
+            using (RSACryptoServiceProvider rsa = new RSACryptoServiceProvider())
             {
-                RSAalg.FromXmlString(privateKey);
+                rsa.PersistKeyInCsp = false;
+                rsa.FromXmlString(privateKey);
                 //使用SHA1进行摘要算法，生成签名
-                byte[] encryptedData = RSAalg.SignData(dataToEncrypt, new SHA1CryptoServiceProvider());
+                byte[] encryptedData = rsa.SignData(dataToEncrypt, new SHA1CryptoServiceProvider());
                 return Convert.ToBase64String(encryptedData);
             }
         }
         /// <summary>
         /// 验证签名
         /// </summary>
-        /// <param name="plaintext">原文</param>
-        /// <param name="SignedData">签名</param>
+        /// <param name="intput">原文</param>
+        /// <param name="signedData">签名</param>
         /// <param name="publicKey">公钥</param>
         /// <returns></returns>
-        public static bool VerifySigned(string plaintext, string SignedData, string publicKey)
+        public static bool VerifySigned(string intput, string signedData, string publicKey, string charset = "utf-8")
         {
-            using (RSACryptoServiceProvider RSAalg = new RSACryptoServiceProvider())
+            using (RSACryptoServiceProvider rsa = new RSACryptoServiceProvider())
             {
-                RSAalg.FromXmlString(publicKey);
+                rsa.FromXmlString(publicKey);
                 UnicodeEncoding ByteConverter = new UnicodeEncoding();
-                byte[] dataToVerifyBytes = ByteConverter.GetBytes(plaintext);
-                byte[] signedDataBytes = Convert.FromBase64String(SignedData);
-                return RSAalg.VerifyData(dataToVerifyBytes, new SHA1CryptoServiceProvider(), signedDataBytes);
+                byte[] dataToVerifyBytes = Encoding.GetEncoding(charset).GetBytes(intput);
+                byte[] signedDataBytes = Convert.FromBase64String(signedData);
+                return rsa.VerifyData(dataToVerifyBytes, new SHA1CryptoServiceProvider(), signedDataBytes);
             }
         }
         /// <summary>

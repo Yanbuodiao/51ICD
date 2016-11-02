@@ -30,6 +30,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="PagedList, Version=1.17.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
       <HintPath>..\packages\PagedList.1.17.0.0\lib\net40\PagedList.dll</HintPath>
       <Private>True</Private>
@@ -109,7 +113,11 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Model\UploadModel\PatientModel.cs" />
+    <Compile Include="Model\UploadModel\SyncResponse.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Model\UploadModel\UploadModel.cs" />
+    <Compile Include="Model\UploadModel\UploadRequest.cs" />
     <Compile Include="Model\UserInfoModel.cs" />
     <Compile Include="Model\UserServiceModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -119,6 +127,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Docimax.Common\Docimax.Common.csproj">
+      <Project>{de6fcd04-fb2a-41f9-b668-3caaa49cf341}</Project>
+      <Name>Docimax.Common</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
