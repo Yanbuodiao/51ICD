@@ -334,6 +334,12 @@
           <Property Name="DetailAddress2" Type="nvarchar" MaxLength="300" />
           <Property Name="DetailAddress3" Type="nvarchar" MaxLength="300" />
           <Property Name="CertificationFlag" Type="int" />
+          <Property Name="EncryPubKey" Type="nvarchar" MaxLength="500" />
+          <Property Name="EncryType" Type="int" />
+          <Property Name="EncryKey" Type="nvarchar" MaxLength="500" />
+          <Property Name="SignPriKey" Type="nvarchar" MaxLength="500" />
+          <Property Name="SignType" Type="int" />
+          <Property Name="SignKey" Type="nvarchar" MaxLength="500" />
           <Property Name="CreateUserID" Type="nvarchar" MaxLength="128" />
           <Property Name="CreateTime" Type="datetime" />
           <Property Name="LastModifyID" Type="nvarchar" MaxLength="128" />
@@ -1110,6 +1116,12 @@
           <Property Name="DetailAddress2" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
           <Property Name="DetailAddress3" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
           <Property Name="CertificationFlag" Type="Int32" />
+          <Property Name="EncryPubKey" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="EncryType" Type="Int32" />
+          <Property Name="EncryKey" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="SignPriKey" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="SignType" Type="Int32" />
+          <Property Name="SignKey" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="CreateUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="CreateTime" Type="DateTime" Precision="3" />
           <Property Name="LastModifyID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
@@ -1767,6 +1779,12 @@
                 <ScalarProperty Name="LastModifyID" ColumnName="LastModifyID" />
                 <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
                 <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="SignKey" ColumnName="SignKey" />
+                <ScalarProperty Name="SignType" ColumnName="SignType" />
+                <ScalarProperty Name="SignPriKey" ColumnName="SignPriKey" />
+                <ScalarProperty Name="EncryKey" ColumnName="EncryKey" />
+                <ScalarProperty Name="EncryType" ColumnName="EncryType" />
+                <ScalarProperty Name="EncryPubKey" ColumnName="EncryPubKey" />
                 <ScalarProperty Name="CertificationFlag" ColumnName="CertificationFlag" />
                 <ScalarProperty Name="DetailAddress3" ColumnName="DetailAddress3" />
                 <ScalarProperty Name="DetailAddress2" ColumnName="DetailAddress2" />

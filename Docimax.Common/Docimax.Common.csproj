@@ -72,6 +72,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EncryptUtils.cs" />
+    <Compile Include="ICDJsonResult.cs" />
     <Compile Include="JsonHelper.cs" />
     <Compile Include="RSAEncrypter.cs" />
     <Compile Include="SwitchHttpsAttribute.cs" />

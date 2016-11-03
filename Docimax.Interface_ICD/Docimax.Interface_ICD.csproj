@@ -73,7 +73,11 @@
     <Compile Include="Interface\IService.cs" />
     <Compile Include="Interface\ISMS.cs" />
     <Compile Include="Interface\IUserAccess.cs" />
+    <Compile Include="Model\Log\BaseLog.cs" />
+    <Compile Include="Model\Log\RequestLog.cs" />
+    <Compile Include="Model\OrganizationModel.cs" />
     <Compile Include="Model\Public\UserServiceModel.cs" />
+    <Compile Include="Model\RequestModel\SyncRequestModel.cs" />
     <Compile Include="Model\SearchModel\CodeOrderSearchModel.cs" />
     <Compile Include="Model\Code_Diagnosis.cs" />
     <Compile Include="Model\Code_Operate.cs" />

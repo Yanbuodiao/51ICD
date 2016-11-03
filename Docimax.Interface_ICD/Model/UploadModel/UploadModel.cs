@@ -1,19 +1,14 @@
 ﻿using Docimax.Common;
 using Newtonsoft.Json;
 using System;
-using System.Linq;
 using System.Collections.Generic;
-using System.Reflection;
+using System.Linq;
 
 namespace Docimax.Interface_ICD.Model.UploadModel
 {
     [JsonObject(MemberSerialization.OptOut)]
-    public class UploadModel<T>
+    public class UploadModel<T> where T:class
     {
-        /// <summary>
-        /// 请求的机构Code  会进行提前授权
-        /// </summary>
-        public string ORGCode { get; set; }
         /// <summary>
         /// 幂等操作的唯一标记（一个TicketID必须保证业务实体的一致性）
         /// </summary>
@@ -44,7 +39,6 @@ namespace Docimax.Interface_ICD.Model.UploadModel
         {
             var result = new Dictionary<string, string>
             {
-                {"ORGCode",this.ORGCode},
                 {"TicketID",this.TicketID},
                 {"Version",this.Version},
                 {"RequestTime",this.RequestTime.ToString("yyyy-MM-dd HH:mm:ss.fff")},
@@ -61,7 +55,6 @@ namespace Docimax.Interface_ICD.Model.UploadModel
         {
             var result = new UploadModel<T>
             {
-                ORGCode = dic["ORGCode"],
                 TicketID = dic["TicketID"],
                 Version = dic["Version"],
                 RequestTime = DateTime.Parse(dic["RequestTime"]),

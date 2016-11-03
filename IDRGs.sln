@@ -24,7 +24,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Docimax.Permission", "Docim
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{E31881E5-FED7-493B-B07C-6B347D4F5CBF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Docimax.Web_Interface", "Docimax.Web_Interface\Docimax.Web_Interface.csproj", "{6B610A9A-77FD-49C1-A361-CF96E5BCBE4D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Docimax.Web_Interface", "Docimax.Web_Interface\Docimax.Web_Interface.csproj", "{8DFDD4EC-BBA6-4D15-A7AB-3FE24E392DC2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -60,16 +60,16 @@ Global
 		{1343497F-89CB-4566-8973-260DF3BA3A7F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1343497F-89CB-4566-8973-260DF3BA3A7F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1343497F-89CB-4566-8973-260DF3BA3A7F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6B610A9A-77FD-49C1-A361-CF96E5BCBE4D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6B610A9A-77FD-49C1-A361-CF96E5BCBE4D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6B610A9A-77FD-49C1-A361-CF96E5BCBE4D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6B610A9A-77FD-49C1-A361-CF96E5BCBE4D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8DFDD4EC-BBA6-4D15-A7AB-3FE24E392DC2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8DFDD4EC-BBA6-4D15-A7AB-3FE24E392DC2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8DFDD4EC-BBA6-4D15-A7AB-3FE24E392DC2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8DFDD4EC-BBA6-4D15-A7AB-3FE24E392DC2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{D46646F6-A411-4575-8AE8-790E5B01C098} = {E31881E5-FED7-493B-B07C-6B347D4F5CBF}
-		{6B610A9A-77FD-49C1-A361-CF96E5BCBE4D} = {E31881E5-FED7-493B-B07C-6B347D4F5CBF}
+		{8DFDD4EC-BBA6-4D15-A7AB-3FE24E392DC2} = {E31881E5-FED7-493B-B07C-6B347D4F5CBF}
 	EndGlobalSection
 EndGlobal

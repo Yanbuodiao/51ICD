@@ -26,7 +26,7 @@ namespace Docimax.Common
             return output;
         }
 
-        public static  T DeserializeObject<T>(string value)
+        public static T DeserializeObject<T>(string value) where T : class
         {
             var settings = new JsonSerializerSettings
             {
@@ -37,7 +37,14 @@ namespace Docimax.Common
                 Converters = new List<JsonConverter> { new DecimalConverter() },
                 ContractResolver = new OrderedContractResolver(),
             };
-            return JsonConvert.DeserializeObject<T>(value, settings);
+            try
+            {
+                return JsonConvert.DeserializeObject<T>(value, settings);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
     }
 
@@ -88,7 +95,7 @@ namespace Docimax.Common
     {
         protected override IList<JsonProperty> CreateProperties(Type type, MemberSerialization memberSerialization)
         {
-            return base.CreateProperties(type, memberSerialization).OrderBy(p => p.Order).ThenBy(t=>t.PropertyName).ToList();
+            return base.CreateProperties(type, memberSerialization).OrderBy(p => p.Order).ThenBy(t => t.PropertyName).ToList();
         }
     }
 }

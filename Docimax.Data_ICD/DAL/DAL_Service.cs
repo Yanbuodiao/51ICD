@@ -145,6 +145,25 @@ namespace Docimax.Data_ICD.DAL
             }
         }
 
+        public OrganizationModel GetOrgModelByCode(string org_code)
+        {
+            using (var entity = new Entity_Read())
+            {
+                var orgModel = entity.Dic_Organization.FirstOrDefault(e => e.OrganizationCode == org_code);
+                if (orgModel != null)
+                {
+                    return new OrganizationModel
+                    {
+                        Org_Code = org_code,
+                        EncryptKeyName = orgModel.EncryKey,
+                        CheckSignPubKeyPath = orgModel.SignKey,
+                        SignPriKeyPath = orgModel.SignPriKey,
+                    };
+                }
+                return null;
+            }
+        }
+
         #region 私有方法
         private List<ICDMenu> buildChildMemu(int parentID, List<ICDMenu> allResultMenuList)
         {

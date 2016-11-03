@@ -82,6 +82,7 @@
     <Compile Include="Dictionary\ICDSelectList.cs" />
     <Compile Include="File\FileHelper.cs" />
     <Compile Include="File\File_Azure.cs" />
+    <Compile Include="Message\MessageStr.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SMS\SMS_BeiDouTong.cs" />
     <Compile Include="SMS\SMS_Ihuyi.cs" />

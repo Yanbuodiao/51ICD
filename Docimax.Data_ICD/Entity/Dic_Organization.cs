@@ -27,6 +27,12 @@ namespace Docimax.Data_ICD.Entity
         public string DetailAddress2 { get; set; }
         public string DetailAddress3 { get; set; }
         public Nullable<int> CertificationFlag { get; set; }
+        public string EncryPubKey { get; set; }
+        public Nullable<int> EncryType { get; set; }
+        public string EncryKey { get; set; }
+        public string SignPriKey { get; set; }
+        public Nullable<int> SignType { get; set; }
+        public string SignKey { get; set; }
         public string CreateUserID { get; set; }
         public Nullable<System.DateTime> CreateTime { get; set; }
         public string LastModifyID { get; set; }
