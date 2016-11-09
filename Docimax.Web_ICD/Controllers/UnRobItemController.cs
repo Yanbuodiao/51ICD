@@ -28,7 +28,7 @@ namespace Docimax.Web_ICD.Controllers
         {
             ICode_Order access = new DAL_Code_Order();
             var result = access.ClaimCodeOrder(User.Identity.GetUserId(), stamp, orderID);
-            if (result.Result)
+            if (result.IsSuccess)
             {
                 return RedirectToAction("Code", "ServiceItem", new { orderID = orderID });
             }

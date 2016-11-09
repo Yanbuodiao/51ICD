@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Docimax.Interface_ICD.Model.Log
+namespace Docimax.Interface_ICD.Interface
 {
-    public class RequestLog : BaseLog
+    public interface ILog
     {
+
     }
 }

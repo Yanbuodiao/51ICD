@@ -65,7 +65,7 @@ namespace Docimax.Web_ICD.Controllers.Manage
             IUserAccess access = new DAL_UserAccess();
             model.Service.CertificateStatus = CertificateState.发起认证申请;
             var result = access.ApplyServiceProvider(model);
-            if (result.Result)
+            if (result.IsSuccess)
             {
                 return RedirectToAction("Index", "Manage", new { message = Docimax.Web_ICD.Controllers.ManageController.ManageMessageId.ApplyServiceSuccess });
             }

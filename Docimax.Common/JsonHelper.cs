@@ -41,7 +41,7 @@ namespace Docimax.Common
             {
                 return JsonConvert.DeserializeObject<T>(value, settings);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 return null;
             }

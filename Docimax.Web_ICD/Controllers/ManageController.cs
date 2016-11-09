@@ -360,7 +360,7 @@ namespace Docimax.Web_ICD.Controllers
                 }
                 IUserAccess ua = new DAL_UserAccess();
                 var result = ua.ApplyIdentityVerify(ViewModel2Model.VerifyIdentityModel2Model(model));
-                if (result.Result)
+                if (result.IsSuccess)
                 {
                     return RedirectToAction("Index", new { message = ManageMessageId.ApplyCertifacationSuccess });
                 }

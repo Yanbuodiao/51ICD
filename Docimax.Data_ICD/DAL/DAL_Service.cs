@@ -145,16 +145,16 @@ namespace Docimax.Data_ICD.DAL
             }
         }
 
-        public OrganizationModel GetOrgModelByCode(string org_code)
+        public OrganizationModel GetOrgModelByAUTHCode(string auth_code)
         {
             using (var entity = new Entity_Read())
             {
-                var orgModel = entity.Dic_Organization.FirstOrDefault(e => e.OrganizationCode == org_code);
+                var orgModel = entity.Dic_Organization.FirstOrDefault(e => e.AuthorizeCode == auth_code);
                 if (orgModel != null)
                 {
                     return new OrganizationModel
                     {
-                        Org_Code = org_code,
+                        AUTH_Code = auth_code,
                         EncryptKeyName = orgModel.EncryKey,
                         CheckSignPubKeyPath = orgModel.SignKey,
                         SignPriKeyPath = orgModel.SignPriKey,

@@ -8,7 +8,7 @@ namespace Docimax.Interface_ICD.Model
 {
     public class OrganizationModel
     {
-        public string Org_Code { get; set; }
+        public string AUTH_Code { get; set; }
 
         public string EncryptKeyName { get; set; }
 

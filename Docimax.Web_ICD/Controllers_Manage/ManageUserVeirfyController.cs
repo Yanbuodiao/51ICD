@@ -78,7 +78,7 @@ namespace Docimax.Web_ICD.Controllers
             }
             IUserAccess access = new DAL_UserAccess();
             var result = access.AuditIdentityVerify(identitymodel);
-            if (!result.Result)
+            if (!result.IsSuccess)
             {
                 ModelState.AddModelError("", result.ErrorStr);
                 var newModel = access.GetVerifyIdentityModel(model.UserID);

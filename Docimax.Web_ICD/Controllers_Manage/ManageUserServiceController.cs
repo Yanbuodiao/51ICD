@@ -62,7 +62,7 @@ namespace Docimax.Web_ICD.Controllers_Manage
             }
             IUserAccess access = new DAL_UserAccess();
             var result = access.AuditServiceProvider(model);
-            if (!result.Result)
+            if (!result.IsSuccess)
             {
                 ModelState.AddModelError("", result.ErrorStr);
                 var newModel = access.GetUserService(model.User_ServiceID);

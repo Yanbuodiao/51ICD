@@ -3,13 +3,11 @@ using Docimax.Common.Encryption;
 using Docimax.Common_ICD.Message;
 using Docimax.Data_ICD.DAL;
 using Docimax.Interface_ICD.Interface;
+using Docimax.Interface_ICD.Model.Log;
 using Docimax.Interface_ICD.Model.UploadModel;
 using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text;
-using System.Web;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 
 namespace Docimax.Web_Interface.Controllers
@@ -18,52 +16,82 @@ namespace Docimax.Web_Interface.Controllers
     {
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            var postStr = HttpHelper.GetStrByInputStream(filterContext.RequestContext.HttpContext.Request.InputStream);//通过输入流获得字符串   
+            var log = initialLog(filterContext);
+            var postStr = HttpHelper.GetStrByInputStream(filterContext.RequestContext.HttpContext.Request.InputStream);
             var uploadRequest = JsonHelper.DeserializeObject<UploadRequest>(postStr);
+
+            #region 基础验证
+
             if (uploadRequest == null)
             {
-                //todo  记录日志 
-                var errorStr = MessageStr.JsonDeserializeError.Split(':');
-                var response = new SyncResponse<string>
-                {
-                    Code = errorStr[0],
-                    Msg = errorStr[1],
-                };
-                filterContext.Result = new ICDJsonResult(JsonHelper.SerializeObject(response)); ;
+                filterContext.Result = buildResponseAndLog(MessageStr.JsonDeserializeError, log);
+                return;
+            }
+            if (string.IsNullOrWhiteSpace(uploadRequest.Version))
+            {
+                filterContext.Result = buildResponseAndLog(MessageStr.VersionNull, log);
+                return;
+            }
+            if (uploadRequest.RecieveTime < DateTime.Now.AddSeconds(-120))//超过120秒的请求不再处理
+            {
+                filterContext.Result = buildResponseAndLog(MessageStr.JsonDeserializeError, log);
                 return;
             }
             IService serviceAccess = new DAL_Service();
-            var orgModel = serviceAccess.GetOrgModelByCode(uploadRequest.ORGCode);
+            var orgModel = serviceAccess.GetOrgModelByAUTHCode(uploadRequest.AUTHCode);
             if (orgModel == null)
             {
-                //todo  记录日志  
-                var errorStr = MessageStr.OrganizationNull.Split(':');
-                var response = new SyncResponse<string>
-                {
-                    Code = errorStr[0],
-                    Msg = errorStr[1],
-                };
-                filterContext.Result = new ICDJsonResult(JsonHelper.SerializeObject(response)); ;
+                filterContext.Result = buildResponseAndLog(MessageStr.OrganizationNull, log);
                 return;
             }
             var checkSign = ICD_EncryptUtils.RSACheckSign(uploadRequest.ToSignDictionary(), uploadRequest.Sign, Server.MapPath(orgModel.CheckSignPubKeyPath));
             if (!checkSign)
             {
-                //todo  记录日志  
-                var errorStr = MessageStr.CheckSignFail.Split(':');
-                var response = new SyncResponse<string>
-                {
-                    Code = errorStr[0],
-                    Msg = errorStr[1],
-                };
-                filterContext.Result = new ICDJsonResult(JsonHelper.SerializeObject(response)); ;
+                filterContext.Result = buildResponseAndLog(MessageStr.CheckSignFail, log);
                 return;
             }
+
+            #endregion
+
             var requestContentStr = ICD_EncryptUtils.DecryptByAES(uploadRequest.EncryptedRequest, orgModel.EncryptKeyName, "utf-8");
-            var requestDic = requestContentStr.Split('&').ToDictionary(a => a.Split('=')[0], b => b.Split('=')[1]);
-            ViewBag.Decrypt = requestDic;
-            ViewBag.ORGCode = uploadRequest.ORGCode;
+            //todo  异步记录日志
+            ViewBag.Decrypt = requestContentStr.Split('&').ToDictionary(a => a.Split('=')[0], b => b.Split('=')[1]);
+            ViewBag.ORGCode = uploadRequest.AUTHCode;
+            ViewBag.Log = log;
             base.OnActionExecuting(filterContext);
+        }
+
+        private BaseLog initialLog(ActionExecutingContext filterContext)
+        {
+            return new BaseLog
+            {
+                GetRequestTime = DateTime.Now,
+                RequestIP = HttpHelper.GetIPFromRequest(filterContext.HttpContext.Request),
+                UserAgent = HttpHelper.GetUserAgent(filterContext.HttpContext.Request),
+            };
+        }
+
+        internal ICDJsonResult buildResponseAndLog(string responseStr, BaseLog log)
+        {
+            var strArry = responseStr.Split(':');
+            var response = new SyncResponse<string>
+            {
+                Code = log.ResponseCode = strArry[0],
+                Msg = log.ResponseStr = strArry[1],
+            };
+            var responseJson = JsonHelper.SerializeObject(response);
+            log.LogContent = responseJson;
+            log.ResponseTime = DateTime.Now;
+            saveLog(log);
+            return new ICDJsonResult(responseJson);
+        }
+
+        private void saveLog(BaseLog log)
+        {
+            Task.Run(() =>
+            {
+                //todo 具体的日志保存记录
+            });
         }
     }
 }

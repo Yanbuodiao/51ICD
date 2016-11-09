@@ -1,22 +1,46 @@
-﻿using Docimax.Interface_ICD.Model.UploadModel.N041;
+﻿
+using Docimax.Interface_ICD.Model.UploadModel.N041;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 
 namespace Docimax.Interface_ICD.Model.UploadModel
 {
-    public class 患者信息
+    public class Patient
     {
-        public string 性别 { get; set; }
-        public string 年龄 { get; set; }
-        public string 民族 { get; set; }
-        public string 婚姻状况 { get; set; }
-        public string 职业 { get; set; }
+        /// <summary>
+        /// 性别
+        /// </summary>
+        public SexEnum Sex { get; set; }
+        /// <summary>
+        /// 入院时年龄 
+        /// </summary>
+        public string Age { get; set; }
+        /// <summary>
+        /// 民族
+        /// </summary>
+        public RaceEnum Race { get; set; }
+        /// <summary>
+        /// 婚姻状况
+        /// </summary>
+        public MarriageEnum Marriage { get; set; }
+        /// <summary>
+        /// 职业
+        /// </summary>
+        public string Profession { get; set; }
+        /// <summary>
+        /// 体重  ep：
+        /// </summary>
+        public string Weight { get; set; }
+        /// <summary>
+        /// 身高
+        /// </summary>
+        public string Height { get; set; }
     }
 
     public class 入院情况
     {
-        public 患者信息 患者一般情况 { get; set; }
+        public Patient 患者一般情况 { get; set; }
         public string 主诉 { get; set; }
         public string 现病史 { get; set; }
         public string 既往史 { get; set; }
@@ -102,7 +126,7 @@ namespace Docimax.Interface_ICD.Model.UploadModel
     {
         public string 临床诊断 { get; set; }
 
-        public 入院病情代码 入院病情 { get; set; }
+        public AdmittingCondition 入院病情 { get; set; }
 
         public int? Index { get; set; }
     }
@@ -115,6 +139,6 @@ namespace Docimax.Interface_ICD.Model.UploadModel
         public string 切口愈合等级 { get; set; }
         public 切口愈合类别 切口愈合类别 { get; set; }
 
-        public 麻醉方式代码 麻醉方式 { get; set; }
+        public Anesthesia 麻醉方式 { get; set; }
     }
 }

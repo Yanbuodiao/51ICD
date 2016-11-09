@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text;
 using System.Web.Mvc;
 
 namespace Docimax.Common
@@ -10,14 +6,14 @@ namespace Docimax.Common
     public class ICDJsonResult : ContentResult
     {
         public ICDJsonResult(string content)
-            : this(content, "application/json", Encoding.UTF8)
+            : this(content, "application/json", "utf-8")
         {
         }
 
-        public ICDJsonResult(string content, string contentType, Encoding encoding)
+        public ICDJsonResult(string content, string contentType, string charset)
         {
             Content = content;
-            ContentEncoding = encoding;
+            ContentEncoding = Encoding.GetEncoding(charset);
             ContentType = contentType;
         }
     }

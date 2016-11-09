@@ -302,7 +302,7 @@ namespace Docimax.Interface_ICD.Model.UploadModel.N041
 
     #region 民族代码
 
-    public enum 民族代码
+    public enum RaceEnum
     {
         汉族 = 01,
         蒙古族 = 02,
@@ -599,7 +599,7 @@ namespace Docimax.Interface_ICD.Model.UploadModel.N041
 
     #region 入院病情代码
 
-    public enum 入院病情代码
+    public enum AdmittingCondition
     {
         有 = 1,
         临床未确定 = 2,

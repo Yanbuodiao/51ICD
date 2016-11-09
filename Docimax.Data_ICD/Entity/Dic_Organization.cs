@@ -15,6 +15,7 @@ namespace Docimax.Data_ICD.Entity
     public partial class Dic_Organization
     {
         public int OrganizationID { get; set; }
+        public string AuthorizeCode { get; set; }
         public string OrganizationCode { get; set; }
         public string OrganizationName { get; set; }
         public string ShortName_CN { get; set; }

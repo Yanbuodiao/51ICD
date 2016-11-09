@@ -100,7 +100,7 @@ namespace Docimax.Data_ICD.DAL
                     if (newCodeOrder == null)
                     {
                         trasanction.Rollback();
-                        return new ICDExcuteResult<int> { Result = false, ErrorStr = "订单实体不能为空" };
+                        return new ICDExcuteResult<int> { IsSuccess = false, ErrorStr = "订单实体不能为空" };
                     }
                     var stateInt = isSubmit ? ICDOrderState.待抢单.GetHashCode() : ICDOrderState.新创建.GetHashCode();
                     try
@@ -143,9 +143,9 @@ namespace Docimax.Data_ICD.DAL
                     {
                         trasanction.Rollback();
                         //todo 记录错误日志
-                        return new ICDExcuteResult<int> { Result = false, ErrorStr = "系统正忙，稍候再试" };
+                        return new ICDExcuteResult<int> { IsSuccess = false, ErrorStr = "系统正忙，稍候再试" };
                     }
-                    return new ICDExcuteResult<int> { Result = true, TResult = newCodeOrder.CodeOrderID };
+                    return new ICDExcuteResult<int> { IsSuccess = true, TResult = newCodeOrder.CodeOrderID };
                 }
             }
         }
@@ -281,12 +281,12 @@ namespace Docimax.Data_ICD.DAL
                     if (model == null)
                     {
                         trasanction.Rollback();
-                        return new ICDExcuteResult<int> { Result = false, ErrorStr = "未找到相应的订单" };
+                        return new ICDExcuteResult<int> { IsSuccess = false, ErrorStr = "未找到相应的订单" };
                     }
                     if (model.OrderStatus != originStateInt || Convert.ToBase64String(model.LastModifyStamp) != stamp)
                     {
                         trasanction.Rollback();
-                        return new ICDExcuteResult<int> { Result = false, ErrorStr = "很遗憾，您没有抢到" };
+                        return new ICDExcuteResult<int> { IsSuccess = false, ErrorStr = "很遗憾，您没有抢到" };
                     }
                     model.LastModifyUserID = userID;
                     model.LastModifyTime = DateTime.Now;
@@ -296,7 +296,7 @@ namespace Docimax.Data_ICD.DAL
                     entity.SaveChanges();
                     trasanction.Commit();
                 }
-                return new ICDExcuteResult<int> { Result = true, TResult = codeOrderID };
+                return new ICDExcuteResult<int> { IsSuccess = true, TResult = codeOrderID };
             }
         }
 
@@ -310,12 +310,12 @@ namespace Docimax.Data_ICD.DAL
                     if (orderModel == null)
                     {
                         trasanction.Rollback();
-                        return new ICDExcuteResult<int> { Result = false, ErrorStr = "未找到相应的订单" };
+                        return new ICDExcuteResult<int> { IsSuccess = false, ErrorStr = "未找到相应的订单" };
                     }
                     if (Convert.ToBase64String(orderModel.LastModifyStamp) != model.LastModifyStamp)
                     {
                         trasanction.Rollback();
-                        return new ICDExcuteResult<int> { Result = false, ErrorStr = "很遗憾，已经有人在您前面提交" };
+                        return new ICDExcuteResult<int> { IsSuccess = false, ErrorStr = "很遗憾，已经有人在您前面提交" };
                     }
                     if (orderModel.OrderStatus < model.OrderStatus.GetHashCode())
                     {
@@ -411,7 +411,7 @@ namespace Docimax.Data_ICD.DAL
                     trasanction.Commit();
                 }
             }
-            return new ICDExcuteResult<int> { Result = true, TResult = model.CodeOrderID };
+            return new ICDExcuteResult<int> { IsSuccess = true, TResult = model.CodeOrderID };
         }
 
         #region Private Function

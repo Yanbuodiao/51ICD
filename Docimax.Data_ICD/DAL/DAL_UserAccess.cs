@@ -59,7 +59,7 @@ namespace Docimax.Data_ICD.DAL
                     if (user == null)
                     {
                         transaction.Rollback();
-                        return new ICDExcuteResult<int> { Result = false, ErrorStr = "未获得当前用户信息", };
+                        return new ICDExcuteResult<int> { IsSuccess = false, ErrorStr = "未获得当前用户信息", };
                     }
                     if (user.CertificationFlag == null)
                     {
@@ -72,7 +72,7 @@ namespace Docimax.Data_ICD.DAL
                         case CertificateState.平台人员一次审核通过:
                         case CertificateState.认证通过:
                         case CertificateState.冻结:
-                            return new ICDExcuteResult<int> { Result = false, ErrorStr = "已经发起过实名认证申请", };
+                            return new ICDExcuteResult<int> { IsSuccess = false, ErrorStr = "已经发起过实名认证申请", };
                     }
                     var userLog = new User_ChangeAuditLog
                     {
@@ -111,7 +111,7 @@ namespace Docimax.Data_ICD.DAL
                     }
                     entity.SaveChanges();
                     transaction.Commit();
-                    return new ICDExcuteResult<int> { Result = true };
+                    return new ICDExcuteResult<int> { IsSuccess = true };
                 }
             }
         }
@@ -177,7 +177,7 @@ namespace Docimax.Data_ICD.DAL
             {
                 return new ICDExcuteResult<int>
                 {
-                    Result = false,
+                    IsSuccess = false,
                     ErrorStr = "未找到相关用户"
                 };
             }
@@ -189,12 +189,12 @@ namespace Docimax.Data_ICD.DAL
                     if (user == null)
                     {
                         transaction.Rollback();
-                        return new ICDExcuteResult<int> { Result = false, ErrorStr = "未获得申请用户信息", };
+                        return new ICDExcuteResult<int> { IsSuccess = false, ErrorStr = "未获得申请用户信息", };
                     }
                     if (Convert.ToBase64String(user.LastModifyStamp) != model.LastModifyStamp)
                     {
                         transaction.Rollback();
-                        return new ICDExcuteResult<int> { Result = false, ErrorStr = "用户信息已经发生变化", };
+                        return new ICDExcuteResult<int> { IsSuccess = false, ErrorStr = "用户信息已经发生变化", };
                     }
                     var userLog = new User_ChangeAuditLog
                     {
@@ -214,7 +214,7 @@ namespace Docimax.Data_ICD.DAL
                     user.LastModityUserID = model.LastModifyUserID;
                     entity.SaveChanges();
                     transaction.Commit();
-                    return new ICDExcuteResult<int> { Result = true };
+                    return new ICDExcuteResult<int> { IsSuccess = true };
                 }
             }
         }
@@ -237,7 +237,7 @@ namespace Docimax.Data_ICD.DAL
                                 case CertificateState.平台人员一次审核通过:
                                 case CertificateState.认证通过:
                                 case CertificateState.冻结:
-                                    return new ICDExcuteResult<int> { Result = false, ErrorStr = "已经发起过服务认证申请" };
+                                    return new ICDExcuteResult<int> { IsSuccess = false, ErrorStr = "已经发起过服务认证申请" };
                             }
                         }
                     }
@@ -294,7 +294,7 @@ namespace Docimax.Data_ICD.DAL
                     });
                     entity.SaveChanges();
                     transaction.Commit();
-                    return new ICDExcuteResult<int> { Result = true };
+                    return new ICDExcuteResult<int> { IsSuccess = true };
                 }
             }
         }
@@ -415,7 +415,7 @@ namespace Docimax.Data_ICD.DAL
             {
                 return new ICDExcuteResult<int>
                 {
-                    Result = false,
+                    IsSuccess = false,
                     ErrorStr = "未找到用户的服务申请"
                 };
             }
@@ -429,14 +429,14 @@ namespace Docimax.Data_ICD.DAL
                         transaction.Rollback();
                         return new ICDExcuteResult<int>
                         {
-                            Result = false,
+                            IsSuccess = false,
                             ErrorStr = "未找到用户的服务申请"
                         };
                     }
                     if (Convert.ToBase64String(us.LastModifyStamp) != model.LastModifyStamp)
                     {
                         transaction.Rollback();
-                        return new ICDExcuteResult<int> { Result = false, ErrorStr = "用户的服务申请信息已经发生变化", };
+                        return new ICDExcuteResult<int> { IsSuccess = false, ErrorStr = "用户的服务申请信息已经发生变化", };
                     }
                     us.LastModifyUserID = model.LastModifyUserID;
                     us.LastModityTime = model.LastModifyTime;
@@ -455,7 +455,7 @@ namespace Docimax.Data_ICD.DAL
                     }
                     entity.SaveChanges();
                     transaction.Commit();
-                    return new ICDExcuteResult<int> { Result = true };
+                    return new ICDExcuteResult<int> { IsSuccess = true };
                 }
             }
         }

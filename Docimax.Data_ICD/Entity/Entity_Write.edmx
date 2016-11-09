@@ -192,7 +192,9 @@
           </Key>
           <Property Name="CodeOrderID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="PlatformOrderCode" Type="varchar" MaxLength="15" />
-          <Property Name="CaseNum" Type="nvarchar" MaxLength="500" />
+          <Property Name="CaseNum" Type="nvarchar" MaxLength="200" />
+          <Property Name="OutTime" Type="datetime" />
+          <Property Name="AdmissionTimes" Type="int" />
           <Property Name="OrderStatus" Type="int" />
           <Property Name="ORGID" Type="int" />
           <Property Name="ORGSubID" Type="int" />
@@ -321,7 +323,8 @@
           <Key>
             <PropertyRef Name="OrganizationID" />
           </Key>
-          <Property Name="OrganizationID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="OrganizationID" Type="int" Nullable="false" />
+          <Property Name="AuthorizeCode" Type="nvarchar" MaxLength="300" Nullable="false" />
           <Property Name="OrganizationCode" Type="nvarchar" MaxLength="300" />
           <Property Name="OrganizationName" Type="nvarchar" MaxLength="300" />
           <Property Name="ShortName_CN" Type="nvarchar" MaxLength="200" />
@@ -974,7 +977,9 @@
           </Key>
           <Property Name="CodeOrderID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="PlatformOrderCode" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
-          <Property Name="CaseNum" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="CaseNum" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="OutTime" Type="DateTime" Precision="3" />
+          <Property Name="AdmissionTimes" Type="Int32" />
           <Property Name="OrderStatus" Type="Int32" />
           <Property Name="ORGID" Type="Int32" />
           <Property Name="ORGSubID" Type="Int32" />
@@ -1103,7 +1108,8 @@
           <Key>
             <PropertyRef Name="OrganizationID" />
           </Key>
-          <Property Name="OrganizationID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="OrganizationID" Type="Int32" Nullable="false" />
+          <Property Name="AuthorizeCode" Type="String" Nullable="false" MaxLength="300" FixedLength="false" Unicode="true" />
           <Property Name="OrganizationCode" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
           <Property Name="OrganizationName" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
           <Property Name="ShortName_CN" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
@@ -1647,6 +1653,8 @@
                 <ScalarProperty Name="ORGSubID" ColumnName="ORGSubID" />
                 <ScalarProperty Name="ORGID" ColumnName="ORGID" />
                 <ScalarProperty Name="OrderStatus" ColumnName="OrderStatus" />
+                <ScalarProperty Name="AdmissionTimes" ColumnName="AdmissionTimes" />
+                <ScalarProperty Name="OutTime" ColumnName="OutTime" />
                 <ScalarProperty Name="CaseNum" ColumnName="CaseNum" />
                 <ScalarProperty Name="PlatformOrderCode" ColumnName="PlatformOrderCode" />
                 <ScalarProperty Name="CodeOrderID" ColumnName="CodeOrderID" />
@@ -1797,6 +1805,7 @@
                 <ScalarProperty Name="ShortName_CN" ColumnName="ShortName_CN" />
                 <ScalarProperty Name="OrganizationName" ColumnName="OrganizationName" />
                 <ScalarProperty Name="OrganizationCode" ColumnName="OrganizationCode" />
+                <ScalarProperty Name="AuthorizeCode" ColumnName="AuthorizeCode" />
                 <ScalarProperty Name="OrganizationID" ColumnName="OrganizationID" />
               </MappingFragment>
             </EntityTypeMapping>

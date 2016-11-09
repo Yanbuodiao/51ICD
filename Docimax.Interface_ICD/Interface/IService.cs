@@ -30,10 +30,10 @@ namespace Docimax.Interface_ICD.Interface
         UserAvailableServiceModel GetUserAvailableService(string userID);
 
         /// <summary>
-        /// 根据组织编号获取签名和加密相关Key的名称或地址
+        /// 根据授权编号获取签名和加密相关Key的名称或地址
         /// </summary>
         /// <param name="org_code">组织编号</param>
         /// <returns></returns>
-        OrganizationModel GetOrgModelByCode(string org_code);
+        OrganizationModel GetOrgModelByAUTHCode(string org_code);
     }
 }

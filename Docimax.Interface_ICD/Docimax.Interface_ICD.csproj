@@ -68,6 +68,7 @@
     <Compile Include="Interface\ICode_Order.cs" />
     <Compile Include="Interface\IFile.cs" />
     <Compile Include="Interface\IICDRepository.cs" />
+    <Compile Include="Interface\ILog.cs" />
     <Compile Include="Interface\IMenu.cs" />
     <Compile Include="Interface\ISecurity.cs" />
     <Compile Include="Interface\IService.cs" />
@@ -110,8 +111,11 @@
     <Compile Include="Model\Security\SecurityIPModel.cs" />
     <Compile Include="Model\ItemModel.cs" />
     <Compile Include="Model\UploadedItemModel.cs" />
+    <Compile Include="Model\UploadModel\DischargeDiagnosis.cs" />
     <Compile Include="Model\UploadModel\HQMS\CodeModel_HQMS.cs" />
+    <Compile Include="Model\UploadModel\IdentificationEnum.cs" />
     <Compile Include="Model\UploadModel\MedicalFileModel.cs" />
+    <Compile Include="Model\UploadModel\MedicalRecordCoding.cs" />
     <Compile Include="Model\UploadModel\N041\CodeModel_N041.cs" />
     <Compile Include="Model\UploadModel\N041\N041Enum.cs">
       <SubType>Code</SubType>

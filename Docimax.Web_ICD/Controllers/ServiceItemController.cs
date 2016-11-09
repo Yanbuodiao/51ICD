@@ -53,7 +53,7 @@ namespace Docimax.Web_ICD.Controllers
             model.OrderStatus = string.IsNullOrWhiteSpace(submit) ? ICDOrderState.编码中 : ICDOrderState.编码完成;
 
             var result = access.SaveCodeResult(model);
-            if (result.Result)
+            if (result.IsSuccess)
             {
                 if (!string.IsNullOrWhiteSpace(submit))
                 {

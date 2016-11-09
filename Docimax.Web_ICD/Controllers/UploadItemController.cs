@@ -67,7 +67,7 @@ namespace Docimax.Web_ICD.Controllers
                 handleFile(model);
                 ICode_Order codeOrderAccess = new DAL_Code_Order();
                 var result = codeOrderAccess.SaveNewCodeOrder(model, !string.IsNullOrWhiteSpace(submit));
-                if (result.Result)
+                if (result.IsSuccess)
                 {
                     if (!string.IsNullOrWhiteSpace(submit))
                     {
@@ -98,7 +98,7 @@ namespace Docimax.Web_ICD.Controllers
             handleFile(model);
             ICode_Order codeOrderAccess = new DAL_Code_Order();
             var result = codeOrderAccess.SaveNewCodeOrder(model, !string.IsNullOrWhiteSpace(submit));
-            if (result.Result)
+            if (result.IsSuccess)
             {
                 return RedirectToAction("Index", "UploadItem", new { caseNum = model.CaseNum, notifyStr = string.IsNullOrWhiteSpace(submit) ? "保存成功" : "提交成功" });
             }
