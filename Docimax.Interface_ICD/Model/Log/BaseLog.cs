@@ -8,9 +8,11 @@ namespace Docimax.Interface_ICD.Model.Log
 {
     public class BaseLog
     {
+        public DateTime RequestTime { get; set; }
         public DateTime GetRequestTime { get; set; }
         public string AUTHCode { get; set; }
         public string TicketID { get; set; }
+        public string InterfaceName { get; set; }
         public string PlatformOrderCode { get; set; }
         public string RequestIP { get; set; }
         public string UserAgent { get; set; }

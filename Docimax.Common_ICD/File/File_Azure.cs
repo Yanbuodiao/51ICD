@@ -12,8 +12,36 @@ namespace Docimax.Common_ICD.File
 {
     public class File_Azure : IFile
     {
-        //本平台的文件所在的容器名称
-        private string Container { get { return CloudConfigurationManager.GetSetting("51ICDContainer"); } }
+        private string containerName
+        {
+            get
+            {
+                var containerKey = "51ICDContainer";
+                if (HttpRuntime.Cache[containerKey] != null)
+                {
+                    return HttpRuntime.Cache[containerKey].ToString();
+                }
+                var tempContainerKey = CloudConfigurationManager.GetSetting("51ICDContainer");
+                HttpRuntime.Cache.Insert(containerKey, tempContainerKey, null, System.Web.Caching.Cache.NoAbsoluteExpiration, System.Web.Caching.Cache.NoSlidingExpiration);
+                return tempContainerKey;
+            }
+        }
+
+        private string storageAccountString
+        {
+            get
+            {
+                var storageAccountKey = "StorageConnectionString";
+                if (HttpRuntime.Cache[storageAccountKey] != null)
+                {
+                    return HttpRuntime.Cache[storageAccountKey].ToString();
+                }
+                var tempContainerKey = CloudConfigurationManager.GetSetting("StorageConnectionString");
+                HttpRuntime.Cache.Insert(storageAccountKey, tempContainerKey, null, System.Web.Caching.Cache.NoAbsoluteExpiration, System.Web.Caching.Cache.NoSlidingExpiration);
+                return tempContainerKey;
+            }
+        }
+
         /// <summary>
         /// 保存上传的文件，物理保存
         /// </summary>
@@ -22,9 +50,7 @@ namespace Docimax.Common_ICD.File
         /// <returns>文件保存后返回的地址</returns>
         public string SaveFile(HttpPostedFileBase file, string virtualDirectory)
         {
-            CloudStorageAccount storageAccount = CloudStorageAccount.Parse(CloudConfigurationManager.GetSetting("StorageConnectionString"));
-            CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
-            CloudBlobContainer container = blobClient.GetContainerReference(Container);
+            CloudBlobContainer container = getCloudBlobContainer();
             container.CreateIfNotExists();
             var fileName = string.Format("{0}{1}", DateTime.Now.ToString("yyMMdd-HHmmssfff"), System.IO.Path.GetExtension(file.FileName));
             var filePath = string.Format("{0}{1}", virtualDirectory, fileName);
@@ -32,6 +58,16 @@ namespace Docimax.Common_ICD.File
             blockBlob.UploadFromStream(file.InputStream);
             return filePath;
         }
+
+        public string SaveMedicalFile(byte[] fileBytes, string virtualFilePah)
+        {
+            CloudBlobContainer container = getCloudBlobContainer();
+            container.CreateIfNotExists();
+            CloudBlockBlob blockBlob = container.GetBlockBlobReference(virtualFilePah);
+            blockBlob.UploadFromByteArray(fileBytes, 0, fileBytes.Length);
+            return virtualFilePah;
+        }
+
         /// <summary>
         /// 从指定的地址下载文件
         /// </summary>
@@ -39,9 +75,7 @@ namespace Docimax.Common_ICD.File
         /// <returns>返回文件字节流</returns>
         public byte[] GetFile(string fileURL)
         {
-            CloudStorageAccount storageAccount = CloudStorageAccount.Parse(CloudConfigurationManager.GetSetting("StorageConnectionString"));
-            CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
-            CloudBlobContainer container = blobClient.GetContainerReference(Container);
+            CloudBlobContainer container = getCloudBlobContainer();
             CloudBlockBlob blockBlob = container.GetBlockBlobReference(fileURL);
             using (var stream = new MemoryStream())
             {
@@ -67,6 +101,16 @@ namespace Docimax.Common_ICD.File
                 return stream.ToArray();
             }
         }
+
+        #region 私有方法
+
+        private CloudBlobContainer getCloudBlobContainer()
+        {
+            CloudStorageAccount storageAccount = CloudStorageAccount.Parse(storageAccountString);
+            CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
+            CloudBlobContainer container = blobClient.GetContainerReference(containerName);
+            return container;
+        }
         private static bool IsPixelFormatIndexed(PixelFormat imgPixelFormat)
         {
             foreach (PixelFormat pf in indexedPixelFormats)
@@ -75,6 +119,7 @@ namespace Docimax.Common_ICD.File
             }
             return false;
         }
+
         private static PixelFormat[] indexedPixelFormats = { 
                                                                PixelFormat.Undefined, 
                                                                PixelFormat.DontCare,
@@ -83,5 +128,7 @@ namespace Docimax.Common_ICD.File
                                                                PixelFormat.Format4bppIndexed,
                                                                PixelFormat.Format8bppIndexed 
                                                            };
+
+        #endregion
     }
 }

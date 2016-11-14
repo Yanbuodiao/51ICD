@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
 
-namespace Docimax.Interface_ICD.Model.UploadModel
+namespace Docimax.Interface_ICD.Model.UploadModel.N041
 {
     /// <summary>
     /// 所有内容中，不出现患者姓名，身份证号，联系方式，医生姓名

@@ -14,7 +14,7 @@ namespace Docimax.Common_ICD.Cache
     public class ServiceMenu
     {
         #region 私有变量及方法
-        
+
         static string serviceMenuKey;//服务对应菜单的缓存Key
         static object lockObj = new object();//锁对象
         static ServiceMenu()

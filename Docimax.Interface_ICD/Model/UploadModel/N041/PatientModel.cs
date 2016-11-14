@@ -4,9 +4,9 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 
-namespace Docimax.Interface_ICD.Model.UploadModel
+namespace Docimax.Interface_ICD.Model.UploadModel.N041
 {
-    public class Patient
+    public class 患者信息
     {
         /// <summary>
         /// 性别
@@ -40,7 +40,7 @@ namespace Docimax.Interface_ICD.Model.UploadModel
 
     public class 入院情况
     {
-        public Patient 患者一般情况 { get; set; }
+        public 患者信息 患者一般情况 { get; set; }
         public string 主诉 { get; set; }
         public string 现病史 { get; set; }
         public string 既往史 { get; set; }

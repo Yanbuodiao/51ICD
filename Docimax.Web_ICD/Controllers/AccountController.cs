@@ -7,6 +7,7 @@ using Microsoft.Owin.Security;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.Caching;
 using System.Web.Mvc;
 
 namespace Docimax.Web_ICD.Controllers
@@ -269,7 +270,7 @@ namespace Docimax.Web_ICD.Controllers
             return new ChallengeResult(provider, Url.Action("ExternalLoginCallback", "Account", new { ReturnUrl = returnUrl }));
         }
 
-        [AllowAnonymous]    
+        [AllowAnonymous]
         public async Task<ActionResult> SendCode(string returnUrl, bool rememberMe)
         {
             var userId = await SignInManager.GetVerifiedUserIdAsync();
@@ -377,11 +378,11 @@ namespace Docimax.Web_ICD.Controllers
         [AllowAnonymous]
         public ActionResult MenuList()
         {
-            //IMenu menuAccess = new DAL_Menu();
-            //return PartialView(menuAccess.GetMenuListByUserID(User.Identity.GetUserId()));
-
-
-
+            if (HttpRuntime.Cache["isIniliaze"] == null)
+            {
+                UserManager.Users.FirstOrDefault();
+                HttpRuntime.Cache.Insert("isIniliaze", true, null, System.Web.Caching.Cache.NoAbsoluteExpiration, System.Web.Caching.Cache.NoSlidingExpiration, CacheItemPriority.High, null);
+            }
             return PartialView(ServiceMenu.GetMenuList(User.Identity.GetUserId()));
         }
 

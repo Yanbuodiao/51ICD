@@ -10,6 +10,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security;
+using System.Linq;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -72,6 +73,7 @@ namespace Docimax.Web_ICD
         public static ApplicationUserManager Create(IdentityFactoryOptions<ApplicationUserManager> options, IOwinContext context)
         {
             var manager = new ApplicationUserManager(new UserStore<ApplicationUser>(context.Get<ApplicationDbContext>()));
+
             // 配置用户名的验证逻辑
             manager.UserValidator = new UserValidator<ApplicationUser>(manager)
             {
@@ -139,9 +141,23 @@ namespace Docimax.Web_ICD
             return user.GenerateUserIdentityAsync((ApplicationUserManager)UserManager);
         }
 
+        static ApplicationSignInManager()
+        {
+           
+        }
+
         public static ApplicationSignInManager Create(IdentityFactoryOptions<ApplicationSignInManager> options, IOwinContext context)
         {
             return new ApplicationSignInManager(context.GetUserManager<ApplicationUserManager>(), context.Authentication);
+        }
+    }
+
+    public class ApplicationDBCreateInitializer : CreateDatabaseIfNotExists<ApplicationDbContext>
+    {
+        protected override void Seed(ApplicationDbContext context)
+        {
+            ApplicationDbInitializer.InitializeIdentityForEF(context);
+            base.Seed(context);
         }
     }
     public class ApplicationDbInitializer : DropCreateDatabaseIfModelChanges<ApplicationDbContext>
@@ -151,6 +167,7 @@ namespace Docimax.Web_ICD
             InitializeIdentityForEF(context);
             base.Seed(context);
         }
+
         public static void InitializeIdentityForEF(ApplicationDbContext db)
         {
             var userManager = HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>();

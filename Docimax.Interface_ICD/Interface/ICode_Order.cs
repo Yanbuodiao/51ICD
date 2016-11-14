@@ -1,4 +1,6 @@
 ﻿using Docimax.Interface_ICD.Model;
+using Docimax.Interface_ICD.Model.CodeOrder;
+using Docimax.Interface_ICD.Model.UploadModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -69,5 +71,21 @@ namespace Docimax.Interface_ICD.Interface
         /// <param name="model">页面提交的编码结果</param>
         /// <returns>保存结果</returns>
         ICDExcuteResult<int> SaveCodeResult(CodeOrderModel model);
+
+        /// <summary>
+        /// 根据上传的病案信息（病案号  住院次  出院日期）判断是否已经存在相关的编码订单
+        /// </summary>
+        /// <param name="mr">病案信息</param>
+        /// <returns>True 存在  false：不存在</returns>
+        bool IsCodeOrderExistByMecicalRecord(MedicalRecordCoding mr);
+
+        /// <summary>
+        /// 保存从接口请求的编码订单
+        /// </summary>
+        /// <param name="mr">接口请求的病案内容</param>
+        /// <param name="authCode">机构授权号</param>
+        /// <param name="medicalRecordPath">病案详细内容存放地址</param>
+        /// <returns>true：保存成功 false：保存失败</returns>
+        bool SaveCodeOrder(MedicalRecordCoding mr, string authCode, string medicalRecordPath);
     }
 }

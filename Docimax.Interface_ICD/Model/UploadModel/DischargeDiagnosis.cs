@@ -3,6 +3,37 @@ using System;
 
 namespace Docimax.Interface_ICD.Model.UploadModel
 {
+    public class Identification 
+    {
+        /// <summary>
+        /// 性别
+        /// </summary>
+        public SexEnum Sex { get; set; }
+        /// <summary>
+        /// 入院时年龄 
+        /// </summary>
+        public string Age { get; set; }
+        /// <summary>
+        /// 民族
+        /// </summary>
+        public RaceEnum Race { get; set; }
+        /// <summary>
+        /// 婚姻状况
+        /// </summary>
+        public MarriageEnum Marriage { get; set; }
+        /// <summary>
+        /// 职业
+        /// </summary>
+        public string Profession { get; set; }
+        /// <summary>
+        /// 体重  ep：
+        /// </summary>
+        public string Weight { get; set; }
+        /// <summary>
+        /// 身高
+        /// </summary>
+        public string Height { get; set; }
+    }
     /// <summary>
     /// 病案首页出院诊断实体类
     /// </summary>
@@ -12,6 +43,10 @@ namespace Docimax.Interface_ICD.Model.UploadModel
         /// 诊断
         /// </summary>
         public string Diagnosis { get; set; }
+        /// <summary>
+        /// 主要诊断是0 其他诊断/合并症/并发诊断 依次累加
+        /// </summary>
+        public int Index { get; set; }
         /// <summary>
         /// 入院病情
         /// </summary>
@@ -31,6 +66,10 @@ namespace Docimax.Interface_ICD.Model.UploadModel
         /// 手术、操作名称
         /// </summary>
         public string OperationName { get; set; }
+        /// <summary>
+        /// 主要手术/操作是0 其他手术/操作 依次累加
+        /// </summary>
+        public int Index { get; set; }
         /// <summary>
         /// 麻醉方式
         /// </summary>
@@ -187,7 +226,7 @@ namespace Docimax.Interface_ICD.Model.UploadModel
         /// </summary>
         public DateTime ExecutionTime { get; set; }
         /// <summary>
-        /// 遗嘱内容
+        /// 临时医嘱内容
         /// </summary>
         public string OrderContent { get; set; }
     }

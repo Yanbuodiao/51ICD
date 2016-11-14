@@ -17,5 +17,12 @@ namespace Docimax.Interface_ICD.Interface
         /// <param name="fileURL"></param>
         /// <returns></returns>
         byte[] GetFile(string fileURL);
+        /// <summary>
+        /// 保存病历文件
+        /// </summary>
+        /// <param name="fileBytes">病历文件内容</param>
+        /// <param name="virtualFilePah">文件虚拟目录</param>
+        /// <returns>保存后的文件路径</returns>
+        string SaveMedicalFile(byte[] fileBytes, string virtualFilePah);
     }
 }

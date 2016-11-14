@@ -31,7 +31,7 @@ namespace Docimax.Interface_ICD.Model.UploadModel
         /// <summary>
         /// 患者基本信息
         /// </summary>
-        public Patient PatientModel { get; set; }
+        public Identification PatientModel { get; set; }
 
         /// <summary>
         /// 门(急)诊诊断 

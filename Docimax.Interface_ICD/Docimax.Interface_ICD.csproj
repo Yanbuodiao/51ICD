@@ -74,6 +74,8 @@
     <Compile Include="Interface\IService.cs" />
     <Compile Include="Interface\ISMS.cs" />
     <Compile Include="Interface\IUserAccess.cs" />
+    <Compile Include="Model\CodeOrder\CoderModelSimple.cs" />
+    <Compile Include="Model\CodeOrder\InterfaceModel.cs" />
     <Compile Include="Model\Log\BaseLog.cs" />
     <Compile Include="Model\Log\RequestLog.cs" />
     <Compile Include="Model\OrganizationModel.cs" />
@@ -120,7 +122,7 @@
     <Compile Include="Model\UploadModel\N041\N041Enum.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Model\UploadModel\PatientModel.cs" />
+    <Compile Include="Model\UploadModel\N041\PatientModel.cs" />
     <Compile Include="Model\UploadModel\SyncResponse.cs">
       <SubType>Code</SubType>
     </Compile>

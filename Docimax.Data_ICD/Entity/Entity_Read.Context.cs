@@ -52,6 +52,7 @@ namespace Docimax.Data_ICD.Entity
         public virtual DbSet<Dic_Service_Claim> Dic_Service_Claim { get; set; }
         public virtual DbSet<Dic_Service_Item> Dic_Service_Item { get; set; }
         public virtual DbSet<Dic_Service_Menu> Dic_Service_Menu { get; set; }
+        public virtual DbSet<Order_Interface> Order_Interface { get; set; }
         public virtual DbSet<ORG_Attach> ORG_Attach { get; set; }
         public virtual DbSet<ORG_Service_Config> ORG_Service_Config { get; set; }
         public virtual DbSet<ORG_Service_Item> ORG_Service_Item { get; set; }

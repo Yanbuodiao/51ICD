@@ -32,7 +32,7 @@ namespace Docimax.Web_Interface.Controllers
                 filterContext.Result = buildResponseAndLog(MessageStr.VersionNull, log);
                 return;
             }
-            if (uploadRequest.RecieveTime < DateTime.Now.AddSeconds(-120))//超过120秒的请求不再处理
+            if (uploadRequest.RequestTime < DateTime.Now.AddSeconds(-120))//超过120秒的请求不再处理
             {
                 filterContext.Result = buildResponseAndLog(MessageStr.JsonDeserializeError, log);
                 return;
@@ -54,9 +54,9 @@ namespace Docimax.Web_Interface.Controllers
             #endregion
 
             var requestContentStr = ICD_EncryptUtils.DecryptByAES(uploadRequest.EncryptedRequest, orgModel.EncryptKeyName, "utf-8");
-            //todo  异步记录日志
+            log.RequestTime = uploadRequest.RequestTime;
             ViewBag.Decrypt = requestContentStr.Split('&').ToDictionary(a => a.Split('=')[0], b => b.Split('=')[1]);
-            ViewBag.ORGCode = uploadRequest.AUTHCode;
+            ViewBag.AUTHCode = uploadRequest.AUTHCode;
             ViewBag.Log = log;
             base.OnActionExecuting(filterContext);
         }
@@ -65,6 +65,7 @@ namespace Docimax.Web_Interface.Controllers
         {
             return new BaseLog
             {
+                InterfaceName = (filterContext.ActionDescriptor).ActionName,
                 GetRequestTime = DateTime.Now,
                 RequestIP = HttpHelper.GetIPFromRequest(filterContext.HttpContext.Request),
                 UserAgent = HttpHelper.GetUserAgent(filterContext.HttpContext.Request),

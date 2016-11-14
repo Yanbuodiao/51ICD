@@ -173,6 +173,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Entity_Write.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Entity\Order_Interface.cs">
+      <DependentUpon>Entity_Read.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entity\ORG_Attach.cs">
       <DependentUpon>Entity_Read.tt</DependentUpon>
     </Compile>

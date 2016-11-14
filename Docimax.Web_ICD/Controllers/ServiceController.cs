@@ -42,6 +42,15 @@ namespace Docimax.Web_ICD.Controllers.Manage
             {
                 ModelState.AddModelError("", "请上传必要的附件");
                 var service = sAccess.GetServiceByID(model.Service.ServiceID);
+                ViewBag.Title = service.ServiceName;
+                model.Service = service;
+                return View(model);
+            }
+            if (model.Service.ServiceClaims.ToList().Any(e => string.IsNullOrWhiteSpace(e.ClaimValue)))
+            {
+                ModelState.AddModelError("", "请选择编码相关限定项目");
+                var service = sAccess.GetServiceByID(model.Service.ServiceID);
+                ViewBag.Title = service.ServiceName;
                 model.Service = service;
                 return View(model);
             }
@@ -56,7 +65,7 @@ namespace Docimax.Web_ICD.Controllers.Manage
                     {
                         ContentType = file.ContentType,
                         FileURL = FileHelper.SaveUserServiceAttachFile(file),
-                        FileName=file.FileName,
+                        FileName = file.FileName,
                     };
                     attach.AttachType = (ServiceAttachType)int.Parse(Request.Files.AllKeys[i]);
                     model.Service.ServiceAttaches.Add(attach);

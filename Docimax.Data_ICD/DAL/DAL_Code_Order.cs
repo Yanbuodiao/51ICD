@@ -4,6 +4,8 @@ using Docimax.Data_ICD.Entity;
 using Docimax.Interface_ICD.Enum;
 using Docimax.Interface_ICD.Interface;
 using Docimax.Interface_ICD.Model;
+using Docimax.Interface_ICD.Model.CodeOrder;
+using Docimax.Interface_ICD.Model.UploadModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -412,6 +414,52 @@ namespace Docimax.Data_ICD.DAL
                 }
             }
             return new ICDExcuteResult<int> { IsSuccess = true, TResult = model.CodeOrderID };
+        }
+
+        public bool IsCodeOrderExistByMecicalRecord(MedicalRecordCoding mr)
+        {
+            using (var entity = new Entity_Read())
+            {
+                return entity.Code_Order.Any(e => (e.AdmissionTimes ?? 0) == mr.AdmissionTimes &&
+                    e.CaseNum == mr.MedicalRecordNO &&
+                    e.OutTime == mr.DischargeDate);
+            }
+        }
+
+        public bool SaveCodeOrder(MedicalRecordCoding mr, string authCode, string medicalRecordPath)
+        {
+            using (var entity = new Entity_Write())
+            {
+                using (var trasanction = entity.Database.BeginTransaction())
+                {
+                    var stateInt = ICDOrderState.待抢单.GetHashCode();
+                    ICodeNum codeNumBuilder = new CodeNum_Access();
+                    var model = new Code_Order
+                    {
+                        AdmissionTimes = mr.AdmissionTimes,
+                        CaseNum = mr.MedicalRecordNO,
+                        OutTime = mr.DischargeDate,
+                        MedicalRecordPath = medicalRecordPath,
+                        PlatformOrderCode = codeNumBuilder.InitCodeNum("IC"),
+                        AUTHCode = authCode,
+                        OrderStatus = stateInt,
+                        Createtime = DateTime.Now,
+                        LastModifyTime = DateTime.Now,
+                    };
+                    try
+                    {
+                        entity.Code_Order.Add(model);
+                        entity.SaveChanges();
+                        trasanction.Commit();
+                        return true;
+                    }
+                    catch (Exception ex)
+                    {
+                        //todo  记录异常记录
+                        return false;
+                    }
+                }
+            }
         }
 
         #region Private Function

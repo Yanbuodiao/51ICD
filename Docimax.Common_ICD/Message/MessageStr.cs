@@ -50,6 +50,14 @@ namespace Docimax.Common_ICD.Message
         /// E006:未找到本次唯一请求标记
         /// </summary>
         public const string TicketNull = "E006:未找到本次唯一请求标记";
+        /// <summary>
+        /// E007:请求时间超时无效
+        /// </summary>
+        public const string OutTime = "E007:请求时间超时无效";
+        /// <summary>
+        /// 内部错误
+        /// </summary>
+        public const string InnerError = "EEEE:内部错误";
 
         #endregion
 
@@ -66,7 +74,22 @@ namespace Docimax.Common_ICD.Message
         /// B003:请求过期
         /// </summary>
         public const string RecieveTimeExpire = "B003:请求过期";
-
+        /// <summary>
+        /// B004:病案内容为空
+        /// </summary>
+        public const string MedicalRecordNull = "B004:病案内容为空";
+        /// <summary>
+        /// B005:病案号为空
+        /// </summary>
+        public const string MedicalRecordNoNull = "B005:病案号为空";
+        /// <summary>
+        /// B006:出院日期不合法
+        /// </summary>
+        public const string DischargeTimeFail = "B006:出院日期不合法";
+        /// <summary>
+        /// B007:病案重复
+        /// </summary>
+        public const string MedicalRecordRepeat = "B007:病案重复";
         #endregion
     }
 }

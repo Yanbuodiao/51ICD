@@ -19,7 +19,9 @@ namespace Docimax.Data_ICD.Entity
         public string CaseNum { get; set; }
         public Nullable<System.DateTime> OutTime { get; set; }
         public Nullable<int> AdmissionTimes { get; set; }
+        public string MedicalRecordPath { get; set; }
         public Nullable<int> OrderStatus { get; set; }
+        public string AUTHCode { get; set; }
         public Nullable<int> ORGID { get; set; }
         public Nullable<int> ORGSubID { get; set; }
         public Nullable<System.DateTime> PickedTime { get; set; }

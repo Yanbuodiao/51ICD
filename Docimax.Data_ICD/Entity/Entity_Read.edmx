@@ -195,7 +195,9 @@
           <Property Name="CaseNum" Type="nvarchar" MaxLength="200" />
           <Property Name="OutTime" Type="datetime" />
           <Property Name="AdmissionTimes" Type="int" />
+          <Property Name="MedicalRecordPath" Type="nvarchar" MaxLength="500" />
           <Property Name="OrderStatus" Type="int" />
+          <Property Name="AUTHCode" Type="nvarchar" MaxLength="300" />
           <Property Name="ORGID" Type="int" />
           <Property Name="ORGSubID" Type="int" />
           <Property Name="PickedTime" Type="datetime" />
@@ -420,6 +422,26 @@
           <Property Name="LastModifyUserID" Type="nvarchar" MaxLength="128" />
           <Property Name="DeleteFlag" Type="int" />
           <Property Name="LastModifyStamp" Type="timestamp" StoreGeneratedPattern="Computed" />
+        </EntityType>
+        <EntityType Name="Order_Interface">
+          <Key>
+            <PropertyRef Name="RequestID" />
+          </Key>
+          <Property Name="RequestID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AuthCode" Type="nvarchar" MaxLength="300" />
+          <Property Name="TicketID" Type="nvarchar" MaxLength="300" />
+          <Property Name="CodeOrderID" Type="int" />
+          <Property Name="Version" Type="nvarchar" MaxLength="100" />
+          <Property Name="RequestTime" Type="datetime" />
+          <Property Name="GetRequestTime" Type="datetime" />
+          <Property Name="RequestIp" Type="nchar" MaxLength="100" />
+          <Property Name="InterfaceName" Type="nvarchar" MaxLength="200" />
+          <Property Name="SyncResponseCode" Type="nchar" MaxLength="50" />
+          <Property Name="SyncResponseStr" Type="nvarchar" MaxLength="150" />
+          <Property Name="SyncResponseTime" Type="datetime" />
+          <Property Name="NotifyCode" Type="nchar" MaxLength="50" />
+          <Property Name="NotiryStr" Type="nvarchar" MaxLength="150" />
+          <Property Name="NotifyContent" Type="nvarchar" MaxLength="500" />
         </EntityType>
         <EntityType Name="ORG_Attach">
           <Key>
@@ -693,6 +715,7 @@
           <EntitySet Name="Dic_Service_Claim" EntityType="Self.Dic_Service_Claim" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Dic_Service_Item" EntityType="Self.Dic_Service_Item" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Dic_Service_Menu" EntityType="Self.Dic_Service_Menu" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Order_Interface" EntityType="Self.Order_Interface" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ORG_Attach" EntityType="Self.ORG_Attach" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ORG_Service_Config" EntityType="Self.ORG_Service_Config" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ORG_Service_Item" EntityType="Self.ORG_Service_Item" Schema="dbo" store:Type="Tables" />
@@ -754,6 +777,7 @@
           <EntitySet Name="Dic_Service_Claim" EntityType="ICD_DBModel.Dic_Service_Claim" />
           <EntitySet Name="Dic_Service_Item" EntityType="ICD_DBModel.Dic_Service_Item" />
           <EntitySet Name="Dic_Service_Menu" EntityType="ICD_DBModel.Dic_Service_Menu" />
+          <EntitySet Name="Order_Interface" EntityType="ICD_DBModel.Order_Interface" />
           <EntitySet Name="ORG_Attach" EntityType="ICD_DBModel.ORG_Attach" />
           <EntitySet Name="ORG_Service_Config" EntityType="ICD_DBModel.ORG_Service_Config" />
           <EntitySet Name="ORG_Service_Item" EntityType="ICD_DBModel.ORG_Service_Item" />
@@ -980,7 +1004,9 @@
           <Property Name="CaseNum" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="OutTime" Type="DateTime" Precision="3" />
           <Property Name="AdmissionTimes" Type="Int32" />
+          <Property Name="MedicalRecordPath" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="OrderStatus" Type="Int32" />
+          <Property Name="AUTHCode" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
           <Property Name="ORGID" Type="Int32" />
           <Property Name="ORGSubID" Type="Int32" />
           <Property Name="PickedTime" Type="DateTime" Precision="3" />
@@ -1205,6 +1231,26 @@
           <Property Name="LastModifyUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="DeleteFlag" Type="Int32" />
           <Property Name="LastModifyStamp" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+        </EntityType>
+        <EntityType Name="Order_Interface">
+          <Key>
+            <PropertyRef Name="RequestID" />
+          </Key>
+          <Property Name="RequestID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AuthCode" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="TicketID" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="CodeOrderID" Type="Int32" />
+          <Property Name="Version" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="RequestTime" Type="DateTime" Precision="3" />
+          <Property Name="GetRequestTime" Type="DateTime" Precision="3" />
+          <Property Name="RequestIp" Type="String" MaxLength="100" FixedLength="true" Unicode="true" />
+          <Property Name="InterfaceName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="SyncResponseCode" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+          <Property Name="SyncResponseStr" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="SyncResponseTime" Type="DateTime" Precision="3" />
+          <Property Name="NotifyCode" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+          <Property Name="NotiryStr" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="NotifyContent" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="ORG_Attach">
           <Key>
@@ -1652,7 +1698,9 @@
                 <ScalarProperty Name="PickedTime" ColumnName="PickedTime" />
                 <ScalarProperty Name="ORGSubID" ColumnName="ORGSubID" />
                 <ScalarProperty Name="ORGID" ColumnName="ORGID" />
+                <ScalarProperty Name="AUTHCode" ColumnName="AUTHCode" />
                 <ScalarProperty Name="OrderStatus" ColumnName="OrderStatus" />
+                <ScalarProperty Name="MedicalRecordPath" ColumnName="MedicalRecordPath" />
                 <ScalarProperty Name="AdmissionTimes" ColumnName="AdmissionTimes" />
                 <ScalarProperty Name="OutTime" ColumnName="OutTime" />
                 <ScalarProperty Name="CaseNum" ColumnName="CaseNum" />
@@ -1883,6 +1931,27 @@
                 <ScalarProperty Name="MenuID" ColumnName="MenuID" />
                 <ScalarProperty Name="ServiceID" ColumnName="ServiceID" />
                 <ScalarProperty Name="Service_Menu_ID" ColumnName="Service_Menu_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Order_Interface">
+            <EntityTypeMapping TypeName="ICD_DBModel.Order_Interface">
+              <MappingFragment StoreEntitySet="Order_Interface">
+                <ScalarProperty Name="NotifyContent" ColumnName="NotifyContent" />
+                <ScalarProperty Name="NotiryStr" ColumnName="NotiryStr" />
+                <ScalarProperty Name="NotifyCode" ColumnName="NotifyCode" />
+                <ScalarProperty Name="SyncResponseTime" ColumnName="SyncResponseTime" />
+                <ScalarProperty Name="SyncResponseStr" ColumnName="SyncResponseStr" />
+                <ScalarProperty Name="SyncResponseCode" ColumnName="SyncResponseCode" />
+                <ScalarProperty Name="InterfaceName" ColumnName="InterfaceName" />
+                <ScalarProperty Name="RequestIp" ColumnName="RequestIp" />
+                <ScalarProperty Name="GetRequestTime" ColumnName="GetRequestTime" />
+                <ScalarProperty Name="RequestTime" ColumnName="RequestTime" />
+                <ScalarProperty Name="Version" ColumnName="Version" />
+                <ScalarProperty Name="CodeOrderID" ColumnName="CodeOrderID" />
+                <ScalarProperty Name="TicketID" ColumnName="TicketID" />
+                <ScalarProperty Name="AuthCode" ColumnName="AuthCode" />
+                <ScalarProperty Name="RequestID" ColumnName="RequestID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using System.Linq;
 using System;
 using System.Data.Entity;
 using System.Security.Claims;
@@ -108,6 +109,7 @@ namespace Docimax.Web_ICD.Models
         static ApplicationDbContext()
         {
             Database.SetInitializer<ApplicationDbContext>(new ApplicationDbInitializer());
+            Database.SetInitializer<ApplicationDbContext>(new ApplicationDBCreateInitializer());
         }
         public static ApplicationDbContext Create()
         {
