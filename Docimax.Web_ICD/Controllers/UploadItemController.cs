@@ -1,8 +1,11 @@
-﻿using Docimax.Common_ICD;
+﻿using Docimax.Common;
+using Docimax.Common_ICD;
 using Docimax.Common_ICD.File;
 using Docimax.Data_ICD.DAL;
+using Docimax.Interface_ICD.Enum;
 using Docimax.Interface_ICD.Interface;
 using Docimax.Interface_ICD.Model;
+using Docimax.Interface_ICD.Model.UploadModel;
 using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
@@ -12,7 +15,7 @@ using System.Web.Mvc;
 namespace Docimax.Web_ICD.Controllers
 {
     [Authorize]
-    public class UploadItemController : Controller
+    public class UploadItemController : BaseController
     {
         public ActionResult Index(ICDPagedList<CodeOrderSearchModel, CodeOrderModel> model)
         {
@@ -115,10 +118,10 @@ namespace Docimax.Web_ICD.Controllers
                 {
                     var itemID = int.Parse(Request.Files.AllKeys[i]);
                     var fileNameIndex = file.FileName.LastIndexOf(@"\");
-                    var fileName =  file.FileName;
+                    var fileName = file.FileName;
                     if (fileNameIndex > 0)
                     {
-                        fileName = fileName.Substring(fileNameIndex+1, fileName.Length - fileNameIndex-1);
+                        fileName = fileName.Substring(fileNameIndex + 1, fileName.Length - fileNameIndex - 1);
                     }
                     var uploadedFile = new UploadedItemModel
                     {
@@ -137,8 +140,12 @@ namespace Docimax.Web_ICD.Controllers
             }
         }
 
-        public ActionResult Detail(int orderID)
+        public ActionResult Detail(int orderID, OrderTypeEnum orderType)
         {
+            if (orderType == OrderTypeEnum.InterfaceOrder)
+            {
+                return RedirectToAction("InterfaceOrderDetail", new { orderID = orderID });
+            }
             ICode_Order access = new DAL_Code_Order();
             var model = access.GetCodeOrderDetail(User.Identity.GetUserId(), orderID);
             return View(model);
@@ -146,15 +153,31 @@ namespace Docimax.Web_ICD.Controllers
         public ActionResult ShowPic(string picURL, string contentType)
         {
             //todo  增加授权认证，不是谁想看图片就看的
-            return File(FileHelper.GetFile(picURL), contentType);
+            return File(FileHelper.GetPicFile(picURL), contentType);
         }
 
         [Authorize(Roles = ConstStr.PlatformRoleName)]
         public ActionResult ShowUserPic(string picURL, string contentType)
         {
             //todo  增加授权认证，不是谁想看图片就看的
-            return File(FileHelper.GetFile(picURL), contentType);
+            return File(FileHelper.GetPicFile(picURL), contentType);
 
+        }
+
+        public ActionResult InterfaceOrderDetail(int orderID)
+        {
+            ICode_Order access = new DAL_Code_Order();
+            var model = access.GetCodeOrder(orderID);
+            if (model != null)
+            {
+                var bytes = FileHelper.GetFile(model.MedicalRecordPath);
+                var str = System.Text.Encoding.UTF8.GetString(bytes);
+                var mr = JsonHelper.DeserializeObject<MedicalRecordCoding>(str);
+                ViewBag.PlatformOrderCode = model.PlatformOrderCode;
+                return View(mr);
+            }
+            //todo  错误提示
+            return View();
         }
     }
 }

@@ -27,6 +27,7 @@ namespace Docimax.Data_ICD.Entity
         public Nullable<System.DateTime> PickedTime { get; set; }
         public string PickedUserID { get; set; }
         public Nullable<int> ServiceID { get; set; }
+        public Nullable<int> OrderType { get; set; }
         public Nullable<System.DateTime> Createtime { get; set; }
         public string CreateUserID { get; set; }
         public Nullable<System.DateTime> LastModifyTime { get; set; }

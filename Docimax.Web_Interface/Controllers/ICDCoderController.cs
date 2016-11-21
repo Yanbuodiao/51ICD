@@ -1,20 +1,18 @@
 ﻿using Docimax.Common;
+using Docimax.Common_ICD.File;
 using Docimax.Common_ICD.Verify;
-using Docimax.Interface_ICD.Model.UploadModel;
+using Docimax.Data_ICD.DAL;
+using Docimax.Interface_ICD.Enum;
+using Docimax.Interface_ICD.Interface;
+using Docimax.Interface_ICD.Message;
+using Docimax.Interface_ICD.Model;
 using Docimax.Interface_ICD.Model.Log;
+using Docimax.Interface_ICD.Model.UploadModel;
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
-using Docimax.Common_ICD.Message;
-using Docimax.Interface_ICD.Model.UploadModel.N041;
-using Docimax.Interface_ICD.Interface;
-using Docimax.Data_ICD.DAL;
-using System.Text;
-using System.IO;
-using Docimax.Common_ICD.File;
-using Docimax.Interface_ICD.Model;
 
 namespace Docimax.Web_Interface.Controllers
 {
@@ -45,11 +43,12 @@ namespace Docimax.Web_Interface.Controllers
             var medicalRecordJsonStr = JsonHelper.SerializeObject(medicalRecord);
             IFile fileAccess = new File_Azure();
             var medicalRecordPath = fileAccess.SaveMedicalFile(Encoding.UTF8.GetBytes(medicalRecordJsonStr), buildVirtualPath(medicalRecord, ViewBag.AUTHCode));
+            medicalRecord.OrderType = OrderTypeEnum.InterfaceOrder;
             ICode_Order access = new DAL_Code_Order();
-            var result = access.SaveCodeOrder(medicalRecord, ViewBag.AUTHCode, medicalRecordPath);
-            if (!result)
+            ExcuteResult saveResult = access.SaveCodeOrder(medicalRecord, ViewBag.AUTHCode, medicalRecordPath);
+            if (!saveResult.IsSuccess)
             {
-                 return base.buildResponseAndLog(MessageStr.InnerError, (ViewBag.log as BaseLog));
+                return base.buildResponseAndLog(saveResult.ErrorStr, (ViewBag.log as BaseLog));
             }
             //todo 返回同步通知
             return base.buildResponseAndLog(MessageStr.SyncStr, (ViewBag.log as BaseLog));

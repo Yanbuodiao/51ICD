@@ -86,6 +86,8 @@ namespace Docimax.Interface_ICD.Interface
         /// <param name="authCode">机构授权号</param>
         /// <param name="medicalRecordPath">病案详细内容存放地址</param>
         /// <returns>true：保存成功 false：保存失败</returns>
-        bool SaveCodeOrder(MedicalRecordCoding mr, string authCode, string medicalRecordPath);
+        ExcuteResult SaveCodeOrder(MedicalRecordCoding mr, string authCode, string medicalRecordPath);
+        CodeOrderInterfaceModel GetCodeOrder(int codeOrderID);
+            
     }
 }

@@ -5,22 +5,24 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" />
-    <meta name="keywords" content="51ICD,ICD,ICD编码">
-    <meta name="description" content="51ICD提供了一个供需双方的对接平台">
+    <meta name=viewport  content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="keywords" content="51icd,ICD,ICD编码,ICD-9,ICD-10,ICD编码">
+    <meta name="description" content="51icd-专业的编码平台">
     <title>@ViewBag.Title - 51ICD</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     <script type="text/javascript" src="~/Scripts/jquery-1.10.2.js"></script>
+    <!--[if lte IE 7]>
+          <script>location.href='http://www.51icd.com/upgrade-your-browser.html'</script>
+    <![endif]-->
+
 </head>
 <body>
-    <div class="navbar navbar-inverse icd navbar-fixed-top">
-        <div class="container-fluid">
-            <div class="navbar-collapse collapse">
-                @{Html.RenderAction("MenuList", "Account");}
-                @Html.Partial("_LoginPartial")
-            </div>
+    <nav class="navbar navbar-default" role="navigation">
+        <div class="container-fluid icd">
+            @{Html.RenderAction("MenuList", "Account");}
         </div>
-    </div>
+    </nav>
     <div class="container-fluid body-content">
         @RenderBody()
         <hr />

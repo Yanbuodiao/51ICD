@@ -75,11 +75,11 @@ namespace Docimax.Interface_ICD.Model.UploadModel
         /// </summary>
         public Anesthesia? AnesthesiaType { get; set; }
         /// <summary>
-        /// 手术愈合等级
+        /// 切口愈合等级
         /// </summary>
         public IncisionHealingLevel? IncisionHealingLevel { get; set; }
         /// <summary>
-        /// 手术愈合类别
+        /// 切口愈合类别
         /// </summary>
         public IncisionHealingCategory? IncisionHealingCategory { get; set; }
         /// <summary>
@@ -221,6 +221,10 @@ namespace Docimax.Interface_ICD.Model.UploadModel
     /// </summary>
     public class STAT
     {
+        /// <summary>
+        /// 医嘱下达时间
+        /// </summary>
+        public DateTime ReleaseTime { get; set; }
         /// <summary>
         /// 执行时间
         /// </summary>

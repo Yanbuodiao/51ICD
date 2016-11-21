@@ -1,4 +1,4 @@
-﻿using Docimax.Common_ICD.Message;
+﻿using Docimax.Interface_ICD.Message;
 using Docimax.Interface_ICD.Model;
 using Docimax.Interface_ICD.Model.UploadModel;
 using System;

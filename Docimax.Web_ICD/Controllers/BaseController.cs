@@ -14,19 +14,12 @@ namespace Docimax.Web_ICD.Controllers
     {
         protected override void Initialize(RequestContext requestContext)
         {
-            string UserID = User.Identity.GetUserId(); ;
-
-            if (!string.IsNullOrEmpty(UserID))
-            {
-
-            }
             base.Initialize(requestContext);
         }
 
-
-        void IActionFilter.OnActionExecuting(ActionExecutingContext filterContext)
+        protected override void OnResultExecuting(ResultExecutingContext filterContext)
         {
-
+            base.OnResultExecuting(filterContext);
         }
     }
 }

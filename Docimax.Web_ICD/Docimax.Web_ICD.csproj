@@ -207,7 +207,10 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Img\bg_tip.jpg" />
+    <Content Include="Img\chrome.jpg" />
     <Content Include="Img\DRGsEP.jpg" />
+    <Content Include="Img\ie.jpg" />
     <Content Include="Scripts\bloodhound.js" />
     <Content Include="Scripts\bloodhound.min.js" />
     <Content Include="Scripts\bootstrap-datepicker.js" />
@@ -332,6 +335,7 @@
     <Content Include="Views\ServiceItem\Code.cshtml">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="upgrade-your-browser.html" />
     <Content Include="Views\Web.config" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
@@ -366,7 +370,7 @@
     <Content Include="Views\Account\_SetPasswordPartial.cshtml" />
     <Content Include="Views\Account\ConfirmEmailNotify.cshtml" />
     <Content Include="Views\Home\Detail.cshtml" />
-    <Content Include="Views\Account\MenuList.cshtml" />
+    <Content Include="Views\Shared\MenuList.cshtml" />
     <Content Include="Web.config" />
     <Content Include="Views\Manage\VerifyIdentity.cshtml" />
     <Content Include="tsconfig.json" />
@@ -397,6 +401,7 @@
     <Content Include="Views\ManageUserService\ApproveDetail.cshtml" />
     <Content Include="Views\Home\ShowDetail.cshtml" />
     <Content Include="Views\Home\Help.cshtml" />
+    <Content Include="Views\UploadItem\InterfaceOrderDetail.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

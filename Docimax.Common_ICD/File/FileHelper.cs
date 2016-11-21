@@ -89,13 +89,24 @@ namespace Docimax.Common_ICD.File
         /// <returns>上传后文件地址</returns>
         public static string SaveMedicalRecord(HttpPostedFileBase file, string organizationCode, string medicalRecord)
         {
-            //return fileAccess.SaveFile(file, string.Format("{0}/{1}/", HttpUtility.UrlEncode(organizationCode, Encoding.UTF8), HttpUtility.UrlEncode(medicalRecord, Encoding.UTF8)));
             return fileAccess.SaveFile(file, string.Format("{0}/{1}/", organizationCode, medicalRecord));
         }
-
+        /// <summary>
+        /// 从指定的地址下载图片文件
+        /// </summary>
+        /// <param name="fileURL">要查看的文件路径（虚拟路径）</param>
+        /// <returns>返回文件字节流</returns>
+        public static byte[] GetPicFile(string fileURL)
+        {
+            return fileAccess.GetPicFile(fileURL);
+        }
+        /// <summary>
+        /// 从指定的地址下载文件
+        /// </summary>
+        /// <param name="fileURL">要查看的文件路径（虚拟路径）</param>
+        /// <returns>返回文件字节流</returns>
         public static byte[] GetFile(string fileURL)
         {
-            //return fileAccess.GetFile(HttpUtility.UrlEncode(fileURL, Encoding.UTF8));
             return fileAccess.GetFile(fileURL);
         }
 

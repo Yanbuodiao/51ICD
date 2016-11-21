@@ -19,7 +19,7 @@ namespace Docimax.Web_ICD.Controllers
         public ActionResult TestShowFile()
         {
             var url = "51icd-sysblob/user-attach/160726-113115739.jpg";
-            return File(FileHelper.GetFile(url), "image/jpeg");
+            return File(FileHelper.GetPicFile(url), "image/jpeg");
         }
 
         public ActionResult TypeaheadTest()

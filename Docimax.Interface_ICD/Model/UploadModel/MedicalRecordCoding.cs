@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Docimax.Interface_ICD.Enum;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -67,6 +69,9 @@ namespace Docimax.Interface_ICD.Model.UploadModel
         /// 出院记录
         /// </summary>
         public DischargeRecord DischargeRecord { get; set; }
+
+        [JsonConverter(typeof(CustomDateTimeConverter))]
+        public OrderTypeEnum OrderType { get; set; }
 
         /// <summary>
         /// 死亡记录

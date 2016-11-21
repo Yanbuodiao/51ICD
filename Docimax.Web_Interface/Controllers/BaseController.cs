@@ -1,8 +1,8 @@
 ﻿using Docimax.Common;
 using Docimax.Common.Encryption;
-using Docimax.Common_ICD.Message;
 using Docimax.Data_ICD.DAL;
 using Docimax.Interface_ICD.Interface;
+using Docimax.Interface_ICD.Message;
 using Docimax.Interface_ICD.Model.Log;
 using Docimax.Interface_ICD.Model.UploadModel;
 using System;

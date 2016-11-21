@@ -1,8 +1,5 @@
 ﻿using Docimax.Interface_ICD.Configurations;
 using Docimax.Interface_ICD.Interface;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;

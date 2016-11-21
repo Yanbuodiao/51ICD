@@ -69,11 +69,11 @@ namespace Docimax.Common_ICD.File
         }
 
         /// <summary>
-        /// 从指定的地址下载文件
+        /// 从指定的地址下载图片文件
         /// </summary>
         /// <param name="fileURL">要查看的文件路径（虚拟路径）</param>
         /// <returns>返回文件字节流</returns>
-        public byte[] GetFile(string fileURL)
+        public byte[] GetPicFile(string fileURL)
         {
             CloudBlobContainer container = getCloudBlobContainer();
             CloudBlockBlob blockBlob = container.GetBlockBlobReference(fileURL);
@@ -98,6 +98,22 @@ namespace Docimax.Common_ICD.File
                         }
                     }
                 }
+                return stream.ToArray();
+            }
+        }
+
+        /// <summary>
+        /// 从指定的地址下载文件
+        /// </summary>
+        /// <param name="fileURL">要查看的文件路径（虚拟路径）</param>
+        /// <returns>返回文件字节流</returns>
+        public byte[] GetFile(string fileURL)
+        {
+            CloudBlobContainer container = getCloudBlobContainer();
+            CloudBlockBlob blockBlob = container.GetBlockBlobReference(fileURL);
+            using (var stream = new MemoryStream())
+            {
+                blockBlob.DownloadToStream(stream);
                 return stream.ToArray();
             }
         }

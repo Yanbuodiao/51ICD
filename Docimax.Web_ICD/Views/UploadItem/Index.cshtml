@@ -64,16 +64,18 @@
                                  grid.Column("Createtime", header: "创建时间", style: "col-lg-2", format: @<text>@item.Createtime.ToString("yyyy-MM-dd") </text>, canSort: false),
                                  grid.Column(header: "操作", canSort: false, style: "action",
                 format: @<text>
-                                    <a href="@Url.Action("Detail", "UploadItem", new { orderID = @item.CodeOrderID })" class="btn btn-default">
+                                    <a href="@Url.Action("Detail", "UploadItem", new { orderID = @item.CodeOrderID, orderType = @item.OrderType })" class="btn btn-default">
                                         详情
                                     </a>
-                                    @if (item.OrderStatus.GetHashCode() < 10000)
+                                    @if (item.OrderType == Docimax.Interface_ICD.Enum.OrderTypeEnum.PicOrder)
                                     {
-                                        <a href="@Url.Action("Update", "UploadItem", new { orderID = @item.CodeOrderID })" class="btn btn-default">
-                                            补充信息
-                                            <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
-                                        </a>
-
+                                        if (item.OrderStatus.GetHashCode() < 10000)
+                                        {
+                                            <a href="@Url.Action("Update", "UploadItem", new { orderID = @item.CodeOrderID })" class="btn btn-default">
+                                                补充信息
+                                                <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                                            </a>
+                                        }
                                     }
                 </text>)));
     }

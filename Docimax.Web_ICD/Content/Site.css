@@ -1,7 +1,7 @@
-﻿body {
+﻿/*body {
     padding-top: 50px;
     padding-bottom: 20px;
-}
+}*/
 
 /* Set padding to keep content from hitting the edges */
 .body-content {
@@ -23,73 +23,27 @@ textarea {
     max-width: 280px;
 }
 
-.navbar-inverse.icd {
+.container-fluid.icd {
     background-color: #144566;
     border-color: #144566;
 }
 
-    .navbar-inverse.icd .navbar-brand {
-        color: #fff;
-    }
-
-.navbar-inverse .navbar-brand:hover,
-.navbar-inverse .navbar-brand:focus {
-    color: #1FCEDE;
-    background-color: transparent;
-}
-
-.navbar-inverse .navbar-text {
+.navbar-default .navbar-brand.icd {
     color: #fff;
 }
 
-.navbar-inverse .navbar-nav > li > a {
+.navbar-default .navbar-nav.icd > li > a {
     color: #fff;
 }
 
-    .navbar-inverse .navbar-nav > li > a:hover,
-    .navbar-inverse .navbar-nav > li > a:focus {
+    .navbar-default .navbar-nav.icd > li > a:hover,
+    .navbar-default .navbar-nav.icd > li > a:focus {
         color: #1FCEDE;
         background-color: transparent;
     }
 
-.navbar-inverse .navbar-nav > .active > a,
-.navbar-inverse .navbar-nav > .active > a:hover,
-.navbar-inverse .navbar-nav > .active > a:focus {
-    color: #1FCEDE;
-    background-color: #35c7d4;
-}
 
-.navbar-inverse .navbar-nav > .disabled > a,
-.navbar-inverse .navbar-nav > .disabled > a:hover,
-.navbar-inverse .navbar-nav > .disabled > a:focus {
-    color: #444;
-    background-color: transparent;
-}
 
-.navbar-inverse .navbar-toggle {
-    border-color: #333;
-}
-
-    .navbar-inverse .navbar-toggle:hover,
-    .navbar-inverse .navbar-toggle:focus {
-        background-color: #333;
-    }
-
-    .navbar-inverse .navbar-toggle .icon-bar {
-        background-color: #fff;
-    }
-
-.navbar-inverse .navbar-collapse,
-.navbar-inverse .navbar-form {
-    border-color: #101010;
-}
-
-.navbar-inverse .navbar-nav > .open > a,
-.navbar-inverse .navbar-nav > .open > a:hover,
-.navbar-inverse .navbar-nav > .open > a:focus {
-    color: #fff;
-    background-color: #080808;
-}
 
 .form-control.validate {
     padding: 0px;
@@ -140,7 +94,7 @@ textarea {
 
     h2 {
         font-size: 20px;
-        color:#323a45;
+        color: #323a45;
         font-weight: 800;
     }
 }

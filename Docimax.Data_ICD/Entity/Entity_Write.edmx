@@ -203,6 +203,7 @@
           <Property Name="PickedTime" Type="datetime" />
           <Property Name="PickedUserID" Type="nvarchar" MaxLength="128" />
           <Property Name="ServiceID" Type="int" />
+          <Property Name="OrderType" Type="int" />
           <Property Name="Createtime" Type="datetime" />
           <Property Name="CreateUserID" Type="nvarchar" MaxLength="128" />
           <Property Name="LastModifyTime" Type="datetime" />
@@ -1012,6 +1013,7 @@
           <Property Name="PickedTime" Type="DateTime" Precision="3" />
           <Property Name="PickedUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="ServiceID" Type="Int32" />
+          <Property Name="OrderType" Type="Int32" />
           <Property Name="Createtime" Type="DateTime" Precision="3" />
           <Property Name="CreateUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="LastModifyTime" Type="DateTime" Precision="3" />
@@ -1693,6 +1695,7 @@
                 <ScalarProperty Name="LastModifyTime" ColumnName="LastModifyTime" />
                 <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
                 <ScalarProperty Name="Createtime" ColumnName="Createtime" />
+                <ScalarProperty Name="OrderType" ColumnName="OrderType" />
                 <ScalarProperty Name="ServiceID" ColumnName="ServiceID" />
                 <ScalarProperty Name="PickedUserID" ColumnName="PickedUserID" />
                 <ScalarProperty Name="PickedTime" ColumnName="PickedTime" />

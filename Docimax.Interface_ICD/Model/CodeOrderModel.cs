@@ -16,6 +16,7 @@ namespace Docimax.Interface_ICD.Model
         [Display(Name = "病案号")]
         public string CaseNum { get; set; }
         public ICDOrderState OrderStatus { get; set; }
+        public OrderTypeEnum OrderType { get; set; }
         public string ORGCode { get; set; }
         public string ORGName { get; set; }
         public string ORGSubName { get; set; }

@@ -3,15 +3,13 @@ using Docimax.CodeOrder.Interface;
 using Docimax.Data_ICD.Entity;
 using Docimax.Interface_ICD.Enum;
 using Docimax.Interface_ICD.Interface;
+using Docimax.Interface_ICD.Message;
 using Docimax.Interface_ICD.Model;
-using Docimax.Interface_ICD.Model.CodeOrder;
 using Docimax.Interface_ICD.Model.UploadModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Docimax.Data_ICD.DAL
 {
@@ -22,6 +20,10 @@ namespace Docimax.Data_ICD.DAL
             using (var entity = new Entity_Read())
             {
                 var codeModel = entity.Code_Order.FirstOrDefault(e => e.CodeOrderID == codeOrderID);
+                if (codeModel == null)
+                {
+                    return null;
+                }
                 if (checkUserCanViewOrder(userID, codeModel))
                 {
                     var result = getCodeOrderTemplate((e => e.OrganizationID == codeModel.ORGID),
@@ -171,6 +173,7 @@ namespace Docimax.Data_ICD.DAL
                                  o.PlatformOrderCode,
                                  o.OrderStatus,
                                  o.Createtime,
+                                 o.OrderType,
                                  o.ORGID,
                                  o.ORGSubID,
                                  o.CodeOrderID
@@ -185,6 +188,7 @@ namespace Docimax.Data_ICD.DAL
                         CreateTime = e.Createtime ?? DateTime.Now,
                         ORGID = e.ORGID ?? 0,
                         OrderStatus = (ICDOrderState)(e.OrderStatus ?? 1000),
+                        OrderType = (OrderTypeEnum)(e.OrderType ?? 0),
                     }).ToList();
                 queryModel.TotalRecords = query.Count();
                 queryModel.Content = resultQuery;
@@ -426,22 +430,29 @@ namespace Docimax.Data_ICD.DAL
             }
         }
 
-        public bool SaveCodeOrder(MedicalRecordCoding mr, string authCode, string medicalRecordPath)
+        public ExcuteResult SaveCodeOrder(MedicalRecordCoding mr, string authCode, string medicalRecordPath)
         {
             using (var entity = new Entity_Write())
             {
                 using (var trasanction = entity.Database.BeginTransaction())
                 {
+                    if (entity.Code_Order.Any(e => e.CaseNum == mr.MedicalRecordNO && e.AdmissionTimes == mr.AdmissionTimes && e.OutTime == mr.DischargeDate))
+                    {
+                        return new ExcuteResult { IsSuccess = false, ErrorStr = MessageStr.MedicalRecordRepeat };
+                    }
                     var stateInt = ICDOrderState.待抢单.GetHashCode();
                     ICodeNum codeNumBuilder = new CodeNum_Access();
+                    var org = entity.Dic_Organization.FirstOrDefault(e => e.AuthorizeCode == authCode);
                     var model = new Code_Order
                     {
                         AdmissionTimes = mr.AdmissionTimes,
                         CaseNum = mr.MedicalRecordNO,
                         OutTime = mr.DischargeDate,
+                        OrderType = mr.OrderType.GetHashCode(),
                         MedicalRecordPath = medicalRecordPath,
                         PlatformOrderCode = codeNumBuilder.InitCodeNum("IC"),
                         AUTHCode = authCode,
+                        ORGID = org == null ? 0 : org.OrganizationID,
                         OrderStatus = stateInt,
                         Createtime = DateTime.Now,
                         LastModifyTime = DateTime.Now,
@@ -451,14 +462,34 @@ namespace Docimax.Data_ICD.DAL
                         entity.Code_Order.Add(model);
                         entity.SaveChanges();
                         trasanction.Commit();
-                        return true;
+                        return new ExcuteResult { IsSuccess = true };
                     }
                     catch (Exception ex)
                     {
                         //todo  记录异常记录
-                        return false;
+                        trasanction.Rollback();
+                        return new ExcuteResult { IsSuccess = false, ErrorStr = MessageStr.InnerError };
                     }
                 }
+            }
+        }
+
+        public CodeOrderInterfaceModel GetCodeOrder(int codeOrderID)
+        {
+            using (var entity = new Entity_Read())
+            {
+                var model = entity.Code_Order.FirstOrDefault(e => e.CodeOrderID == codeOrderID);
+                if (model == null)
+                {
+                    return null;
+                }
+                return new CodeOrderInterfaceModel
+                {
+                    CodeOrderID = codeOrderID,
+                    PlatformOrderCode = model.PlatformOrderCode,
+                    CaseNum = model.CaseNum,
+                    MedicalRecordPath = model.MedicalRecordPath,
+                };
             }
         }
 
