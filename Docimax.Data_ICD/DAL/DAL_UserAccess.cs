@@ -116,7 +116,7 @@ namespace Docimax.Data_ICD.DAL
             }
         }
 
-        public ICDPagedList<UserCertificationSearch, VerifyIdentityModel> GetUserVerifyList(ICDPagedList<UserCertificationSearch, VerifyIdentityModel> queryModel)
+        public ICDTimePagedList<UserCertificationSearch, VerifyIdentityModel> GetUserVerifyList(ICDTimePagedList<UserCertificationSearch, VerifyIdentityModel> queryModel)
         {
             using (var entity = new Entity_Read())
             {
@@ -299,7 +299,7 @@ namespace Docimax.Data_ICD.DAL
             }
         }
 
-        public ICDPagedList<UserServiceSearch, UserServiceModel> GetUserServiceList(ICDPagedList<UserServiceSearch, UserServiceModel> queryModel)
+        public ICDTimePagedList<UserServiceSearch, UserServiceModel> GetUserServiceList(ICDTimePagedList<UserServiceSearch, UserServiceModel> queryModel)
         {
             using (var entity = new Entity_Read())
             {

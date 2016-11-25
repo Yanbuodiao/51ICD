@@ -57,6 +57,7 @@
     <Compile Include="Enum\CertificateState.cs" />
     <Compile Include="Enum\CodeResultType.cs" />
     <Compile Include="Enum\ICDOrderState.cs" />
+    <Compile Include="Enum\ICDTypeEnum.cs" />
     <Compile Include="Enum\ItemState.cs" />
     <Compile Include="Enum\OrderType.cs" />
     <Compile Include="Enum\ServiceAttachType.cs" />
@@ -79,6 +80,7 @@
     <Compile Include="Model\CodeOrderInterfaceModel.cs" />
     <Compile Include="Model\CodeOrder\CoderModelSimple.cs" />
     <Compile Include="Model\CodeOrder\InterfaceModel.cs" />
+    <Compile Include="Model\DiagnosisCodeResult.cs" />
     <Compile Include="Model\Log\BaseLog.cs" />
     <Compile Include="Model\Log\RequestLog.cs" />
     <Compile Include="Model\OrganizationModel.cs" />
@@ -93,6 +95,7 @@
     <Compile Include="Model\ICDModel.cs" />
     <Compile Include="Model\ICDVersionModel.cs" />
     <Compile Include="Model\Menu\ICDMenu.cs" />
+    <Compile Include="Model\SearchModel\CodeSerchModel.cs" />
     <Compile Include="Model\SearchModel\UserCertificationSearch.cs" />
     <Compile Include="Model\SearchModel\UserServiceSearch.cs" />
     <Compile Include="Model\Security\SecurityPhoneModel.cs" />

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Docimax.Interface_ICD.Enum;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,5 +16,6 @@ namespace Docimax.Interface_ICD.Model
         public string CheckSignPubKeyPath { get; set; }
 
         public string SignPriKeyPath { get; set; }
+        public CertificateState Certificate { get; set; }
     }
 }

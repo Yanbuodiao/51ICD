@@ -1,4 +1,5 @@
-﻿using Docimax.Interface_ICD.Model;
+﻿using Docimax.Interface_ICD.Enum;
+using Docimax.Interface_ICD.Model;
 using System.Collections.Generic;
 
 namespace Docimax.Interface_ICD.Interface
@@ -35,5 +36,7 @@ namespace Docimax.Interface_ICD.Interface
         /// <param name="org_code">组织编号</param>
         /// <returns></returns>
         OrganizationModel GetOrgModelByAUTHCode(string org_code);
+
+        Dictionary<int, string> GetICDVersion(ICDTypeEnum icdType);
     }
 }

@@ -12,5 +12,7 @@ namespace Docimax.Interface_ICD.Model
         public string PlatformOrderCode { get; set; }
         public string CaseNum { get; set; }
         public string MedicalRecordPath { get; set; }
+        public int Diagnosis_ICD_VersionID { get; set; }
+        public int Operation_ICD_VersionID { get; set; }
     }
 }

@@ -155,12 +155,22 @@ namespace Docimax.Data_ICD.DAL
                     return new OrganizationModel
                     {
                         AUTH_Code = auth_code,
+                        Certificate = (CertificateState)(orgModel.CertificationFlag ?? 0),
                         EncryptKeyName = orgModel.EncryKey,
                         CheckSignPubKeyPath = orgModel.SignKey,
                         SignPriKeyPath = orgModel.SignPriKey,
                     };
                 }
                 return null;
+            }
+        }
+
+        public Dictionary<int, string> GetICDVersion(ICDTypeEnum icdType)
+        {
+            using (var entity = new Entity_Read())
+            {
+                var typeEnumInt = icdType.GetHashCode();
+                return entity.BaseDic_ICD_Version.Where(e => e.DeleteFlag != 1 && e.ICD_Type == typeEnumInt).ToDictionary(e => e.ICD_VersionID, e => e.ICD_VersionName);
             }
         }
 

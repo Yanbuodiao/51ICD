@@ -87,5 +87,13 @@ namespace Docimax.Interface_ICD.Model.UploadModel
         /// 检查报告List
         /// </summary>
         public List<InspectionReport> InspectionReports { get; set; }
+        /// <summary>
+        /// 诊断编码结果
+        /// </summary>
+        public List<DiagnosisCodeResult> DiagnosisCodeResultList { get; set; }
+        /// <summary>
+        /// 手术操作编码结果
+        /// </summary>
+        public List<OperationCodeResult> OperationCodeResultList { get; set; }
     }
 }

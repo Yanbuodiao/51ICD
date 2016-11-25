@@ -17,7 +17,7 @@ namespace Docimax.Web_ICD.Controllers
     [Authorize(Roles = ConstStr.PlatformRoleName)]
     public class ManageUserVeirfyController : Controller
     {
-        public ActionResult Index(ICDPagedList<UserCertificationSearch, VerifyIdentityViewModel> model, string message = "")
+        public ActionResult Index(ICDTimePagedList<UserCertificationSearch, VerifyIdentityViewModel> model, string message = "")
         {
             ViewBag.StatusMessage = message;
             if (model.SearchModel == null)
@@ -26,7 +26,7 @@ namespace Docimax.Web_ICD.Controllers
             }
             IUserAccess access = new DAL_UserAccess();
             //恶心代码
-            var queryModel = new ICDPagedList<UserCertificationSearch, VerifyIdentityModel>
+            var queryModel = new ICDTimePagedList<UserCertificationSearch, VerifyIdentityModel>
             {
                 SearchModel = model.SearchModel,
                 Page = model.Page,

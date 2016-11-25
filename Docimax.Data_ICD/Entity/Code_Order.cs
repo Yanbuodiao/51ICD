@@ -24,6 +24,8 @@ namespace Docimax.Data_ICD.Entity
         public string AUTHCode { get; set; }
         public Nullable<int> ORGID { get; set; }
         public Nullable<int> ORGSubID { get; set; }
+        public Nullable<int> Diagnosis_ICD_VersionID { get; set; }
+        public Nullable<int> Operation_ICD_VersionID { get; set; }
         public Nullable<System.DateTime> PickedTime { get; set; }
         public string PickedUserID { get; set; }
         public Nullable<int> ServiceID { get; set; }

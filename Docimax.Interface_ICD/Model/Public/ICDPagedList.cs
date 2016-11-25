@@ -4,16 +4,8 @@ using System.Collections.Generic;
 
 namespace Docimax.Interface_ICD.Model
 {
-    public class ICDPagedList<S, T>
+    public class ICDTimePagedList<S, T> : ICDPagedList<S, T> 
     {
-        /// <summary>
-        /// 除基本查询条件（时间段和基本模糊查询）外的查询条件实体类
-        /// </summary>
-        public S SearchModel { get; set; }
-        /// <summary>
-        /// 结果实体列表
-        /// </summary>
-        public List<T> Content { get; set; }
         public IPagedList<T> PageList { get; set; }
         /// <summary>
         /// 查询条件的开始时间
@@ -23,6 +15,22 @@ namespace Docimax.Interface_ICD.Model
         /// 查询条件的结束时间
         /// </summary>
         public DateTime EndDate { get; set; }
+
+    }
+    public class ICDPagedList<S, T> : PageModel
+    {
+        /// <summary>
+        /// 除基本查询条件（时间段和基本模糊查询）外的查询条件实体类
+        /// </summary>
+        public S SearchModel { get; set; }
+        /// <summary>
+        /// 结果实体列表
+        /// </summary>
+        public List<T> Content { get; set; }
+    }
+
+    public class PageModel
+    {
         /// <summary>
         /// 基本查询输入（用于模糊查询或者精确查询）
         /// </summary>
@@ -78,6 +86,6 @@ namespace Docimax.Interface_ICD.Model
         {
             get { return (int)Math.Ceiling((decimal)TotalRecords / PageSize); }
         }
-    }
 
+    }
 }

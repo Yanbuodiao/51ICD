@@ -154,7 +154,7 @@ namespace Docimax.Data_ICD.DAL
             }
         }
 
-        public ICDPagedList<CodeOrderSearchModel, CodeOrderModel> GetUpLoadedCodeOrderList(ICDPagedList<CodeOrderSearchModel, CodeOrderModel> queryModel)
+        public ICDTimePagedList<CodeOrderSearchModel, CodeOrderModel> GetUpLoadedCodeOrderList(ICDTimePagedList<CodeOrderSearchModel, CodeOrderModel> queryModel)
         {
             using (var entity = new Entity_Read())
             {
@@ -196,7 +196,7 @@ namespace Docimax.Data_ICD.DAL
             return queryModel;
         }
 
-        public ICDPagedList<CodeOrderSearchModel, CodeOrderModel> GetUnClaimOrderList(ICDPagedList<CodeOrderSearchModel, CodeOrderModel> queryModel)
+        public ICDTimePagedList<CodeOrderSearchModel, CodeOrderModel> GetUnClaimOrderList(ICDTimePagedList<CodeOrderSearchModel, CodeOrderModel> queryModel)
         {
             using (var entity = new Entity_Read())
             {
@@ -209,6 +209,7 @@ namespace Docimax.Data_ICD.DAL
                                  o.PlatformOrderCode,
                                  org.OrganizationName,
                                  o.OrderStatus,
+                                 o.OrderType,
                                  o.Createtime,
                                  o.ORGID,
                                  o.ORGSubID,
@@ -225,6 +226,7 @@ namespace Docimax.Data_ICD.DAL
                         CreateTime = e.Createtime ?? DateTime.Now,
                         ORGID = e.ORGID ?? 0,
                         OrderStatus = (ICDOrderState)(e.OrderStatus ?? 1000),
+                        OrderType = (OrderTypeEnum)(e.OrderType ?? 0),
                         LastModifyStamp = Convert.ToBase64String(e.LastModifyStamp),
                     }).ToList();
                 queryModel.TotalRecords = query.Count();
@@ -233,7 +235,7 @@ namespace Docimax.Data_ICD.DAL
             return queryModel;
         }
 
-        public ICDPagedList<CodeOrderSearchModel, CodeOrderModel> GetMyCodeOrderList(ICDPagedList<CodeOrderSearchModel, CodeOrderModel> queryModel)
+        public ICDTimePagedList<CodeOrderSearchModel, CodeOrderModel> GetMyCodeOrderList(ICDTimePagedList<CodeOrderSearchModel, CodeOrderModel> queryModel)
         {
             using (var entity = new Entity_Read())
             {
@@ -252,6 +254,7 @@ namespace Docimax.Data_ICD.DAL
                                  o.OrderStatus,
                                  o.Createtime,
                                  o.ORGID,
+                                 o.OrderType,
                                  o.ORGSubID,
                                  or.OrganizationName,
                                  o.CodeOrderID
@@ -267,6 +270,7 @@ namespace Docimax.Data_ICD.DAL
                         ORGID = e.ORGID ?? 0,
                         ORGName = e.OrganizationName,
                         OrderStatus = (ICDOrderState)(e.OrderStatus ?? 1000),
+                        OrderType = (OrderTypeEnum)(e.OrderType ?? 0),
                     }).ToList();
                 queryModel.TotalRecords = query.Count();
                 queryModel.Content = resultQuery;
@@ -442,7 +446,7 @@ namespace Docimax.Data_ICD.DAL
                     }
                     var stateInt = ICDOrderState.待抢单.GetHashCode();
                     ICodeNum codeNumBuilder = new CodeNum_Access();
-                    var org = entity.Dic_Organization.FirstOrDefault(e => e.AuthorizeCode == authCode);
+                    var org = entity.ORG_Service_Config.FirstOrDefault(e => e.AuthCode == authCode);//todo  编码版本冗余存入订单表
                     var model = new Code_Order
                     {
                         AdmissionTimes = mr.AdmissionTimes,
@@ -452,7 +456,9 @@ namespace Docimax.Data_ICD.DAL
                         MedicalRecordPath = medicalRecordPath,
                         PlatformOrderCode = codeNumBuilder.InitCodeNum("IC"),
                         AUTHCode = authCode,
-                        ORGID = org == null ? 0 : org.OrganizationID,
+                        ORGID = org == null ? 0 : org.ORGID,
+                        Diagnosis_ICD_VersionID = org == null ? 0 : org.Diagnosis_ICD_VersionID,
+                        Operation_ICD_VersionID = org == null ? 0 : org.Operation_ICD_VersionID,
                         OrderStatus = stateInt,
                         Createtime = DateTime.Now,
                         LastModifyTime = DateTime.Now,
@@ -489,6 +495,8 @@ namespace Docimax.Data_ICD.DAL
                     PlatformOrderCode = model.PlatformOrderCode,
                     CaseNum = model.CaseNum,
                     MedicalRecordPath = model.MedicalRecordPath,
+                    Diagnosis_ICD_VersionID = model.Diagnosis_ICD_VersionID??0,
+                    Operation_ICD_VersionID = model.Operation_ICD_VersionID??0,
                 };
             }
         }

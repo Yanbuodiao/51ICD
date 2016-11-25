@@ -12,7 +12,7 @@ namespace Docimax.Web_ICD.Controllers
     public class UnRobItemController : Controller
     {
         // GET: UnRobItem
-        public ActionResult Index(ICDPagedList<CodeOrderSearchModel, CodeOrderModel> model)
+        public ActionResult Index(ICDTimePagedList<CodeOrderSearchModel, CodeOrderModel> model)
         {
             if (model.SearchModel == null)
             {
@@ -24,13 +24,13 @@ namespace Docimax.Web_ICD.Controllers
             return View(model);
         }
 
-        public ActionResult Claim(int orderID, string stamp)
+        public ActionResult Claim(int orderID, string stamp, OrderTypeEnum orderType)
         {
             ICode_Order access = new DAL_Code_Order();
             var result = access.ClaimCodeOrder(User.Identity.GetUserId(), stamp, orderID);
             if (result.IsSuccess)
             {
-                return RedirectToAction("Code", "ServiceItem", new { orderID = orderID });
+                return RedirectToAction("Code", "ServiceItem", new { orderID = orderID, orderType = orderType });
             }
             return Content(result.ErrorStr);
         }

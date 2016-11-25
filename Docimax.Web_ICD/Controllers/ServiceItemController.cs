@@ -6,13 +6,17 @@ using System.Web.Mvc;
 using Docimax.Interface_ICD.Interface;
 using Docimax.Data_ICD.DAL;
 using System.Linq;
+using Docimax.Common_ICD.File;
+using Docimax.Common;
+using Docimax.Interface_ICD.Model.UploadModel;
+using Docimax.Common_ICD;
 
 namespace Docimax.Web_ICD.Controllers
 {
     [Authorize]
     public class ServiceItemController : Controller
     {
-        public ActionResult Index(ICDPagedList<CodeOrderSearchModel, CodeOrderModel> model)
+        public ActionResult Index(ICDTimePagedList<CodeOrderSearchModel, CodeOrderModel> model)
         {
             if (model.SearchModel == null)
             {
@@ -26,8 +30,12 @@ namespace Docimax.Web_ICD.Controllers
             return View(model);
         }
 
-        public ActionResult Code(int orderID)
+        public ActionResult Code(int orderID, OrderTypeEnum orderType)
         {
+            if (orderType == OrderTypeEnum.InterfaceOrder)
+            {
+                return RedirectToAction("InterfaceOrdeCode", new { orderID = orderID });
+            }
             ICode_Order access = new DAL_Code_Order();
             var model = access.GetCodeOrderDetail(User.Identity.GetUserId(), orderID);
             initalDiagnosis(model);
@@ -67,6 +75,23 @@ namespace Docimax.Web_ICD.Controllers
             }
             ModelState.AddModelError("", result.ErrorStr);
             return returnOriginModel(model, access, userID);
+        }
+
+        public ActionResult InterfaceOrdeCode(int orderID)
+        {
+            ICode_Order access = new DAL_Code_Order();
+            var model = access.GetCodeOrder(orderID);
+            if (model != null)
+            {
+                var bytes = FileHelper.GetFile(model.MedicalRecordPath);
+                var str = System.Text.Encoding.UTF8.GetString(bytes);
+                var mr = JsonHelper.DeserializeObject<MedicalRecordCoding>(str);
+                mr = initalCode(mr, model.Diagnosis_ICD_VersionID, model.Operation_ICD_VersionID);
+                ViewBag.PlatformOrderCode = model.PlatformOrderCode;
+                return View(mr);
+            }
+            //todo  错误提示
+            return View();
         }
 
         #region private Function
@@ -128,6 +153,45 @@ namespace Docimax.Web_ICD.Controllers
                 }
             }
             model.DiagnosisList = newDiagnosisList;
+        }
+
+        private MedicalRecordCoding initalCode(MedicalRecordCoding mr, int diagnosisVersionId, int operateVersionId)
+        {
+            if (mr.DiagnosisCodeResultList == null)
+            {
+                //初始化诊断编码结果
+                if (mr.DischargeDiagnosisList != null)//首页有结果直接取首页结果
+                {
+                    mr.DiagnosisCodeResultList = mr.DischargeDiagnosisList
+                        .Select(e => new DiagnosisCodeResult { Index = e.Index, Diagnosis = e.Diagnosis, DiagnosisCode = ICDVersionList.GetCodeByName(diagnosisVersionId, e.Diagnosis) }).ToList();
+                }
+                else if (mr.DischargeRecord != null && mr.DischargeRecord.DischargeDiagnosis != null)//首页没结果去出院记录或者死亡记录中取结果
+                {
+                    mr.DiagnosisCodeResultList = mr.DischargeRecord.DischargeDiagnosis.Split(';').Where(e => !string.IsNullOrWhiteSpace(e))
+                        .Select(t => new DiagnosisCodeResult { Index = 1, Diagnosis = t, DiagnosisCode = ICDVersionList.GetCodeByName(diagnosisVersionId, t) }).ToList();
+                }
+                else if (mr.DeathNote != null && mr.DeathNote.DeathDiagnosis != null)
+                {
+                    mr.DiagnosisCodeResultList = mr.DeathNote.DeathDiagnosis.Split(';').Where(e => !string.IsNullOrWhiteSpace(e))
+                        .Select(t => new DiagnosisCodeResult { Index = 1, Diagnosis = t, DiagnosisCode = ICDVersionList.GetCodeByName(diagnosisVersionId, t) }).ToList();
+                }
+            }
+            if (mr.OperationCodeResultList == null)
+            {
+                //初始化手术操作编码结果
+                if (mr.ProceduresList != null)//首页有结果直接取首页结果
+                {
+                    mr.OperationCodeResultList = mr.ProceduresList
+                        .Select(e => new OperationCodeResult { Index = e.Index, OperationName = e.OperationName, OperationCode = ICDVersionList.GetCodeByName(operateVersionId, e.OperationName) }).ToList();
+                }
+                else if (mr.OperationDetailList != null)//先去手术详细记录中取手术名称
+                {
+                    mr.OperationCodeResultList = mr.OperationDetailList
+                        .Select(e => new OperationCodeResult { OperationName = e.OperationName, OperationCode = ICDVersionList.GetCodeByName(operateVersionId, e.OperationName) }).ToList();
+                    //todo   需要调研临时医嘱中操作的进入首页结果中
+                }
+            }
+            return mr;
         }
 
         private ActionResult returnOriginModel(CodeOrderModel model, ICode_Order access, string userID)

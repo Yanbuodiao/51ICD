@@ -17,9 +17,12 @@ namespace Docimax.Data_ICD.Entity
         public int ORG_ServiceID { get; set; }
         public Nullable<int> ORGID { get; set; }
         public Nullable<int> ServiceID { get; set; }
+        public string AuthCode { get; set; }
         public Nullable<System.DateTime> BeginTime { get; set; }
         public Nullable<System.DateTime> EndTime { get; set; }
         public Nullable<int> ServiceAuditStatus { get; set; }
+        public Nullable<int> Diagnosis_ICD_VersionID { get; set; }
+        public Nullable<int> Operation_ICD_VersionID { get; set; }
         public Nullable<System.DateTime> CreateTime { get; set; }
         public Nullable<int> CreateUserID { get; set; }
         public Nullable<System.DateTime> LastModityTime { get; set; }

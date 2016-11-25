@@ -17,7 +17,7 @@ namespace Docimax.Web_ICD.Controllers
     [Authorize]
     public class UploadItemController : BaseController
     {
-        public ActionResult Index(ICDPagedList<CodeOrderSearchModel, CodeOrderModel> model)
+        public ActionResult Index(ICDTimePagedList<CodeOrderSearchModel, CodeOrderModel> model)
         {
             if (model.SearchModel == null)
             {

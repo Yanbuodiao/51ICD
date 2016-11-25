@@ -40,21 +40,21 @@ namespace Docimax.Interface_ICD.Interface
         /// </summary>
         /// <param name="queryModel">含查询条件和查询结果的实体</param>
         /// <returns>符合条件的订单列表</returns>
-        ICDPagedList<CodeOrderSearchModel, CodeOrderModel> GetUpLoadedCodeOrderList(ICDPagedList<CodeOrderSearchModel, CodeOrderModel> queryModel);
+        ICDTimePagedList<CodeOrderSearchModel, CodeOrderModel> GetUpLoadedCodeOrderList(ICDTimePagedList<CodeOrderSearchModel, CodeOrderModel> queryModel);
 
         /// <summary>
         /// 获取待抢单的编码订单列表
         /// </summary>
         /// <param name="queryModel">含查询条件和查询结果的实体</param>
         /// <returns>符合条件的订单列表</returns>
-        ICDPagedList<CodeOrderSearchModel, CodeOrderModel> GetUnClaimOrderList(ICDPagedList<CodeOrderSearchModel, CodeOrderModel> queryModel);
+        ICDTimePagedList<CodeOrderSearchModel, CodeOrderModel> GetUnClaimOrderList(ICDTimePagedList<CodeOrderSearchModel, CodeOrderModel> queryModel);
 
         /// <summary>
         /// 根据条件获取属于编码人的编码订单列表
         /// </summary>
         /// <param name="queryModel">查询条件</param>
         /// <returns>符合条件的订单列表</returns>
-        ICDPagedList<CodeOrderSearchModel, CodeOrderModel> GetMyCodeOrderList(ICDPagedList<CodeOrderSearchModel, CodeOrderModel> queryModel);
+        ICDTimePagedList<CodeOrderSearchModel, CodeOrderModel> GetMyCodeOrderList(ICDTimePagedList<CodeOrderSearchModel, CodeOrderModel> queryModel);
 
         /// <summary>
         /// 领单操作

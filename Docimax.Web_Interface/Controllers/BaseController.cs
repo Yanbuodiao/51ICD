@@ -1,6 +1,7 @@
 ﻿using Docimax.Common;
 using Docimax.Common.Encryption;
 using Docimax.Data_ICD.DAL;
+using Docimax.Interface_ICD.Enum;
 using Docimax.Interface_ICD.Interface;
 using Docimax.Interface_ICD.Message;
 using Docimax.Interface_ICD.Model.Log;
@@ -42,6 +43,11 @@ namespace Docimax.Web_Interface.Controllers
             if (orgModel == null)
             {
                 filterContext.Result = buildResponseAndLog(MessageStr.OrganizationNull, log);
+                return;
+            }
+            if (orgModel.Certificate != CertificateState.认证通过)
+            {
+                filterContext.Result = buildResponseAndLog(MessageStr.OrganizationFail, log);
                 return;
             }
             var checkSign = ICD_EncryptUtils.RSACheckSign(uploadRequest.ToSignDictionary(), uploadRequest.Sign, Server.MapPath(orgModel.CheckSignPubKeyPath));

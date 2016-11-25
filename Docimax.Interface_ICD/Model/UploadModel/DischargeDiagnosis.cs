@@ -40,7 +40,7 @@ namespace Docimax.Interface_ICD.Model.UploadModel
     public class DischargeDiagnosis
     {
         /// <summary>
-        /// 诊断
+        /// 临床诊断名称
         /// </summary>
         public string Diagnosis { get; set; }
         /// <summary>
@@ -180,7 +180,7 @@ namespace Docimax.Interface_ICD.Model.UploadModel
         /// </summary>
         public string TreatmentProcedure { get; set; }
         /// <summary>
-        /// 出院诊断
+        /// 出院诊断，多个诊断间用英文分号;分隔
         /// </summary>
         public string DischargeDiagnosis { get; set; }
         /// <summary>

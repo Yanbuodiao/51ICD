@@ -5,13 +5,13 @@ namespace Docimax.Web_ICD.Controllers
 {
     public class DictionaryController : Controller
     {
-        public ActionResult ICD_Diagnosis_Typeahead(string queryStr = null)
+        public ActionResult ICD_Diagnosis_Typeahead(string queryStr = null,int icdVersionID=1)
         {
-            return Json(ICDVersionList.GetICDList(1, queryStr), JsonRequestBehavior.AllowGet);
+            return Json(ICDVersionList.GetICDList(icdVersionID, queryStr), JsonRequestBehavior.AllowGet);
         }
-        public ActionResult ICD_Operate_Typeahead(string queryStr = null)
+        public ActionResult ICD_Operate_Typeahead(string queryStr = null, int icdVersionID = 2)
         {
-            return Json(ICDVersionList.GetICDList(2, queryStr), JsonRequestBehavior.AllowGet);
+            return Json(ICDVersionList.GetICDList(icdVersionID, queryStr), JsonRequestBehavior.AllowGet);
         }
     }
 }

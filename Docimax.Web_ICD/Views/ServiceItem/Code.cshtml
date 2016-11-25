@@ -14,7 +14,7 @@
             datumTokenizer: Bloodhound.tokenizers.obj.whitespace('diagnosis'),
             queryTokenizer: Bloodhound.tokenizers.whitespace,
             remote: {
-                url: '/Dictionary/ICD_Diagnosis_Typeahead?queryStr=%QUERY',
+                url: '/Dictionary/ICD_Diagnosis_Typeahead?queryStr=%QUERY&icdVersionID=1',
                 wildcard: '%QUERY'
             },
         });
@@ -74,42 +74,42 @@
             <div class="span3">
                 @if (Model != null && Model.ItemList != null)
                 {
-                <ul class="nav nav-list">
-                    @foreach (var item in Model.ItemList)
+                    <ul class="nav nav-list">
+                        @foreach (var item in Model.ItemList)
                         {
-                    <li>
-                        @Html.Label(item.ItemName, htmlAttributes: new { @class = "tree-toggle nav-header first-level" })
-                        <ul class="nav nav-list tree">
-                            @if (item.ChildrenList != null && item.ChildrenList.Count > 0)
+                            <li>
+                                @Html.Label(item.ItemName, htmlAttributes: new { @class = "tree-toggle nav-header first-level" })
+                                <ul class="nav nav-list tree">
+                                    @if (item.ChildrenList != null && item.ChildrenList.Count > 0)
                                     {
                                         foreach (var sunItem in item.ChildrenList)
                                         {
-                            <li class="tree">
-                                @Html.Label(sunItem.ItemName, htmlAttributes: new { @class = "tree-toggle nav-header" })
-                                <ul class="nav nav-list tree">
-                                    @foreach (var file in sunItem.UploadedItemList)
+                                            <li class="tree">
+                                                @Html.Label(sunItem.ItemName, htmlAttributes: new { @class = "tree-toggle nav-header" })
+                                                <ul class="nav nav-list tree">
+                                                    @foreach (var file in sunItem.UploadedItemList)
                                                     {
-                                        <li>
-                                            <a style="cursor: pointer;" class="tree-nav-a" data-url="@file.AttachURL" data-contenttype="@file.ContentType" onclick="showPic(this)">@file.AttachFileName</a>
-                                        </li>
+                                                        <li>
+                                                            <a style="cursor: pointer;" class="tree-nav-a" data-url="@file.AttachURL" data-contenttype="@file.ContentType" onclick="showPic(this)">@file.AttachFileName</a>
+                                                        </li>
                                                     }
-                                </ul>
-                            </li>
+                                                </ul>
+                                            </li>
                                         }
                                     }
                                     else
                                     {
                                         foreach (var file in item.UploadedItemList)
                                         {
-                            <li class="tree">
-                                <a style="cursor: pointer;" class="tree-nav-a" data-url="@file.AttachURL" data-contenttype="@file.ContentType" onclick="showPic(this)">@file.AttachFileName</a>
-                            </li>
+                                            <li class="tree">
+                                                <a style="cursor: pointer;" class="tree-nav-a" data-url="@file.AttachURL" data-contenttype="@file.ContentType" onclick="showPic(this)">@file.AttachFileName</a>
+                                            </li>
                                         }
                                     }
-                        </ul>
-                    </li>
+                                </ul>
+                            </li>
                         }
-                </ul>
+                    </ul>
                 }
             </div>
         </div>
@@ -129,7 +129,7 @@
                     @Html.TextBoxFor(model => model.DiagnosisList[index].DisplayText, new
                {
                    @class = "form-control typeahead",
-                   @placeholder = (!string.IsNullOrWhiteSpace(@Model.DiagnosisList[index].Description)) ? @Model.DiagnosisList[index].Description : "诊断或编码",
+                   @placeholder = "诊断或编码",
                    @style = "max-width: 480px;"
                }) if (index == 0)
                   {

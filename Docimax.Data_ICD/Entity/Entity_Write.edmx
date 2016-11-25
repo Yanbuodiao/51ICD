@@ -200,6 +200,8 @@
           <Property Name="AUTHCode" Type="nvarchar" MaxLength="300" />
           <Property Name="ORGID" Type="int" />
           <Property Name="ORGSubID" Type="int" />
+          <Property Name="Diagnosis_ICD_VersionID" Type="int" />
+          <Property Name="Operation_ICD_VersionID" Type="int" />
           <Property Name="PickedTime" Type="datetime" />
           <Property Name="PickedUserID" Type="nvarchar" MaxLength="128" />
           <Property Name="ServiceID" Type="int" />
@@ -466,9 +468,12 @@
           <Property Name="ORG_ServiceID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ORGID" Type="int" />
           <Property Name="ServiceID" Type="int" />
+          <Property Name="AuthCode" Type="nvarchar" MaxLength="300" />
           <Property Name="BeginTime" Type="datetime" />
           <Property Name="EndTime" Type="datetime" />
           <Property Name="ServiceAuditStatus" Type="int" />
+          <Property Name="Diagnosis_ICD_VersionID" Type="int" />
+          <Property Name="Operation_ICD_VersionID" Type="int" />
           <Property Name="CreateTime" Type="datetime" />
           <Property Name="CreateUserID" Type="int" />
           <Property Name="LastModityTime" Type="datetime" />
@@ -1010,6 +1015,8 @@
           <Property Name="AUTHCode" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
           <Property Name="ORGID" Type="Int32" />
           <Property Name="ORGSubID" Type="Int32" />
+          <Property Name="Diagnosis_ICD_VersionID" Type="Int32" />
+          <Property Name="Operation_ICD_VersionID" Type="Int32" />
           <Property Name="PickedTime" Type="DateTime" Precision="3" />
           <Property Name="PickedUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="ServiceID" Type="Int32" />
@@ -1276,9 +1283,12 @@
           <Property Name="ORG_ServiceID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ORGID" Type="Int32" />
           <Property Name="ServiceID" Type="Int32" />
+          <Property Name="AuthCode" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
           <Property Name="BeginTime" Type="DateTime" Precision="3" />
           <Property Name="EndTime" Type="DateTime" Precision="3" />
           <Property Name="ServiceAuditStatus" Type="Int32" />
+          <Property Name="Diagnosis_ICD_VersionID" Type="Int32" />
+          <Property Name="Operation_ICD_VersionID" Type="Int32" />
           <Property Name="CreateTime" Type="DateTime" Precision="3" />
           <Property Name="CreateUserID" Type="Int32" />
           <Property Name="LastModityTime" Type="DateTime" Precision="3" />
@@ -1699,6 +1709,8 @@
                 <ScalarProperty Name="ServiceID" ColumnName="ServiceID" />
                 <ScalarProperty Name="PickedUserID" ColumnName="PickedUserID" />
                 <ScalarProperty Name="PickedTime" ColumnName="PickedTime" />
+                <ScalarProperty Name="Operation_ICD_VersionID" ColumnName="Operation_ICD_VersionID" />
+                <ScalarProperty Name="Diagnosis_ICD_VersionID" ColumnName="Diagnosis_ICD_VersionID" />
                 <ScalarProperty Name="ORGSubID" ColumnName="ORGSubID" />
                 <ScalarProperty Name="ORGID" ColumnName="ORGID" />
                 <ScalarProperty Name="AUTHCode" ColumnName="AUTHCode" />
@@ -1983,9 +1995,12 @@
                 <ScalarProperty Name="LastModityTime" ColumnName="LastModityTime" />
                 <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
                 <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="Operation_ICD_VersionID" ColumnName="Operation_ICD_VersionID" />
+                <ScalarProperty Name="Diagnosis_ICD_VersionID" ColumnName="Diagnosis_ICD_VersionID" />
                 <ScalarProperty Name="ServiceAuditStatus" ColumnName="ServiceAuditStatus" />
                 <ScalarProperty Name="EndTime" ColumnName="EndTime" />
                 <ScalarProperty Name="BeginTime" ColumnName="BeginTime" />
+                <ScalarProperty Name="AuthCode" ColumnName="AuthCode" />
                 <ScalarProperty Name="ServiceID" ColumnName="ServiceID" />
                 <ScalarProperty Name="ORGID" ColumnName="ORGID" />
                 <ScalarProperty Name="ORG_ServiceID" ColumnName="ORG_ServiceID" />

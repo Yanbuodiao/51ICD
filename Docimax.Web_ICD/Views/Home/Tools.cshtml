@@ -1,0 +1,86 @@
+﻿@using Docimax.Interface_ICD.Model
+@using PagedList.Mvc
+@using Docimax.Common
+@using Docimax.Interface_ICD.Enum
+
+@model ICDPagedList<CodeSearchModel, ICDModel>
+@{
+    ViewBag.Title = "icd字典查询";
+}
+<script language="javascript" type="text/javascript">
+    $(document).ready(function () {
+        listenRadioIdClick();
+        //click first on load
+        $("input[name='id']:first").trigger('click');
+    });
+
+    function listenRadioIdClick() {
+        var ddlProbeUrl = '@Url.Action("DropDownParial")';
+        $("input[name='SearchModel.ICDType']").click(function () {
+            var id = $(this).val();
+            //perform ajax request
+            $.get(ddlProbeUrl, { icdType: id, dropDownListName: "SearchModel.IcdVersionID" }, function (data) {
+                $("#SearchModel_IcdVersionID").replaceWith(data);;
+            });
+        });
+    }
+</script>
+<h2>@ViewBag.Title</h2>
+<hr />
+@using (Html.BeginForm("Tools", "Home", FormMethod.Get))
+{
+    <div class="row">
+        <div class="col-sm-11">
+            <div class="form-inline">
+                <div class="radio">
+                    <label style="font-size:16px;">
+                        @Html.RadioButtonFor(model => model.SearchModel.ICDType, ICDTypeEnum.诊断编码, new { }) @ICDTypeEnum.诊断编码.ToString()
+                    </label>
+                </div>
+                <div class="radio">
+                    <label style="font-size:16px;">
+                        @Html.RadioButtonFor(model => model.SearchModel.ICDType, ICDTypeEnum.手术及操作编码, new { })@ICDTypeEnum.手术及操作编码.ToString()
+                    </label>
+                </div>
+                @Html.DropDownListFor(model => model.SearchModel.IcdVersionID, (IEnumerable<SelectListItem>)ViewData["IcdVersion"], new { @class = "form-control" })
+                @Html.TextBoxFor(model => model.TextFilter, new { @class = "form-control", @placeholder = "请输入名称、拼音简码或编码" })
+            </div>
+        </div>
+        <div class="pull-right col-lg-1">
+            <button class="btn btn-default" type="submit">
+                查询
+                <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+            </button>
+        </div>
+    </div>
+}
+<div style="margin-top:17px;">
+    @if (Model != null && Model.Content != null)
+    {
+        var grid = new WebGrid(
+                   canPage: true,
+                   rowsPerPage: Model.PageSize,
+                   canSort: false,
+                   ajaxUpdateContainerId: "grid");
+        grid.Bind(Model.Content, rowCount: Model.TotalRecords, autoSortAndPage: false);
+        grid.Pager(WebGridPagerModes.All);
+        @grid.GetHtml(htmlAttributes: new { id = "grid" },
+            fillEmptyRows: false,
+            tableStyle: "table table-bordered table-hover",
+            mode: WebGridPagerModes.All,
+            firstText: "第一页",
+            previousText: "上一页",
+            nextText: "下一页",
+            lastText: "最后一页",
+            columns: grid.Columns(
+                                  grid.Column("ICD_Name", "名称", style: "col-lg-6", canSort: false),
+                                  grid.Column("ICD_Code", "编码", style: "col-lg-4", canSort: false),
+                                  grid.Column(header: "详情", canSort: false, style: "action",
+                format: @<text>
+                                    <a href="@Url.Action("ICD_Detail", "Dictionary", new { IcdVersionID = @Model.SearchModel.IcdVersionID, IcdID = @item.ICDID })" class="btn btn-default">
+                                        查看
+                                    </a>
+                </text>)
+                                                                                                                        ));
+    }
+</div>

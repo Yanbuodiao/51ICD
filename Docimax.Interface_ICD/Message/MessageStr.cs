@@ -85,6 +85,14 @@ namespace Docimax.Interface_ICD.Message
         /// B007:病案重复
         /// </summary>
         public const string MedicalRecordRepeat = "B007:病案重复";
+        /// <summary>
+        ///B008:医疗机构未认证  机构未通过服务认证
+        /// </summary>
+        public const string OrganizationFail = "B008:医疗机构未认证";
+        /// <summary>
+        ///B009:服务未开通  机构未通过服务认证
+        /// </summary>
+        public const string ServiceFail = "B009:服务未开通";
         #endregion
     }
 }

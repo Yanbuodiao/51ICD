@@ -12,7 +12,7 @@ namespace Docimax.Web_ICD.Controllers_Manage
     [Authorize(Roles = ConstStr.PlatformRoleName)]
     public class ManageUserServiceController : Controller
     {
-        public ActionResult Index(ICDPagedList<UserServiceSearch, UserServiceModel> model, string message = "")
+        public ActionResult Index(ICDTimePagedList<UserServiceSearch, UserServiceModel> model, string message = "")
         {
             ViewBag.StatusMessage = message;
             if (model.SearchModel == null)

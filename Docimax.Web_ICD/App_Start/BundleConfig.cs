@@ -26,6 +26,16 @@ namespace Docimax.Web_ICD
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/site.css"));
+
+
+
+            bundles.Add(new ScriptBundle("~/bundles/angularJS").Include(
+                   "~/Scripts/angular.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/customJS").Include(
+                                 "~/Scripts/CodeScript/Module.js",
+                                 "~/Scripts/CodeScript/Service.js",
+                                 "~/Scripts/CodeScript/Controller.js"));
         }
     }
 }
