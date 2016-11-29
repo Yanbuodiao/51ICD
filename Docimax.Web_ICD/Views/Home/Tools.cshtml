@@ -7,23 +7,41 @@
 @{
     ViewBag.Title = "icd字典查询";
 }
+<script type="text/javascript" src="~/Scripts/typeahead.bundle.js"></script>
+<script type="text/javascript" src="~/Scripts/handlebars.js"></script>
 <script language="javascript" type="text/javascript">
     $(document).ready(function () {
         listenRadioIdClick();
-        //click first on load
         $("input[name='id']:first").trigger('click');
-    });
 
-    function listenRadioIdClick() {
-        var ddlProbeUrl = '@Url.Action("DropDownParial")';
-        $("input[name='SearchModel.ICDType']").click(function () {
-            var id = $(this).val();
-            //perform ajax request
-            $.get(ddlProbeUrl, { icdType: id, dropDownListName: "SearchModel.IcdVersionID" }, function (data) {
-                $("#SearchModel_IcdVersionID").replaceWith(data);;
-            });
+
+        $('.form-control.icd').typeahead({
+            highlight: true,
+        },
+        {
+            name: 'icdSuggestion',
+            display: 'DisplayText',
+            source: function (query, syncResults, asyncResults) {
+                var icdVersionID = $('#SearchModel_IcdVersionID').val();
+                $.post('/Dictionary/ICD_Diagnosis_Typeahead', { queryStr: query, icdVersionID: icdVersionID }, function (data) {
+                    asyncResults(data)
+                });
+            },
+            templates: {
+                suggestion: Handlebars.compile('<div><strong>{{ICD_Code}}</strong> – {{ICD_Name}}</div>')
+            }
         });
-    }
+
+        function listenRadioIdClick() {
+            var ddlProbeUrl = '@Url.Action("DropDownParial")';
+            $("input[name='SearchModel.ICDType']").click(function () {
+                var id = $(this).val();
+                $.get(ddlProbeUrl, { icdType: id, dropDownListName: "SearchModel.IcdVersionID" }, function (data) {
+                    $("#SearchModel_IcdVersionID").replaceWith(data);;
+                });
+            });
+        }
+    });
 </script>
 <h2>@ViewBag.Title</h2>
 <hr />
@@ -43,7 +61,7 @@
                     </label>
                 </div>
                 @Html.DropDownListFor(model => model.SearchModel.IcdVersionID, (IEnumerable<SelectListItem>)ViewData["IcdVersion"], new { @class = "form-control" })
-                @Html.TextBoxFor(model => model.TextFilter, new { @class = "form-control", @placeholder = "请输入名称、拼音简码或编码" })
+                @Html.TextBoxFor(model => model.TextFilter, new { @class = "form-control icd", @placeholder = "请输入名称、拼音简码或编码" })
             </div>
         </div>
         <div class="pull-right col-lg-1">
@@ -81,6 +99,6 @@
                                         查看
                                     </a>
                 </text>)
-                                                                                                                        ));
+                                                                                                                                        ));
     }
 </div>

@@ -76,6 +76,10 @@ namespace Docimax.Web_ICD.Controllers
 
         private List<ICDModel> initialICDList(ICDPagedList<CodeSearchModel, ICDModel> model)
         {
+            if (model != null && model.TextFilter != null && model.TextFilter.Contains('-'))
+            {
+                model.TextFilter = model.TextFilter.Split('-')[0];
+            }
             var result = ICDVersionList.GetICDList(model.SearchModel.IcdVersionID, model.TextFilter, int.MaxValue);
             model.TotalRecords = result.Count();
             result = result.Skip((model.Page - 1) * model.PageSize)

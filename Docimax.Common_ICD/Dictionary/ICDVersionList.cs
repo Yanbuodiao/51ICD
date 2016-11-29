@@ -12,7 +12,7 @@ namespace Docimax.Common_ICD
     public static class ICDVersionList
     {
         private static List<ICDVersionModel> icdVersionList = new List<ICDVersionModel>();
-        public static List<ICDModel> GetICDList(int icdVersionID, string queryStr,int recordCount=6)
+        public static List<ICDModel> GetICDList(int icdVersionID, string queryStr, int recordCount = 6)
         {
             if (icdVersionID <= 0)
             {
@@ -23,7 +23,10 @@ namespace Docimax.Common_ICD
             {
                 IICDRepository access = new DAL_ICDRepository();
                 icdVersionTemp = access.GetICDVersionWithICD(icdVersionID);
-                icdVersionList.Add(icdVersionTemp);
+                if (icdVersionTemp != null)
+                {
+                    icdVersionList.Add(icdVersionTemp);
+                }
             }
             if (icdVersionTemp != null && icdVersionTemp.ICDList != null)
             {
