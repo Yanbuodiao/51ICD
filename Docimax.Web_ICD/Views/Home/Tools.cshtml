@@ -42,6 +42,26 @@
             });
         }
     });
+
+    function search(currentPage) {
+        //分页参数
+        var PageSize = 10;
+        var CurrentPage = currentPage;
+        $.ajax({
+            url: '@Url.Action("_Tools", "Home")',
+            data: {
+                PageSize: PageSize,
+                Page: CurrentPage,
+                TextFilter: $("#TextFilter").val(),
+                SearchModel: { IcdVersionID: $('#SearchModel_IcdVersionID').val() }
+            },
+            datatype: "text",
+            type: "post",
+            success: function (data) {
+                $("#ICDResult").html(data);
+            }
+        });
+    }
 </script>
 <h2>@ViewBag.Title</h2>
 <hr />
@@ -60,19 +80,19 @@
                         @Html.RadioButtonFor(model => model.SearchModel.ICDType, ICDTypeEnum.手术及操作编码, new { })@ICDTypeEnum.手术及操作编码.ToString()
                     </label>
                 </div>
-                @Html.DropDownListFor(model => model.SearchModel.IcdVersionID, (IEnumerable<SelectListItem>)ViewData["IcdVersion"], new { @class = "form-control" })
+                @Html.DropDownListFor(model => model.SearchModel.IcdVersionID, (IEnumerable<SelectListItem>)ViewData["IcdVersion"], new { @class = "form-control",@style="width:100%" })
                 @Html.TextBoxFor(model => model.TextFilter, new { @class = "form-control icd", @placeholder = "请输入名称、拼音简码或编码" })
             </div>
         </div>
         <div class="pull-right col-lg-1">
-            <button class="btn btn-default" type="submit">
+            <button class="btn btn-default" type="button" onclick="search(1);">
                 查询
                 <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
             </button>
         </div>
     </div>
 }
-<div style="margin-top:17px;">
+<div style="margin-top:17px;" id="ICDResult">
     @if (Model != null && Model.Content != null)
     {
         var grid = new WebGrid(
@@ -99,6 +119,6 @@
                                         查看
                                     </a>
                 </text>)
-                                                                                                                                        ));
+                                                                                                                                         ));
     }
 </div>

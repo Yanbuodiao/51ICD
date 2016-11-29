@@ -44,25 +44,14 @@ namespace Docimax.Web_ICD.Controllers
         }
         public ActionResult Tools(ICDPagedList<CodeSearchModel, ICDModel> model)
         {
-            if (model == null)
-            {
-                model = new ICDPagedList<CodeSearchModel, ICDModel>();
-            }
-            if (model.SearchModel == null)
-            {
-                model.SearchModel = new CodeSearchModel { ICDType = ICDTypeEnum.诊断编码, IcdVersionID = 1 };
-            }
-
-            IService access = new DAL_Service();
-            Dictionary<int, string> items = access.GetICDVersion(model.SearchModel.ICDType);
-            if (model.SearchModel.IcdVersionID == 0 && items != null && items.Count > 0)
-            {
-                model.SearchModel.IcdVersionID = items.FirstOrDefault().Key;
-            }
-            var selectList = new SelectList(items, "Key", "Value");
-            ViewData["IcdVersion"] = selectList;
-            model.Content = initialICDList(model);
+            model = initialList(model);
             return View(model);
+        }
+        
+        public PartialViewResult _Tools(ICDPagedList<CodeSearchModel, ICDModel> model)
+        {
+            model = initialList(model);
+            return PartialView(model);
         }
 
         public ActionResult DropDownParial(ICDTypeEnum icdType, string dropDownListName)
@@ -85,6 +74,28 @@ namespace Docimax.Web_ICD.Controllers
             result = result.Skip((model.Page - 1) * model.PageSize)
                     .Take(model.PageSize).ToList();
             return result;
+        }
+        private ICDPagedList<CodeSearchModel, ICDModel> initialList(ICDPagedList<CodeSearchModel, ICDModel> model)
+        {
+            if (model == null)
+            {
+                model = new ICDPagedList<CodeSearchModel, ICDModel>();
+            }
+            if (model.SearchModel == null)
+            {
+                model.SearchModel = new CodeSearchModel { ICDType = ICDTypeEnum.诊断编码, IcdVersionID = 1 };
+            }
+
+            IService access = new DAL_Service();
+            Dictionary<int, string> items = access.GetICDVersion(model.SearchModel.ICDType);
+            if (model.SearchModel.IcdVersionID == 0 && items != null && items.Count > 0)
+            {
+                model.SearchModel.IcdVersionID = items.FirstOrDefault().Key;
+            }
+            var selectList = new SelectList(items, "Key", "Value");
+            ViewData["IcdVersion"] = selectList;
+            model.Content = initialICDList(model);
+            return model;
         }
     }
 }

@@ -1197,6 +1197,7 @@
     <Content Include="Views\ServiceItem\InterfaceOrdeCode.cshtml" />
     <Content Include="Scripts\version.json" />
     <Content Include="Views\Home\DropDownParial.cshtml" />
+    <Content Include="Views\Home\_Tools.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
