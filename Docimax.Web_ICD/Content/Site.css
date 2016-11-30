@@ -143,6 +143,7 @@ textarea {
     -moz-border-radius: 4px;
     border-radius: 4px;
     outline: none;
+    vertical-align: middle !important;
 }
 
 .typeahead {
@@ -169,8 +170,8 @@ textarea {
 }
 
 .twitter-typeahead {
-  width: 100%;
-  display:initial !important;
+    width: 100%;
+    display: initial !important;
 }
 
 
@@ -207,3 +208,15 @@ textarea {
 .gist {
     font-size: 14px;
 }
+
+
+ .panel-heading .accordion-toggle:after {
+        font-family: 'Glyphicons Halflings';
+        content: "\e114";
+        float: right;
+        color: grey;
+    }
+
+    .panel-heading .accordion-toggle.collapsed:after {
+        content: "\e080";
+    }

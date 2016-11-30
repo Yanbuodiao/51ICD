@@ -202,7 +202,6 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
-    <Content Include="Content\PagedList.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -281,6 +280,7 @@
     <Content Include="Scripts\angular-aria.min.js.map" />
     <Content Include="Scripts\angular-animate.min.js.map" />
     <Content Include="Scripts\angular.min.js.map" />
+    <None Include="Properties\PublishProfiles\FtpPublish_Azure.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\handlebars.amd.js" />
     <Content Include="Scripts\handlebars.amd.min.js" />
@@ -1198,6 +1198,7 @@
     <Content Include="Scripts\version.json" />
     <Content Include="Views\Home\DropDownParial.cshtml" />
     <Content Include="Views\Home\_Tools.cshtml" />
+    <Content Include="Views\Home\ICDDetail.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

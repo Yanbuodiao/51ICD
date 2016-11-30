@@ -7,22 +7,17 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Docimax.Data_ICD
+namespace Docimax.Data_ICD.Entity
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class Dic_Menu
+    public partial class BaseDic_ICD_Diagnosis_Remark
     {
-        public int MenuID { get; set; }
-        public string DisplayName { get; set; }
-        public string AreaName { get; set; }
-        public string ControllerName { get; set; }
-        public string ActionName { get; set; }
-        public Nullable<int> MenuIndex { get; set; }
-        public Nullable<int> ParentMenuID { get; set; }
-        public Nullable<int> RoleControl { get; set; }
-        public Nullable<System.DateTime> Createtime { get; set; }
+        public int ICDDiagnosisRemarkID { get; set; }
+        public Nullable<int> ICDID { get; set; }
+        public string RemarkPath { get; set; }
+        public Nullable<System.DateTime> CreateTime { get; set; }
         public string CreateUserID { get; set; }
         public Nullable<System.DateTime> LastModifyTime { get; set; }
         public string LastModifyUserID { get; set; }

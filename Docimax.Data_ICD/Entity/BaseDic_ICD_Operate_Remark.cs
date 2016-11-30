@@ -7,18 +7,16 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Docimax.Data_ICD
+namespace Docimax.Data_ICD.Entity
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class ORG_SubOrganization
+    public partial class BaseDic_ICD_Operate_Remark
     {
-        public int SubORGID { get; set; }
-        public Nullable<int> SubORGCode { get; set; }
-        public string SubORGName { get; set; }
-        public string SubORGAddress { get; set; }
-        public string ORGID { get; set; }
+        public int ICOperaterRemarkID { get; set; }
+        public Nullable<int> ICDID { get; set; }
+        public string RemarkPath { get; set; }
         public Nullable<System.DateTime> CreateTime { get; set; }
         public string CreateUserID { get; set; }
         public Nullable<System.DateTime> LastModifyTime { get; set; }

@@ -47,7 +47,7 @@ namespace Docimax.Web_ICD.Controllers
             model = initialList(model);
             return View(model);
         }
-        
+
         public PartialViewResult _Tools(ICDPagedList<CodeSearchModel, ICDModel> model)
         {
             model = initialList(model);
@@ -63,6 +63,15 @@ namespace Docimax.Web_ICD.Controllers
             return PartialView(selectList);
         }
 
+        public ActionResult ICDDetail(ICDTypeEnum icdType, int icdDetailID)
+        {
+            IICDRepository access = new DAL_ICDRepository();
+            var model = access.GetICDModel(icdDetailID, icdType);
+            return View(model);
+        }
+
+        #region 私有方法
+
         private List<ICDModel> initialICDList(ICDPagedList<CodeSearchModel, ICDModel> model)
         {
             if (model != null && model.TextFilter != null && model.TextFilter.Contains('-'))
@@ -71,7 +80,7 @@ namespace Docimax.Web_ICD.Controllers
             }
             var result = ICDVersionList.GetICDList(model.SearchModel.IcdVersionID, model.TextFilter, int.MaxValue);
             model.TotalRecords = result.Count();
-            result = result.Skip((model.Page - 1) * model.PageSize)
+            result = result.Skip((model.PageIndex - 1) * model.PageSize)
                     .Take(model.PageSize).ToList();
             return result;
         }
@@ -97,5 +106,7 @@ namespace Docimax.Web_ICD.Controllers
             model.Content = initialICDList(model);
             return model;
         }
+
+        #endregion
     }
 }

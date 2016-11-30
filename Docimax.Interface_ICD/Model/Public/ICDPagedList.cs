@@ -1,10 +1,11 @@
 ﻿using System;
 using PagedList;
 using System.Collections.Generic;
+using Docimax.Common;
 
 namespace Docimax.Interface_ICD.Model
 {
-    public class ICDTimePagedList<S, T> : ICDPagedList<S, T> 
+    public class ICDTimePagedList<S, T> : ICDPagedList<S, T>
     {
         public IPagedList<T> PageList { get; set; }
         /// <summary>
@@ -36,23 +37,23 @@ namespace Docimax.Interface_ICD.Model
         /// </summary>
         public string TextFilter { get; set; }
 
-        private int page;
+        private int pageIndex;
         /// <summary>
         /// 当前页数
         /// </summary>
-        public int Page
+        public int PageIndex
         {
             get
             {
-                if (page == 0)
+                if (pageIndex == 0)
                 {
-                    page = 1;
+                    pageIndex = 1;
                 }
-                return page;
+                return pageIndex;
             }
             set
             {
-                page = value;
+                pageIndex = value;
             }
         }
 
@@ -85,6 +86,11 @@ namespace Docimax.Interface_ICD.Model
         public int TotalPages
         {
             get { return (int)Math.Ceiling((decimal)TotalRecords / PageSize); }
+        }
+
+        public string PageScript
+        {
+            get { return PageHelper.InitialPageScript(TotalRecords, PageSize, PageIndex); }
         }
 
     }

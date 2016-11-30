@@ -33,6 +33,14 @@ namespace Docimax.Web_ICD.Models
         /// </summary>
         public int? CertificationFlag { get; set; }
         /// <summary>
+        /// 银行卡认证
+        /// </summary>
+        public int? BankCertificationFlag { get; set; }
+        /// <summary>
+        /// 所属单位，用户身份属性，与编码订单上传时需确认的医疗机构无关
+        /// </summary>
+        public string HospitalName { get; set; }
+        /// <summary>
         /// 所属组织ID
         /// </summary>
         public int? ORGID { get; set; }

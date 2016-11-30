@@ -7,25 +7,20 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Docimax.Data_ICD
+namespace Docimax.Data_ICD.Entity
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class User_Service_Provider
+    public partial class BaseDic_ICD_Operate_DataLink
     {
-        public int User_ServiceID { get; set; }
-        public string UserID { get; set; }
-        public Nullable<int> ServiceID { get; set; }
-        public Nullable<int> CertificationStatus { get; set; }
-        public Nullable<System.DateTime> ApplyTime { get; set; }
-        public Nullable<System.DateTime> PlatformAuditTime { get; set; }
-        public Nullable<int> PlatformAuditUserID { get; set; }
-        public Nullable<System.DateTime> PlatformAbendTime { get; set; }
-        public Nullable<System.DateTime> PlatformAbendUserID { get; set; }
+        public int OperateDataLinkID { get; set; }
+        public Nullable<int> ICDID { get; set; }
+        public string LinkName { get; set; }
+        public string LinkURL { get; set; }
         public Nullable<System.DateTime> CreateTime { get; set; }
         public string CreateUserID { get; set; }
-        public Nullable<System.DateTime> LastModityTime { get; set; }
+        public Nullable<System.DateTime> LastModifyTime { get; set; }
         public string LastModifyUserID { get; set; }
         public Nullable<int> DeleteFlag { get; set; }
         public byte[] LastModifyStamp { get; set; }

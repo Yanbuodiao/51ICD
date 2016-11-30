@@ -122,7 +122,7 @@ namespace Docimax.Data_ICD.DAL
             {
                 var stateInt = queryModel.SearchModel.CertificateStatus.GetHashCode();
                 var query = entity.AspNetUsers.Where(e => (stateInt == 0 ? true : e.CertificationFlag == stateInt) &&
-                    string.IsNullOrEmpty(queryModel.TextFilter) ? true : (e.UserName.StartsWith(queryModel.TextFilter))).OrderBy(e => e.CertificationFlag).Skip((queryModel.Page - 1) * queryModel.PageSize)
+                    string.IsNullOrEmpty(queryModel.TextFilter) ? true : (e.UserName.StartsWith(queryModel.TextFilter))).OrderBy(e => e.CertificationFlag).Skip((queryModel.PageIndex - 1) * queryModel.PageSize)
                     .Take(queryModel.PageSize)
                     .ToList();
                 var initInt = CertificateState.未申请.GetHashCode();
@@ -317,7 +317,7 @@ namespace Docimax.Data_ICD.DAL
                                  us.CertificationStatus,
                                  s.ServiceName,
                                  us.ApplyTime,
-                             }).Skip((queryModel.Page - 1) * queryModel.PageSize)
+                             }).Skip((queryModel.PageIndex - 1) * queryModel.PageSize)
                     .Take(queryModel.PageSize)
                     .ToList();
 

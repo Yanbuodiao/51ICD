@@ -7,19 +7,18 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Docimax.Data_ICD
+namespace Docimax.Data_ICD.Entity
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class Code_Builder
+    public partial class BaseLink_ICD_Diagnosis_DataLink
     {
-        public int BuilderCodeID { get; set; }
-        public string PlatformOrderCode { get; set; }
-        public Nullable<int> OrderStatus { get; set; }
-        public Nullable<int> ORGID { get; set; }
-        public Nullable<int> ORGSubID { get; set; }
-        public Nullable<System.DateTime> Createtime { get; set; }
+        public int DiagnosisDataLinkID { get; set; }
+        public Nullable<int> ICDID { get; set; }
+        public string LinkName { get; set; }
+        public string LinkURL { get; set; }
+        public Nullable<System.DateTime> CreateTime { get; set; }
         public string CreateUserID { get; set; }
         public Nullable<System.DateTime> LastModifyTime { get; set; }
         public string LastModifyUserID { get; set; }

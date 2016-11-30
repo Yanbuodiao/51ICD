@@ -136,7 +136,52 @@ namespace Docimax.Data_ICD.DAL
         }
         public ICDModel GetICDModel(int icdID, ICDTypeEnum icdType)
         {
-            return new ICDModel();
+            switch (icdType)
+            {
+                case ICDTypeEnum.诊断编码:
+                    return getDiagnosiICD(icdID);
+                case ICDTypeEnum.手术及操作编码:
+                    return getOperateICD(icdID);
+            }
+            return null;
+        }
+
+        private ICDModel getDiagnosiICD(int icdID)
+        {
+            using (var entity = new Entity_Read())
+            {
+                var model = entity.BaseDic_ICD_Diagnosis_Repository.FirstOrDefault(e => e.ICDID == icdID);
+                if (model != null)
+                {
+                    return new ICDModel
+                    {
+                        ICDID = icdID,
+                        ICD_Code = model.ICD_Code,
+                        ICD_Name = model.ICD_Name,
+                        ICD_Description = model.ICD_Description,
+                    };
+                }
+            }
+            return null;
+        }
+
+        private ICDModel getOperateICD(int icdID)
+        {
+            using (var entity = new Entity_Read())
+            {
+                var model = entity.BaseDic_ICD_Operate_Repository.FirstOrDefault(e => e.ICDID == icdID);
+                if (model != null)
+                {
+                    return new ICDModel
+                    {
+                        ICDID = icdID,
+                        ICD_Code = model.ICD_Code,
+                        ICD_Name = model.ICD_Name,
+                        ICD_Description = model.ICD_Description,
+                    };
+                }
+            }
+            return null;
         }
     }
 }

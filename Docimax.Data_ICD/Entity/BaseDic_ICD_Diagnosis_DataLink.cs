@@ -12,11 +12,15 @@ namespace Docimax.Data_ICD.Entity
     using System;
     using System.Collections.Generic;
     
-    public partial class C__MigrationHistory
+    public partial class BaseDic_ICD_Diagnosis_DataLink
     {
-        public string MigrationId { get; set; }
-        public string ContextKey { get; set; }
-        public byte[] Model { get; set; }
-        public string ProductVersion { get; set; }
+        public int DiagnosisDataLinkID { get; set; }
+        public Nullable<int> ICDID { get; set; }
+        public Nullable<System.DateTime> CreateTime { get; set; }
+        public string CreateUserID { get; set; }
+        public Nullable<System.DateTime> LastModifyTime { get; set; }
+        public string LastModifyUserID { get; set; }
+        public Nullable<int> DeleteFlag { get; set; }
+        public byte[] LastModifyStamp { get; set; }
     }
 }

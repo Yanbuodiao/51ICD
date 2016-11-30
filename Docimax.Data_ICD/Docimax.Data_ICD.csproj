@@ -89,7 +89,25 @@
     <Compile Include="Entity\BaseDic_Code_History.cs">
       <DependentUpon>Entity_Read.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entity\BaseDic_ICD_Diagnosis_DataLink.cs">
+      <DependentUpon>Entity_Read.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\BaseDic_ICD_Diagnosis_Log.cs">
+      <DependentUpon>Entity_Read.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\BaseDic_ICD_Diagnosis_Remark.cs">
+      <DependentUpon>Entity_Read.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entity\BaseDic_ICD_Diagnosis_Repository.cs">
+      <DependentUpon>Entity_Read.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\BaseDic_ICD_Operate_DataLink.cs">
+      <DependentUpon>Entity_Read.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\BaseDic_ICD_Operate_Log.cs">
+      <DependentUpon>Entity_Read.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\BaseDic_ICD_Operate_Remark.cs">
       <DependentUpon>Entity_Read.tt</DependentUpon>
     </Compile>
     <Compile Include="Entity\BaseDic_ICD_Operate_Repository.cs">
@@ -99,6 +117,9 @@
       <DependentUpon>Entity_Read.tt</DependentUpon>
     </Compile>
     <Compile Include="Entity\BaseDic_Province.cs">
+      <DependentUpon>Entity_Read.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\BaseLink_ICD_Diagnosis_DataLink.cs">
       <DependentUpon>Entity_Read.tt</DependentUpon>
     </Compile>
     <Compile Include="Entity\Code_Order.cs">
@@ -114,9 +135,6 @@
       <DependentUpon>Entity_Read.tt</DependentUpon>
     </Compile>
     <Compile Include="Entity\Code_Order_UploadedItem.cs">
-      <DependentUpon>Entity_Read.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Entity\C__MigrationHistory.cs">
       <DependentUpon>Entity_Read.tt</DependentUpon>
     </Compile>
     <Compile Include="Entity\Dic_Item.cs">
@@ -215,11 +233,11 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.Config" />
     <EntityDeploy Include="Entity\Entity_Read.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>Entity_Read.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <None Include="App.Config" />
     <None Include="Entity\Entity_Read.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>Entity_Read.edmx</DependentUpon>

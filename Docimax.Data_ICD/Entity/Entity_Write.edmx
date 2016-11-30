@@ -4,17 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="ICD_DBModel1.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-        <EntityType Name="__MigrationHistory">
-          <Key>
-            <PropertyRef Name="MigrationId" />
-            <PropertyRef Name="ContextKey" />
-          </Key>
-          <Property Name="MigrationId" Type="nvarchar" MaxLength="150" Nullable="false" />
-          <Property Name="ContextKey" Type="nvarchar" MaxLength="300" Nullable="false" />
-          <Property Name="Model" Type="varbinary(max)" Nullable="false" />
-          <Property Name="ProductVersion" Type="nvarchar" MaxLength="32" Nullable="false" />
-        </EntityType>
+    <Schema Namespace="ICD_DBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="AspNetRoles">
           <Key>
             <PropertyRef Name="Id" />
@@ -125,6 +115,51 @@
           <Property Name="CodeNum" Type="nvarchar" MaxLength="20" />
           <Property Name="CreateDateTime" Type="datetime" />
         </EntityType>
+        <!--生成过程中发现错误:
+警告 6002: 表/视图“51ICD_DB.dbo.BaseDic_ICD_Diagnosis_DataLink”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+        <EntityType Name="BaseDic_ICD_Diagnosis_DataLink">
+          <Key>
+            <PropertyRef Name="DiagnosisDataLinkID" />
+          </Key>
+          <Property Name="DiagnosisDataLinkID" Type="int" Nullable="false" />
+          <Property Name="ICDID" Type="int" />
+          <Property Name="CreateTime" Type="datetime" />
+          <Property Name="CreateUserID" Type="nvarchar" MaxLength="128" />
+          <Property Name="LastModifyTime" Type="datetime" />
+          <Property Name="LastModifyUserID" Type="nvarchar" MaxLength="128" />
+          <Property Name="DeleteFlag" Type="int" />
+          <Property Name="LastModifyStamp" Type="timestamp" StoreGeneratedPattern="Computed" />
+        </EntityType>
+        <EntityType Name="BaseDic_ICD_Diagnosis_Log">
+          <Key>
+            <PropertyRef Name="ICDDiagnosisLogID" />
+          </Key>
+          <Property Name="ICDDiagnosisLogID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ICDID" Type="int" />
+          <Property Name="OperateTagert" Type="nvarchar" MaxLength="100" />
+          <Property Name="OperateType" Type="int" />
+          <Property Name="OperateTime" Type="datetime" />
+          <Property Name="OperateUserID" Type="nvarchar" MaxLength="128" />
+          <Property Name="OperateIP" Type="nvarchar" MaxLength="100" />
+          <Property Name="OperateUserName" Type="nvarchar" MaxLength="300" />
+          <Property Name="OperateHospitalName" Type="nvarchar" MaxLength="500" />
+          <Property Name="LastModifyTime" Type="datetime" />
+          <Property Name="LastModifyUserID" Type="nvarchar" MaxLength="128" />
+        </EntityType>
+        <EntityType Name="BaseDic_ICD_Diagnosis_Remark">
+          <Key>
+            <PropertyRef Name="ICDDiagnosisRemarkID" />
+          </Key>
+          <Property Name="ICDDiagnosisRemarkID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ICDID" Type="int" />
+          <Property Name="RemarkPath" Type="nvarchar" MaxLength="500" />
+          <Property Name="CreateTime" Type="datetime" />
+          <Property Name="CreateUserID" Type="nvarchar" MaxLength="128" />
+          <Property Name="LastModifyTime" Type="datetime" />
+          <Property Name="LastModifyUserID" Type="nvarchar" MaxLength="128" />
+          <Property Name="DeleteFlag" Type="int" />
+          <Property Name="LastModifyStamp" Type="timestamp" StoreGeneratedPattern="Computed" />
+        </EntityType>
         <EntityType Name="BaseDic_ICD_Diagnosis_Repository">
           <Key>
             <PropertyRef Name="ICDID" />
@@ -135,6 +170,51 @@
           <Property Name="ICD_VersionID" Type="int" />
           <Property Name="ICD_Description" Type="nvarchar" MaxLength="500" />
           <Property Name="PinyinShort" Type="nvarchar" MaxLength="300" />
+          <Property Name="CreateTime" Type="datetime" />
+          <Property Name="CreateUserID" Type="nvarchar" MaxLength="128" />
+          <Property Name="LastModifyTime" Type="datetime" />
+          <Property Name="LastModifyUserID" Type="nvarchar" MaxLength="128" />
+          <Property Name="DeleteFlag" Type="int" />
+          <Property Name="LastModifyStamp" Type="timestamp" StoreGeneratedPattern="Computed" />
+        </EntityType>
+        <EntityType Name="BaseDic_ICD_Operate_DataLink">
+          <Key>
+            <PropertyRef Name="OperateDataLinkID" />
+          </Key>
+          <Property Name="OperateDataLinkID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ICDID" Type="int" />
+          <Property Name="LinkName" Type="nvarchar" MaxLength="500" />
+          <Property Name="LinkURL" Type="nvarchar" MaxLength="500" />
+          <Property Name="CreateTime" Type="datetime" />
+          <Property Name="CreateUserID" Type="nvarchar" MaxLength="128" />
+          <Property Name="LastModifyTime" Type="datetime" />
+          <Property Name="LastModifyUserID" Type="nvarchar" MaxLength="128" />
+          <Property Name="DeleteFlag" Type="int" />
+          <Property Name="LastModifyStamp" Type="timestamp" StoreGeneratedPattern="Computed" />
+        </EntityType>
+        <EntityType Name="BaseDic_ICD_Operate_Log">
+          <Key>
+            <PropertyRef Name="ICDOperateLogID" />
+          </Key>
+          <Property Name="ICDOperateLogID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ICDID" Type="int" />
+          <Property Name="OperateTagert" Type="nvarchar" MaxLength="100" />
+          <Property Name="OperateType" Type="int" />
+          <Property Name="OperateTime" Type="datetime" />
+          <Property Name="OperateUserID" Type="nvarchar" MaxLength="128" />
+          <Property Name="OperateIP" Type="nvarchar" MaxLength="100" />
+          <Property Name="OperateUserName" Type="nvarchar" MaxLength="300" />
+          <Property Name="OperateHospitalName" Type="nvarchar" MaxLength="500" />
+          <Property Name="LastModifyTime" Type="datetime" />
+          <Property Name="LastModifyUserID" Type="nvarchar" MaxLength="128" />
+        </EntityType>
+        <EntityType Name="BaseDic_ICD_Operate_Remark">
+          <Key>
+            <PropertyRef Name="ICOperaterRemarkID" />
+          </Key>
+          <Property Name="ICOperaterRemarkID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ICDID" Type="int" />
+          <Property Name="RemarkPath" Type="nvarchar" MaxLength="500" />
           <Property Name="CreateTime" Type="datetime" />
           <Property Name="CreateUserID" Type="nvarchar" MaxLength="128" />
           <Property Name="LastModifyTime" Type="datetime" />
@@ -184,6 +264,21 @@
           <Property Name="ProvinceCode" Type="nvarchar" MaxLength="50" />
           <Property Name="ProvinceName" Type="nvarchar" MaxLength="200" />
           <Property Name="PinyinShort" Type="nvarchar" MaxLength="200" />
+          <Property Name="LastModifyStamp" Type="timestamp" StoreGeneratedPattern="Computed" />
+        </EntityType>
+        <EntityType Name="BaseLink_ICD_Diagnosis_DataLink">
+          <Key>
+            <PropertyRef Name="DiagnosisDataLinkID" />
+          </Key>
+          <Property Name="DiagnosisDataLinkID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ICDID" Type="int" />
+          <Property Name="LinkName" Type="nvarchar" MaxLength="500" />
+          <Property Name="LinkURL" Type="nvarchar" MaxLength="500" />
+          <Property Name="CreateTime" Type="datetime" />
+          <Property Name="CreateUserID" Type="nvarchar" MaxLength="128" />
+          <Property Name="LastModifyTime" Type="datetime" />
+          <Property Name="LastModifyUserID" Type="nvarchar" MaxLength="128" />
+          <Property Name="DeleteFlag" Type="int" />
           <Property Name="LastModifyStamp" Type="timestamp" StoreGeneratedPattern="Computed" />
         </EntityType>
         <EntityType Name="Code_Order">
@@ -693,8 +788,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="ICD_DBModel1StoreContainer">
-          <EntitySet Name="__MigrationHistory" EntityType="Self.__MigrationHistory" Schema="dbo" store:Type="Tables" />
+        <EntityContainer Name="ICD_DBModelStoreContainer">
           <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRoles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUserClaims" EntityType="Self.AspNetUserClaims" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUserLogins" EntityType="Self.AspNetUserLogins" Schema="dbo" store:Type="Tables" />
@@ -704,10 +798,16 @@
           <EntitySet Name="BaseDic_City" EntityType="Self.BaseDic_City" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BaseDic_Code" EntityType="Self.BaseDic_Code" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BaseDic_Code_History" EntityType="Self.BaseDic_Code_History" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BaseDic_ICD_Diagnosis_Log" EntityType="Self.BaseDic_ICD_Diagnosis_Log" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BaseDic_ICD_Diagnosis_Remark" EntityType="Self.BaseDic_ICD_Diagnosis_Remark" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BaseDic_ICD_Diagnosis_Repository" EntityType="Self.BaseDic_ICD_Diagnosis_Repository" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BaseDic_ICD_Operate_DataLink" EntityType="Self.BaseDic_ICD_Operate_DataLink" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BaseDic_ICD_Operate_Log" EntityType="Self.BaseDic_ICD_Operate_Log" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BaseDic_ICD_Operate_Remark" EntityType="Self.BaseDic_ICD_Operate_Remark" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BaseDic_ICD_Operate_Repository" EntityType="Self.BaseDic_ICD_Operate_Repository" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BaseDic_ICD_Version" EntityType="Self.BaseDic_ICD_Version" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BaseDic_Province" EntityType="Self.BaseDic_Province" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BaseLink_ICD_Diagnosis_DataLink" EntityType="Self.BaseLink_ICD_Diagnosis_DataLink" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Code_Order" EntityType="Self.Code_Order" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Code_Order_Audit" EntityType="Self.Code_Order_Audit" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Code_Order_Diagnosis" EntityType="Self.Code_Order_Diagnosis" Schema="dbo" store:Type="Tables" />
@@ -734,6 +834,18 @@
           <EntitySet Name="User_Service_Attach" EntityType="Self.User_Service_Attach" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User_Service_Claim" EntityType="Self.User_Service_Claim" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User_Service_Provider" EntityType="Self.User_Service_Provider" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BaseDic_ICD_Diagnosis_DataLink" EntityType="Self.BaseDic_ICD_Diagnosis_DataLink" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [BaseDic_ICD_Diagnosis_DataLink].[DiagnosisDataLinkID] AS [DiagnosisDataLinkID], 
+    [BaseDic_ICD_Diagnosis_DataLink].[ICDID] AS [ICDID], 
+    [BaseDic_ICD_Diagnosis_DataLink].[CreateTime] AS [CreateTime], 
+    [BaseDic_ICD_Diagnosis_DataLink].[CreateUserID] AS [CreateUserID], 
+    [BaseDic_ICD_Diagnosis_DataLink].[LastModifyTime] AS [LastModifyTime], 
+    [BaseDic_ICD_Diagnosis_DataLink].[LastModifyUserID] AS [LastModifyUserID], 
+    [BaseDic_ICD_Diagnosis_DataLink].[DeleteFlag] AS [DeleteFlag], 
+    [BaseDic_ICD_Diagnosis_DataLink].[LastModifyStamp] AS [LastModifyStamp]
+    FROM [dbo].[BaseDic_ICD_Diagnosis_DataLink] AS [BaseDic_ICD_Diagnosis_DataLink]</DefiningQuery>
+          </EntitySet>
           <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserClaims" EntitySet="AspNetUserClaims" />
@@ -754,75 +866,71 @@
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema Namespace="ICD_DBModel1" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+      <Schema Namespace="ICD_DBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="Entity_Write" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="C__MigrationHistory" EntityType="ICD_DBModel1.C__MigrationHistory" />
-          <EntitySet Name="AspNetRoles" EntityType="ICD_DBModel1.AspNetRoles" />
-          <EntitySet Name="AspNetUserClaims" EntityType="ICD_DBModel1.AspNetUserClaims" />
-          <EntitySet Name="AspNetUserLogins" EntityType="ICD_DBModel1.AspNetUserLogins" />
-          <EntitySet Name="AspNetUserRoles" EntityType="ICD_DBModel1.AspNetUserRoles" />
-          <EntitySet Name="AspNetUsers" EntityType="ICD_DBModel1.AspNetUsers" />
-          <EntitySet Name="BaseDic_Area" EntityType="ICD_DBModel1.BaseDic_Area" />
-          <EntitySet Name="BaseDic_City" EntityType="ICD_DBModel1.BaseDic_City" />
-          <EntitySet Name="BaseDic_Code" EntityType="ICD_DBModel1.BaseDic_Code" />
-          <EntitySet Name="BaseDic_Code_History" EntityType="ICD_DBModel1.BaseDic_Code_History" />
-          <EntitySet Name="BaseDic_ICD_Diagnosis_Repository" EntityType="ICD_DBModel1.BaseDic_ICD_Diagnosis_Repository" />
-          <EntitySet Name="BaseDic_ICD_Operate_Repository" EntityType="ICD_DBModel1.BaseDic_ICD_Operate_Repository" />
-          <EntitySet Name="BaseDic_ICD_Version" EntityType="ICD_DBModel1.BaseDic_ICD_Version" />
-          <EntitySet Name="BaseDic_Province" EntityType="ICD_DBModel1.BaseDic_Province" />
-          <EntitySet Name="Code_Order" EntityType="ICD_DBModel1.Code_Order" />
-          <EntitySet Name="Code_Order_Audit" EntityType="ICD_DBModel1.Code_Order_Audit" />
-          <EntitySet Name="Code_Order_Diagnosis" EntityType="ICD_DBModel1.Code_Order_Diagnosis" />
-          <EntitySet Name="Code_Order_Operate" EntityType="ICD_DBModel1.Code_Order_Operate" />
-          <EntitySet Name="Code_Order_UploadedItem" EntityType="ICD_DBModel1.Code_Order_UploadedItem" />
-          <EntitySet Name="Dic_Item" EntityType="ICD_DBModel1.Dic_Item" />
-          <EntitySet Name="Dic_Menu" EntityType="ICD_DBModel1.Dic_Menu" />
-          <EntitySet Name="Dic_Organization" EntityType="ICD_DBModel1.Dic_Organization" />
-          <EntitySet Name="Dic_Service" EntityType="ICD_DBModel1.Dic_Service" />
-          <EntitySet Name="Dic_Service_Attach" EntityType="ICD_DBModel1.Dic_Service_Attach" />
-          <EntitySet Name="Dic_Service_Claim" EntityType="ICD_DBModel1.Dic_Service_Claim" />
-          <EntitySet Name="Dic_Service_Item" EntityType="ICD_DBModel1.Dic_Service_Item" />
-          <EntitySet Name="Dic_Service_Menu" EntityType="ICD_DBModel1.Dic_Service_Menu" />
-          <EntitySet Name="Order_Interface" EntityType="ICD_DBModel1.Order_Interface" />
-          <EntitySet Name="ORG_Attach" EntityType="ICD_DBModel1.ORG_Attach" />
-          <EntitySet Name="ORG_Service_Config" EntityType="ICD_DBModel1.ORG_Service_Config" />
-          <EntitySet Name="ORG_Service_Item" EntityType="ICD_DBModel1.ORG_Service_Item" />
-          <EntitySet Name="ORG_Service_Provider" EntityType="ICD_DBModel1.ORG_Service_Provider" />
-          <EntitySet Name="ORG_SubOrganization" EntityType="ICD_DBModel1.ORG_SubOrganization" />
-          <EntitySet Name="Sec_IP" EntityType="ICD_DBModel1.Sec_IP" />
-          <EntitySet Name="Sec_Message" EntityType="ICD_DBModel1.Sec_Message" />
-          <EntitySet Name="User_Attach" EntityType="ICD_DBModel1.User_Attach" />
-          <EntitySet Name="User_ChangeAuditLog" EntityType="ICD_DBModel1.User_ChangeAuditLog" />
-          <EntitySet Name="User_Service_Attach" EntityType="ICD_DBModel1.User_Service_Attach" />
-          <EntitySet Name="User_Service_Claim" EntityType="ICD_DBModel1.User_Service_Claim" />
-          <EntitySet Name="User_Service_Provider" EntityType="ICD_DBModel1.User_Service_Provider" />
-          <AssociationSet Name="FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId" Association="ICD_DBModel1.FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId">
+          <EntitySet Name="AspNetRoles" EntityType="ICD_DBModel.AspNetRoles" />
+          <EntitySet Name="AspNetUserClaims" EntityType="ICD_DBModel.AspNetUserClaims" />
+          <EntitySet Name="AspNetUserLogins" EntityType="ICD_DBModel.AspNetUserLogins" />
+          <EntitySet Name="AspNetUserRoles" EntityType="ICD_DBModel.AspNetUserRoles" />
+          <EntitySet Name="AspNetUsers" EntityType="ICD_DBModel.AspNetUsers" />
+          <EntitySet Name="BaseDic_Area" EntityType="ICD_DBModel.BaseDic_Area" />
+          <EntitySet Name="BaseDic_City" EntityType="ICD_DBModel.BaseDic_City" />
+          <EntitySet Name="BaseDic_Code" EntityType="ICD_DBModel.BaseDic_Code" />
+          <EntitySet Name="BaseDic_Code_History" EntityType="ICD_DBModel.BaseDic_Code_History" />
+          <EntitySet Name="BaseDic_ICD_Diagnosis_Log" EntityType="ICD_DBModel.BaseDic_ICD_Diagnosis_Log" />
+          <EntitySet Name="BaseDic_ICD_Diagnosis_Remark" EntityType="ICD_DBModel.BaseDic_ICD_Diagnosis_Remark" />
+          <EntitySet Name="BaseDic_ICD_Diagnosis_Repository" EntityType="ICD_DBModel.BaseDic_ICD_Diagnosis_Repository" />
+          <EntitySet Name="BaseDic_ICD_Operate_DataLink" EntityType="ICD_DBModel.BaseDic_ICD_Operate_DataLink" />
+          <EntitySet Name="BaseDic_ICD_Operate_Log" EntityType="ICD_DBModel.BaseDic_ICD_Operate_Log" />
+          <EntitySet Name="BaseDic_ICD_Operate_Remark" EntityType="ICD_DBModel.BaseDic_ICD_Operate_Remark" />
+          <EntitySet Name="BaseDic_ICD_Operate_Repository" EntityType="ICD_DBModel.BaseDic_ICD_Operate_Repository" />
+          <EntitySet Name="BaseDic_ICD_Version" EntityType="ICD_DBModel.BaseDic_ICD_Version" />
+          <EntitySet Name="BaseDic_Province" EntityType="ICD_DBModel.BaseDic_Province" />
+          <EntitySet Name="BaseLink_ICD_Diagnosis_DataLink" EntityType="ICD_DBModel.BaseLink_ICD_Diagnosis_DataLink" />
+          <EntitySet Name="Code_Order" EntityType="ICD_DBModel.Code_Order" />
+          <EntitySet Name="Code_Order_Audit" EntityType="ICD_DBModel.Code_Order_Audit" />
+          <EntitySet Name="Code_Order_Diagnosis" EntityType="ICD_DBModel.Code_Order_Diagnosis" />
+          <EntitySet Name="Code_Order_Operate" EntityType="ICD_DBModel.Code_Order_Operate" />
+          <EntitySet Name="Code_Order_UploadedItem" EntityType="ICD_DBModel.Code_Order_UploadedItem" />
+          <EntitySet Name="Dic_Item" EntityType="ICD_DBModel.Dic_Item" />
+          <EntitySet Name="Dic_Menu" EntityType="ICD_DBModel.Dic_Menu" />
+          <EntitySet Name="Dic_Organization" EntityType="ICD_DBModel.Dic_Organization" />
+          <EntitySet Name="Dic_Service" EntityType="ICD_DBModel.Dic_Service" />
+          <EntitySet Name="Dic_Service_Attach" EntityType="ICD_DBModel.Dic_Service_Attach" />
+          <EntitySet Name="Dic_Service_Claim" EntityType="ICD_DBModel.Dic_Service_Claim" />
+          <EntitySet Name="Dic_Service_Item" EntityType="ICD_DBModel.Dic_Service_Item" />
+          <EntitySet Name="Dic_Service_Menu" EntityType="ICD_DBModel.Dic_Service_Menu" />
+          <EntitySet Name="Order_Interface" EntityType="ICD_DBModel.Order_Interface" />
+          <EntitySet Name="ORG_Attach" EntityType="ICD_DBModel.ORG_Attach" />
+          <EntitySet Name="ORG_Service_Config" EntityType="ICD_DBModel.ORG_Service_Config" />
+          <EntitySet Name="ORG_Service_Item" EntityType="ICD_DBModel.ORG_Service_Item" />
+          <EntitySet Name="ORG_Service_Provider" EntityType="ICD_DBModel.ORG_Service_Provider" />
+          <EntitySet Name="ORG_SubOrganization" EntityType="ICD_DBModel.ORG_SubOrganization" />
+          <EntitySet Name="Sec_IP" EntityType="ICD_DBModel.Sec_IP" />
+          <EntitySet Name="Sec_Message" EntityType="ICD_DBModel.Sec_Message" />
+          <EntitySet Name="User_Attach" EntityType="ICD_DBModel.User_Attach" />
+          <EntitySet Name="User_ChangeAuditLog" EntityType="ICD_DBModel.User_ChangeAuditLog" />
+          <EntitySet Name="User_Service_Attach" EntityType="ICD_DBModel.User_Service_Attach" />
+          <EntitySet Name="User_Service_Claim" EntityType="ICD_DBModel.User_Service_Claim" />
+          <EntitySet Name="User_Service_Provider" EntityType="ICD_DBModel.User_Service_Provider" />
+          <EntitySet Name="BaseDic_ICD_Diagnosis_DataLink" EntityType="ICD_DBModel.BaseDic_ICD_Diagnosis_DataLink" />
+          <AssociationSet Name="FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId" Association="ICD_DBModel.FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId">
             <End Role="AspNetRoles" EntitySet="AspNetRoles" />
             <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
           </AssociationSet>
-          <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="ICD_DBModel1.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
+          <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="ICD_DBModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserClaims" EntitySet="AspNetUserClaims" />
           </AssociationSet>
-          <AssociationSet Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" Association="ICD_DBModel1.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
+          <AssociationSet Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" Association="ICD_DBModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserLogins" EntitySet="AspNetUserLogins" />
           </AssociationSet>
-          <AssociationSet Name="FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId" Association="ICD_DBModel1.FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId">
+          <AssociationSet Name="FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId" Association="ICD_DBModel.FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
           </AssociationSet>
         </EntityContainer>
-        <EntityType Name="C__MigrationHistory">
-          <Key>
-            <PropertyRef Name="MigrationId" />
-            <PropertyRef Name="ContextKey" />
-          </Key>
-          <Property Name="MigrationId" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
-          <Property Name="ContextKey" Type="String" Nullable="false" MaxLength="300" FixedLength="false" Unicode="true" />
-          <Property Name="Model" Type="Binary" Nullable="false" MaxLength="Max" FixedLength="false" />
-          <Property Name="ProductVersion" Type="String" Nullable="false" MaxLength="32" FixedLength="false" Unicode="true" />
-        </EntityType>
         <EntityType Name="AspNetRoles">
           <Key>
             <PropertyRef Name="Id" />
@@ -835,7 +943,7 @@
           <Property Name="LastModtifyTime" Type="DateTime" Precision="3" />
           <Property Name="LastModityUserID" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Discriminator" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="AspNetUserRoles" Relationship="ICD_DBModel1.FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId" FromRole="AspNetRoles" ToRole="AspNetUserRoles" />
+          <NavigationProperty Name="AspNetUserRoles" Relationship="ICD_DBModel.FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId" FromRole="AspNetRoles" ToRole="AspNetUserRoles" />
         </EntityType>
         <EntityType Name="AspNetUserClaims">
           <Key>
@@ -844,7 +952,7 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ClaimType" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="ClaimValue" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="AspNetUsers" Relationship="ICD_DBModel1.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" FromRole="AspNetUserClaims" ToRole="AspNetUsers" />
+          <NavigationProperty Name="AspNetUsers" Relationship="ICD_DBModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" FromRole="AspNetUserClaims" ToRole="AspNetUsers" />
         </EntityType>
         <EntityType Name="AspNetUserLogins">
           <Key>
@@ -855,7 +963,7 @@
           <Property Name="LoginProvider" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="ProviderKey" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="UserId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="AspNetUsers" Relationship="ICD_DBModel1.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUserLogins" ToRole="AspNetUsers" />
+          <NavigationProperty Name="AspNetUsers" Relationship="ICD_DBModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUserLogins" ToRole="AspNetUsers" />
         </EntityType>
         <EntityType Name="AspNetUserRoles">
           <Key>
@@ -865,8 +973,8 @@
           <Property Name="UserId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="RoleId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="Discriminator" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="AspNetRoles" Relationship="ICD_DBModel1.FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId" FromRole="AspNetUserRoles" ToRole="AspNetRoles" />
-          <NavigationProperty Name="AspNetUsers" Relationship="ICD_DBModel1.FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId" FromRole="AspNetUserRoles" ToRole="AspNetUsers" />
+          <NavigationProperty Name="AspNetRoles" Relationship="ICD_DBModel.FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId" FromRole="AspNetUserRoles" ToRole="AspNetRoles" />
+          <NavigationProperty Name="AspNetUsers" Relationship="ICD_DBModel.FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId" FromRole="AspNetUserRoles" ToRole="AspNetUsers" />
         </EntityType>
         <EntityType Name="AspNetUsers">
           <Key>
@@ -898,9 +1006,9 @@
           <Property Name="LockoutEnabled" Type="Boolean" Nullable="false" />
           <Property Name="AccessFailedCount" Type="Int32" Nullable="false" />
           <Property Name="UserName" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="AspNetUserClaims" Relationship="ICD_DBModel1.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" FromRole="AspNetUsers" ToRole="AspNetUserClaims" />
-          <NavigationProperty Name="AspNetUserLogins" Relationship="ICD_DBModel1.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUsers" ToRole="AspNetUserLogins" />
-          <NavigationProperty Name="AspNetUserRoles" Relationship="ICD_DBModel1.FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId" FromRole="AspNetUsers" ToRole="AspNetUserRoles" />
+          <NavigationProperty Name="AspNetUserClaims" Relationship="ICD_DBModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" FromRole="AspNetUsers" ToRole="AspNetUserClaims" />
+          <NavigationProperty Name="AspNetUserLogins" Relationship="ICD_DBModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUsers" ToRole="AspNetUserLogins" />
+          <NavigationProperty Name="AspNetUserRoles" Relationship="ICD_DBModel.FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId" FromRole="AspNetUsers" ToRole="AspNetUserRoles" />
         </EntityType>
         <EntityType Name="BaseDic_Area">
           <Key>
@@ -940,6 +1048,36 @@
           <Property Name="CodeNum" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="CreateDateTime" Type="DateTime" Precision="3" />
         </EntityType>
+        <EntityType Name="BaseDic_ICD_Diagnosis_Log">
+          <Key>
+            <PropertyRef Name="ICDDiagnosisLogID" />
+          </Key>
+          <Property Name="ICDDiagnosisLogID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ICDID" Type="Int32" />
+          <Property Name="OperateTagert" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="OperateType" Type="Int32" />
+          <Property Name="OperateTime" Type="DateTime" Precision="3" />
+          <Property Name="OperateUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="OperateIP" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="OperateUserName" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="OperateHospitalName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="LastModifyTime" Type="DateTime" Precision="3" />
+          <Property Name="LastModifyUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="BaseDic_ICD_Diagnosis_Remark">
+          <Key>
+            <PropertyRef Name="ICDDiagnosisRemarkID" />
+          </Key>
+          <Property Name="ICDDiagnosisRemarkID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ICDID" Type="Int32" />
+          <Property Name="RemarkPath" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="CreateTime" Type="DateTime" Precision="3" />
+          <Property Name="CreateUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="LastModifyTime" Type="DateTime" Precision="3" />
+          <Property Name="LastModifyUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="DeleteFlag" Type="Int32" />
+          <Property Name="LastModifyStamp" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+        </EntityType>
         <EntityType Name="BaseDic_ICD_Diagnosis_Repository">
           <Key>
             <PropertyRef Name="ICDID" />
@@ -950,6 +1088,51 @@
           <Property Name="ICD_VersionID" Type="Int32" />
           <Property Name="ICD_Description" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="PinyinShort" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="CreateTime" Type="DateTime" Precision="3" />
+          <Property Name="CreateUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="LastModifyTime" Type="DateTime" Precision="3" />
+          <Property Name="LastModifyUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="DeleteFlag" Type="Int32" />
+          <Property Name="LastModifyStamp" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+        </EntityType>
+        <EntityType Name="BaseDic_ICD_Operate_DataLink">
+          <Key>
+            <PropertyRef Name="OperateDataLinkID" />
+          </Key>
+          <Property Name="OperateDataLinkID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ICDID" Type="Int32" />
+          <Property Name="LinkName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="LinkURL" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="CreateTime" Type="DateTime" Precision="3" />
+          <Property Name="CreateUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="LastModifyTime" Type="DateTime" Precision="3" />
+          <Property Name="LastModifyUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="DeleteFlag" Type="Int32" />
+          <Property Name="LastModifyStamp" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+        </EntityType>
+        <EntityType Name="BaseDic_ICD_Operate_Log">
+          <Key>
+            <PropertyRef Name="ICDOperateLogID" />
+          </Key>
+          <Property Name="ICDOperateLogID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ICDID" Type="Int32" />
+          <Property Name="OperateTagert" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="OperateType" Type="Int32" />
+          <Property Name="OperateTime" Type="DateTime" Precision="3" />
+          <Property Name="OperateUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="OperateIP" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="OperateUserName" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="OperateHospitalName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="LastModifyTime" Type="DateTime" Precision="3" />
+          <Property Name="LastModifyUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="BaseDic_ICD_Operate_Remark">
+          <Key>
+            <PropertyRef Name="ICOperaterRemarkID" />
+          </Key>
+          <Property Name="ICOperaterRemarkID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ICDID" Type="Int32" />
+          <Property Name="RemarkPath" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="CreateTime" Type="DateTime" Precision="3" />
           <Property Name="CreateUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="LastModifyTime" Type="DateTime" Precision="3" />
@@ -999,6 +1182,21 @@
           <Property Name="ProvinceCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="ProvinceName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="PinyinShort" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="LastModifyStamp" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+        </EntityType>
+        <EntityType Name="BaseLink_ICD_Diagnosis_DataLink">
+          <Key>
+            <PropertyRef Name="DiagnosisDataLinkID" />
+          </Key>
+          <Property Name="DiagnosisDataLinkID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ICDID" Type="Int32" />
+          <Property Name="LinkName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="LinkURL" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="CreateTime" Type="DateTime" Precision="3" />
+          <Property Name="CreateUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="LastModifyTime" Type="DateTime" Precision="3" />
+          <Property Name="LastModifyUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="DeleteFlag" Type="Int32" />
           <Property Name="LastModifyStamp" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
         </EntityType>
         <EntityType Name="Code_Order">
@@ -1452,11 +1650,24 @@
           <Property Name="DeleteFlag" Type="Int32" />
           <Property Name="LastModifyStamp" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
         </EntityType>
+        <EntityType Name="BaseDic_ICD_Diagnosis_DataLink">
+          <Key>
+            <PropertyRef Name="DiagnosisDataLinkID" />
+          </Key>
+          <Property Name="DiagnosisDataLinkID" Type="Int32" Nullable="false" />
+          <Property Name="ICDID" Type="Int32" />
+          <Property Name="CreateTime" Type="DateTime" Precision="3" />
+          <Property Name="CreateUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="LastModifyTime" Type="DateTime" Precision="3" />
+          <Property Name="LastModifyUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="DeleteFlag" Type="Int32" />
+          <Property Name="LastModifyStamp" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+        </EntityType>
         <Association Name="FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId">
-          <End Type="ICD_DBModel1.AspNetRoles" Role="AspNetRoles" Multiplicity="1">
+          <End Type="ICD_DBModel.AspNetRoles" Role="AspNetRoles" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Type="ICD_DBModel1.AspNetUserRoles" Role="AspNetUserRoles" Multiplicity="*" />
+          <End Type="ICD_DBModel.AspNetUserRoles" Role="AspNetUserRoles" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="AspNetRoles">
               <PropertyRef Name="Id" />
@@ -1467,16 +1678,16 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
-          <End Type="ICD_DBModel1.AspNetUsers" Role="AspNetUsers" Multiplicity="1">
+          <End Type="ICD_DBModel.AspNetUsers" Role="AspNetUsers" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Type="ICD_DBModel1.AspNetUserClaims" Role="AspNetUserClaims" Multiplicity="*" />
+          <End Type="ICD_DBModel.AspNetUserClaims" Role="AspNetUserClaims" Multiplicity="*" />
         </Association>
         <Association Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
-          <End Type="ICD_DBModel1.AspNetUsers" Role="AspNetUsers" Multiplicity="1">
+          <End Type="ICD_DBModel.AspNetUsers" Role="AspNetUsers" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Type="ICD_DBModel1.AspNetUserLogins" Role="AspNetUserLogins" Multiplicity="*" />
+          <End Type="ICD_DBModel.AspNetUserLogins" Role="AspNetUserLogins" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="AspNetUsers">
               <PropertyRef Name="Id" />
@@ -1487,10 +1698,10 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId">
-          <End Type="ICD_DBModel1.AspNetUsers" Role="AspNetUsers" Multiplicity="1">
+          <End Type="ICD_DBModel.AspNetUsers" Role="AspNetUsers" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Type="ICD_DBModel1.AspNetUserRoles" Role="AspNetUserRoles" Multiplicity="*" />
+          <End Type="ICD_DBModel.AspNetUserRoles" Role="AspNetUserRoles" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="AspNetUsers">
               <PropertyRef Name="Id" />
@@ -1505,19 +1716,9 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="ICD_DBModel1StoreContainer" CdmEntityContainer="Entity_Write">
-          <EntitySetMapping Name="C__MigrationHistory">
-            <EntityTypeMapping TypeName="ICD_DBModel1.C__MigrationHistory">
-              <MappingFragment StoreEntitySet="__MigrationHistory">
-                <ScalarProperty Name="ProductVersion" ColumnName="ProductVersion" />
-                <ScalarProperty Name="Model" ColumnName="Model" />
-                <ScalarProperty Name="ContextKey" ColumnName="ContextKey" />
-                <ScalarProperty Name="MigrationId" ColumnName="MigrationId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
+        <EntityContainerMapping StorageEntityContainer="ICD_DBModelStoreContainer" CdmEntityContainer="Entity_Write">
           <EntitySetMapping Name="AspNetRoles">
-            <EntityTypeMapping TypeName="ICD_DBModel1.AspNetRoles">
+            <EntityTypeMapping TypeName="ICD_DBModel.AspNetRoles">
               <MappingFragment StoreEntitySet="AspNetRoles">
                 <ScalarProperty Name="Discriminator" ColumnName="Discriminator" />
                 <ScalarProperty Name="LastModityUserID" ColumnName="LastModityUserID" />
@@ -1531,7 +1732,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="AspNetUserClaims">
-            <EntityTypeMapping TypeName="ICD_DBModel1.AspNetUserClaims">
+            <EntityTypeMapping TypeName="ICD_DBModel.AspNetUserClaims">
               <MappingFragment StoreEntitySet="AspNetUserClaims">
                 <ScalarProperty Name="ClaimValue" ColumnName="ClaimValue" />
                 <ScalarProperty Name="ClaimType" ColumnName="ClaimType" />
@@ -1540,7 +1741,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="AspNetUserLogins">
-            <EntityTypeMapping TypeName="ICD_DBModel1.AspNetUserLogins">
+            <EntityTypeMapping TypeName="ICD_DBModel.AspNetUserLogins">
               <MappingFragment StoreEntitySet="AspNetUserLogins">
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="ProviderKey" ColumnName="ProviderKey" />
@@ -1549,7 +1750,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="AspNetUserRoles">
-            <EntityTypeMapping TypeName="ICD_DBModel1.AspNetUserRoles">
+            <EntityTypeMapping TypeName="ICD_DBModel.AspNetUserRoles">
               <MappingFragment StoreEntitySet="AspNetUserRoles">
                 <ScalarProperty Name="Discriminator" ColumnName="Discriminator" />
                 <ScalarProperty Name="RoleId" ColumnName="RoleId" />
@@ -1558,7 +1759,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="AspNetUsers">
-            <EntityTypeMapping TypeName="ICD_DBModel1.AspNetUsers">
+            <EntityTypeMapping TypeName="ICD_DBModel.AspNetUsers">
               <MappingFragment StoreEntitySet="AspNetUsers">
                 <ScalarProperty Name="UserName" ColumnName="UserName" />
                 <ScalarProperty Name="AccessFailedCount" ColumnName="AccessFailedCount" />
@@ -1590,7 +1791,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="BaseDic_Area">
-            <EntityTypeMapping TypeName="ICD_DBModel1.BaseDic_Area">
+            <EntityTypeMapping TypeName="ICD_DBModel.BaseDic_Area">
               <MappingFragment StoreEntitySet="BaseDic_Area">
                 <ScalarProperty Name="LastModifyStamp" ColumnName="LastModifyStamp" />
                 <ScalarProperty Name="PinyinShort" ColumnName="PinyinShort" />
@@ -1602,7 +1803,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="BaseDic_City">
-            <EntityTypeMapping TypeName="ICD_DBModel1.BaseDic_City">
+            <EntityTypeMapping TypeName="ICD_DBModel.BaseDic_City">
               <MappingFragment StoreEntitySet="BaseDic_City">
                 <ScalarProperty Name="LastModifyStamp" ColumnName="LastModifyStamp" />
                 <ScalarProperty Name="PinyinShort" ColumnName="PinyinShort" />
@@ -1614,7 +1815,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="BaseDic_Code">
-            <EntityTypeMapping TypeName="ICD_DBModel1.BaseDic_Code">
+            <EntityTypeMapping TypeName="ICD_DBModel.BaseDic_Code">
               <MappingFragment StoreEntitySet="BaseDic_Code">
                 <ScalarProperty Name="LastModifyStamp" ColumnName="LastModifyStamp" />
                 <ScalarProperty Name="LastModifyTime" ColumnName="LastModifyTime" />
@@ -1623,7 +1824,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="BaseDic_Code_History">
-            <EntityTypeMapping TypeName="ICD_DBModel1.BaseDic_Code_History">
+            <EntityTypeMapping TypeName="ICD_DBModel.BaseDic_Code_History">
               <MappingFragment StoreEntitySet="BaseDic_Code_History">
                 <ScalarProperty Name="CreateDateTime" ColumnName="CreateDateTime" />
                 <ScalarProperty Name="CodeNum" ColumnName="CodeNum" />
@@ -1631,8 +1832,40 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="BaseDic_ICD_Diagnosis_Log">
+            <EntityTypeMapping TypeName="ICD_DBModel.BaseDic_ICD_Diagnosis_Log">
+              <MappingFragment StoreEntitySet="BaseDic_ICD_Diagnosis_Log">
+                <ScalarProperty Name="LastModifyUserID" ColumnName="LastModifyUserID" />
+                <ScalarProperty Name="LastModifyTime" ColumnName="LastModifyTime" />
+                <ScalarProperty Name="OperateHospitalName" ColumnName="OperateHospitalName" />
+                <ScalarProperty Name="OperateUserName" ColumnName="OperateUserName" />
+                <ScalarProperty Name="OperateIP" ColumnName="OperateIP" />
+                <ScalarProperty Name="OperateUserID" ColumnName="OperateUserID" />
+                <ScalarProperty Name="OperateTime" ColumnName="OperateTime" />
+                <ScalarProperty Name="OperateType" ColumnName="OperateType" />
+                <ScalarProperty Name="OperateTagert" ColumnName="OperateTagert" />
+                <ScalarProperty Name="ICDID" ColumnName="ICDID" />
+                <ScalarProperty Name="ICDDiagnosisLogID" ColumnName="ICDDiagnosisLogID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BaseDic_ICD_Diagnosis_Remark">
+            <EntityTypeMapping TypeName="ICD_DBModel.BaseDic_ICD_Diagnosis_Remark">
+              <MappingFragment StoreEntitySet="BaseDic_ICD_Diagnosis_Remark">
+                <ScalarProperty Name="LastModifyStamp" ColumnName="LastModifyStamp" />
+                <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
+                <ScalarProperty Name="LastModifyUserID" ColumnName="LastModifyUserID" />
+                <ScalarProperty Name="LastModifyTime" ColumnName="LastModifyTime" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="RemarkPath" ColumnName="RemarkPath" />
+                <ScalarProperty Name="ICDID" ColumnName="ICDID" />
+                <ScalarProperty Name="ICDDiagnosisRemarkID" ColumnName="ICDDiagnosisRemarkID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="BaseDic_ICD_Diagnosis_Repository">
-            <EntityTypeMapping TypeName="ICD_DBModel1.BaseDic_ICD_Diagnosis_Repository">
+            <EntityTypeMapping TypeName="ICD_DBModel.BaseDic_ICD_Diagnosis_Repository">
               <MappingFragment StoreEntitySet="BaseDic_ICD_Diagnosis_Repository">
                 <ScalarProperty Name="LastModifyStamp" ColumnName="LastModifyStamp" />
                 <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
@@ -1649,8 +1882,56 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="BaseDic_ICD_Operate_DataLink">
+            <EntityTypeMapping TypeName="ICD_DBModel.BaseDic_ICD_Operate_DataLink">
+              <MappingFragment StoreEntitySet="BaseDic_ICD_Operate_DataLink">
+                <ScalarProperty Name="LastModifyStamp" ColumnName="LastModifyStamp" />
+                <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
+                <ScalarProperty Name="LastModifyUserID" ColumnName="LastModifyUserID" />
+                <ScalarProperty Name="LastModifyTime" ColumnName="LastModifyTime" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="LinkURL" ColumnName="LinkURL" />
+                <ScalarProperty Name="LinkName" ColumnName="LinkName" />
+                <ScalarProperty Name="ICDID" ColumnName="ICDID" />
+                <ScalarProperty Name="OperateDataLinkID" ColumnName="OperateDataLinkID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BaseDic_ICD_Operate_Log">
+            <EntityTypeMapping TypeName="ICD_DBModel.BaseDic_ICD_Operate_Log">
+              <MappingFragment StoreEntitySet="BaseDic_ICD_Operate_Log">
+                <ScalarProperty Name="LastModifyUserID" ColumnName="LastModifyUserID" />
+                <ScalarProperty Name="LastModifyTime" ColumnName="LastModifyTime" />
+                <ScalarProperty Name="OperateHospitalName" ColumnName="OperateHospitalName" />
+                <ScalarProperty Name="OperateUserName" ColumnName="OperateUserName" />
+                <ScalarProperty Name="OperateIP" ColumnName="OperateIP" />
+                <ScalarProperty Name="OperateUserID" ColumnName="OperateUserID" />
+                <ScalarProperty Name="OperateTime" ColumnName="OperateTime" />
+                <ScalarProperty Name="OperateType" ColumnName="OperateType" />
+                <ScalarProperty Name="OperateTagert" ColumnName="OperateTagert" />
+                <ScalarProperty Name="ICDID" ColumnName="ICDID" />
+                <ScalarProperty Name="ICDOperateLogID" ColumnName="ICDOperateLogID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BaseDic_ICD_Operate_Remark">
+            <EntityTypeMapping TypeName="ICD_DBModel.BaseDic_ICD_Operate_Remark">
+              <MappingFragment StoreEntitySet="BaseDic_ICD_Operate_Remark">
+                <ScalarProperty Name="LastModifyStamp" ColumnName="LastModifyStamp" />
+                <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
+                <ScalarProperty Name="LastModifyUserID" ColumnName="LastModifyUserID" />
+                <ScalarProperty Name="LastModifyTime" ColumnName="LastModifyTime" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="RemarkPath" ColumnName="RemarkPath" />
+                <ScalarProperty Name="ICDID" ColumnName="ICDID" />
+                <ScalarProperty Name="ICOperaterRemarkID" ColumnName="ICOperaterRemarkID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="BaseDic_ICD_Operate_Repository">
-            <EntityTypeMapping TypeName="ICD_DBModel1.BaseDic_ICD_Operate_Repository">
+            <EntityTypeMapping TypeName="ICD_DBModel.BaseDic_ICD_Operate_Repository">
               <MappingFragment StoreEntitySet="BaseDic_ICD_Operate_Repository">
                 <ScalarProperty Name="LastModifyStamp" ColumnName="LastModifyStamp" />
                 <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
@@ -1670,7 +1951,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="BaseDic_ICD_Version">
-            <EntityTypeMapping TypeName="ICD_DBModel1.BaseDic_ICD_Version">
+            <EntityTypeMapping TypeName="ICD_DBModel.BaseDic_ICD_Version">
               <MappingFragment StoreEntitySet="BaseDic_ICD_Version">
                 <ScalarProperty Name="LastModifyStamp" ColumnName="LastModifyStamp" />
                 <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
@@ -1686,7 +1967,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="BaseDic_Province">
-            <EntityTypeMapping TypeName="ICD_DBModel1.BaseDic_Province">
+            <EntityTypeMapping TypeName="ICD_DBModel.BaseDic_Province">
               <MappingFragment StoreEntitySet="BaseDic_Province">
                 <ScalarProperty Name="LastModifyStamp" ColumnName="LastModifyStamp" />
                 <ScalarProperty Name="PinyinShort" ColumnName="PinyinShort" />
@@ -1696,8 +1977,24 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="BaseLink_ICD_Diagnosis_DataLink">
+            <EntityTypeMapping TypeName="ICD_DBModel.BaseLink_ICD_Diagnosis_DataLink">
+              <MappingFragment StoreEntitySet="BaseLink_ICD_Diagnosis_DataLink">
+                <ScalarProperty Name="LastModifyStamp" ColumnName="LastModifyStamp" />
+                <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
+                <ScalarProperty Name="LastModifyUserID" ColumnName="LastModifyUserID" />
+                <ScalarProperty Name="LastModifyTime" ColumnName="LastModifyTime" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="LinkURL" ColumnName="LinkURL" />
+                <ScalarProperty Name="LinkName" ColumnName="LinkName" />
+                <ScalarProperty Name="ICDID" ColumnName="ICDID" />
+                <ScalarProperty Name="DiagnosisDataLinkID" ColumnName="DiagnosisDataLinkID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Code_Order">
-            <EntityTypeMapping TypeName="ICD_DBModel1.Code_Order">
+            <EntityTypeMapping TypeName="ICD_DBModel.Code_Order">
               <MappingFragment StoreEntitySet="Code_Order">
                 <ScalarProperty Name="LastModifyStamp" ColumnName="LastModifyStamp" />
                 <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
@@ -1725,7 +2022,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Code_Order_Audit">
-            <EntityTypeMapping TypeName="ICD_DBModel1.Code_Order_Audit">
+            <EntityTypeMapping TypeName="ICD_DBModel.Code_Order_Audit">
               <MappingFragment StoreEntitySet="Code_Order_Audit">
                 <ScalarProperty Name="LastModifyStamp" ColumnName="LastModifyStamp" />
                 <ScalarProperty Name="LastModifyTime" ColumnName="LastModifyTime" />
@@ -1744,7 +2041,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Code_Order_Diagnosis">
-            <EntityTypeMapping TypeName="ICD_DBModel1.Code_Order_Diagnosis">
+            <EntityTypeMapping TypeName="ICD_DBModel.Code_Order_Diagnosis">
               <MappingFragment StoreEntitySet="Code_Order_Diagnosis">
                 <ScalarProperty Name="LastModifyStamp" ColumnName="LastModifyStamp" />
                 <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
@@ -1761,7 +2058,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Code_Order_Operate">
-            <EntityTypeMapping TypeName="ICD_DBModel1.Code_Order_Operate">
+            <EntityTypeMapping TypeName="ICD_DBModel.Code_Order_Operate">
               <MappingFragment StoreEntitySet="Code_Order_Operate">
                 <ScalarProperty Name="LastModifyStamp" ColumnName="LastModifyStamp" />
                 <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
@@ -1785,7 +2082,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Code_Order_UploadedItem">
-            <EntityTypeMapping TypeName="ICD_DBModel1.Code_Order_UploadedItem">
+            <EntityTypeMapping TypeName="ICD_DBModel.Code_Order_UploadedItem">
               <MappingFragment StoreEntitySet="Code_Order_UploadedItem">
                 <ScalarProperty Name="LastModifyStamp" ColumnName="LastModifyStamp" />
                 <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
@@ -1804,7 +2101,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Dic_Item">
-            <EntityTypeMapping TypeName="ICD_DBModel1.Dic_Item">
+            <EntityTypeMapping TypeName="ICD_DBModel.Dic_Item">
               <MappingFragment StoreEntitySet="Dic_Item">
                 <ScalarProperty Name="LastModifyStamp" ColumnName="LastModifyStamp" />
                 <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
@@ -1822,7 +2119,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Dic_Menu">
-            <EntityTypeMapping TypeName="ICD_DBModel1.Dic_Menu">
+            <EntityTypeMapping TypeName="ICD_DBModel.Dic_Menu">
               <MappingFragment StoreEntitySet="Dic_Menu">
                 <ScalarProperty Name="LastModifyStamp" ColumnName="LastModifyStamp" />
                 <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
@@ -1842,7 +2139,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Dic_Organization">
-            <EntityTypeMapping TypeName="ICD_DBModel1.Dic_Organization">
+            <EntityTypeMapping TypeName="ICD_DBModel.Dic_Organization">
               <MappingFragment StoreEntitySet="Dic_Organization">
                 <ScalarProperty Name="LastModifyStamp" ColumnName="LastModifyStamp" />
                 <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
@@ -1874,7 +2171,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Dic_Service">
-            <EntityTypeMapping TypeName="ICD_DBModel1.Dic_Service">
+            <EntityTypeMapping TypeName="ICD_DBModel.Dic_Service">
               <MappingFragment StoreEntitySet="Dic_Service">
                 <ScalarProperty Name="LastModifyStamp" ColumnName="LastModifyStamp" />
                 <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
@@ -1889,7 +2186,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Dic_Service_Attach">
-            <EntityTypeMapping TypeName="ICD_DBModel1.Dic_Service_Attach">
+            <EntityTypeMapping TypeName="ICD_DBModel.Dic_Service_Attach">
               <MappingFragment StoreEntitySet="Dic_Service_Attach">
                 <ScalarProperty Name="LastModifyStamp" ColumnName="LastModifyStamp" />
                 <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
@@ -1904,7 +2201,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Dic_Service_Claim">
-            <EntityTypeMapping TypeName="ICD_DBModel1.Dic_Service_Claim">
+            <EntityTypeMapping TypeName="ICD_DBModel.Dic_Service_Claim">
               <MappingFragment StoreEntitySet="Dic_Service_Claim">
                 <ScalarProperty Name="LastModifyStamp" ColumnName="LastModifyStamp" />
                 <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
@@ -1919,7 +2216,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Dic_Service_Item">
-            <EntityTypeMapping TypeName="ICD_DBModel1.Dic_Service_Item">
+            <EntityTypeMapping TypeName="ICD_DBModel.Dic_Service_Item">
               <MappingFragment StoreEntitySet="Dic_Service_Item">
                 <ScalarProperty Name="LastModifyStamp" ColumnName="LastModifyStamp" />
                 <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
@@ -1934,7 +2231,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Dic_Service_Menu">
-            <EntityTypeMapping TypeName="ICD_DBModel1.Dic_Service_Menu">
+            <EntityTypeMapping TypeName="ICD_DBModel.Dic_Service_Menu">
               <MappingFragment StoreEntitySet="Dic_Service_Menu">
                 <ScalarProperty Name="LastModifyStamp" ColumnName="LastModifyStamp" />
                 <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
@@ -1950,7 +2247,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Order_Interface">
-            <EntityTypeMapping TypeName="ICD_DBModel1.Order_Interface">
+            <EntityTypeMapping TypeName="ICD_DBModel.Order_Interface">
               <MappingFragment StoreEntitySet="Order_Interface">
                 <ScalarProperty Name="NotifyContent" ColumnName="NotifyContent" />
                 <ScalarProperty Name="NotiryStr" ColumnName="NotiryStr" />
@@ -1971,7 +2268,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="ORG_Attach">
-            <EntityTypeMapping TypeName="ICD_DBModel1.ORG_Attach">
+            <EntityTypeMapping TypeName="ICD_DBModel.ORG_Attach">
               <MappingFragment StoreEntitySet="ORG_Attach">
                 <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
                 <ScalarProperty Name="LastModifyUserID" ColumnName="LastModifyUserID" />
@@ -1987,7 +2284,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="ORG_Service_Config">
-            <EntityTypeMapping TypeName="ICD_DBModel1.ORG_Service_Config">
+            <EntityTypeMapping TypeName="ICD_DBModel.ORG_Service_Config">
               <MappingFragment StoreEntitySet="ORG_Service_Config">
                 <ScalarProperty Name="LastModifyStamp" ColumnName="LastModifyStamp" />
                 <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
@@ -2008,7 +2305,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="ORG_Service_Item">
-            <EntityTypeMapping TypeName="ICD_DBModel1.ORG_Service_Item">
+            <EntityTypeMapping TypeName="ICD_DBModel.ORG_Service_Item">
               <MappingFragment StoreEntitySet="ORG_Service_Item">
                 <ScalarProperty Name="LastModifyStamp" ColumnName="LastModifyStamp" />
                 <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
@@ -2026,7 +2323,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="ORG_Service_Provider">
-            <EntityTypeMapping TypeName="ICD_DBModel1.ORG_Service_Provider">
+            <EntityTypeMapping TypeName="ICD_DBModel.ORG_Service_Provider">
               <MappingFragment StoreEntitySet="ORG_Service_Provider">
                 <ScalarProperty Name="LastModifyStamp" ColumnName="LastModifyStamp" />
                 <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
@@ -2043,7 +2340,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="ORG_SubOrganization">
-            <EntityTypeMapping TypeName="ICD_DBModel1.ORG_SubOrganization">
+            <EntityTypeMapping TypeName="ICD_DBModel.ORG_SubOrganization">
               <MappingFragment StoreEntitySet="ORG_SubOrganization">
                 <ScalarProperty Name="LastModifyStamp" ColumnName="LastModifyStamp" />
                 <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
@@ -2060,7 +2357,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Sec_IP">
-            <EntityTypeMapping TypeName="ICD_DBModel1.Sec_IP">
+            <EntityTypeMapping TypeName="ICD_DBModel.Sec_IP">
               <MappingFragment StoreEntitySet="Sec_IP">
                 <ScalarProperty Name="LastModifyTime" ColumnName="LastModifyTime" />
                 <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
@@ -2070,7 +2367,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Sec_Message">
-            <EntityTypeMapping TypeName="ICD_DBModel1.Sec_Message">
+            <EntityTypeMapping TypeName="ICD_DBModel.Sec_Message">
               <MappingFragment StoreEntitySet="Sec_Message">
                 <ScalarProperty Name="LastModifyTime" ColumnName="LastModifyTime" />
                 <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
@@ -2082,7 +2379,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="User_Attach">
-            <EntityTypeMapping TypeName="ICD_DBModel1.User_Attach">
+            <EntityTypeMapping TypeName="ICD_DBModel.User_Attach">
               <MappingFragment StoreEntitySet="User_Attach">
                 <ScalarProperty Name="LastModifyStamp" ColumnName="LastModifyStamp" />
                 <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
@@ -2101,7 +2398,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="User_ChangeAuditLog">
-            <EntityTypeMapping TypeName="ICD_DBModel1.User_ChangeAuditLog">
+            <EntityTypeMapping TypeName="ICD_DBModel.User_ChangeAuditLog">
               <MappingFragment StoreEntitySet="User_ChangeAuditLog">
                 <ScalarProperty Name="LastModifyTime" ColumnName="LastModifyTime" />
                 <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
@@ -2119,7 +2416,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="User_Service_Attach">
-            <EntityTypeMapping TypeName="ICD_DBModel1.User_Service_Attach">
+            <EntityTypeMapping TypeName="ICD_DBModel.User_Service_Attach">
               <MappingFragment StoreEntitySet="User_Service_Attach">
                 <ScalarProperty Name="LastModifyStamp" ColumnName="LastModifyStamp" />
                 <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
@@ -2137,7 +2434,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="User_Service_Claim">
-            <EntityTypeMapping TypeName="ICD_DBModel1.User_Service_Claim">
+            <EntityTypeMapping TypeName="ICD_DBModel.User_Service_Claim">
               <MappingFragment StoreEntitySet="User_Service_Claim">
                 <ScalarProperty Name="LastModifyStamp" ColumnName="LastModifyStamp" />
                 <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
@@ -2153,7 +2450,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="User_Service_Provider">
-            <EntityTypeMapping TypeName="ICD_DBModel1.User_Service_Provider">
+            <EntityTypeMapping TypeName="ICD_DBModel.User_Service_Provider">
               <MappingFragment StoreEntitySet="User_Service_Provider">
                 <ScalarProperty Name="LastModifyStamp" ColumnName="LastModifyStamp" />
                 <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
@@ -2173,7 +2470,21 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <AssociationSetMapping Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" TypeName="ICD_DBModel1.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" StoreEntitySet="AspNetUserClaims">
+          <EntitySetMapping Name="BaseDic_ICD_Diagnosis_DataLink">
+            <EntityTypeMapping TypeName="ICD_DBModel.BaseDic_ICD_Diagnosis_DataLink">
+              <MappingFragment StoreEntitySet="BaseDic_ICD_Diagnosis_DataLink">
+                <ScalarProperty Name="LastModifyStamp" ColumnName="LastModifyStamp" />
+                <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
+                <ScalarProperty Name="LastModifyUserID" ColumnName="LastModifyUserID" />
+                <ScalarProperty Name="LastModifyTime" ColumnName="LastModifyTime" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="ICDID" ColumnName="ICDID" />
+                <ScalarProperty Name="DiagnosisDataLinkID" ColumnName="DiagnosisDataLinkID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" TypeName="ICD_DBModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" StoreEntitySet="AspNetUserClaims">
             <EndProperty Name="AspNetUserClaims">
               <ScalarProperty Name="Id" ColumnName="Id" />
             </EndProperty>

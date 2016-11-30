@@ -7,22 +7,23 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Docimax.Data_ICD
+namespace Docimax.Data_ICD.Entity
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class Code_Builder_Item
+    public partial class BaseDic_ICD_Operate_Log
     {
-        public int BuilderCodeItemID { get; set; }
-        public Nullable<int> BuilderCodeID { get; set; }
-        public Nullable<int> UploadItemID { get; set; }
-        public Nullable<int> GIndex { get; set; }
-        public Nullable<System.DateTime> CreateTime { get; set; }
-        public string CreateUserID { get; set; }
+        public int ICDOperateLogID { get; set; }
+        public Nullable<int> ICDID { get; set; }
+        public string OperateTagert { get; set; }
+        public Nullable<int> OperateType { get; set; }
+        public Nullable<System.DateTime> OperateTime { get; set; }
+        public string OperateUserID { get; set; }
+        public string OperateIP { get; set; }
+        public string OperateUserName { get; set; }
+        public string OperateHospitalName { get; set; }
         public Nullable<System.DateTime> LastModifyTime { get; set; }
         public string LastModifyUserID { get; set; }
-        public Nullable<int> DeleteFlag { get; set; }
-        public byte[] LastModifyStamp { get; set; }
     }
 }

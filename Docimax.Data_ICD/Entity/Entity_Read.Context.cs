@@ -25,7 +25,6 @@ namespace Docimax.Data_ICD.Entity
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<C__MigrationHistory> C__MigrationHistory { get; set; }
         public virtual DbSet<AspNetRoles> AspNetRoles { get; set; }
         public virtual DbSet<AspNetUserClaims> AspNetUserClaims { get; set; }
         public virtual DbSet<AspNetUserLogins> AspNetUserLogins { get; set; }
@@ -35,10 +34,16 @@ namespace Docimax.Data_ICD.Entity
         public virtual DbSet<BaseDic_City> BaseDic_City { get; set; }
         public virtual DbSet<BaseDic_Code> BaseDic_Code { get; set; }
         public virtual DbSet<BaseDic_Code_History> BaseDic_Code_History { get; set; }
+        public virtual DbSet<BaseDic_ICD_Diagnosis_Log> BaseDic_ICD_Diagnosis_Log { get; set; }
+        public virtual DbSet<BaseDic_ICD_Diagnosis_Remark> BaseDic_ICD_Diagnosis_Remark { get; set; }
         public virtual DbSet<BaseDic_ICD_Diagnosis_Repository> BaseDic_ICD_Diagnosis_Repository { get; set; }
+        public virtual DbSet<BaseDic_ICD_Operate_DataLink> BaseDic_ICD_Operate_DataLink { get; set; }
+        public virtual DbSet<BaseDic_ICD_Operate_Log> BaseDic_ICD_Operate_Log { get; set; }
+        public virtual DbSet<BaseDic_ICD_Operate_Remark> BaseDic_ICD_Operate_Remark { get; set; }
         public virtual DbSet<BaseDic_ICD_Operate_Repository> BaseDic_ICD_Operate_Repository { get; set; }
         public virtual DbSet<BaseDic_ICD_Version> BaseDic_ICD_Version { get; set; }
         public virtual DbSet<BaseDic_Province> BaseDic_Province { get; set; }
+        public virtual DbSet<BaseLink_ICD_Diagnosis_DataLink> BaseLink_ICD_Diagnosis_DataLink { get; set; }
         public virtual DbSet<Code_Order> Code_Order { get; set; }
         public virtual DbSet<Code_Order_Audit> Code_Order_Audit { get; set; }
         public virtual DbSet<Code_Order_Diagnosis> Code_Order_Diagnosis { get; set; }
@@ -65,5 +70,6 @@ namespace Docimax.Data_ICD.Entity
         public virtual DbSet<User_Service_Attach> User_Service_Attach { get; set; }
         public virtual DbSet<User_Service_Claim> User_Service_Claim { get; set; }
         public virtual DbSet<User_Service_Provider> User_Service_Provider { get; set; }
+        public virtual DbSet<BaseDic_ICD_Diagnosis_DataLink> BaseDic_ICD_Diagnosis_DataLink { get; set; }
     }
 }

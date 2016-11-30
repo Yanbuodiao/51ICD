@@ -16,7 +16,7 @@
 
 
         $('.form-control.icd').typeahead({
-            highlight: true,
+            highlight: false,
         },
         {
             name: 'icdSuggestion',
@@ -42,26 +42,6 @@
             });
         }
     });
-
-    function search(currentPage) {
-        //分页参数
-        var PageSize = 10;
-        var CurrentPage = currentPage;
-        $.ajax({
-            url: '@Url.Action("_Tools", "Home")',
-            data: {
-                PageSize: PageSize,
-                Page: CurrentPage,
-                TextFilter: $("#TextFilter").val(),
-                SearchModel: { IcdVersionID: $('#SearchModel_IcdVersionID').val() }
-            },
-            datatype: "text",
-            type: "post",
-            success: function (data) {
-                $("#ICDResult").html(data);
-            }
-        });
-    }
 </script>
 <h2>@ViewBag.Title</h2>
 <hr />
@@ -93,32 +73,44 @@
     </div>
 }
 <div style="margin-top:17px;" id="ICDResult">
-    @if (Model != null && Model.Content != null)
-    {
-        var grid = new WebGrid(
-                   canPage: true,
-                   rowsPerPage: Model.PageSize,
-                   canSort: false,
-                   ajaxUpdateContainerId: "grid");
-        grid.Bind(Model.Content, rowCount: Model.TotalRecords, autoSortAndPage: false);
-        grid.Pager(WebGridPagerModes.All);
-        @grid.GetHtml(htmlAttributes: new { id = "grid" },
-            fillEmptyRows: false,
-            tableStyle: "table table-bordered table-hover",
-            mode: WebGridPagerModes.All,
-            firstText: "第一页",
-            previousText: "上一页",
-            nextText: "下一页",
-            lastText: "最后一页",
-            columns: grid.Columns(
-                                  grid.Column("ICD_Name", "名称", style: "col-lg-6", canSort: false),
-                                  grid.Column("ICD_Code", "编码", style: "col-lg-4", canSort: false),
-                                  grid.Column(header: "详情", canSort: false, style: "action",
-                format: @<text>
-                                    <a href="@Url.Action("ICD_Detail", "Dictionary", new { IcdVersionID = @Model.SearchModel.IcdVersionID, IcdID = @item.ICDID })" class="btn btn-default">
-                                        查看
-                                    </a>
-                </text>)
-                                                                                                                                         ));
-    }
+    <table class="table table-bordered table-condensed">
+        <thead>
+            <tr>
+                <th>名称</th>
+                <th>编码</th>
+                <th>详情</th>
+            </tr>
+        </thead>
+    </table>
 </div>
+<!--page start-->
+<div class="col-md-12" style="margin-top:0px;">
+    <input type="hidden" value="@Model.PageScript" id="pagelist" />
+    <div class="pull-right" id="pageManage">
+    </div>
+</div>
+
+<!--page end-->
+
+<script type="text/javascript">
+    function search(pageIndex) {
+        //分页参数
+        var PageSize = 10;
+        $.ajax({
+            url: '@Url.Action("_Tools", "Home")',
+            data: {
+                PageSize: PageSize,
+                PageIndex: pageIndex,
+                TextFilter: $("#TextFilter").val(),
+                SearchModel: { IcdVersionID: $('#SearchModel_IcdVersionID').val(), ICDType: $("input[name='SearchModel.ICDType']").val() }
+            },
+            datatype: "text",
+            type: "post",
+            success: function (data) {
+                $("#ICDResult").html(data);
+                var aa = $("#pagelist").val();
+                $("#pageManage").html(aa);
+            }
+        });
+    }
+</script>
