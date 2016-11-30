@@ -32,11 +32,12 @@ namespace Docimax.Common_ICD
             {
                 if (!string.IsNullOrWhiteSpace(queryStr))
                 {
+                    queryStr = queryStr.Trim();
                     return icdVersionTemp.ICDList.Where(e =>
-                        e.ICD_Code.StartsWith(queryStr) ||
-                        e.ICD_Code.StartsWith(queryStr.ToUpper()) ||
-                        e.ICD_Name.StartsWith(queryStr) ||
-                        e.PinyinShort.StartsWith(queryStr.ToUpper())).Take(recordCount).ToList();
+                        e.ICD_Code.Contains(queryStr) ||
+                        e.ICD_Code.Contains(queryStr.ToUpper()) ||
+                        e.ICD_Name.Contains(queryStr) ||
+                        e.PinyinShort.Contains(queryStr.ToUpper())).Take(recordCount).ToList();
                 }
                 //return icdVersionTemp.ICDList;
             }
