@@ -1,9 +1,6 @@
-﻿using Docimax.Interface_ICD.Model;
-using System;
+﻿using Docimax.Interface_ICD.Enum;
+using Docimax.Interface_ICD.Model;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Docimax.Interface_ICD.Interface
 {
@@ -13,5 +10,6 @@ namespace Docimax.Interface_ICD.Interface
         List<ICDModel> GetICD_Operate_ModelList(string queryStr, int icd_VersionID);
         ICDVersionModel GetICDVersionWithICD(int icd_VersionID);
         List<ICDVersionModel> GetICDVersionList(int icdType);
+        ICDModel GetICDModel(int icdID, ICDTypeEnum icdType);       
     }
 }
