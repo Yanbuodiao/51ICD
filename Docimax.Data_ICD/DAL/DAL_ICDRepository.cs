@@ -1,5 +1,6 @@
 ﻿
 using Docimax.Data_ICD.Entity;
+using Docimax.Interface_ICD.Enum;
 using Docimax.Interface_ICD.Interface;
 using Docimax.Interface_ICD.Model;
 using System.Collections.Generic;
@@ -132,6 +133,10 @@ namespace Docimax.Data_ICD.DAL
                     ICD_Description = e.ICD_Description,
                 }).ToList();
             }
+        }
+        public ICDModel GetICDModel(int icdID, ICDTypeEnum icdType)
+        {
+            return new ICDModel();
         }
     }
 }
