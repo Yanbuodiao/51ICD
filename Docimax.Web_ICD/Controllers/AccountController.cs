@@ -386,6 +386,64 @@ namespace Docimax.Web_ICD.Controllers
             return PartialView(ServiceMenu.GetMenuList(User.Identity.GetUserId()));
         }
 
+        [AllowAnonymous]
+        public PartialViewResult ModalLogin(string returnUrl)
+        {
+            return PartialView();
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> ModalLogin(LoginViewModel model, string returnUrl)
+        {
+            var result = await SignInHelper.PasswordSignIn(model.Email, model.Password, model.RememberMe, shouldLockout: true);
+            switch (result)
+            {
+                case SignInStatus.Success:
+                    return RedirectToLocal(returnUrl);
+                case SignInStatus.LockedOut:
+                    return View("Lockout");
+                case SignInStatus.InvalidEmail:
+                    var user = await UserManager.FindByNameAsync(model.Email);
+                    ViewBag.UserID = user.Id;
+                    return View("DisplayEmail");
+                case SignInStatus.RequiresTwoFactorAuthentication:
+                    return RedirectToAction("SendCode", new { ReturnUrl = returnUrl });
+                case SignInStatus.Failure:
+                default:
+                    ModelState.AddModelError("", "无效的登录.");
+                    return View(model);
+            }
+        }
+
+        [AllowAnonymous]
+        public PartialViewResult ModalRegister(string returnUrl)
+        {
+            return PartialView();
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> ModalRegister(RegisterViewModel model, string returnUrl)
+        {
+
+            var ip = HttpHelper.GetIPFromRequest(Request);
+            if (ModelState.IsValid)
+            {
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var result = await UserManager.CreateAsync(user, model.Password);
+                if (result.Succeeded)
+                {
+                    return await SendConfirmEmail(user.Id);
+                }
+                AddErrors(result);
+            }
+            model.NeedVarify = true;
+            return View(model);
+        }
+
         #region 帮助程序
 
         private const string XsrfKey = "XsrfId";

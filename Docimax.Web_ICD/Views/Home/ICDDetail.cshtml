@@ -1,10 +1,11 @@
 ﻿@{
     ViewBag.Title = "icd编码详情";
 }
-@using Docimax.Interface_ICD.Model
-@model  ICDModel
+@model Docimax.Interface_ICD.Model.ICDModel
 @if (Model != null)
 {
+    @Html.HiddenFor(model => model.ICDID);
+    @Html.HiddenFor(model => model.ICDType);
     <h2>@Model.DisplayText</h2>
     <div class="row">
         @if (!string.IsNullOrWhiteSpace(Model.ICD_Description))
@@ -13,7 +14,7 @@
                 @Html.Label("摘要：", htmlAttributes: new { @class = "control-label" }) @Model.ICD_Description
             </div>
             <div class="col-md-1">
-                @*<input type="button" class="btn btn-default" value="编辑" />*@
+                <input id="btnSummary" type="button" class="btn btn-default" value="编辑" />
             </div>
         }
         else
@@ -22,7 +23,7 @@
                 @Html.Label("摘要：", htmlAttributes: new { @class = "control-label" })   暂无摘要
             </div>
             <div class="col-md-1">
-                @*<input type="button" class="btn btn-primary" value="去添加摘要" />*@
+                <input id="btnSummary" type="button" class="btn btn-primary" value="添加摘要" />
             </div>
         }
 
@@ -40,7 +41,12 @@
             <div class="panel-body">
                 @if (!string.IsNullOrWhiteSpace(Model.DetialDescription))
                 {
-                    <div>@Model.DetialDescription</div>
+                    <div class="col-md-11">
+                        @Model.DetialDescription
+                    </div>
+                    <div class="col-md-1">
+                        @*<input type="button" class="btn btn-primary" value="去添加" />*@
+                    </div>
                 }
                 else
                 {
@@ -108,3 +114,35 @@ else
 {
     <h2>未找到相关记录</h2>
 }
+<div class="modal  fade" id="LoginModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div id="LoginModalView" class="modal-content">
+
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $('#btnSummary').click(function () {
+        $.ajax({
+            url: '@Url.Action("CanEdit", "Home")',
+            datatype: "text",
+            type: "post",
+            success: function (data) {
+                if (true != data) {
+                    $.ajax({
+                        url: '@Url.Action("ModalRegister", "Account")',
+                        datatype: "text",
+                        type: "get",
+                        data: {
+                            returnUrl: ""
+                        },
+                        success: function (loginView) {
+                            $('#LoginModalView').html(loginView);
+                        }
+                    });
+                    $("#LoginModal").modal('show');
+                }
+            }
+        });
+    });
+</script>

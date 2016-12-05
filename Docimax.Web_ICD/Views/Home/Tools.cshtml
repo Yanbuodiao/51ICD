@@ -60,7 +60,7 @@
                         @Html.RadioButtonFor(model => model.SearchModel.ICDType, ICDTypeEnum.手术及操作编码, new { })@ICDTypeEnum.手术及操作编码.ToString()
                     </label>
                 </div>
-                @Html.DropDownListFor(model => model.SearchModel.IcdVersionID, (IEnumerable<SelectListItem>)ViewData["IcdVersion"], new { @class = "form-control",@style="width:100%" })
+                @Html.DropDownListFor(model => model.SearchModel.IcdVersionID, (IEnumerable<SelectListItem>)ViewData["IcdVersion"], new { @class = "form-control" })
                 @Html.TextBoxFor(model => model.TextFilter, new { @class = "form-control icd", @placeholder = "请输入名称、拼音简码或编码" })
             </div>
         </div>
@@ -76,9 +76,9 @@
     <table class="table table-bordered table-condensed">
         <thead>
             <tr>
-                <th>名称</th>
-                <th>编码</th>
-                <th>详情</th>
+                <th class="col-md-5">名称</th>
+                <th class="col-md-4">编码</th>
+                <th class="col-md-3">详情</th>
             </tr>
         </thead>
     </table>

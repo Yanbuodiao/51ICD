@@ -1,6 +1,7 @@
 ﻿using Docimax.Interface_ICD.Model;
 using System.Web.Mvc;
 using Docimax.Interface_ICD.Enum;
+using Microsoft.AspNet.Identity;
 using System.Collections.Generic;
 using Docimax.Interface_ICD.Interface;
 using Docimax.Data_ICD.DAL;
@@ -67,8 +68,22 @@ namespace Docimax.Web_ICD.Controllers
         {
             IICDRepository access = new DAL_ICDRepository();
             var model = access.GetICDModel(icdDetailID, icdType);
+            if (model!=null)
+            {
+                model.ICDType = icdType;
+            }
             return View(model);
         }
+
+        public ActionResult CanEdit()
+        {
+            if (User==null||User.Identity==null||string.IsNullOrWhiteSpace(User.Identity.GetUserId()))
+            {
+                return Content("false");
+            }
+            return Content("true");
+        }
+
 
         #region 私有方法
 

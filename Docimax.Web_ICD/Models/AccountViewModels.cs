@@ -78,6 +78,10 @@ namespace Docimax.Web_ICD.Models
         [Display(Name = "密码")]
         public string Password { get; set; }
 
+        [Required]
+        [Display(Name = "所在医院")]
+        public string HosipitalName { get; set; }
+
         [DataType(DataType.Password)]
         [Display(Name = "确认密码")]
         [Compare("Password", ErrorMessage = "密码和确认密码不匹配。")]
@@ -85,7 +89,7 @@ namespace Docimax.Web_ICD.Models
 
         public bool NeedVarify { get; set; }
     }
-    public class VerifyIdentityViewModel:BaseModel
+    public class VerifyIdentityViewModel : BaseModel
     {
         /// <summary>
         /// 用户ID

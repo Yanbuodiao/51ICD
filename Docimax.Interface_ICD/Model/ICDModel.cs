@@ -1,4 +1,5 @@
 ﻿
+using Docimax.Interface_ICD.Enum;
 using System.Collections.Generic;
 namespace Docimax.Interface_ICD.Model
 {
@@ -18,6 +19,7 @@ namespace Docimax.Interface_ICD.Model
         public List<IcdDataLink> DataLinks { get; set; }
 
         public List<IcdOperateLog> OperateLogs { get; set; }
+        public ICDTypeEnum ICDType { get; set; }
     }
 
     public class IcdDataLink

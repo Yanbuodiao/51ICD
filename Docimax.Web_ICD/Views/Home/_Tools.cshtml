@@ -4,19 +4,19 @@
 @using Docimax.Interface_ICD.Enum
 @model ICDPagedList<CodeSearchModel, ICDModel>
 <input type="hidden" value="@Model.PageScript" id="pagelist" />
-<table class="table table-bordered table-condensed">
-    <thead>
-        <tr>
-            <th class="col-md-5">名称</th>
-            <th class="col-md-4">编码</th>
-            <th class="col-md-3">详情</th>
-        </tr>
-    </thead>
-    <tbody>
-        @{
-            if (Model != null)
-            {
-                foreach (var item in Model.Content)
+@{
+    if (Model != null && Model.Content.Count > 0)
+    {
+        <table class="table table-bordered table-condensed">
+            <thead>
+                <tr>
+                    <th class="col-md-5">名称</th>
+                    <th class="col-md-4">编码</th>
+                    <th class="col-md-3">详情</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Content)
                 {
                     <tr>
                         <td style="vertical-align:middle"><a href='@Url.Action("ICDDetail", "Home", new { icdType = @Model.SearchModel.ICDType, icdDetailID = @item.ICDID })'>@item.ICD_Name</a></td>
@@ -28,8 +28,12 @@
                         </td>
                     </tr>
                 }
-            }
-        }
-    </tbody>
-</table>
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <h2>未查到相关记录</h2>
+    }
+}
 

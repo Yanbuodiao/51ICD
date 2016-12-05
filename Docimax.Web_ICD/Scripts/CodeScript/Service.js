@@ -1,4 +1,2 @@
-﻿app.service("icdService", function ($http) {
-
-   
+﻿app.service("icdService", function ($http) {   
 });

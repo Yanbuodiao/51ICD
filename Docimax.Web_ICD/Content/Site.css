@@ -20,6 +20,10 @@ select,
 textarea {
     max-width: 380px;
 }
+hr {
+    margin-top:10px;
+    margin-bottom:10px;
+}
 
 .container-fluid.icd {
     background-color: #144566;
@@ -98,6 +102,12 @@ textarea {
         font-size: 20px;
         color: #323a45;
         font-weight: 800;
+    }
+}
+
+@media (max-width: 964px) {
+    .form-control.icd {
+        margin-top:5px;
     }
 }
 

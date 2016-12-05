@@ -39,7 +39,6 @@ namespace Docimax.Common_ICD
                         e.ICD_Name.Contains(queryStr) ||
                         e.PinyinShort.Contains(queryStr.ToUpper())).Take(recordCount).ToList();
                 }
-                //return icdVersionTemp.ICDList;
             }
             return new List<ICDModel>();
         }

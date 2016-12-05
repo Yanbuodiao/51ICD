@@ -1199,6 +1199,8 @@
     <Content Include="Views\Home\DropDownParial.cshtml" />
     <Content Include="Views\Home\_Tools.cshtml" />
     <Content Include="Views\Home\ICDDetail.cshtml" />
+    <Content Include="Views\Account\ModalLogin.cshtml" />
+    <Content Include="Views\Account\ModalRegister.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
