@@ -20,9 +20,6 @@ namespace Docimax.Common
             int iLint;
             int TotalPage;
             string FootList = "";
-            //if (TotalNum == 0) { TotalPage = 0; return ""; }
-
-            //FootList += "<div class=\"page-txt\">";
             if (TotalNum % PageSize == 0)
             {
                 TotalPage = TotalNum / PageSize;
@@ -31,8 +28,11 @@ namespace Docimax.Common
             {
                 TotalPage = 1 + Convert.ToInt32(TotalNum / PageSize);
             }
-            //FootList += "共" + TotalNum + "条";
-            FootList +=  "<ul  class='pagination'>";
+            if (TotalPage == 0)
+            {
+                return string.Empty;
+            }
+            FootList += "<ul  class='pagination'>";
 
             int iPint = 5;
             if (TotalPage < 5)
@@ -77,7 +77,6 @@ namespace Docimax.Common
                 {
                     NextNum = pageIndex;
                 }
-
             }
             else
             {

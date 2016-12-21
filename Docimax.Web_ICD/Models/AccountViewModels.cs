@@ -79,6 +79,7 @@ namespace Docimax.Web_ICD.Models
         public string Password { get; set; }
 
         [Required]
+        [StringLength(100, ErrorMessage = "{0} 必须至少包含 {2} 个字符。", MinimumLength = 6)]
         [Display(Name = "所在医院")]
         public string HosipitalName { get; set; }
 
@@ -151,5 +152,38 @@ namespace Docimax.Web_ICD.Models
         [EmailAddress]
         [Display(Name = "电子邮件")]
         public string Email { get; set; }
+    }
+
+    public class TelLoginViewModel : Telephone
+    {
+        [Display(Name = "记住我?")]
+        public bool RememberMe { get; set; }
+
+        [Required]
+        [Display(Name = "收到的短信验证码")]
+        public string DynamicPWD { get; set; }
+        public bool LoginSuccess { get; set; }
+    }
+
+    public class TelRegisterViewModel : Telephone
+    {
+        [Required]
+        [StringLength(100, ErrorMessage = "{0} 至少包含 {2} 个字符。", MinimumLength = 4)]
+        [Display(Name = "所在医院")]
+        public string HosipitalName { get; set; }
+
+        [Required]
+        [Display(Name = "收到的短信验证码")]
+        public string DynamicPWD { get; set; }
+
+        public bool RegisterSuccess { get; set; }
+    }
+
+    public class Telephone
+    {
+        [Required]
+        [Phone]
+        [Display(Name = "电话号码")]
+        public string PhoneNumber { get; set; }
     }
 }

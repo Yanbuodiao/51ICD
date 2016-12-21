@@ -1,40 +1,42 @@
-﻿@model Docimax.Web_ICD.Models.RegisterViewModel
-@using (Html.BeginForm("ModalRegister", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+﻿@model Docimax.Web_ICD.Models.TelRegisterViewModel
+@using (Html.BeginForm("ModalRegister", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form", @id = "registerForm" }))
 {
     @Html.AntiForgeryToken()
-
+    if (@Model != null && @Model.RegisterSuccess)
+    {
+        <script type="text/javascript">
+            location.href = '@ViewBag.ReturnUrl';
+        </script>
+    }
     <div class="modal-header">
         <h4 class="modal-title" id="myModalLabel">加入51icd</h4>
     </div>
     <div class="modal-body">
         @Html.ValidationSummary("", new { @class = "text-danger" })
         <div class="form-group">
-            @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
-            <div class="col-md-10">
-                @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+            <div class="col-xs-12">
+                <div class="input-group input-group-lg">
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-plus-sign"></span></span>
+                    @Html.TextBoxFor(m => m.HosipitalName, new { @class = "form-control", @placeholder = "所在医院" })
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(m => m.HosipitalName, new { @class = "col-md-2 control-label" })
-            <div class="col-md-10">
-                @Html.TextBoxFor(m => m.HosipitalName, new { @class = "form-control" })
+            <div class="col-xs-12">
+                <div class="input-group input-group-lg">
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-phone"></span></span>
+                    @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control", @placeholder = "手机号码" })
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
-            <div class="col-md-10">
-                @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+            <div class="col-xs-12">
+                <div class="input-group input-group-lg">
+                    @Html.TextBoxFor(m => m.DynamicPWD, new { @class = "form-control", @placeholder = "动态密码" })
+                    <span class="input-group-btn">
+                        <button id="registerSendCode" style="width:140px" class="btn btn-default" type="button">发送动态密码</button>
+                    </span>
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(m => m.ConfirmPassword, new { @class = "col-md-2 control-label" })
-            <div class="col-md-10">
-                @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="col-md-offset-6 col-md-10">
-                <input id="btnModalRegister" type="submit" class="btn btn-primary" value="注册" style="width:175px;" />
+
+            <div class="col-xs-12" style="margin-top:20px;">
+                <button class="btn btn-primary btn-lg btn-block" id="btnRegister" type="button">注册</button>
             </div>
         </div>
     </div>
@@ -43,28 +45,91 @@
             已有账号？<a id="btnModalLogin" style="cursor:pointer;">登录</a>
         </p>
     </div>
-    if (Model != null && Model.NeedVarify)
-    {
-        <div class="form-group">
-            @{Html.RenderAction("Index", "VerificationCode");}
-        </div>
-
-    }
-    <script type="text/javascript">
-        $('#btnModalLogin').click(function () {
-            $.ajax({
-                url: '@Url.Action("ModalLogin", "Account")',
-                datatype: "text",
-                type: "get",
-                data: {
-                    returnUrl: window.location.href
-                },
-                success: function (loginView) {
-                    $('#LoginModalView').html(loginView);
-                }
-            });
-        });
-    </script>
 }
 @Scripts.Render("~/bundles/jqueryval")
+@Scripts.Render("~/bundles/sitePubJS")
+<script type="text/javascript">
+    $('#btnModalLogin').click(function () {
+        $.ajax({
+            url: '@Url.Action("ModalLogin", "Account")',
+            datatype: "text",
+            type: "get",
+            data: {
+                returnUrl: '@ViewBag.ReturnUrl'
+            },
+            success: function (loginView) {
+                $('#LoginModalView').html(loginView);
+            }
+        });
+    });
 
+    $('#registerSendCode').click(function () {
+        clearInterval(timer);
+        if (validatemobile($("#PhoneNumber").val())) {
+            $("#registerSendCode").attr("disabled", true);
+
+            $.ajax({
+                url: '@Url.Action("SendPhoneVerifyCode", "Pub")',
+                datatype: "text",
+                type: "post",
+                data: {
+                    telephone: { PhoneNumber: $("#PhoneNumber").val() },
+                },
+                success: function (data) {
+                    var second = data.TResult;
+                    if (second > 0) {
+                        $("#DynamicPWD").focus();
+                        timer = setInterval(function () {
+                            second -= 1;
+                            if (second > 0) {
+                                $("#registerSendCode").attr("disabled", true);
+                                $("#registerSendCode").text(second + "秒后重发");
+                            }
+                            else {
+                                $("#registerSendCode").removeAttr("disabled");
+                                $("#registerSendCode").text("发送动态密码");
+                                clearInterval(timer);
+                            }
+                        }, 1000);
+                    }
+                    else {
+                        if (data.IsSuccess) {
+
+                        }
+                        else {
+                            showError(data.ErrorStr);
+                        }
+                    }
+                }
+            });
+        };
+    });
+</script>
+<script type="text/javascript">
+
+    $("#btnRegister").click(function (e) {
+        e.preventDefault();
+        var _form = $("#registerForm");
+        var valided = _form.valid();
+        if (!valided) {
+            return false;
+        }
+        if (!validatemobile($("#PhoneNumber").val())) {
+            return false;
+        }
+        if (!validateDymaticCode($("#DynamicPWD").val())) {
+            return false;
+        }
+        else {
+            $.ajax({
+                url: '@Url.Action("ModalRegister", "Account")',
+                datatype: "text",
+                type: "post",
+                data: $("#registerForm").serializeArray(),
+                success: function (data) {
+                    $('#LoginModalView').html(data);
+                }
+            });
+        }
+    });
+</script>

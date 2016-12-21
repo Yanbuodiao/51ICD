@@ -10,6 +10,7 @@ namespace Docimax.Interface_ICD.Interface
         List<ICDModel> GetICD_Operate_ModelList(string queryStr, int icd_VersionID);
         ICDVersionModel GetICDVersionWithICD(int icd_VersionID);
         List<ICDVersionModel> GetICDVersionList(int icdType);
-        ICDModel GetICDModel(int icdID, ICDTypeEnum icdType);       
+        ICDModel GetICDModel(int icdID, ICDTypeEnum icdType);
+        ICDExcuteResult<string> UpdateICDSummary(ICDModel model);
     }
 }

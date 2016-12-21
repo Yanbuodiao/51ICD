@@ -1,35 +1,43 @@
-﻿@model Docimax.Web_ICD.Models.LoginViewModel
-@using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+﻿@model Docimax.Web_ICD.Models.TelLoginViewModel
+@using (Html.BeginForm("ModalLogin", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form", @id = "loginForm" }))
 {
     @Html.AntiForgeryToken()
-
+    if (@Model != null && @Model.LoginSuccess)
+    {
+        <script type="text/javascript">
+            location.href = '@ViewBag.ReturnUrl';
+        </script>
+    }
     <div class="modal-header">
         <h4 class="modal-title" id="myModalLabel">登录51icd</h4>
     </div>
     <div class="modal-body">
+        @Html.ValidationSummary("", new { @class = "text-danger" })
         <div class="form-group">
-            @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
-            <div class="col-md-10">
-                @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
-                @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
-            </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
-            <div class="col-md-10">
-                @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
-                @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-3">
-                <div class="checkbox">
-                    @Html.CheckBoxFor(m => m.RememberMe)
-                    @Html.LabelFor(m => m.RememberMe)
+            <div class="col-xs-12">
+                <div class="input-group input-group-lg">
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-phone"></span></span>
+                    @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control", @placeholder = "手机号码" })
                 </div>
             </div>
-            <div class="col-md-7">
-                <input type="submit" value="登录" class="btn btn-primary" style="width:175px;" />
+            <div class="col-xs-12">
+                <div class="input-group input-group-lg">
+                    @Html.TextBoxFor(m => m.DynamicPWD, new { @class = "form-control", @placeholder = "动态密码" })
+                    <span class="input-group-btn">
+                        <button id="loginSendCode" style="width:140px" class="btn btn-default" type="button">发送动态密码</button>
+                    </span>
+                </div>
+            </div>
+            <div class="col-xs-12">
+                <div class="checkbox">
+                    <label>
+                        @Html.CheckBoxFor(m => m.RememberMe, new { @style = "transform:scale(1.3, 1.3);" }) 记住我
+                    </label>
+                </div>
+            </div>
+
+            <div class="col-xs-12" style="margin-top:20px;">
+                <button class="btn btn-primary btn-lg btn-block" id="btnLogin" type="button">登录</button>
             </div>
         </div>
     </div>
@@ -39,3 +47,79 @@
         </p>
     </div>
 }
+@Scripts.Render("~/bundles/jqueryval")
+@Scripts.Render("~/bundles/sitePubJS")
+<script type="text/javascript">
+
+    $('#loginSendCode').click(function () {
+        clearInterval(timer);
+        if (validatemobile($("#PhoneNumber").val())) {
+            $("#loginSendCode").attr("disabled", true);
+
+            $.ajax({
+                url: '@Url.Action("SendPhoneVerifyCode", "Pub")',
+                datatype: "text",
+                type: "post",
+                data: {
+                    telephone: { PhoneNumber: $("#PhoneNumber").val() },
+                },
+                success: function (data) {
+                    var second = data.TResult;
+                    if (data.IsSuccess) {
+                        runTimer(second);
+                    }
+                    else {
+                        showError(data.ErrorStr);
+                        runTimer(second);
+                    }
+                }
+            });
+        };
+    });
+
+    function runTimer(second) {
+        if (second > 0) {
+            $("#DynamicPWD").focus();
+            timer = setInterval(function () {
+                second -= 1;
+                if (second > 0) {
+                    $("#loginSendCode").attr("disabled", true);
+                    $("#loginSendCode").text(second + "秒后重发");
+                }
+                else {
+                    $("#loginSendCode").removeAttr("disabled");
+                    $("#loginSendCode").text("发送动态密码");
+                    clearInterval(timer);
+                }
+            }, 1000);
+        }
+    }
+</script>
+<script type="text/javascript">
+
+    $("#btnLogin").click(function (e) {
+        e.preventDefault();
+        var _form = $("#loginForm");
+        var valided = _form.valid();
+        if (!valided) {
+            return false;
+        }
+        if (!validatemobile($("#PhoneNumber").val())) {
+            return false;
+        }
+        if (!validateDymaticCode($("#DynamicPWD").val())) {
+            return false;
+        }
+        else {
+            $.ajax({
+                url: '@Url.Action("ModalLogin", "Account")',
+                datatype: "text",
+                type: "post",
+                data: $("#loginForm").serializeArray(),
+                success: function (data) {
+                    $('#LoginModalView').html(data);
+                }
+            });
+        }
+    });
+</script>

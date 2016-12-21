@@ -61,15 +61,65 @@ namespace Docimax.Data_ICD.DAL
             {
                 var newModel = new Sec_Message
                 {
-                    CreateTime=model.LastSendTime,
-                    LastModifyTime=model.LastSendTime,
-                    SourceIP=model.SourceIP,
-                    UserID=model.UserID,
-                    UserPhoneNumber=model.PhoneNumber,                    
+                    CreateTime = model.LastSendTime,
+                    LastModifyTime = model.LastSendTime,
+                    SourceIP = model.SourceIP,
+                    UserID = model.UserID,
+                    UserPhoneNumber = model.PhoneNumber,
                 };
                 entity.Sec_Message.Add(newModel);
                 entity.SaveChanges();
             }
+        }
+        public ICDExcuteResult<int> DymaticCodeVerify(string phoneNum, string sourceIP, int shouldDelaySecond)
+        {
+            using (var entity = new Entity_Read())
+            {
+                var beginTime = DateTime.Now.AddDays(-1);
+                var all = entity.Sec_Message.Where(e => e.CreateTime > beginTime && (e.UserPhoneNumber == phoneNum || e.SourceIP == sourceIP)).ToList();
+                if (all != null && all.Count > 0)
+                {
+                    if (all.Count(e => e.SourceIP == sourceIP) > 20)
+                    {
+                        return new ICDExcuteResult<int>
+                        {
+                            IsSuccess = false,
+                            ErrorStr = "机器人？过段时间在试试吧",
+                        };
+                    }
+                    if (all.Count(e => e.UserPhoneNumber == phoneNum) > 5)
+                    {
+                        return new ICDExcuteResult<int>
+                        {
+                            IsSuccess = false,
+                            ErrorStr = "您今天注册的次数太多？过段时间在试试吧",
+                        };
+                    }
+                    var lastCode = all.Where(e => e.UserPhoneNumber == phoneNum).OrderByDescending(t => t.SecurityMessage_ID).FirstOrDefault();
+                    if (lastCode != null)
+                    {
+                        var spanTime = (int)(DateTime.Now - (lastCode.CreateTime ?? DateTime.Now)).TotalSeconds;
+                        if (shouldDelaySecond > spanTime)
+                        {
+                            return new ICDExcuteResult<int>
+                            {
+                                IsSuccess = true,
+                                TResult = shouldDelaySecond - spanTime,
+                            };
+                        }
+                    }
+                    return new ICDExcuteResult<int>
+                    {
+                        IsSuccess = true,
+                        TResult = shouldDelaySecond,
+                    };
+                }
+            }
+            return new ICDExcuteResult<int>
+            {
+                IsSuccess = true,
+                TResult = shouldDelaySecond,
+            };
         }
     }
 }

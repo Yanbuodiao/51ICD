@@ -3,6 +3,7 @@ using Docimax.Data_ICD.Entity;
 using Docimax.Interface_ICD.Enum;
 using Docimax.Interface_ICD.Interface;
 using Docimax.Interface_ICD.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -139,14 +140,31 @@ namespace Docimax.Data_ICD.DAL
             switch (icdType)
             {
                 case ICDTypeEnum.诊断编码:
-                    return getDiagnosiICD(icdID);
+                    return getDiagnosisICD(icdID);
                 case ICDTypeEnum.手术及操作编码:
                     return getOperateICD(icdID);
             }
             return null;
         }
 
-        private ICDModel getDiagnosiICD(int icdID)
+        public ICDExcuteResult<string> UpdateICDSummary(ICDModel model)
+        {
+            if (model == null)
+            {
+                return new ICDExcuteResult<string> { IsSuccess = false, ErrorStr = "未找到相关记录" };
+            }
+            switch (model.ICDType)
+            {
+                case ICDTypeEnum.诊断编码:
+                    return updateDiagnosisSummary(model);
+                case ICDTypeEnum.手术及操作编码:
+                    return updateOperateSummary(model);
+            }
+            return new ICDExcuteResult<string> { IsSuccess = false, ErrorStr = "未找到相关记录" };
+        }
+
+        #region 私有方法
+        private ICDModel getDiagnosisICD(int icdID)
         {
             using (var entity = new Entity_Read())
             {
@@ -159,6 +177,7 @@ namespace Docimax.Data_ICD.DAL
                         ICD_Code = model.ICD_Code,
                         ICD_Name = model.ICD_Name,
                         ICD_Description = model.ICD_Description,
+                        LastModifyStamp = Convert.ToBase64String(model.LastModifyStamp),
                     };
                 }
             }
@@ -178,10 +197,77 @@ namespace Docimax.Data_ICD.DAL
                         ICD_Code = model.ICD_Code,
                         ICD_Name = model.ICD_Name,
                         ICD_Description = model.ICD_Description,
+                        LastModifyStamp = Convert.ToBase64String(model.LastModifyStamp),
                     };
                 }
             }
             return null;
         }
+
+        private ICDExcuteResult<string> updateDiagnosisSummary(ICDModel model)
+        {
+            using (var entity = new Entity_Write())
+            {
+                using (var trasanction = entity.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        var entityModel = entity.BaseDic_ICD_Diagnosis_Repository.FirstOrDefault(e => e.ICDID == model.ICDID);
+                        if (entityModel == null)
+                        {
+                            return new ICDExcuteResult<string> { IsSuccess = false, ErrorStr = "未找到相关记录" };
+                        }
+                        if (model.LastModifyStamp != Convert.ToBase64String(entityModel.LastModifyStamp))
+                        {
+                            return new ICDExcuteResult<string> { IsSuccess = false, ErrorStr = "有人快您一步，已经更新" };
+                        }
+                        entityModel.ICD_Description = model.ICD_Description;
+                        entity.SaveChanges();
+                        trasanction.Commit();
+                        return new ICDExcuteResult<string> { IsSuccess = true, TResult = Convert.ToBase64String(entityModel.LastModifyStamp), };
+                    }
+                    catch (Exception ex)
+                    {
+                        //todo 记录相关日志
+                        trasanction.Rollback();
+                        return new ICDExcuteResult<string> { IsSuccess = false, ErrorStr = "系统罢工了" };
+                    }
+
+                }
+            }
+        }
+        private ICDExcuteResult<string> updateOperateSummary(ICDModel model)
+        {
+            using (var entity = new Entity_Write())
+            {
+                using (var trasanction = entity.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        var entityModel = entity.BaseDic_ICD_Operate_Repository.FirstOrDefault(e => e.ICDID == model.ICDID);
+                        if (entityModel == null)
+                        {
+                            return new ICDExcuteResult<string> { IsSuccess = false, ErrorStr = "未找到相关记录" };
+                        }
+                        if (model.LastModifyStamp != Convert.ToBase64String(entityModel.LastModifyStamp))
+                        {
+                            return new ICDExcuteResult<string> { IsSuccess = false, ErrorStr = "有人快您一步，已经更新" };
+                        }
+                        entityModel.ICD_Description = model.ICD_Description;
+                        entity.SaveChanges();
+                        trasanction.Commit();
+                        return new ICDExcuteResult<string> { IsSuccess = true, TResult = Convert.ToBase64String(entityModel.LastModifyStamp), };
+                    }
+                    catch (Exception ex)
+                    {
+                        //todo 记录相关日志
+                        trasanction.Rollback();
+                        return new ICDExcuteResult<string> { IsSuccess = false, ErrorStr = "系统罢工了" };
+                    }
+                }
+            }
+        }
+
+        #endregion
     }
 }

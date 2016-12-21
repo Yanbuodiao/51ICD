@@ -20,7 +20,6 @@ namespace Docimax.Web_Interface.Controllers
             var log = initialLog(filterContext);
             var postStr = HttpHelper.GetStrByInputStream(filterContext.RequestContext.HttpContext.Request.InputStream);
             var uploadRequest = JsonHelper.DeserializeObject<UploadRequest>(postStr);
-
             #region 基础验证
 
             if (uploadRequest == null)

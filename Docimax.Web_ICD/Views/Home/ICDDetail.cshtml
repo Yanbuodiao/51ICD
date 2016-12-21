@@ -6,28 +6,31 @@
 {
     @Html.HiddenFor(model => model.ICDID);
     @Html.HiddenFor(model => model.ICDType);
-    <h2>@Model.DisplayText</h2>
-    <div class="row">
-        @if (!string.IsNullOrWhiteSpace(Model.ICD_Description))
-        {
-            <div class="col-md-11">
-                @Html.Label("摘要：", htmlAttributes: new { @class = "control-label" }) @Model.ICD_Description
-            </div>
-            <div class="col-md-1">
-                <input id="btnSummary" type="button" class="btn btn-default" value="编辑" />
-            </div>
-        }
-        else
-        {
-            <div class="col-md-11">
-                @Html.Label("摘要：", htmlAttributes: new { @class = "control-label" })   暂无摘要
-            </div>
-            <div class="col-md-1">
-                <input id="btnSummary" type="button" class="btn btn-primary" value="添加摘要" />
-            </div>
-        }
-
-    </div>
+    @Html.HiddenFor(model => model.LastModifyStamp);
+    <h4>@Model.DisplayText</h4>
+    <form class="form-horizontal" role="form" id="form_Summary">
+        <div class="form-group">
+            @Html.AntiForgeryToken()
+            @if (!string.IsNullOrWhiteSpace(Model.ICD_Description))
+            {
+                <div class="col-md-11" id="summaryDiv">
+                    @Model.ICD_Description
+                </div>
+                <div class="col-md-1">
+                    <input id="btnSummary" type="button" class="btn btn-primary" value="编辑摘要" />
+                </div>
+            }
+            else
+            {
+                <div class="col-sm-11" id="summaryDiv">
+                    <p>暂无摘要</p>
+                </div>
+                <div class="col-sm-1">
+                    <input id="btnSummary" type="button" class="btn btn-primary" value="添加摘要" />
+                </div>
+            }
+        </div>
+    </form>
     <hr />
     <div class="panel panel-default">
         <div class="panel-heading" role="tab" id="DetailDescription">
@@ -41,7 +44,7 @@
             <div class="panel-body">
                 @if (!string.IsNullOrWhiteSpace(Model.DetialDescription))
                 {
-                    <div class="col-md-11">
+                    <div class="col-md-10">
                         @Model.DetialDescription
                     </div>
                     <div class="col-md-1">
@@ -50,7 +53,7 @@
                 }
                 else
                 {
-                    <div class="col-md-11">
+                    <div class="col-md-10">
                         暂无详细描述
                     </div>
                     <div class="col-md-1">
@@ -114,7 +117,7 @@ else
 {
     <h2>未找到相关记录</h2>
 }
-<div class="modal  fade" id="LoginModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="LoginModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div id="LoginModalView" class="modal-content">
 
@@ -122,27 +125,94 @@ else
     </div>
 </div>
 <script type="text/javascript">
+    var isSummaryEdite = false;
+    var summaryText= '@Html.TextBoxFor(e => e.ICD_Description,
+    new { @class = " form-control",
+          @placeholder = "摘要信息",
+          @style = "max-width:100%"
+    })';
+    var summaryValue='@Model.ICD_Description';
+    var summaryStamp='@Model.LastModifyStamp';
     $('#btnSummary').click(function () {
-        $.ajax({
-            url: '@Url.Action("CanEdit", "Home")',
-            datatype: "text",
-            type: "post",
-            success: function (data) {
-                if (true != data) {
-                    $.ajax({
-                        url: '@Url.Action("ModalRegister", "Account")',
-                        datatype: "text",
-                        type: "get",
-                        data: {
-                            returnUrl: ""
-                        },
-                        success: function (loginView) {
-                            $('#LoginModalView').html(loginView);
-                        }
-                    });
-                    $("#LoginModal").modal('show');
+        if (!isSummaryEdite) {
+            $.ajax({
+                url: '@Url.Action("CanEdit", "Home")',
+                datatype: "text",
+                type: "post",
+                success: function (data) {
+                    if ('true' != data) {
+                        $.ajax({
+                            url: '@Url.Action("ModalRegister", "Account")',
+                            datatype: "text",
+                            type: "get",
+                            async: true,
+                            data: {
+                                returnUrl: GetUrlRelativePath()
+                            },
+                            success: function (loginView) {
+                                $('#LoginModalView').html(loginView);
+                                $("#LoginModal").modal('show');
+                            }
+                        });
+                    }
+                    else {
+                        $('#summaryDiv').html(summaryText);
+                        $('#ICD_Description').val(summaryValue);
+                        $('#btnSummary').val("保存摘要");
+                        isSummaryEdite = true;
+                    }
                 }
-            }
-        });
+            });
+        }
+        else {
+            $.ajax({
+                url: '@Url.Action("UpdateICDSummary", "ICD")',
+                datatype: "text",
+                type: "post",
+                data: {
+                    ICDType: '@Model.ICDType',
+                    ICDID:@Model.ICDID,
+                    ICD_Description: $("#ICD_Description").val(),
+                    LastModifyStamp:summaryStamp,
+                },
+                success: function (data) {
+                    if (data.IsSuccess) {
+                        summaryValue= $("#ICD_Description").val();
+                        $('#summaryDiv').html(summaryValue);
+                        summaryStamp=data.TResult;
+                        $("#btnSummary").val("编辑摘要");
+                        isSummaryEdite = false;
+                    }
+                    else {
+                        showError(data.ErrorStr);
+                    }
+                }
+            });
+        }
     });
+    function GetUrlRelativePath() {
+        var url = document.location.toString();
+        var arrUrl = url.split("//");
+        var start = arrUrl[1].indexOf("/");
+        var relUrl = arrUrl[1].substring(start);
+        return relUrl;
+    }
+
+    function reposition() {
+        var modal = $(this),
+            dialog = modal.find('.modal-dialog');
+        modal.css('display', 'block');
+        dialog.css("margin-top", Math.max(0, ($(window).height() - dialog.height()) / 3));
+        dialog.css("max-width", '460px');
+    }
+
+    $('.modal').on('show.bs.modal', reposition);
+
+    $(window).on('resize', function () {
+        $('.modal:visible').each(reposition);
+    });
+
+    var timer = null;
 </script>
+@Scripts.Render("~/bundles/jqueryval")
+@Scripts.Render("~/bundles/sitePubJS")

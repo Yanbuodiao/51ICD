@@ -27,6 +27,8 @@ namespace Docimax.Data_ICD.Entity
         public string RealName { get; set; }
         public string BankCardNO { get; set; }
         public Nullable<int> CertificationFlag { get; set; }
+        public Nullable<int> BankCertificationFlag { get; set; }
+        public string HospitalName { get; set; }
         public Nullable<int> ORGID { get; set; }
         public Nullable<int> SubORGID { get; set; }
         public Nullable<int> IsFirstLogin { get; set; }

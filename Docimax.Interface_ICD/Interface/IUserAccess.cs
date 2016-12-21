@@ -13,5 +13,6 @@ namespace Docimax.Interface_ICD.Interface
         ICDTimePagedList<UserServiceSearch, UserServiceModel> GetUserServiceList(ICDTimePagedList<UserServiceSearch, UserServiceModel> queryModel);
         UserServiceModel GetUserService(int user_serviceID);
         ICDExcuteResult<int> AuditServiceProvider(UserServiceModel model);
+        ICDExcuteResult<string> CreateOrLogin(string phoneNum, string hospitalName);
     }
 }

@@ -8,10 +8,12 @@ namespace Docimax.Interface_ICD.Model
     public class ICDTimePagedList<S, T> : ICDPagedList<S, T>
     {
         public IPagedList<T> PageList { get; set; }
+
         /// <summary>
         /// 查询条件的开始时间
         /// </summary>
         public DateTime BeginDate { get; set; }
+
         /// <summary>
         /// 查询条件的结束时间
         /// </summary>
@@ -76,10 +78,12 @@ namespace Docimax.Interface_ICD.Model
                 pageSize = value;
             }
         }
+
         /// <summary>
         /// 符合条件的记录总条数
         /// </summary>
         public int TotalRecords { get; set; }
+
         /// <summary>
         /// 符合记录的总页数
         /// </summary>
@@ -92,6 +96,5 @@ namespace Docimax.Interface_ICD.Model
         {
             get { return PageHelper.InitialPageScript(TotalRecords, PageSize, PageIndex); }
         }
-
     }
 }

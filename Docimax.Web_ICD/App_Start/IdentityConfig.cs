@@ -54,11 +54,9 @@ namespace Docimax.Web_ICD
     {
         public async Task SendAsync(IdentityMessage message)
         {
-            //ISMS SmsServer = new SMS_BeiDouTong();
             ISMS SmsServer = new SMS_Ihuyi();
             SMSConfig smsConfig = (SMSConfig)ConfigurationManager.GetSection("application/sms");
             await SmsServer.SendSMsAsync(smsConfig, message.Body, message.Destination);
-            await Task.FromResult(0);
         }
     }
 
@@ -143,7 +141,7 @@ namespace Docimax.Web_ICD
 
         static ApplicationSignInManager()
         {
-           
+
         }
 
         public static ApplicationSignInManager Create(IdentityFactoryOptions<ApplicationSignInManager> options, IOwinContext context)
@@ -232,17 +230,26 @@ namespace Docimax.Web_ICD
 
         public async Task SignInAsync(ApplicationUser user, bool isPersistent, bool rememberBrowser)
         {
-            // Clear any partial cookies from external or two factor partial sign ins
-            AuthenticationManager.SignOut(DefaultAuthenticationTypes.ExternalCookie, DefaultAuthenticationTypes.TwoFactorCookie);
-            var userIdentity = await user.GenerateUserIdentityAsync(UserManager);
-            if (rememberBrowser)
+            try
             {
-                var rememberBrowserIdentity = AuthenticationManager.CreateTwoFactorRememberBrowserIdentity(user.Id);
-                AuthenticationManager.SignIn(new AuthenticationProperties { IsPersistent = isPersistent }, userIdentity, rememberBrowserIdentity);
+                // Clear any partial cookies from external or two factor partial sign ins
+                AuthenticationManager.SignOut(DefaultAuthenticationTypes.ExternalCookie, DefaultAuthenticationTypes.TwoFactorCookie);
+                var userIdentity = await user.GenerateUserIdentityAsync(UserManager);
+                if (rememberBrowser)
+                {
+                    var rememberBrowserIdentity = AuthenticationManager.CreateTwoFactorRememberBrowserIdentity(user.Id);
+                    AuthenticationManager.SignIn(new AuthenticationProperties { IsPersistent = isPersistent }, userIdentity, rememberBrowserIdentity);
+                }
+                else
+                {
+
+                    AuthenticationManager.SignIn(new AuthenticationProperties { IsPersistent = isPersistent }, userIdentity);
+                }
             }
-            else
+            catch (Exception ex)
             {
-                AuthenticationManager.SignIn(new AuthenticationProperties { IsPersistent = isPersistent }, userIdentity);
+
+                throw;
             }
         }
 

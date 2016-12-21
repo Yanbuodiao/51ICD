@@ -10,5 +10,7 @@ namespace Docimax.Interface_ICD.Interface
         SecurityPhoneModel GetLastPhoneMessage(string phoneNumber);
 
         void SavePhoneMessage(SecurityPhoneModel model);
+
+        ICDExcuteResult<int> DymaticCodeVerify(string phoneNum, string sourceIP, int shouldDelaySecond);
     }
 }

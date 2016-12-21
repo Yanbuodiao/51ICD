@@ -3,7 +3,7 @@ using Docimax.Interface_ICD.Enum;
 using System.Collections.Generic;
 namespace Docimax.Interface_ICD.Model
 {
-    public class ICDModel
+    public class ICDModel : BaseModel
     {
         public int ICDID { get; set; }
         public string ICD_Code { get; set; }

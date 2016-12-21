@@ -9,6 +9,6 @@ namespace Docimax.Interface_ICD.Interface
 {
     public interface ISMS
     {
-        Task SendSMsAsync(SMSConfig sMSConfig, string sMSbody, string destination);
+        Task<bool> SendSMsAsync(SMSConfig sMSConfig, string sMSbody, string destination);
     }
 }

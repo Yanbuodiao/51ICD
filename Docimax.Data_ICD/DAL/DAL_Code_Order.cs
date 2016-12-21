@@ -17,7 +17,7 @@ namespace Docimax.Data_ICD.DAL
     {
         public CodeOrderModel GetCodeOrderDetail(string userID, int codeOrderID)
         {
-            using (var entity = new Entity_Read())
+            using (Entity_Read entity = new Entity_Read())
             {
                 var codeModel = entity.Code_Order.FirstOrDefault(e => e.CodeOrderID == codeOrderID);
                 if (codeModel == null)
@@ -495,8 +495,8 @@ namespace Docimax.Data_ICD.DAL
                     PlatformOrderCode = model.PlatformOrderCode,
                     CaseNum = model.CaseNum,
                     MedicalRecordPath = model.MedicalRecordPath,
-                    Diagnosis_ICD_VersionID = model.Diagnosis_ICD_VersionID??0,
-                    Operation_ICD_VersionID = model.Operation_ICD_VersionID??0,
+                    Diagnosis_ICD_VersionID = model.Diagnosis_ICD_VersionID ?? 0,
+                    Operation_ICD_VersionID = model.Operation_ICD_VersionID ?? 0,
                 };
             }
         }

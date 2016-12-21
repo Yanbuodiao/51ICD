@@ -137,6 +137,9 @@
     <Compile Include="Entity\Code_Order_UploadedItem.cs">
       <DependentUpon>Entity_Read.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entity\C__MigrationHistory.cs">
+      <DependentUpon>Entity_Read.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entity\Dic_Item.cs">
       <DependentUpon>Entity_Read.tt</DependentUpon>
     </Compile>

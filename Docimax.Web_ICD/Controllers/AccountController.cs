@@ -1,5 +1,7 @@
 ﻿using Docimax.Common;
 using Docimax.Common_ICD.Cache;
+using Docimax.Data_ICD.DAL;
+using Docimax.Interface_ICD.Interface;
 using Docimax.Web_ICD.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
@@ -147,7 +149,7 @@ namespace Docimax.Web_ICD.Controllers
             var ip = HttpHelper.GetIPFromRequest(Request);
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, LockoutEnabled = false, };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
@@ -389,59 +391,92 @@ namespace Docimax.Web_ICD.Controllers
         [AllowAnonymous]
         public PartialViewResult ModalLogin(string returnUrl)
         {
+            ViewBag.ReturnUrl = returnUrl;
             return PartialView();
         }
 
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> ModalLogin(LoginViewModel model, string returnUrl)
+        public async Task<ActionResult> ModalLogin(TelLoginViewModel model, string returnUrl)
         {
-            var result = await SignInHelper.PasswordSignIn(model.Email, model.Password, model.RememberMe, shouldLockout: true);
-            switch (result)
+            if (ModelState.IsValid)
             {
-                case SignInStatus.Success:
-                    return RedirectToLocal(returnUrl);
-                case SignInStatus.LockedOut:
-                    return View("Lockout");
-                case SignInStatus.InvalidEmail:
-                    var user = await UserManager.FindByNameAsync(model.Email);
-                    ViewBag.UserID = user.Id;
-                    return View("DisplayEmail");
-                case SignInStatus.RequiresTwoFactorAuthentication:
-                    return RedirectToAction("SendCode", new { ReturnUrl = returnUrl });
-                case SignInStatus.Failure:
-                default:
-                    ModelState.AddModelError("", "无效的登录.");
-                    return View(model);
+                var ip = HttpHelper.GetIPFromRequest(Request);
+                var validateCodeResult = ValidateCodeHelper.VerifyPhoneDymaticCode(model.PhoneNumber, model.DynamicPWD);
+                if (!validateCodeResult)
+                {
+                    AddErrors(new IdentityResult("动态密码不匹配或者已过期"));
+                }
+                else
+                {
+                    IUserAccess access = new DAL_UserAccess();
+                    var icdExcutResult = access.CreateOrLogin(model.PhoneNumber, string.Empty);
+                    if (icdExcutResult.IsSuccess)
+                    {
+                        await SignInHelper.SignInAsync(new ApplicationUser
+                        {
+                            UserName = model.PhoneNumber,
+                            Id = icdExcutResult.TResult,
+                            PhoneNumber = model.PhoneNumber,
+                            PhoneNumberConfirmed = true,
+                        }, false, false);
+                        model.LoginSuccess = true;
+                    }
+                    else
+                    {
+                        AddErrors(new IdentityResult(icdExcutResult.ErrorStr));
+                    }
+                }
             }
+            ViewBag.ReturnUrl = returnUrl;
+            return PartialView(model);
         }
 
         [AllowAnonymous]
         public PartialViewResult ModalRegister(string returnUrl)
         {
+            ViewBag.ReturnUrl = System.Web.HttpUtility.UrlEncode(returnUrl);
             return PartialView();
         }
 
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> ModalRegister(RegisterViewModel model, string returnUrl)
+        public async Task<ActionResult> ModalRegister(TelRegisterViewModel model, string returnUrl)
         {
-
-            var ip = HttpHelper.GetIPFromRequest(Request);
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
-                var result = await UserManager.CreateAsync(user, model.Password);
-                if (result.Succeeded)
+                var ip = HttpHelper.GetIPFromRequest(Request);
+                var validateCodeResult = ValidateCodeHelper.VerifyPhoneDymaticCode(model.PhoneNumber, model.DynamicPWD);
+                if (!validateCodeResult)
                 {
-                    return await SendConfirmEmail(user.Id);
+                    AddErrors(new IdentityResult("动态密码不匹配或者已过期"));
                 }
-                AddErrors(result);
+                else
+                {
+                    IUserAccess access = new DAL_UserAccess();
+                    var icdExcutResult = access.CreateOrLogin(model.PhoneNumber, model.HosipitalName);
+                    if (icdExcutResult.IsSuccess)
+                    {
+                        await SignInHelper.SignInAsync(new ApplicationUser
+                        {
+                            HospitalName = model.HosipitalName,
+                            UserName = model.PhoneNumber,
+                            Id = icdExcutResult.TResult,
+                            PhoneNumber = model.PhoneNumber,
+                            PhoneNumberConfirmed = true,
+                        }, false, false);
+                        model.RegisterSuccess = true;
+                    }
+                    else
+                    {
+                        AddErrors(new IdentityResult(icdExcutResult.ErrorStr));
+                    }
+                }
             }
-            model.NeedVarify = true;
-            return View(model);
+            ViewBag.ReturnUrl = returnUrl;
+            return PartialView(model);
         }
 
         #region 帮助程序

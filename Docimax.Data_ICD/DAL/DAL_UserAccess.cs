@@ -459,6 +459,60 @@ namespace Docimax.Data_ICD.DAL
                 }
             }
         }
-
+        public ICDExcuteResult<string> CreateOrLogin(string phoneNum, string hospitalName)
+        {
+            using (var entity = new Entity_Write())
+            {
+                using (var transaction = entity.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        var user = entity.AspNetUsers.FirstOrDefault(e => e.PhoneNumber == phoneNum);
+                        if (user == null)
+                        {
+                            var newID = Guid.NewGuid().ToString();
+                            var securityStamp = Guid.NewGuid().ToString();
+                            user = new AspNetUsers
+                            {
+                                UserName = phoneNum,
+                                PhoneNumber = phoneNum,
+                                HospitalName = hospitalName,
+                                PhoneNumberConfirmed = true,
+                                SecurityStamp=securityStamp,
+                                Id = newID,
+                            };
+                            entity.AspNetUsers.Add(user);
+                        }
+                        else
+                        {
+                            if (!string.IsNullOrWhiteSpace(hospitalName) && user.HospitalName != hospitalName)
+                            {
+                                user.HospitalName = hospitalName;
+                            }
+                            if (!user.LockoutEnabled)
+                            {
+                                if (!user.PhoneNumberConfirmed)
+                                {
+                                    user.PhoneNumberConfirmed = true;
+                                }
+                            }
+                            else
+                            {
+                                return new ICDExcuteResult<string> { IsSuccess = false, ErrorStr = "账户已经被锁定，请联系管理员" };
+                            }
+                        }
+                        entity.SaveChanges();
+                        transaction.Commit();
+                        return new ICDExcuteResult<string> { IsSuccess = true, TResult = user.Id };
+                    }
+                    catch (Exception ex)
+                    {
+                        //todo  记录错误日志
+                        transaction.Rollback();
+                        return new ICDExcuteResult<string> { IsSuccess = false, ErrorStr = "系统罢工了，请稍后再试" };
+                    }
+                }
+            }
+        }
     }
 }
