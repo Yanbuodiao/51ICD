@@ -8,6 +8,7 @@
     @Html.HiddenFor(model => model.ICDType);
     @Html.HiddenFor(model => model.LastModifyStamp);
     <h4>@Model.DisplayText</h4>
+    @Html.ValidationSummary("", new { @class = "text-danger" })
     <form class="form-horizontal" role="form" id="form_Summary">
         <div class="form-group">
             @Html.AntiForgeryToken()

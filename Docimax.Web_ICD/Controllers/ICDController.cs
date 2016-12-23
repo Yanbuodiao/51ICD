@@ -7,16 +7,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
 
 namespace Docimax.Web_ICD.Controllers
 {
     public class ICDController : Controller
     {
-        // GET: ICD
         public ActionResult UpdateICDSummary(ICDModel model)
         {
+            var userID = User.Identity.GetUserId();
             IICDRepository access = new DAL_ICDRepository();
-            var icdExcuteResult = access.UpdateICDSummary(model);
+            var icdExcuteResult = access.UpdateICDSummary(model,userID);
             return Json(icdExcuteResult);
         }
     }

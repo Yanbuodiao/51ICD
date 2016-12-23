@@ -149,7 +149,13 @@ namespace Docimax.Web_ICD.Controllers
             var ip = HttpHelper.GetIPFromRequest(Request);
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, LockoutEnabled = false, };
+                var user = new ApplicationUser
+                {
+                    UserName = model.Email,
+                    Email = model.Email,
+                    LockoutEnabled = false,
+                    HospitalName = model.HosipitalName,
+                };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {

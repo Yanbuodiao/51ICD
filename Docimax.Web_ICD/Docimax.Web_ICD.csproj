@@ -450,7 +450,6 @@
     <Content Include="Views\UploadItem\Detail.cshtml" />
     <Content Include="Views\UploadItem\Update.cshtml" />
     <Content Include="Views\ServiceItem\Index.cshtml" />
-    <Content Include="Views\Test\TypeaheadTest.cshtml" />
     <Content Include="Views\Service\ServiceApply.cshtml" />
     <Content Include="Views\Service\ServiceApplyDetail.cshtml" />
     <Content Include="Views\RoleAdmin\Index.cshtml" />
@@ -484,8 +483,6 @@
     <Folder Include="App_Data\" />
     <Folder Include="Filter\" />
     <Folder Include="src\" />
-    <Folder Include="Views\ICD\" />
-    <Folder Include="Views\Pub\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

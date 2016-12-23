@@ -34,6 +34,7 @@ namespace Docimax.Data_ICD.DAL
                     CertificationFlag = (CertificateState)(model.CertificationFlag ?? 0),
                     HasPassword = true,
                     PhoneNumber = model.PhoneNumber,
+                    PhoneNumberConfirmed=model.PhoneNumberConfirmed,
                     TwoFactor = model.TwoFactorEnabled,
                 };
                 if (services != null)

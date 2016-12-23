@@ -24,8 +24,8 @@
         </dd>
         <dt>手机认证:</dt>
         <dd>
-            @(Model.PhoneNumber ?? "未认证") [
-            @if (Model.PhoneNumber != null)
+            @( Model.PhoneNumber ?? "未认证") [
+            @if (Model.PhoneNumberConfirmed &&Model.PhoneNumber != null)
             {
                 @Html.ActionLink("更改", "AddPhoneNumber")
             }

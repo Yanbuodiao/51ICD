@@ -20,8 +20,8 @@ namespace Docimax.Interface_ICD.Model
 
         public List<IcdOperateLog> OperateLogs { get; set; }
         public ICDTypeEnum ICDType { get; set; }
+        public int HitCount { get; set; }
     }
-
     public class IcdDataLink
     {
 

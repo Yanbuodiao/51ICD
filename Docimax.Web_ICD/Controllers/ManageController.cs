@@ -74,6 +74,7 @@ namespace Docimax.Web_ICD.Controllers
                 HasPassword = HasPassword(),
                 CertificationFlag = userInfo.CertificationFlag,
                 PhoneNumber = await UserManager.GetPhoneNumberAsync(userId),
+                PhoneNumberConfirmed = userInfo.PhoneNumberConfirmed,
                 TwoFactor = await UserManager.GetTwoFactorEnabledAsync(userId),
                 Logins = await UserManager.GetLoginsAsync(userId),
                 BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(userId),
@@ -426,7 +427,7 @@ namespace Docimax.Web_ICD.Controllers
             if (lastSendModel != null)
             {
                 var shouldDelaySecond = 150;
-                var spanTime=(int)(DateTime.Now - lastSendModel.LastSendTime).TotalSeconds;
+                var spanTime = (int)(DateTime.Now - lastSendModel.LastSendTime).TotalSeconds;
                 if (shouldDelaySecond > spanTime)
                 {
                     return shouldDelaySecond - spanTime;

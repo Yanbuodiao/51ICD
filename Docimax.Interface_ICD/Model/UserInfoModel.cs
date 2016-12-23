@@ -13,6 +13,7 @@ namespace Docimax.Interface_ICD.Model
         public bool HasPassword { get; set; }
         public string PhoneNumber { get; set; }
         public bool TwoFactor { get; set; }
+        public bool PhoneNumberConfirmed { get; set; }
         public CertificateState CertificationFlag { get; set; }
         public List<ServiceModel> Services { get; set; }
     }

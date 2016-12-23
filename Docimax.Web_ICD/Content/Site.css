@@ -220,6 +220,12 @@ hr {
     font-size: 14px;
 }
 
+.tt-menu.tt-open {
+    min-width:280px !important;
+}
+
+
+
 
 .panel-heading .accordion-toggle:after {
     font-family: 'Glyphicons Halflings';

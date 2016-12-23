@@ -8,11 +8,11 @@ namespace Docimax.Web_ICD.Controllers
          [AllowAnonymous]
         public ActionResult ICD_Diagnosis_Typeahead(string queryStr = null,int icdVersionID=1)
         {
-            return Json(ICDVersionList.GetICDList(icdVersionID, queryStr), JsonRequestBehavior.AllowGet);
+            return Json(ICDVersionList.GetTypeAheadICDList(icdVersionID, queryStr), JsonRequestBehavior.AllowGet);
         }
         public ActionResult ICD_Operate_Typeahead(string queryStr = null, int icdVersionID = 2)
         {
-            return Json(ICDVersionList.GetICDList(icdVersionID, queryStr), JsonRequestBehavior.AllowGet);
+            return Json(ICDVersionList.GetTypeAheadICDList(icdVersionID, queryStr), JsonRequestBehavior.AllowGet);
         }
     }
 }

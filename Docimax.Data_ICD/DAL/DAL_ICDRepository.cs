@@ -5,6 +5,7 @@ using Docimax.Interface_ICD.Interface;
 using Docimax.Interface_ICD.Model;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 
 namespace Docimax.Data_ICD.DAL
@@ -147,7 +148,7 @@ namespace Docimax.Data_ICD.DAL
             return null;
         }
 
-        public ICDExcuteResult<string> UpdateICDSummary(ICDModel model)
+        public ICDExcuteResult<string> UpdateICDSummary(ICDModel model, string userID)
         {
             if (model == null)
             {
@@ -156,9 +157,9 @@ namespace Docimax.Data_ICD.DAL
             switch (model.ICDType)
             {
                 case ICDTypeEnum.诊断编码:
-                    return updateDiagnosisSummary(model);
+                    return updateDiagnosisSummary(model, userID);
                 case ICDTypeEnum.手术及操作编码:
-                    return updateOperateSummary(model);
+                    return updateOperateSummary(model, userID);
             }
             return new ICDExcuteResult<string> { IsSuccess = false, ErrorStr = "未找到相关记录" };
         }
@@ -204,7 +205,7 @@ namespace Docimax.Data_ICD.DAL
             return null;
         }
 
-        private ICDExcuteResult<string> updateDiagnosisSummary(ICDModel model)
+        private ICDExcuteResult<string> updateDiagnosisSummary(ICDModel model, string userID)
         {
             using (var entity = new Entity_Write())
             {
@@ -212,6 +213,11 @@ namespace Docimax.Data_ICD.DAL
                 {
                     try
                     {
+                        var userVerifyResult = varifyEditUser(userID,entity);
+                        if (!userVerifyResult.IsSuccess)
+                        {
+                            return userVerifyResult;
+                        }
                         var entityModel = entity.BaseDic_ICD_Diagnosis_Repository.FirstOrDefault(e => e.ICDID == model.ICDID);
                         if (entityModel == null)
                         {
@@ -236,7 +242,7 @@ namespace Docimax.Data_ICD.DAL
                 }
             }
         }
-        private ICDExcuteResult<string> updateOperateSummary(ICDModel model)
+        private ICDExcuteResult<string> updateOperateSummary(ICDModel model, string userID)
         {
             using (var entity = new Entity_Write())
             {
@@ -244,6 +250,11 @@ namespace Docimax.Data_ICD.DAL
                 {
                     try
                     {
+                        var userVerifyResult = varifyEditUser(userID, entity);
+                        if (!userVerifyResult.IsSuccess)
+                        {
+                            return userVerifyResult;
+                        }
                         var entityModel = entity.BaseDic_ICD_Operate_Repository.FirstOrDefault(e => e.ICDID == model.ICDID);
                         if (entityModel == null)
                         {
@@ -266,6 +277,24 @@ namespace Docimax.Data_ICD.DAL
                     }
                 }
             }
+        }
+
+        private ICDExcuteResult<string> varifyEditUser(string userID, Entity_Write entity)
+        {
+            var user = entity.AspNetUsers.FirstOrDefault(e => e.Id == userID);
+            if (user == null)
+            {
+                return new ICDExcuteResult<string> { IsSuccess = false, ErrorStr = "未登录？请登录" };
+            }
+            if (!user.PhoneNumberConfirmed)
+            {
+                return new ICDExcuteResult<string> { IsSuccess = false, ErrorStr = "未手机认证？请进行手机认证" };
+            }
+            if (user.LockoutEnabled)
+            {
+                return new ICDExcuteResult<string> { IsSuccess = false, ErrorStr = "您的账户异常，请联系管理员" };
+            }
+            return new ICDExcuteResult<string> { IsSuccess = true };
         }
 
         #endregion

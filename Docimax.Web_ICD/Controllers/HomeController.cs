@@ -93,7 +93,7 @@ namespace Docimax.Web_ICD.Controllers
             {
                 model.TextFilter = model.TextFilter.Split('-')[0];
             }
-            var result = ICDVersionList.GetICDList(model.SearchModel.IcdVersionID, model.TextFilter, int.MaxValue);
+            var result = ICDVersionList.GetICDList(model.SearchModel.IcdVersionID, model.TextFilter);
             model.TotalRecords = result.Count();
             result = result.Skip((model.PageIndex - 1) * model.PageSize)
                     .Take(model.PageSize).ToList();

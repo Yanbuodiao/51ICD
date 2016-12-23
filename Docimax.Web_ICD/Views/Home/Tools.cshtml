@@ -62,6 +62,7 @@
                 </div>
                 @Html.DropDownListFor(model => model.SearchModel.IcdVersionID, (IEnumerable<SelectListItem>)ViewData["IcdVersion"], new { @class = "form-control" })
                 @Html.TextBoxFor(model => model.TextFilter, new { @class = "form-control icd", @placeholder = "请输入名称、拼音简码或编码" })
+                小提示：多个关键字可以空格分开，会有意外的效果哦 例如：<mark>急性 甲型 肝炎</mark>
             </div>
         </div>
         <div class="pull-right col-lg-1">
@@ -75,9 +76,11 @@
 <div style="margin-top:17px;" id="ICDResult">
 </div>
 <!--page start-->
-<div class="col-md-12" style="margin-top:0px;">
-    <input type="hidden" value="@Model.PageScript" id="pagelist" />
-    <div class="pull-right" id="pageManage">
+<div class="row">
+    <div class="col-md-12" style="margin-top:0px;">
+        <input type="hidden" value="@Model.PageScript" id="pagelist" />
+        <div class="pull-right" id="pageManage">
+        </div>
     </div>
 </div>
 

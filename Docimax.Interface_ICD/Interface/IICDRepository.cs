@@ -11,6 +11,6 @@ namespace Docimax.Interface_ICD.Interface
         ICDVersionModel GetICDVersionWithICD(int icd_VersionID);
         List<ICDVersionModel> GetICDVersionList(int icdType);
         ICDModel GetICDModel(int icdID, ICDTypeEnum icdType);
-        ICDExcuteResult<string> UpdateICDSummary(ICDModel model);
+        ICDExcuteResult<string> UpdateICDSummary(ICDModel model,string userID);
     }
 }
