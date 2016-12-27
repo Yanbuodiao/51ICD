@@ -15,6 +15,7 @@ namespace Docimax.Interface_ICD.Model
         public bool TwoFactor { get; set; }
         public bool PhoneNumberConfirmed { get; set; }
         public CertificateState CertificationFlag { get; set; }
+        public CertificateState BankCertificationFlag { get; set; }
         public List<ServiceModel> Services { get; set; }
     }
 }

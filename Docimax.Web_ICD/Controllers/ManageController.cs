@@ -63,6 +63,7 @@ namespace Docimax.Web_ICD.Controllers
                 : message == ManageMessageId.AddPhoneSuccess ? "已认证你的电话号码。"
                 : message == ManageMessageId.RemovePhoneSuccess ? "已删除你的电话号码。"
                 : message == ManageMessageId.ApplyCertifacationSuccess ? "已受理你的实名认证请求。"
+                : message == ManageMessageId.ApplyBankCardVerifySuccess ? "已受理你的银行卡认证请求。"
                 : message == ManageMessageId.ApplyServiceSuccess ? "已受理你的服务认证请求。"
                 : "";
 
@@ -73,6 +74,7 @@ namespace Docimax.Web_ICD.Controllers
             {
                 HasPassword = HasPassword(),
                 CertificationFlag = userInfo.CertificationFlag,
+                BankCertificationFlag=userInfo.BankCertificationFlag,
                 PhoneNumber = await UserManager.GetPhoneNumberAsync(userId),
                 PhoneNumberConfirmed = userInfo.PhoneNumberConfirmed,
                 TwoFactor = await UserManager.GetTwoFactorEnabledAsync(userId),
@@ -320,7 +322,7 @@ namespace Docimax.Web_ICD.Controllers
         {
             if (ModelState.IsValid)
             {
-                var allFileTags = new List<string> { "IDCardfront", "IDCardback", "bankCard" };
+                var allFileTags = new List<string> { "IDCardfront", "IDCardback" };
                 if (allFileTags.Any(e => Request.Files[e] == null || Request.Files[e].ContentLength == 0))
                 {
                     ModelState.AddModelError("", "请上传必要的附件");
@@ -349,9 +351,6 @@ namespace Docimax.Web_ICD.Controllers
                             case "IDCardback":
                                 icdFile.AttachType = UserAttachType.身份证背面.GetHashCode();
                                 break;
-                            case "bankCard":
-                                icdFile.AttachType = UserAttachType.银行卡.GetHashCode();
-                                break;
                             default:
                                 break;
                         }
@@ -364,6 +363,60 @@ namespace Docimax.Web_ICD.Controllers
                 if (result.IsSuccess)
                 {
                     return RedirectToAction("Index", new { message = ManageMessageId.ApplyCertifacationSuccess });
+                }
+                ModelState.AddModelError("", result.ErrorStr);
+            }
+            return View(model);
+        }
+
+        public ActionResult VerifyBankCard()
+        {
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult VerifyBankCard(VerifyBankCardModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var allFileTags = new List<string> { "bankCard" };
+                if (allFileTags.Any(e => Request.Files[e] == null || Request.Files[e].ContentLength == 0))
+                {
+                    ModelState.AddModelError("", "请上传必要的附件");
+                    return View(model);
+                }
+                model.UserID = User.Identity.GetUserId();
+                model.ApplyTime = DateTime.Now;
+                model.FileList = new List<ICDFile>();
+                model.CertificateFlag = CertificateState.发起认证申请;
+                for (int i = 0; i < Request.Files.Count; i++)
+                {
+                    var file = Request.Files[i];
+                    if (file != null && file.ContentLength > 0)
+                    {
+                        var icdFile = new ICDFile
+                        {
+                            FileURL = FileHelper.SaveUserAttachFile(file),
+                            FileName = file.FileName,
+                            ContentType = file.ContentType,
+                        };
+                        switch (Request.Files.AllKeys[i])
+                        {
+                            case "bankCard":
+                                icdFile.AttachType = UserAttachType.银行卡.GetHashCode();
+                                break;
+                            default:
+                                break;
+                        }
+                        icdFile.FileIndex = model.FileList.Count(e => e.AttachType == icdFile.AttachType);
+                        model.FileList.Add(icdFile);
+                    }
+                }
+                IUserAccess ua = new DAL_UserAccess();
+                var result = ua.ApplyBankCardVerify(ViewModel2Model.VerifyIdentityModel2Model(model));
+                if (result.IsSuccess)
+                {
+                    return RedirectToAction("Index", new { message = ManageMessageId.ApplyBankCardVerifySuccess });
                 }
                 ModelState.AddModelError("", result.ErrorStr);
             }
@@ -445,6 +498,7 @@ namespace Docimax.Web_ICD.Controllers
             RemoveLoginSuccess,
             RemovePhoneSuccess,
             ApplyCertifacationSuccess,
+            ApplyBankCardVerifySuccess,
             ApplyServiceSuccess,
             Error
         }

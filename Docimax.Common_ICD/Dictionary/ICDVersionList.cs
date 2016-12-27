@@ -33,24 +33,17 @@ namespace Docimax.Common_ICD
                 if (!string.IsNullOrWhiteSpace(queryStr))
                 {
                     var queryList = queryStr.Split(' ').Where(e => !string.IsNullOrWhiteSpace(e));
+                    var queryRsult = icdVersionTemp.ICDList.Where(e => queryList.Any(t => e.ICD_Code.Contains(t) ||
+                             e.ICD_Code.Contains(t.ToUpper()) ||
+                             e.ICD_Name.Contains(t) ||
+                             e.PinyinShort.Contains(t.ToUpper()))).ToList();
 
-                    var tempICDList = icdVersionTemp.ICDList.Select(c => new ICDModel
+                    var tempICDList = queryRsult.Select(c => new ICDModel
                     {
-                        CreateTime = c.CreateTime,
-                        CreateUserID = c.CreateUserID,
-                        DataLinks = c.DataLinks,
-                        DeleteFlag = c.DeleteFlag,
-                        DetialDescription = c.DetialDescription,
                         ICD_Code = c.ICD_Code,
-                        ICD_Description = c.ICD_Description,
                         ICD_Name = c.ICD_Name,
                         ICD_VersionID = c.ICD_VersionID,
                         ICDID = c.ICDID,
-                        ICDType = c.ICDType,
-                        LastModifyStamp = c.LastModifyStamp,
-                        LastModifyUserID = c.LastModifyUserID,
-                        LastModifyTime = c.LastModifyTime,
-                        OperateLogs = c.OperateLogs,
                         PinyinShort = c.PinyinShort,
                         HitCount = queryList.Count(f =>
                              c.ICD_Code.Contains(f) ||

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Docimax.Interface_ICD.Model
 {
-    public class VerifyIdentityModel : BaseModel
+    public class VerifyUserModel : BaseModel
     {
         /// <summary>
         /// 用户ID
@@ -41,5 +41,9 @@ namespace Docimax.Interface_ICD.Model
         /// 认证状态
         /// </summary>
         public CertificateState CertificateFlag { get; set; }
+        /// <summary>
+        /// 银行卡认证状态
+        /// </summary>
+        public CertificateState BankCertificationFlag { get; set; }
     }
 }

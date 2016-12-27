@@ -109,10 +109,6 @@ namespace Docimax.Web_ICD.Models
         [StringLength(100, ErrorMessage = "{0} 必须至少包含 {2} 个字符。", MinimumLength = 2)]
         [Display(Name = "姓名")]
         public string RealName { get; set; }
-        [Required]
-        [StringLength(23, ErrorMessage = "{0} 必须至少包含 {2} 个字符。", MinimumLength = 19)]//算上四位间加的间隔
-        [Display(Name = "银行卡号")]
-        public string BankCardNO { get; set; }
         /// <summary>
         /// 发起申请时间
         /// </summary>
@@ -121,6 +117,39 @@ namespace Docimax.Web_ICD.Models
         /// 认证状态
         /// </summary>
         public CertificateState CertificateFlag { get; set; }
+        /// <summary>
+        /// 附件信息
+        /// </summary>
+        public List<ICDFile> FileList { get; set; }
+    }
+
+    public class VerifyBankCardModel : BaseModel
+    {
+        /// <summary>
+        /// 用户ID
+        /// </summary>
+        public string UserID { get; set; }
+
+        /// <summary>
+        /// 用户名
+        /// </summary>
+        public string UserName { get; set; }
+
+        [Required]
+        [StringLength(23, ErrorMessage = "{0} 必须至少包含 {2} 个字符。", MinimumLength = 19)]//算上四位间加的间隔
+        [Display(Name = "银行卡号")]
+        public string BankCardNO { get; set; }
+
+        /// <summary>
+        /// 发起申请时间
+        /// </summary>
+        public DateTime ApplyTime { get; set; }
+
+        /// <summary>
+        /// 认证状态
+        /// </summary>
+        public CertificateState CertificateFlag { get; set; }
+
         /// <summary>
         /// 附件信息
         /// </summary>

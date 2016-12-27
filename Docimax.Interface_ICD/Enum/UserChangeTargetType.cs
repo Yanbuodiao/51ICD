@@ -9,7 +9,7 @@ namespace Docimax.Interface_ICD.Enum
     public enum UserChangeTargetType
     {
         实名认证=10,
+        银行卡认证=15,
         提供服务认证=20,
-
     }
 }

@@ -26,12 +26,12 @@
             @Html.TextBoxFor(model => model.IDCardNo, new { @class = "form-control", @disabled = "true" })
         </div>
     </div>
-    <div class="form-group">
+    @*<div class="form-group">
         @Html.Label("银行卡号", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class=" col-md-10">
             @Html.TextBoxFor(model => model.BankCardNO, new { @class = "form-control", @disabled = "true" })
         </div>
-    </div>
+    </div>*@
     <div class="form-group">
         @Html.Label("身份证正面照", new { @class = "control-label col-md-2" })
         <div class="col-md-10">
@@ -60,7 +60,7 @@
             }
         </div>
     </div>
-    <div class="form-group">
+    @*<div class="form-group">
         @Html.Label("银行卡照片", new { @class = "control-label col-md-2" })
         <div class="col-md-10">
             @{
@@ -73,7 +73,7 @@
                 }
             }
         </div>
-    </div>
+    </div>*@
     <div class="form-group">
         @Html.Label("认证状态", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class=" col-md-10">

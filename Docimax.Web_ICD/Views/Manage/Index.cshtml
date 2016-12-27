@@ -20,12 +20,12 @@
             {
                 @Html.ActionLink("创建", "SetPassword")
             }
-            ]
+            ]&nbsp;&nbsp;&nbsp;<em>*建议每三个月更换一次密码</em>
         </dd>
         <dt>手机认证:</dt>
         <dd>
             @( Model.PhoneNumber ?? "未认证") [
-            @if (Model.PhoneNumberConfirmed &&Model.PhoneNumber != null)
+            @if (Model.PhoneNumberConfirmed && Model.PhoneNumber != null)
             {
                 @Html.ActionLink("更改", "AddPhoneNumber")
             }
@@ -33,31 +33,62 @@
             {
                 @Html.ActionLink("去认证", "AddPhoneNumber")
             }
-            ]
+            ]&nbsp;&nbsp;&nbsp;<em>*手机认证后(1).可维护工具字典。(2)可发起实名认证申请，获取更多权益。</em>
         </dd>
-        <dt>身份及银行卡认证:</dt>
-        <dd>
-            @switch (Model.CertificationFlag)
-            {
-                case CertificateState.未申请:
-                default:
-                    @Html.ActionLink("发起认证申请", "VerifyIdentity", routeValues: null)
+        @if (Model.PhoneNumberConfirmed)
+        {
+            <dt>实名认证:</dt>
+            <dd>
+                @switch (Model.CertificationFlag)
+                {
+                    case CertificateState.未申请:
+                    default:
+                        @:[@Html.ActionLink("发起认证申请", "VerifyIdentity", routeValues: null)]
                     break;
-                case CertificateState.发起认证申请:
-                case CertificateState.平台人员一次审核通过:
-                case CertificateState.平台人员二次审核通过:
-                @: 平台已收到申请，最多两个工作日认证完成，请耐心等候...
+                    case CertificateState.发起认证申请:
+                    case CertificateState.平台人员一次审核通过:
+                    case CertificateState.平台人员二次审核通过:
+                    @: 平台已收到申请，最多两个工作日认证完成，请耐心等候...
                     break;
-                case CertificateState.认证通过:
-                @: 已认证
+                    case CertificateState.认证通过:
+                    @: 已认证
                     break;
-                case CertificateState.平台人员一次审核失败:
-                case CertificateState.认证拒绝:
-                @: 未通过认证|&nbsp;@Html.ActionLink("发起认证申请", "VerifyIdentity", routeValues: null);
+                    case CertificateState.冻结:
+                    @:[<a href="mailto:zhangh@docimax.com.cn">您的账户已经冻结，请联系管理员</a>]
                     break;
-            }
-        </dd>
-        @if (Model.CertificationFlag == CertificateState.认证通过)
+                    case CertificateState.平台人员一次审核失败:
+                    case CertificateState.认证拒绝:
+                    @: 未通过认证|&nbsp;[@Html.ActionLink("重新发起认证申请", "VerifyIdentity", routeValues: null)]
+                    break;
+                }&nbsp;&nbsp;&nbsp;<em>*实名认证后可进行银行卡认证，可在编码平台接单获得收益</em>
+            </dd>
+        }
+        @if (Model.PhoneNumberConfirmed && Model.CertificationFlag == CertificateState.认证通过)
+        {
+            <dt>银行卡认证:</dt>
+            <dd>
+                @switch (Model.BankCertificationFlag)
+                {
+                    case CertificateState.未申请:
+                    default:
+                        @Html.ActionLink("发起认证申请", "VerifyBankCard", routeValues: null)
+                        break;
+                    case CertificateState.发起认证申请:
+                    case CertificateState.平台人员一次审核通过:
+                    case CertificateState.平台人员二次审核通过:
+                    @: 平台已收到申请，最多两个工作日认证完成，请耐心等候...
+                    break;
+                    case CertificateState.认证通过:
+                    @: 已认证
+                    break;
+                    case CertificateState.平台人员一次审核失败:
+                    case CertificateState.认证拒绝:
+                    @: 未通过认证|&nbsp;@Html.ActionLink("重新发起认证申请", "VerifyBankCard", routeValues: null);
+                    break;
+                }&nbsp;&nbsp;&nbsp;<em>*银行卡认证后，可以申请开通编码服务，接单编码后可获得收益，收益会定期存入认证后的银行卡</em>
+            </dd>
+        }
+        @if (Model.PhoneNumberConfirmed && Model.CertificationFlag == CertificateState.认证通过)
         {
             <dt>服务认证:</dt>
             if (Model.Services != null && Model.Services.Count > 0)

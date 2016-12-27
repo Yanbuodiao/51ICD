@@ -103,7 +103,6 @@ namespace Docimax.Data_ICD.DAL
                         ICD_Code = e.ICD_Code,
                         ICD_Name = e.ICD_Name,
                         ICD_VersionID = e.ICD_VersionID ?? 0,
-                        ICD_Description = e.ICD_Description,
                         PinyinShort = e.PinyinShort,
                     }).ToList();
                 }
@@ -115,7 +114,6 @@ namespace Docimax.Data_ICD.DAL
                         ICD_Code = e.ICD_Code,
                         ICD_Name = e.ICD_Name,
                         ICD_VersionID = e.ICD_VersionID ?? 0,
-                        ICD_Description = e.ICD_Description,
                         PinyinShort = e.PinyinShort,
                     }).ToList();
                 }

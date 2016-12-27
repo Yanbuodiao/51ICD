@@ -32,9 +32,10 @@ namespace Docimax.Data_ICD.DAL
                 {
                     UserID = userID,
                     CertificationFlag = (CertificateState)(model.CertificationFlag ?? 0),
+                    BankCertificationFlag = (CertificateState)(model.BankCertificationFlag ?? 0),
                     HasPassword = true,
                     PhoneNumber = model.PhoneNumber,
-                    PhoneNumberConfirmed=model.PhoneNumberConfirmed,
+                    PhoneNumberConfirmed = model.PhoneNumberConfirmed,
                     TwoFactor = model.TwoFactorEnabled,
                 };
                 if (services != null)
@@ -50,7 +51,7 @@ namespace Docimax.Data_ICD.DAL
                 return result;
             }
         }
-        public ICDExcuteResult<int> ApplyIdentityVerify(VerifyIdentityModel model)
+        public ICDExcuteResult<int> ApplyIdentityVerify(VerifyUserModel model)
         {
             using (var entity = new Entity_Write())
             {
@@ -73,6 +74,7 @@ namespace Docimax.Data_ICD.DAL
                         case CertificateState.平台人员一次审核通过:
                         case CertificateState.认证通过:
                         case CertificateState.冻结:
+                            transaction.Rollback();
                             return new ICDExcuteResult<int> { IsSuccess = false, ErrorStr = "已经发起过实名认证申请", };
                     }
                     var userLog = new User_ChangeAuditLog
@@ -91,6 +93,69 @@ namespace Docimax.Data_ICD.DAL
                     user.CertificationFlag = model.CertificateFlag.GetHashCode();
                     user.RealName = model.RealName;
                     user.IDCardNo = model.IDCardNo;
+                    user.LastModtifyTime = DateTime.Now;
+                    user.LastModityUserID = model.UserID;
+                    foreach (var item in model.FileList)
+                    {
+                        var userAttach = new User_Attach
+                        {
+                            UserID = model.UserID,
+                            AttachType = item.AttachType,
+                            FileName = item.FileName,
+                            AttachURL = item.FileURL,
+                            ContentType = item.ContentType,
+                            CreateTime = model.ApplyTime,
+                            CreateUserID = model.UserID,
+                            LastModifyUserID = model.UserID,
+                            LastModityTime = model.ApplyTime,
+                        };
+                        entity.User_Attach.Add(userAttach);
+                    }
+                    entity.SaveChanges();
+                    transaction.Commit();
+                    return new ICDExcuteResult<int> { IsSuccess = true };
+                }
+            }
+        }
+        public ICDExcuteResult<int> ApplyBankCardVerify(VerifyUserModel model)
+        {
+            using (var entity = new Entity_Write())
+            {
+                using (var transaction = entity.Database.BeginTransaction())
+                {
+                    var user = entity.AspNetUsers.FirstOrDefault(e => e.Id == model.UserID);
+                    if (user == null)
+                    {
+                        transaction.Rollback();
+                        return new ICDExcuteResult<int> { IsSuccess = false, ErrorStr = "未获得当前用户信息", };
+                    }
+                    if (user.BankCertificationFlag == null)
+                    {
+                        user.BankCertificationFlag = CertificateState.未申请.GetHashCode();
+                    }
+                    switch ((CertificateState)user.BankCertificationFlag)//以下状态不允许再次发起申请
+                    {
+                        case CertificateState.发起认证申请:
+                        case CertificateState.平台人员二次审核通过:
+                        case CertificateState.平台人员一次审核通过:
+                        case CertificateState.认证通过:
+                        case CertificateState.冻结:
+                            return new ICDExcuteResult<int> { IsSuccess = false, ErrorStr = "已经发起过实名认证申请", };
+                    }
+                    var userLog = new User_ChangeAuditLog
+                    {
+                        CreateTime = DateTime.Now,
+                        UserID = model.UserID,
+                        Operatedatetime = DateTime.Now,
+                        OperateUserID = model.UserID,
+                        OperateTarget = UserChangeTargetType.银行卡认证.GetHashCode(),
+                        OperateType = model.BankCertificationFlag.GetHashCode(),
+                        OriginValue = user.BankCertificationFlag.ToString(),
+                        NewValue = model.BankCertificationFlag.GetHashCode().ToString(),
+                        LastModifyTime = DateTime.Now,
+                    };
+                    entity.User_ChangeAuditLog.Add(userLog);
+                    user.BankCertificationFlag = model.BankCertificationFlag.GetHashCode();
                     user.BankCardNO = model.BankCardNO;
                     user.LastModtifyTime = DateTime.Now;
                     user.LastModityUserID = model.UserID;
@@ -117,7 +182,7 @@ namespace Docimax.Data_ICD.DAL
             }
         }
 
-        public ICDTimePagedList<UserCertificationSearch, VerifyIdentityModel> GetUserVerifyList(ICDTimePagedList<UserCertificationSearch, VerifyIdentityModel> queryModel)
+        public ICDTimePagedList<UserCertificationSearch, VerifyUserModel> GetUserVerifyList(ICDTimePagedList<UserCertificationSearch, VerifyUserModel> queryModel)
         {
             using (var entity = new Entity_Read())
             {
@@ -127,7 +192,7 @@ namespace Docimax.Data_ICD.DAL
                     .Take(queryModel.PageSize)
                     .ToList();
                 var initInt = CertificateState.未申请.GetHashCode();
-                var resultQuery = query.Select(e => new VerifyIdentityModel
+                var resultQuery = query.Select(e => new VerifyUserModel
                 {
                     UserID = e.Id,
                     UserName = e.UserName,
@@ -140,14 +205,37 @@ namespace Docimax.Data_ICD.DAL
             }
         }
 
-        public VerifyIdentityModel GetVerifyIdentityModel(string userID)
+        public ICDTimePagedList<UserCertificationSearch, VerifyUserModel> GetBankCardVerifyList(ICDTimePagedList<UserCertificationSearch, VerifyUserModel> queryModel)
+        {
+            using (var entity = new Entity_Read())
+            {
+                var stateInt = queryModel.SearchModel.CertificateStatus.GetHashCode();
+                var query = entity.AspNetUsers.Where(e => (stateInt == 0 ? true : e.BankCertificationFlag == stateInt) &&
+                    string.IsNullOrEmpty(queryModel.TextFilter) ? true : (e.UserName.StartsWith(queryModel.TextFilter))).OrderBy(e => e.CertificationFlag).Skip((queryModel.PageIndex - 1) * queryModel.PageSize)
+                    .Take(queryModel.PageSize)
+                    .ToList();
+                var initInt = CertificateState.未申请.GetHashCode();
+                var resultQuery = query.Select(e => new VerifyUserModel
+                {
+                    UserID = e.Id,
+                    UserName = e.UserName,
+                    BankCardNO = e.BankCardNO,
+                    BankCertificationFlag = (CertificateState)(e.BankCertificationFlag ?? initInt),
+                }).ToList();
+                queryModel.TotalRecords = query.Count();
+                queryModel.Content = resultQuery;
+                return queryModel;
+            }
+        }
+
+        public VerifyUserModel GetVerifyIdentityModel(string userID)
         {
             using (var entity = new Entity_Read())
             {
                 var e = entity.AspNetUsers.FirstOrDefault(t => t.Id == userID);
                 if (e == null)
                 {
-                    return new VerifyIdentityModel();
+                    return new VerifyUserModel();
                 }
                 var fileList = entity.User_Attach.Where(t => t.UserID == userID && t.DeleteFlag != 1).ToList()
                     .Select(p => new ICDFile
@@ -158,7 +246,7 @@ namespace Docimax.Data_ICD.DAL
                         FileURL = p.AttachURL,
                     }).ToList();
                 var initInt = CertificateState.未申请.GetHashCode();
-                return new VerifyIdentityModel
+                return new VerifyUserModel
                 {
                     UserID = e.Id,
                     UserName = e.UserName,
@@ -166,13 +254,14 @@ namespace Docimax.Data_ICD.DAL
                     IDCardNo = e.IDCardNo,
                     BankCardNO = e.BankCardNO,
                     CertificateFlag = (CertificateState)(e.CertificationFlag ?? initInt),
+                    BankCertificationFlag = (CertificateState)(e.BankCertificationFlag ?? initInt),
                     LastModifyStamp = Convert.ToBase64String(e.LastModifyStamp),
                     FileList = fileList,
                 };
             }
         }
 
-        public ICDExcuteResult<int> AuditIdentityVerify(VerifyIdentityModel model)
+        public ICDExcuteResult<int> AuditIdentityVerify(VerifyUserModel model)
         {
             if (model == null)
             {
@@ -211,6 +300,54 @@ namespace Docimax.Data_ICD.DAL
                     };
                     entity.User_ChangeAuditLog.Add(userLog);
                     user.CertificationFlag = model.CertificateFlag.GetHashCode();
+                    user.LastModtifyTime = DateTime.Now;
+                    user.LastModityUserID = model.LastModifyUserID;
+                    entity.SaveChanges();
+                    transaction.Commit();
+                    return new ICDExcuteResult<int> { IsSuccess = true };
+                }
+            }
+        }
+
+        public ICDExcuteResult<int> AuditBankCard(VerifyUserModel model)
+        {
+            if (model == null)
+            {
+                return new ICDExcuteResult<int>
+                {
+                    IsSuccess = false,
+                    ErrorStr = "未找到相关用户"
+                };
+            }
+            using (var entity = new Entity_Write())
+            {
+                using (var transaction = entity.Database.BeginTransaction())
+                {
+                    var user = entity.AspNetUsers.FirstOrDefault(e => e.Id == model.UserID);
+                    if (user == null)
+                    {
+                        transaction.Rollback();
+                        return new ICDExcuteResult<int> { IsSuccess = false, ErrorStr = "未获得申请用户信息", };
+                    }
+                    if (Convert.ToBase64String(user.LastModifyStamp) != model.LastModifyStamp)
+                    {
+                        transaction.Rollback();
+                        return new ICDExcuteResult<int> { IsSuccess = false, ErrorStr = "用户信息已经发生变化", };
+                    }
+                    var userLog = new User_ChangeAuditLog
+                    {
+                        CreateTime = DateTime.Now,
+                        UserID = model.UserID,
+                        Operatedatetime = DateTime.Now,
+                        OperateUserID = model.LastModifyUserID,
+                        OperateTarget = UserChangeTargetType.银行卡认证.GetHashCode(),
+                        OperateType = model.BankCertificationFlag.GetHashCode(),
+                        OriginValue = user.BankCertificationFlag.ToString(),
+                        NewValue = model.BankCertificationFlag.GetHashCode().ToString(),
+                        LastModifyTime = DateTime.Now,
+                    };
+                    entity.User_ChangeAuditLog.Add(userLog);
+                    user.BankCertificationFlag = model.BankCertificationFlag.GetHashCode();
                     user.LastModtifyTime = DateTime.Now;
                     user.LastModityUserID = model.LastModifyUserID;
                     entity.SaveChanges();
@@ -479,7 +616,7 @@ namespace Docimax.Data_ICD.DAL
                                 PhoneNumber = phoneNum,
                                 HospitalName = hospitalName,
                                 PhoneNumberConfirmed = true,
-                                SecurityStamp=securityStamp,
+                                SecurityStamp = securityStamp,
                                 Id = newID,
                             };
                             entity.AspNetUsers.Add(user);

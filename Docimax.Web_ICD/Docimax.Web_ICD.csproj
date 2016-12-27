@@ -214,6 +214,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ICDController.cs" />
     <Compile Include="Controllers\PubController.cs" />
+    <Compile Include="Controllers_Manage\ManageBankCardController.cs" />
     <Compile Include="Controllers_Manage\ManageUserServiceController.cs" />
     <Compile Include="Controllers_Manage\ManageUserVeirfyController.cs" />
     <Compile Include="Controllers_Manage\RoleAdminController.cs" />
@@ -472,6 +473,10 @@
     <Content Include="Views\Home\ICDDetail.cshtml" />
     <Content Include="Views\Account\ModalLogin.cshtml" />
     <Content Include="Views\Account\ModalRegister.cshtml" />
+    <Content Include="Views\Manage\VerifyBankCard.cshtml" />
+    <Content Include="Views\ManageBankCard\Index.cshtml" />
+    <Content Include="Views\ManageBankCard\Detail.cshtml" />
+    <Content Include="Views\ManageBankCard\ApproveDetail.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

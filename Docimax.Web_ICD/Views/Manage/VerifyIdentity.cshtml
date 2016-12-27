@@ -25,14 +25,6 @@
             @Html.ValidationMessageFor(model => model.IDCardNo, "", new { @class = "text-danger" })
         </div>
     </div>
-    <div class="form-group">
-        @Html.LabelFor(model => model.BankCardNO, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.BankCardNO, new { htmlAttributes = new { @class = "form-control", @id = "bankCard" } })
-            @Html.ValidationMessageFor(model => model.BankCardNO, "", new { @class = "text-danger" })
-            <p class="help-block">您的收益将会定期汇入该卡中，请务必保证输入准确.</p>
-        </div>
-    </div>
 
     <div class="form-group">
         @Html.Label("身份证正面照", new { @class = "control-label col-md-2" })
@@ -53,20 +45,15 @@
         </div>
     </div>
     <div class="form-group">
-        @Html.Label("银行卡", new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            <input type="file" id="bankCard" name="bankCard" accept=".jpg,jpeg,.jpe,.jp2,.png,.gif" multiple />
-        </div>
-        <div class="col-md-10">
-            <p class="help-block">银行卡照片，请与填写的银行卡号一直并保证各信息清晰可读.后期收益将自动转入该卡片</p>
-        </div>
-    </div>
-    <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
             <input type="submit" value="申请" class="btn btn-default" />
         </div>
     </div>
 }
+
+<div>
+    @Html.ActionLink("返回", "Index")
+</div>
 <script type="text/javascript">
     $(document).ready(function () {
         $("#bankCard").on("keyup", formatBC);
@@ -84,7 +71,3 @@
         }
     })
 </script>
-
-<div>
-    @Html.ActionLink("返回", "Index")
-</div>

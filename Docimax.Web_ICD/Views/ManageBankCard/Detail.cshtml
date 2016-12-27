@@ -1,0 +1,63 @@
+﻿@model Docimax.Web_ICD.Models.VerifyBankCardModel
+@using Docimax.Interface_ICD.Enum
+
+@{
+    ViewBag.Title = "银行卡认证详情";
+}
+
+<h2>@ViewBag.Title</h2>
+<hr />
+<div class="form-horizontal">
+    <div class="form-group">
+        @Html.Label("用户名", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class=" col-md-10">
+            @Html.TextBoxFor(model => model.UserName, new { @class = "form-control", @disabled = "true" })
+        </div>
+    </div>
+    <div class="form-group">
+            @Html.Label("银行卡号", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class=" col-md-10">
+                @Html.TextBoxFor(model => model.BankCardNO, new { @class = "form-control", @disabled = "true" })
+            </div>
+        </div>
+    <div class="form-group">
+            @Html.Label("银行卡照片", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @{
+                    var fileList2 = Model.FileList.Where(e => e.AttachType == UserAttachType.银行卡.GetHashCode()).ToList();
+                    foreach (var file in fileList2)
+                    {
+                        <div class="form-group col-md-10" style="padding-top:7px;">
+                            <a style="cursor: pointer;" class="tree-nav-a" data-url="@file.FileURL" data-contenttype="@file.ContentType" onclick="showPic(this)">@file.FileName</a>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+    <div class="form-group">
+        @Html.Label("认证状态", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class=" col-md-10">
+            @Html.TextBoxFor(model => model.CertificateFlag, new { @class = "form-control", @disabled = "true" })
+        </div>
+    </div>
+</div>
+<div>
+    @Html.ActionLink("返回", "Index")
+</div>
+<div class="modal fade" id="showPixModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <img id="pic" class="img-thumbnail" onclick="hidePix()" />
+    </div>
+</div>
+<script type="text/javascript">
+    function showPic(el) {
+        var picURL = $(el).attr("data-url");
+        var contentType = $(el).attr("data-contenttype");
+        var newSrc = "@Url.Action("ShowPic", "UploadItem")?picURL=" + picURL + "&contentType=" + contentType;
+        $("#showPixModal").modal('show');
+        $("#pic").attr("src", newSrc);
+    };
+    function hidePix() {
+        $("#showPixModal").modal('hide');
+    }
+</script>

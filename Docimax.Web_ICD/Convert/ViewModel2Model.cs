@@ -10,18 +10,30 @@ namespace Docimax.Web_ICD.Convert
 {
     public static class ViewModel2Model
     {
-        public static VerifyIdentityModel VerifyIdentityModel2Model(VerifyIdentityViewModel model)
+        public static VerifyUserModel VerifyIdentityModel2Model(VerifyIdentityViewModel model)
         {
-            return new VerifyIdentityModel
+            return new VerifyUserModel
             {
                 UserID = model.UserID,
                 UserName = model.UserName,
                 IDCardNo = ICD_EncryptUtils.EncryptByAES(model.IDCardNo),
                 RealName = ICD_EncryptUtils.EncryptByAES(model.RealName),
-                BankCardNO = ICD_EncryptUtils.EncryptByAES(model.BankCardNO),
                 ApplyTime = model.ApplyTime,
                 FileList = model.FileList,
                 CertificateFlag = model.CertificateFlag,
+                LastModifyStamp = model.LastModifyStamp,
+            };
+        }
+
+        public static VerifyUserModel VerifyIdentityModel2Model(VerifyBankCardModel model)
+        {
+            return new VerifyUserModel
+            {
+                UserID = model.UserID,
+                BankCardNO = ICD_EncryptUtils.EncryptByAES(model.BankCardNO),
+                ApplyTime = model.ApplyTime,
+                FileList = model.FileList,
+                BankCertificationFlag = model.CertificateFlag,
                 LastModifyStamp = model.LastModifyStamp,
             };
         }
