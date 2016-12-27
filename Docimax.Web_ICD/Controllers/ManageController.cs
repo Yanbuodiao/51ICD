@@ -126,6 +126,12 @@ namespace Docimax.Web_ICD.Controllers
                 return View(model);
             }
             var userId = User.Identity.GetUserId();
+            ISecurity access = new DAL_Security();
+            if (!access.IsPhoneNumUnicity(userId,model.Number))
+            {
+                ModelState.AddModelError("", "该手机号码已经被占用");
+                return View(model);
+            }
             // 生成令牌并发送该令牌
             var code = await UserManager.GenerateChangePhoneNumberTokenAsync(userId, model.Number);
             if (UserManager.SmsService != null)
@@ -137,7 +143,6 @@ namespace Docimax.Web_ICD.Controllers
                 };
                 await UserManager.SmsService.SendAsync(message);
             }
-            ISecurity access = new DAL_Security();
             access.SavePhoneMessage(new SecurityPhoneModel
             {
                 LastSendTime = DateTime.Now,

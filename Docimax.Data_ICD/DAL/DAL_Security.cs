@@ -121,5 +121,18 @@ namespace Docimax.Data_ICD.DAL
                 TResult = shouldDelaySecond,
             };
         }
+
+        public bool IsPhoneNumUnicity(string uid, string phoneNum)
+        {
+            using (var entity = new Entity_Read())
+            {
+                var query = entity.AspNetUsers.Where(e => e.PhoneNumber == phoneNum);
+                if (!string.IsNullOrWhiteSpace(uid))
+                {
+                    query = query.Where(e => e.Id != uid);
+                }
+                return query.FirstOrDefault() == null;
+            }
+        }
     }
 }

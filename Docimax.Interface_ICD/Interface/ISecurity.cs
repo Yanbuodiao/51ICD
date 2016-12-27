@@ -12,5 +12,7 @@ namespace Docimax.Interface_ICD.Interface
         void SavePhoneMessage(SecurityPhoneModel model);
 
         ICDExcuteResult<int> DymaticCodeVerify(string phoneNum, string sourceIP, int shouldDelaySecond);
+
+        bool IsPhoneNumUnicity(string uid, string phoneNum);
     }
 }
