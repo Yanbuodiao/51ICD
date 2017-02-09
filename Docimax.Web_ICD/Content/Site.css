@@ -221,7 +221,7 @@ hr {
 }
 
 .tt-menu.tt-open {
-    min-width:280px !important;
+    min-width: 280px !important;
 }
 
 
@@ -237,5 +237,3 @@ hr {
 .panel-heading .accordion-toggle.collapsed:after {
     content: "\e080";
 }
-
-

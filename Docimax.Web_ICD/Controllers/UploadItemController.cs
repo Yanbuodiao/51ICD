@@ -142,11 +142,16 @@ namespace Docimax.Web_ICD.Controllers
 
         public ActionResult Detail(int orderID, OrderTypeEnum orderType)
         {
+            ICode_Order access = new DAL_Code_Order();
+            var uid = User.Identity.GetUserId();
+            if (!access.CanViewingMR(orderID, uid))
+            {
+                return View();
+            }
             if (orderType == OrderTypeEnum.InterfaceOrder)
             {
                 return RedirectToAction("InterfaceOrderDetail", new { orderID = orderID });
             }
-            ICode_Order access = new DAL_Code_Order();
             var model = access.GetCodeOrderDetail(User.Identity.GetUserId(), orderID);
             return View(model);
         }
@@ -167,6 +172,11 @@ namespace Docimax.Web_ICD.Controllers
         public ActionResult InterfaceOrderDetail(int orderID)
         {
             ICode_Order access = new DAL_Code_Order();
+            var uid = User.Identity.GetUserId();
+            if (!access.CanViewingMR(orderID, uid))
+            {
+                return View();
+            }
             var model = access.GetCodeOrder(orderID);
             if (model != null)
             {
@@ -176,7 +186,6 @@ namespace Docimax.Web_ICD.Controllers
                 ViewBag.PlatformOrderCode = model.PlatformOrderCode;
                 return View(mr);
             }
-            //todo  错误提示
             return View();
         }
     }

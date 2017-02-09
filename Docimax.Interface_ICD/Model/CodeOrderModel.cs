@@ -33,7 +33,7 @@ namespace Docimax.Interface_ICD.Model
         /// 用户上传的项目列表
         /// </summary>
         public List<UploadedItemModel> UploadedList { get; set; }
-        public List<Code_Diagnosis> DiagnosisList { get; set; }
-        public List<Code_Operate> OperateList { get; set; }
+        public List<DiagnosisCodeResult> DiagnosisList { get; set; }
+        public List<OperationCodeResult> OperateList { get; set; }
     }
 }

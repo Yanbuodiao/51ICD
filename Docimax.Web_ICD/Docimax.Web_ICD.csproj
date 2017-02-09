@@ -227,6 +227,8 @@
     <Compile Include="Controllers_Manage\UsersAdminController.cs" />
     <Compile Include="Controllers\VerificationCodeController.cs" />
     <Compile Include="Controllers_Manage\MenuController.cs" />
+    <Compile Include="Controller_WebChat\QAController.cs" />
+    <Compile Include="Controller_WebChat\ToolController.cs" />
     <Compile Include="Convert\Model2ViewModel.cs" />
     <Compile Include="Convert\ViewModel2Model.cs">
       <SubType>Code</SubType>
@@ -477,6 +479,10 @@
     <Content Include="Views\ManageBankCard\Index.cshtml" />
     <Content Include="Views\ManageBankCard\Detail.cshtml" />
     <Content Include="Views\ManageBankCard\ApproveDetail.cshtml" />
+    <Content Include="Views\ServiceItem\DialogiosPartial.cshtml" />
+    <Content Include="Views\ServiceItem\DialogiosesPartial.cshtml" />
+    <Content Include="Views\ServiceItem\OperatePartial.cshtml" />
+    <Content Include="Views\ServiceItem\OperatesPartial.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -488,6 +494,8 @@
     <Folder Include="App_Data\" />
     <Folder Include="Filter\" />
     <Folder Include="src\" />
+    <Folder Include="Views\QA\" />
+    <Folder Include="Views\Tool\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

@@ -1,0 +1,35 @@
+﻿@using Docimax.Common
+@model Docimax.Interface_ICD.Model.OperationCodeResult
+@using (@Html.BeginCollectionItem("OperationCodeResultList"))
+{
+    <div class="form-inline" id="operate">
+        <div class="input-group">
+            <span class="input-group-addon"><span class="glyphicon glyphicon-list-alt"></span></span>
+            @Html.TextBoxFor(e => e.OperationName, null, new { @class = "form-control", @placeholder = "临床手术或操作", @style = "min-width:240px" })
+        </div>
+        @Html.TextBoxFor(e => e.DisplayText, null, new { @class = "form-control typeahead", @placeholder = "手术或操作编码", @style = "min-width:278px" })
+        @Html.HiddenFor(e => e.Index)
+    </div>
+}
+<script>
+    $(document).ready(function () {
+        var remote_operates = new Bloodhound({
+            datumTokenizer: Bloodhound.tokenizers.obj.whitespace('operates'),
+            queryTokenizer: Bloodhound.tokenizers.whitespace,
+            remote: {
+                url: '/Dictionary/ICD_Operate_Typeahead?queryStr=%QUERY',
+                wildcard: '%QUERY'
+            },
+        });
+        remote_operates.initialize();
+        $('#operate .typeahead').unbind();
+        $('#operate .typeahead').typeahead({ hint: false }, {
+            name: 'diagnosis',
+            display: 'DisplayText',
+            source: remote_operates.ttAdapter(),
+            templates: {
+                suggestion: Handlebars.compile('<div><strong>{{ICD_Code}}</strong> – {{ICD_Name}}</div>')
+            }
+        });
+    });
+</script>

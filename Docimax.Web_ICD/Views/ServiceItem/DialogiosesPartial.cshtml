@@ -1,0 +1,9 @@
+﻿@using Docimax.Common
+@model System.Collections.Generic.List<Docimax.Interface_ICD.Model.DiagnosisCodeResult>
+@foreach (var dialog in Model)
+{
+    if (dialog.Index > 0)
+    {
+        @Html.Partial("DialogiosPartial", dialog)
+    }
+}

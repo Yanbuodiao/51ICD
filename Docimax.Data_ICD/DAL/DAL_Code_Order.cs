@@ -40,22 +40,22 @@ namespace Docimax.Data_ICD.DAL
                         result.LastModifyStamp = Convert.ToBase64String(codeModel.LastModifyStamp);
                     }
                     var dbDiagnosis = entity.Code_Order_Diagnosis.Where(e => e.CodeOrderID == codeOrderID)
-                        .ToList().Select(e => new Code_Diagnosis
+                        .ToList().Select(e => new DiagnosisCodeResult
                         {
                             CodeOrderID = codeOrderID,
-                            ICD_Code = e.ICD_Code,
-                            ICD_Content = e.ICD_Content,
+                            ICDCode = e.ICD_Code,
+                            ICDName = e.ICD_Content,
                             DisplayText = string.Format("{0}-{1}", e.ICD_Code, e.ICD_Content),
-                            DiagnosisIndex = e.DiagnosisIndex ?? 0,
+                            Index = e.DiagnosisIndex ?? 0,
                         }).ToList();
                     var dbOperate = entity.Code_Order_Operate.Where(e => e.CodeOrderID == codeOrderID)
-                        .ToList().Select(e => new Code_Operate
+                        .ToList().Select(e => new OperationCodeResult
                         {
                             CodeOrderID = codeOrderID,
                             ICDCode = e.ICDCode,
-                            ICDContent = e.ICDContent,
+                            ICDName = e.ICDContent,
                             DisplayText = string.Format("{0}-{1}", e.ICDCode, e.ICDContent),
-                            OperateIndex = e.OperateIndex,
+                            Index = e.OperateIndex??0,
                         }).ToList();
                     result.OperateList = dbOperate;
                     result.DiagnosisList = dbDiagnosis;
@@ -333,87 +333,16 @@ namespace Docimax.Data_ICD.DAL
                     }
                     orderModel.LastModifyUserID = model.LastModifyUserID;
                     orderModel.LastModifyTime = DateTime.Now;
-                    var dbDiagnosis = entity.Code_Order_Diagnosis.Where(e => e.CodeOrderID == model.CodeOrderID).ToList();
-                    var dbOperate = entity.Code_Order_Operate.Where(e => e.CodeOrderID == model.CodeOrderID).ToList();
 
                     #region 诊断处理
 
-                    dbDiagnosis.ForEach(e =>
-                    {
-                        var diagnosis = model.DiagnosisList.FirstOrDefault(t => t.ICD_Code == e.ICD_Code);
-                        if (diagnosis == null)//数据库有  新上传的没有  数据库中删除
-                        {
-                            entity.Code_Order_Diagnosis.Remove(e);
-                        }
-                        else
-                        {
-                            if (diagnosis.DiagnosisIndex != e.DiagnosisIndex)
-                            {
-                                e.DiagnosisIndex = diagnosis.DiagnosisIndex;
-                                e.LastModifyTime = diagnosis.LastModifyTime;
-                            }
-                        }
-                    });
-                    model.DiagnosisList.Where(p => !string.IsNullOrWhiteSpace(p.ICD_Content)).ToList().ForEach(e =>
-                    {
-                        var diagnosis = dbDiagnosis.FirstOrDefault(t => t.ICD_Code == e.ICD_Code);
-                        if (diagnosis == null)//新上传的有 数据库没有   数据库增加
-                        {
-                            var newDiagnosis = new Code_Order_Diagnosis
-                            {
-                                CodeOrderID = model.CodeOrderID,
-                                CreateTime = e.CreateTime,
-                                CreateUserID = e.CreateUserID,
-                                DiagnosisIndex = e.DiagnosisIndex,
-                                ICD_Code = e.ICD_Code,
-                                ICD_Content = e.ICD_Content,
-                                LastModifyTime = e.LastModifyTime,
-                                LastModifyUserID = e.LastModifyUserID,
-                            };
-                            entity.Code_Order_Diagnosis.Add(newDiagnosis);
-                        }
-                    });
+                    uploadDiagnosis(model.CodeOrderID,model.DiagnosisList, entity);
 
                     #endregion
 
                     #region 手术操作处理
 
-                    dbOperate.ForEach(e =>
-                    {
-                        var operate = model.OperateList.FirstOrDefault(t => t.ICDCode == e.ICDCode);
-                        if (operate == null)//数据库有  新上传的没有  数据库中删除
-                        {
-                            entity.Code_Order_Operate.Remove(e);
-                        }
-                        else
-                        {
-                            if (operate.OperateIndex != e.OperateIndex)
-                            {
-                                e.OperateIndex = operate.OperateIndex;
-                                e.LastModifyUserID = operate.LastModifyUserID;
-                                e.LastModifyTime = operate.LastModifyTime;
-                            }
-                        }
-                    });
-                    model.OperateList.Where(p => !string.IsNullOrWhiteSpace(p.ICDContent)).ToList().ForEach(e =>
-                    {
-                        var operate = dbOperate.FirstOrDefault(t => t.ICDCode == e.ICDCode);
-                        if (operate == null)//新上传的有 数据库没有   数据库增加
-                        {
-                            var newOperate = new Code_Order_Operate
-                            {
-                                CodeOrderID = model.CodeOrderID,
-                                CreateTime = e.CreateTime,
-                                CreateUserID = e.CreateUserID,
-                                OperateIndex = e.OperateIndex,
-                                ICDCode = e.ICDCode,
-                                ICDContent = e.ICDContent,
-                                LastModifyTime = e.LastModifyTime,
-                                LastModifyUserID = e.LastModifyUserID,
-                            };
-                            entity.Code_Order_Operate.Add(newOperate);
-                        }
-                    });
+                    uploadOperate(model.CodeOrderID, model.OperateList, entity);
 
                     #endregion
 
@@ -485,6 +414,9 @@ namespace Docimax.Data_ICD.DAL
             using (var entity = new Entity_Read())
             {
                 var model = entity.Code_Order.FirstOrDefault(e => e.CodeOrderID == codeOrderID);
+                var diagnosises = entity.Code_Order_Diagnosis.Where(e => e.CodeOrderID == codeOrderID).Select(e => new
+                {
+                });
                 if (model == null)
                 {
                     return null;
@@ -497,7 +429,97 @@ namespace Docimax.Data_ICD.DAL
                     MedicalRecordPath = model.MedicalRecordPath,
                     Diagnosis_ICD_VersionID = model.Diagnosis_ICD_VersionID ?? 0,
                     Operation_ICD_VersionID = model.Operation_ICD_VersionID ?? 0,
+                    PickedID = model.PickedUserID,
+                    LastModifyStamp = Convert.ToBase64String(model.LastModifyStamp),
                 };
+            }
+        }
+        public bool CanCodingMR(int codeOrderID, string uid)
+        {
+            using (var entity = new Entity_Read())
+            {
+                var model = entity.Code_Order.FirstOrDefault(e => e.CodeOrderID == codeOrderID);
+                if (model == null)
+                {
+                    return false;
+                }
+                var user = entity.AspNetUsers.FirstOrDefault(e => e.Id == uid);
+                if (user == null)
+                {
+                    return false;
+                }
+                var certificateState = CertificateState.认证通过.GetHashCode();
+                if (model.PickedUserID == uid && user.CertificationFlag == certificateState && user.BankCertificationFlag == certificateState)
+                {
+                    return true;
+                }
+                //todo  后期需校验编码服务的认证状态
+                return false;
+            }
+        }
+
+        public bool CanViewingMR(int codeOrderID, string uid)
+        {
+            using (var entity = new Entity_Read())
+            {
+                var model = entity.Code_Order.FirstOrDefault(e => e.CodeOrderID == codeOrderID);
+                if (model == null)
+                {
+                    return false;
+                }
+                var user = entity.AspNetUsers.FirstOrDefault(e => e.Id == uid);
+                if (user == null)
+                {
+                    return false;
+                }
+                if (user.ORGID == model.ORGID && ((user.SubORGID ?? 0) == (model.ORGSubID ?? 0)))
+                {
+                    return true;
+                }
+                var certificateState = CertificateState.认证通过.GetHashCode();
+                if (model.PickedUserID == uid && user.CertificationFlag == certificateState && user.BankCertificationFlag == certificateState)
+                {
+                    return true;
+                }
+                //todo  后期需校验编码服务的认证状态
+                return false;
+            }
+        }
+
+        public ICDExcuteResult<int> SaveInterfaceOrdeCode(MedicalRecordCoding model, ICDOrderState newState)
+        {
+            using (var entity = new Entity_Write())
+            {
+                using (var trasanction = entity.Database.BeginTransaction())
+                {
+                    var orderModel = entity.Code_Order.FirstOrDefault(e => e.CodeOrderID == model.CodeOrderID);
+                    if (orderModel == null)
+                    {
+                        trasanction.Rollback();
+                        return new ICDExcuteResult<int> { IsSuccess = false, ErrorStr = "未找到相应的订单" };
+                    }
+                    if (Convert.ToBase64String(orderModel.LastModifyStamp) != model.LastModifyStamp)
+                    {
+                        trasanction.Rollback();
+                        return new ICDExcuteResult<int> { IsSuccess = false, ErrorStr = "很遗憾，已经有人在您前面提交" };
+                    }
+                    orderModel.LastModifyUserID = model.LastModifyUserID;
+                    orderModel.LastModifyTime = DateTime.Now;
+
+                    #region 诊断处理
+
+                    uploadDiagnosis(model.CodeOrderID,model.DiagnosisCodeResultList, entity);
+
+                    #endregion
+
+                    #region 手术操作处理
+
+                    uploadOperate(model.CodeOrderID, model.OperationCodeResultList, entity);
+
+                    #endregion
+
+                    return new ICDExcuteResult<int> { IsSuccess = true };
+                }
             }
         }
 
@@ -596,6 +618,85 @@ namespace Docimax.Data_ICD.DAL
                 }
                 return false;
             }
+        }
+        private void uploadDiagnosis(int codeOrderID, List<DiagnosisCodeResult> diagnosisList, Entity_Write entity)
+        {
+            var dbDiagnosis = entity.Code_Order_Diagnosis.Where(e => e.CodeOrderID == codeOrderID).ToList();
+            dbDiagnosis.ForEach(e =>
+            {
+                var diagnosis = diagnosisList.FirstOrDefault(t => t.ICDCode == e.ICD_Code);
+                if (diagnosis == null)//数据库有  新上传的没有  数据库中删除
+                {
+                    entity.Code_Order_Diagnosis.Remove(e);
+                }
+                else
+                {
+                    if (diagnosis.Index != e.DiagnosisIndex)
+                    {
+                        e.DiagnosisIndex = diagnosis.Index;
+                        e.LastModifyTime = diagnosis.LastModifyTime;
+                    }
+                }
+            });
+            diagnosisList.Where(p => !string.IsNullOrWhiteSpace(p.ICDName)).ToList().ForEach(e =>
+            {
+                var diagnosis = dbDiagnosis.FirstOrDefault(t => t.ICD_Code == e.ICDCode);
+                if (diagnosis == null)//新上传的有 数据库没有   数据库增加
+                {
+                    var newDiagnosis = new Code_Order_Diagnosis
+                    {
+                        CodeOrderID = codeOrderID,
+                        CreateTime = e.CreateTime,
+                        CreateUserID = e.CreateUserID,
+                        DiagnosisIndex = e.Index,
+                        ICD_Code = e.ICDCode,
+                        ICD_Content = e.ICDName,
+                        LastModifyTime = e.LastModifyTime,
+                        LastModifyUserID = e.LastModifyUserID,
+                    };
+                    entity.Code_Order_Diagnosis.Add(newDiagnosis);
+                }
+            });
+        }
+        private void uploadOperate(int codeOrderID, List<OperationCodeResult> operateList, Entity_Write entity)
+        {
+            var dbOperate = entity.Code_Order_Operate.Where(e => e.CodeOrderID == codeOrderID).ToList();
+            dbOperate.ForEach(e =>
+            {
+                var operate = operateList.FirstOrDefault(t => t.ICDCode == e.ICDCode);
+                if (operate == null)//数据库有  新上传的没有  数据库中删除
+                {
+                    entity.Code_Order_Operate.Remove(e);
+                }
+                else
+                {
+                    if (operate.Index != e.OperateIndex)
+                    {
+                        e.OperateIndex = operate.Index;
+                        e.LastModifyUserID = operate.LastModifyUserID;
+                        e.LastModifyTime = operate.LastModifyTime;
+                    }
+                }
+            });
+            operateList.Where(p => !string.IsNullOrWhiteSpace(p.ICDName)).ToList().ForEach(e =>
+            {
+                var operate = dbOperate.FirstOrDefault(t => t.ICDCode == e.ICDCode);
+                if (operate == null)//新上传的有 数据库没有   数据库增加
+                {
+                    var newOperate = new Code_Order_Operate
+                    {
+                        CodeOrderID = codeOrderID,
+                        CreateTime = e.CreateTime,
+                        CreateUserID = e.CreateUserID,
+                        OperateIndex = e.Index,
+                        ICDCode = e.ICDCode,
+                        ICDContent = e.ICDName,
+                        LastModifyTime = e.LastModifyTime,
+                        LastModifyUserID = e.LastModifyUserID,
+                    };
+                    entity.Code_Order_Operate.Add(newOperate);
+                }
+            });
         }
 
         #endregion

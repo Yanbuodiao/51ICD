@@ -2,17 +2,20 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Docimax.Interface_ICD.Model.UploadModel
 {
     /// <summary>
     /// 病案编码实体类  病案号+出院时间+住院次数  形成唯一标记号
     /// </summary>
-    public class MedicalRecordCoding
+    public class MedicalRecordCoding:BaseModel
     {
+        /// <summary>
+        /// 订单ID
+        /// </summary>
+        [JsonIgnore]
+        public int CodeOrderID { get; set; }
+
         #region 唯一标记一份病案
 
         /// <summary>
@@ -70,12 +73,16 @@ namespace Docimax.Interface_ICD.Model.UploadModel
         /// </summary>
         public DischargeRecord DischargeRecord { get; set; }
 
-        [JsonConverter(typeof(CustomDateTimeConverter))]
+        /// <summary>
+        /// 订单类别
+        /// </summary>
+        [JsonIgnore]
         public OrderTypeEnum OrderType { get; set; }
 
         /// <summary>
         /// 死亡记录
         /// </summary>
+        [JsonConverter(typeof(CustomDateTimeConverter))]
         public DeathNote DeathNote { get; set; }
 
         /// <summary>

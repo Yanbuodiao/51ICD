@@ -1,0 +1,38 @@
+﻿@using Docimax.Common
+@model Docimax.Interface_ICD.Model.DiagnosisCodeResult
+@using (@Html.BeginCollectionItem("DiagnosisCodeResultList"))
+{
+    <div class="form-inline" id="diagnosis">
+        <div class="input-group">
+            <span class="input-group-addon"><span class="glyphicon glyphicon-list-alt"></span></span>
+            @Html.TextBoxFor(e => e.Diagnosis, null, new { @class = "form-control", @placeholder = "建议临床诊断", @style = "min-width:240px" })
+        </div>
+        @Html.TextBoxFor(e => e.DisplayText, null, new { @class = "form-control typeahead", @placeholder = "诊断编码", @style = "min-width:278px" })
+        @Html.HiddenFor(e => e.Index)
+    </div>
+}
+@if (ViewBag.Add!=null)
+{
+    <script>
+        $(document).ready(function () {
+            var remote_diagnosis = new Bloodhound({
+                datumTokenizer: Bloodhound.tokenizers.obj.whitespace('diagnosis'),
+                queryTokenizer: Bloodhound.tokenizers.whitespace,
+                remote: {
+                    url: '/Dictionary/ICD_Diagnosis_Typeahead?queryStr=%QUERY&icdVersionID=1',
+                    wildcard: '%QUERY'
+                },
+            });
+            remote_diagnosis.initialize();
+            $('#diagnosis .typeahead').unbind();
+            $('#diagnosis .typeahead').typeahead({ hint: false }, {
+                name: 'diagnosis',
+                display: 'DisplayText',
+                source: remote_diagnosis.ttAdapter(),
+                templates: {
+                    suggestion: Handlebars.compile('<div><strong>{{ICD_Code}}</strong> – {{ICD_Name}}</div>')
+                }
+            });
+        });
+    </script>
+}

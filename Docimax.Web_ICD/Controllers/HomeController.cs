@@ -7,6 +7,7 @@ using Docimax.Interface_ICD.Interface;
 using Docimax.Data_ICD.DAL;
 using System.Linq;
 using Docimax.Common_ICD;
+using Docimax.Common;
 
 namespace Docimax.Web_ICD.Controllers
 {
@@ -49,6 +50,13 @@ namespace Docimax.Web_ICD.Controllers
             return View(model);
         }
 
+        public ActionResult ICDList(ICDPagedList<CodeSearchModel, ICDModel> model)
+        {
+            model = initialList(model);
+            var itemsStr = JsonHelper.SerializeObject(model);
+            return Content(itemsStr);
+        }
+
         public PartialViewResult _Tools(ICDPagedList<CodeSearchModel, ICDModel> model)
         {
             model = initialList(model);
@@ -68,16 +76,24 @@ namespace Docimax.Web_ICD.Controllers
         {
             IICDRepository access = new DAL_ICDRepository();
             var model = access.GetICDModel(icdDetailID, icdType);
-            if (model!=null)
+            if (model != null)
             {
                 model.ICDType = icdType;
             }
             return View(model);
         }
 
+        public ActionResult GetICDDetail(ICDTypeEnum icdType, int icdDetailID)
+        {
+            IICDRepository access = new DAL_ICDRepository();
+            var model = access.GetICDModel(icdDetailID, icdType);
+            var modelStr = JsonHelper.SerializeObject(model);
+            return Content(modelStr);
+        }
+
         public ActionResult CanEdit()
         {
-            if (User==null||User.Identity==null||string.IsNullOrWhiteSpace(User.Identity.GetUserId()))
+            if (User == null || User.Identity == null || string.IsNullOrWhiteSpace(User.Identity.GetUserId()))
             {
                 return Content("false");
             }

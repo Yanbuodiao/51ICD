@@ -10,6 +10,7 @@ using Docimax.Common_ICD.File;
 using Docimax.Common;
 using Docimax.Interface_ICD.Model.UploadModel;
 using Docimax.Common_ICD;
+using System.Collections.Generic;
 
 namespace Docimax.Web_ICD.Controllers
 {
@@ -49,7 +50,7 @@ namespace Docimax.Web_ICD.Controllers
         {
             ICode_Order access = new DAL_Code_Order();
             var userID = User.Identity.GetUserId();
-            var validateResult = validateCodeModel(ref model, userID);
+            var validateResult = validateCodeModel(model.CodeOrderID,model.DiagnosisList,model.OperateList, userID);
             if (!string.IsNullOrWhiteSpace(validateResult))
             {
                 ModelState.AddModelError("", validateResult);
@@ -79,7 +80,13 @@ namespace Docimax.Web_ICD.Controllers
 
         public ActionResult InterfaceOrdeCode(int orderID)
         {
+            var userId = User.Identity.GetUserId();
             ICode_Order access = new DAL_Code_Order();
+            if (!access.CanCodingMR(orderID, userId))
+            {
+                ViewBag.ErrorStr = "您无权限查看该订单！";
+                return View();
+            }
             var model = access.GetCodeOrder(orderID);
             if (model != null)
             {
@@ -88,9 +95,40 @@ namespace Docimax.Web_ICD.Controllers
                 var mr = JsonHelper.DeserializeObject<MedicalRecordCoding>(str);
                 mr = initalCode(mr, model.Diagnosis_ICD_VersionID, model.Operation_ICD_VersionID);
                 ViewBag.PlatformOrderCode = model.PlatformOrderCode;
+                mr.CodeOrderID = orderID;
                 return View(mr);
             }
-            //todo  错误提示
+            return View();
+        }
+
+        public ActionResult AddDialogios(int dialogIndex)
+        {
+            ViewBag.Add = true;
+            return PartialView("DialogiosPartial", new DiagnosisCodeResult { Index = dialogIndex });
+        }
+
+        public ActionResult AddOperate(int operateIndex)
+        {
+            ViewBag.Add = "true";
+            return PartialView("OperatePartial", new OperationCodeResult { Index = operateIndex });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult InterfaceOrdeCode(MedicalRecordCoding model, string submit)
+        {
+            ICode_Order access = new DAL_Code_Order();
+            var userID = User.Identity.GetUserId();
+            var validateResult = validateCodeModel(model.CodeOrderID, model.DiagnosisCodeResultList, model.OperationCodeResultList, userID);
+            if (!string.IsNullOrWhiteSpace(validateResult))
+            {
+                ModelState.AddModelError("", validateResult);
+            }
+
+            model.LastModifyUserID = userID;
+            model.LastModifyTime = DateTime.Now;
+            var orderStatus = string.IsNullOrWhiteSpace(submit) ? ICDOrderState.编码中 : ICDOrderState.编码完成;
+           
             return View();
         }
 
@@ -100,26 +138,26 @@ namespace Docimax.Web_ICD.Controllers
         {
             if (model.OperateList == null || model.OperateList.Count == 0)
             {
-                model.OperateList = new System.Collections.Generic.List<Code_Operate> { 
-                    new Code_Operate{},
-                    new Code_Operate{},
-                    new Code_Operate{},
-                    new Code_Operate{},
-                    new Code_Operate{},};
+                model.OperateList = new System.Collections.Generic.List<OperationCodeResult> { 
+                    new OperationCodeResult{},
+                    new OperationCodeResult{},
+                    new OperationCodeResult{},
+                    new OperationCodeResult{},
+                    new OperationCodeResult{},};
                 return;
             }
-            var newOperateList = new System.Collections.Generic.List<Code_Operate>();
-            var maxIndex = model.OperateList.Max(e => e.OperateIndex) > 5 ? model.OperateList.Max(e => e.OperateIndex) : 5;
+            var newOperateList = new System.Collections.Generic.List<OperationCodeResult>();
+            var maxIndex = model.OperateList.Max(e => e.Index) > 5 ? model.OperateList.Max(e => e.Index) : 5;
             for (int i = 0; i < maxIndex; i++)
             {
-                var item = model.OperateList.FirstOrDefault(e => e.OperateIndex == i);
+                var item = model.OperateList.FirstOrDefault(e => e.Index == i);
                 if (item != null)
                 {
                     newOperateList.Add(item);
                 }
                 else
                 {
-                    newOperateList.Add(new Code_Operate());
+                    newOperateList.Add(new OperationCodeResult());
                 }
             }
             model.OperateList = newOperateList;
@@ -129,27 +167,27 @@ namespace Docimax.Web_ICD.Controllers
         {
             if (model.DiagnosisList == null || model.DiagnosisList.Count == 0)
             {
-                model.DiagnosisList = new System.Collections.Generic.List<Code_Diagnosis> { 
-                    new Code_Diagnosis{Description="主要诊断"},
-                    new Code_Diagnosis{Description="其他诊断"},
-                    new Code_Diagnosis{},
-                    new Code_Diagnosis{},
-                    new Code_Diagnosis{},
+                model.DiagnosisList = new System.Collections.Generic.List<DiagnosisCodeResult> { 
+                    new DiagnosisCodeResult{Description="主要诊断"},
+                    new DiagnosisCodeResult{Description="其他诊断"},
+                    new DiagnosisCodeResult{},
+                    new DiagnosisCodeResult{},
+                    new DiagnosisCodeResult{},
                 };
                 return;
             }
-            var newDiagnosisList = new System.Collections.Generic.List<Code_Diagnosis>();
-            var maxIndex = model.DiagnosisList.Max(e => e.DiagnosisIndex) > 5 ? model.DiagnosisList.Max(e => e.DiagnosisIndex) : 5;
+            var newDiagnosisList = new System.Collections.Generic.List<DiagnosisCodeResult>();
+            var maxIndex = model.DiagnosisList.Max(e => e.Index) > 5 ? model.DiagnosisList.Max(e => e.Index) : 5;
             for (int i = 0; i < maxIndex; i++)
             {
-                var item = model.DiagnosisList.FirstOrDefault(e => e.DiagnosisIndex == i);
+                var item = model.DiagnosisList.FirstOrDefault(e => e.Index == i);
                 if (item != null)
                 {
                     newDiagnosisList.Add(item);
                 }
                 else
                 {
-                    newDiagnosisList.Add(new Code_Diagnosis { Description = i == 0 ? "主要诊断" : (i == 1 ? "其他诊断" : null) });
+                    newDiagnosisList.Add(new DiagnosisCodeResult { Description = i == 0 ? "主要诊断" : (i == 1 ? "其他诊断" : null) });
                 }
             }
             model.DiagnosisList = newDiagnosisList;
@@ -157,37 +195,37 @@ namespace Docimax.Web_ICD.Controllers
 
         private MedicalRecordCoding initalCode(MedicalRecordCoding mr, int diagnosisVersionId, int operateVersionId)
         {
-            if (mr.DiagnosisCodeResultList == null)
+            if (mr.DiagnosisCodeResultList == null || mr.DiagnosisCodeResultList.Count == 0)
             {
                 //初始化诊断编码结果
                 if (mr.DischargeDiagnosisList != null)//首页有结果直接取首页结果
                 {
                     mr.DiagnosisCodeResultList = mr.DischargeDiagnosisList
-                        .Select(e => new DiagnosisCodeResult { Index = e.Index, Diagnosis = e.Diagnosis, DiagnosisCode = ICDVersionList.GetCodeByName(diagnosisVersionId, e.Diagnosis) }).ToList();
+                        .Select(e => new DiagnosisCodeResult { Index = e.Index, Diagnosis = e.Diagnosis, DisplayText = ICDVersionList.GetCodeDispalyTextByClinicName(diagnosisVersionId, e.Diagnosis) }).ToList();
                 }
                 else if (mr.DischargeRecord != null && mr.DischargeRecord.DischargeDiagnosis != null)//首页没结果去出院记录或者死亡记录中取结果
                 {
                     mr.DiagnosisCodeResultList = mr.DischargeRecord.DischargeDiagnosis.Split(';').Where(e => !string.IsNullOrWhiteSpace(e))
-                        .Select(t => new DiagnosisCodeResult { Index = 1, Diagnosis = t, DiagnosisCode = ICDVersionList.GetCodeByName(diagnosisVersionId, t) }).ToList();
+                        .Select(t => new DiagnosisCodeResult { Index = 1, Diagnosis = t, DisplayText = ICDVersionList.GetCodeDispalyTextByClinicName(diagnosisVersionId, t) }).ToList();
                 }
                 else if (mr.DeathNote != null && mr.DeathNote.DeathDiagnosis != null)
                 {
                     mr.DiagnosisCodeResultList = mr.DeathNote.DeathDiagnosis.Split(';').Where(e => !string.IsNullOrWhiteSpace(e))
-                        .Select(t => new DiagnosisCodeResult { Index = 1, Diagnosis = t, DiagnosisCode = ICDVersionList.GetCodeByName(diagnosisVersionId, t) }).ToList();
+                        .Select(t => new DiagnosisCodeResult { Index = 1, Diagnosis = t, DisplayText = ICDVersionList.GetCodeDispalyTextByClinicName(diagnosisVersionId, t) }).ToList();
                 }
             }
-            if (mr.OperationCodeResultList == null)
+            if (mr.OperationCodeResultList == null || mr.OperationCodeResultList.Count == 0)
             {
                 //初始化手术操作编码结果
                 if (mr.ProceduresList != null)//首页有结果直接取首页结果
                 {
                     mr.OperationCodeResultList = mr.ProceduresList
-                        .Select(e => new OperationCodeResult { Index = e.Index, OperationName = e.OperationName, OperationCode = ICDVersionList.GetCodeByName(operateVersionId, e.OperationName) }).ToList();
+                        .Select(e => new OperationCodeResult { Index = e.Index, OperationName = e.OperationName, DisplayText = ICDVersionList.GetCodeDispalyTextByClinicName(operateVersionId, e.OperationName) }).ToList();
                 }
                 else if (mr.OperationDetailList != null)//先去手术详细记录中取手术名称
                 {
                     mr.OperationCodeResultList = mr.OperationDetailList
-                        .Select(e => new OperationCodeResult { OperationName = e.OperationName, OperationCode = ICDVersionList.GetCodeByName(operateVersionId, e.OperationName) }).ToList();
+                        .Select(e => new OperationCodeResult { OperationName = e.OperationName, DisplayText = ICDVersionList.GetCodeDispalyTextByClinicName(operateVersionId, e.OperationName) }).ToList();
                     //todo   需要调研临时医嘱中操作的进入首页结果中
                 }
             }
@@ -202,34 +240,36 @@ namespace Docimax.Web_ICD.Controllers
             return View(newModel);
         }
 
-        private string validateCodeModel(ref CodeOrderModel model, string userID)
+        private string validateCodeModel(int orderID, List<DiagnosisCodeResult> diagnosisList,
+            List<OperationCodeResult> opetateList, string userId)
         {
-            if (model.PickedUserID != userID)
+            ICode_Order access = new DAL_Code_Order();
+            if (!access.CanCodingMR(orderID, userId))
             {
                 return "您无权编辑此订单";
             }
-            if (model.DiagnosisList.All(e => string.IsNullOrWhiteSpace(e.DisplayText)))
+            if (diagnosisList.All(e => string.IsNullOrWhiteSpace(e.DisplayText)))
             {
                 return "请输入至少一个诊断";
             }
-            if (model.OperateList.All(e => string.IsNullOrWhiteSpace(e.DisplayText)))
+            if (opetateList.All(e => string.IsNullOrWhiteSpace(e.DisplayText)))
             {
                 return "请输入至少一个操作";
             }
-            for (int i = 0; i < model.DiagnosisList.Count; i++)
+            for (int i = 0; i < diagnosisList.Count; i++)
             {
-                var item = model.DiagnosisList[i]; if (!string.IsNullOrWhiteSpace(item.DisplayText))
+                var item = diagnosisList[i]; if (!string.IsNullOrWhiteSpace(item.DisplayText))
                 {
                     var temp = item.DisplayText.Split('-');
                     if (temp.Length == 2)
                     {
-                        item.ICD_Code = temp[0];
-                        item.ICD_Content = temp[1];
-                        item.DiagnosisIndex = i;
+                        item.ICDCode = temp[0];
+                        item.ICDName = temp[1];
+                        item.Index = i;
                         item.CreateTime = DateTime.Now;
-                        item.CreateUserID = userID;
+                        item.CreateUserID = userId;
                         item.LastModifyTime = DateTime.Now;
-                        item.LastModifyUserID = userID;
+                        item.LastModifyUserID = userId;
                     }
                     else
                     {
@@ -237,21 +277,21 @@ namespace Docimax.Web_ICD.Controllers
                     }
                 }
             }
-            for (int i = 0; i < model.OperateList.Count; i++)
+            for (int i = 0; i < opetateList.Count; i++)
             {
-                var item = model.OperateList[i];
+                var item = opetateList[i];
                 if (!string.IsNullOrWhiteSpace(item.DisplayText))
                 {
                     var temp = item.DisplayText.Split('-');
                     if (temp.Length == 2)
                     {
                         item.ICDCode = temp[0];
-                        item.ICDContent = temp[1];
-                        item.OperateIndex = i;
+                        item.ICDName = temp[1];
+                        item.Index = i;
                         item.CreateTime = DateTime.Now;
-                        item.CreateUserID = userID;
+                        item.CreateUserID = userId;
                         item.LastModifyTime = DateTime.Now;
-                        item.LastModifyUserID = userID;
+                        item.LastModifyUserID = userId;
                     }
                     else
                     {
@@ -261,6 +301,7 @@ namespace Docimax.Web_ICD.Controllers
             }
             return string.Empty;
         }
+
 
         #endregion
     }

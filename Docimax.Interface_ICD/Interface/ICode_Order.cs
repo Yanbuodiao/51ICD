@@ -1,4 +1,5 @@
-﻿using Docimax.Interface_ICD.Model;
+﻿using Docimax.Interface_ICD.Enum;
+using Docimax.Interface_ICD.Model;
 using Docimax.Interface_ICD.Model.CodeOrder;
 using Docimax.Interface_ICD.Model.UploadModel;
 using System;
@@ -88,6 +89,9 @@ namespace Docimax.Interface_ICD.Interface
         /// <returns>true：保存成功 false：保存失败</returns>
         ExcuteResult SaveCodeOrder(MedicalRecordCoding mr, string authCode, string medicalRecordPath);
         CodeOrderInterfaceModel GetCodeOrder(int codeOrderID);
-            
+        bool CanCodingMR(int codeOrderID, string uid);
+        bool CanViewingMR(int codeOrderID, string uid);
+
+        ICDExcuteResult<int> SaveInterfaceOrdeCode(MedicalRecordCoding model, ICDOrderState newState);
     }
 }

@@ -1,13 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Docimax.Interface_ICD.Model
 {
-    public class DiagnosisCodeResult
+    public class DiagnosisCodeResult : BaseModel
     {
+        /// <summary>
+        /// 编码结果ID
+        /// </summary>
+        public int CodeResultID { get; set; }
+        /// <summary>
+        /// 所属订单ID
+        /// </summary>
+        public int CodeOrderID { get; set; }
         /// <summary>
         /// 临床诊断名称
         /// </summary>
@@ -19,11 +28,28 @@ namespace Docimax.Interface_ICD.Model
         /// <summary>
         /// 诊断编码
         /// </summary>
-        public string DiagnosisCode { get; set; }
+        public string ICDCode { get; set; }
+        /// <summary>
+        /// 诊断编码对应的名称
+        /// </summary>
+        public string ICDName { get; set; }
+        /// <summary>
+        /// 页面显示ICDCode
+        /// </summary>
+        public string DisplayText { get; set; }
+        public string Description { get; set; }
     }
 
-    public class OperationCodeResult
+    public class OperationCodeResult : BaseModel
     {
+        /// <summary>
+        /// 编码结果ID
+        /// </summary>
+        public int CodeResultID { get; set; }
+        /// <summary>
+        /// 所属订单ID
+        /// </summary>
+        public int CodeOrderID { get; set; }
         /// <summary>
         /// 手术、操作名称
         /// </summary>
@@ -33,8 +59,17 @@ namespace Docimax.Interface_ICD.Model
         /// </summary>
         public int Index { get; set; }
         /// <summary>
-        /// 操作或者手术编码
+        /// 手术或操作编码
         /// </summary>
-        public string OperationCode { get; set; }
+        public string ICDCode { get; set; }
+        /// <summary>
+        /// 手术或操作编码对应的名称
+        /// </summary>
+        public string ICDName { get; set; }
+        /// <summary>
+        /// 页面显示ICDCode
+        /// </summary>
+        public string DisplayText { get; set; }
+        public string Description { get; set; }
     }
 }

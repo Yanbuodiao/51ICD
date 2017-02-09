@@ -3,8 +3,6 @@
 <script type="text/javascript" src="~/Scripts/handlebars.js"></script>
 <h2>@ViewBag.PlatformOrderCode</h2>
 <p class="text-success">@ViewBag.StatusMessage</p>
-@Scripts.Render("~/bundles/angularJS")
-@Scripts.Render("~/bundles/customJS")
 <script>
     $(document).ready(function () {
         var remote_diagnosis = new Bloodhound({
@@ -16,7 +14,8 @@
             },
         });
         remote_diagnosis.initialize();
-        $('#diagnosis .typeahead').typeahead(null, {
+        $('#diagnosis .typeahead').unbind();
+        $('#diagnosis .typeahead').typeahead({ hint: false }, {
             name: 'diagnosis',
             display: 'DisplayText',
             source: remote_diagnosis.ttAdapter(),
@@ -24,7 +23,6 @@
                 suggestion: Handlebars.compile('<div><strong>{{ICD_Code}}</strong> – {{ICD_Name}}</div>')
             }
         });
-
 
         var remote_operates = new Bloodhound({
             datumTokenizer: Bloodhound.tokenizers.obj.whitespace('operates'),
@@ -35,7 +33,8 @@
             },
         });
         remote_operates.initialize();
-        $('#operate .typeahead').typeahead(null, {
+        $('#operate .typeahead').unbind();
+        $('#operate .typeahead').typeahead({ hint: false }, {
             name: 'diagnosis',
             display: 'DisplayText',
             source: remote_operates.ttAdapter(),
@@ -43,80 +42,83 @@
                 suggestion: Handlebars.compile('<div><strong>{{ICD_Code}}</strong> – {{ICD_Name}}</div>')
             }
         });
+
         $('.accordion-heading').click(function () { $(this).find('span').toggleClass('glyphicon-plus-sign glyphicon-minus') });
     });
 </script>
 @if (Model != null)
 {
-    <div class="row">
-        <div class="col-md-8">
-            @Model.PatientModel.Sex  @Model.PatientModel.Age   @Model.PatientModel.Height @Model.PatientModel.Weight @Model.PatientModel.Marriage @Model.PatientModel.Profession
+    using (Html.BeginForm("InterfaceOrdeCode", "ServiceItem", FormMethod.Post, new { role = "form", enctype = "multipart/form-data" }))
+    {
+        <div class="row">
+            <div class="col-md-8">
+                @Model.PatientModel.Sex  @Model.PatientModel.Age   @Model.PatientModel.Height @Model.PatientModel.Weight @Model.PatientModel.Marriage @Model.PatientModel.Profession
+            </div>
+            <div class="col-md-2">
+                @Html.Label("入院日期：", htmlAttributes: new { @class = "control-label" })@Model.AdmittingTime.ToString("yyyy/MM/dd")
+            </div>
+            <div class="col-md-2">
+                @Html.Label("出院日期：", htmlAttributes: new { @class = "control-label" })@((Model.DischargeDate ?? DateTime.Now).ToString("yyyy/MM/dd"))
+            </div>
+            <div class="col-md-12">
+                @Html.Label("门（急）诊断：", htmlAttributes: new { @class = "control-label" })@Model.AdmittingDiagnosis  ep:1.胸闷原因 2.慢性支气管炎 3.肺气肿 4.肺大泡 5.胸腔积液 6.心功能不全
+            </div>
         </div>
-        <div class="col-md-2">
-            @Html.Label("入院日期：", htmlAttributes: new { @class = "control-label" })@Model.AdmittingTime.ToString("yyyy/MM/dd")
-        </div>
-        <div class="col-md-2">
-            @Html.Label("出院日期：", htmlAttributes: new { @class = "control-label" })@((Model.DischargeDate ?? DateTime.Now).ToString("yyyy/MM/dd"))
-        </div>
-        <div class="col-md-12">
-            @Html.Label("门（急）诊断：", htmlAttributes: new { @class = "control-label" })@Model.AdmittingDiagnosis  ep:1.胸闷原因 2.慢性支气管炎 3.肺气肿 4.肺大泡 5.胸腔积液 6.心功能不全
-        </div>
-    </div>
-    <hr />
-    <div class="row">
-        <div class="col-md-7">
-            <div class="panel panel-default">
-                <div class="panel-heading" role="tab" id="headingOne">
-                    <h4 class="panel-title">
-                        <a class="accordion-toggle" data-toggle="collapse" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                            入院记录
-                        </a>
-                    </h4>
-                </div>
-                <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
-                    <div class="panel-body">
-                        <div class="col-md-12">
-                            @Html.Label("主诉：", htmlAttributes: new { @class = "control-label" })@Model.AdmissionNote.ChiefComplaint
-                        </div>
-                        <div class="col-md-4">
-                            @Html.Label("现病史：", htmlAttributes: new { @class = "control-label" })@Model.AdmissionNote.HPI
-                        </div>
-                        <div class="col-md-4">
-                            @Html.Label("既往史：", htmlAttributes: new { @class = "control-label" })@Model.AdmissionNote.PastMedicalHistory
-                        </div>
-                        <div class="col-md-4">
-                            @Html.Label("个人史：", htmlAttributes: new { @class = "control-label" })@Model.AdmissionNote.PersonalHistory
-                        </div>
-                        @if (!(Model.PatientModel.Sex == Docimax.Interface_ICD.Model.UploadModel.SexEnum.男))
-                        {
-                        <div class="col-md-4">
-                            @Html.Label("婚育史：", htmlAttributes: new { @class = "control-label" })
-                        </div>
-                        <div class="col-md-4">
-                            @Html.Label("月经史：", htmlAttributes: new { @class = "control-label" })
-                        </div>
-                        }
-                        <div class="col-md-4">
-                            @Html.Label("家族史：", htmlAttributes: new { @class = "control-label" })@Model.AdmissionNote.FamilyHistory
-                        </div>
-                        <div class="col-md-4">
-                            @Html.Label("体格检查：", htmlAttributes: new { @class = "control-label" })@Model.AdmissionNote.PhysicalExamination
-                        </div>
-                        <div class="col-md-4">
-                            @Html.Label("专科情况：", htmlAttributes: new { @class = "control-label" })@Model.AdmissionNote.SpecialPE
-                        </div>
-                        <div class="col-md-4">
-                            @Html.Label("辅助检查：", htmlAttributes: new { @class = "control-label" })@Model.AdmissionNote.AssistantExamination
-                        </div>
-                        <div class="col-md-12">
-                            @Html.Label("初步诊断：", htmlAttributes: new { @class = "control-label" })@Model.AdmissionNote.PreliminaryDiagnosis
+        <hr />
+        <div class="row">
+            <div class="col-md-7">
+                <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="headingOne">
+                        <h4 class="panel-title">
+                            <a class="accordion-toggle" data-toggle="collapse" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                入院记录
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                        <div class="panel-body">
+                            <div class="col-md-12">
+                                @Html.Label("主诉：", htmlAttributes: new { @class = "control-label" })@Model.AdmissionNote.ChiefComplaint
+                            </div>
+                            <div class="col-md-4">
+                                @Html.Label("现病史：", htmlAttributes: new { @class = "control-label" })@Model.AdmissionNote.HPI
+                            </div>
+                            <div class="col-md-4">
+                                @Html.Label("既往史：", htmlAttributes: new { @class = "control-label" })@Model.AdmissionNote.PastMedicalHistory
+                            </div>
+                            <div class="col-md-4">
+                                @Html.Label("个人史：", htmlAttributes: new { @class = "control-label" })@Model.AdmissionNote.PersonalHistory
+                            </div>
+                            @if (!(Model.PatientModel.Sex == Docimax.Interface_ICD.Model.UploadModel.SexEnum.男))
+                            {
+                            <div class="col-md-4">
+                                @Html.Label("婚育史：", htmlAttributes: new { @class = "control-label" })
+                            </div>
+                            <div class="col-md-4">
+                                @Html.Label("月经史：", htmlAttributes: new { @class = "control-label" })
+                            </div>
+                            }
+                            <div class="col-md-4">
+                                @Html.Label("家族史：", htmlAttributes: new { @class = "control-label" })@Model.AdmissionNote.FamilyHistory
+                            </div>
+                            <div class="col-md-4">
+                                @Html.Label("体格检查：", htmlAttributes: new { @class = "control-label" })@Model.AdmissionNote.PhysicalExamination
+                            </div>
+                            <div class="col-md-4">
+                                @Html.Label("专科情况：", htmlAttributes: new { @class = "control-label" })@Model.AdmissionNote.SpecialPE
+                            </div>
+                            <div class="col-md-4">
+                                @Html.Label("辅助检查：", htmlAttributes: new { @class = "control-label" })@Model.AdmissionNote.AssistantExamination
+                            </div>
+                            <div class="col-md-12">
+                                @Html.Label("初步诊断：", htmlAttributes: new { @class = "control-label" })@Model.AdmissionNote.PreliminaryDiagnosis
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            @if (Model.DischargeRecord != null)
-            {
+                @if (Model.DischargeRecord != null)
+                {
                 <div class="panel panel-default">
                     <div class="panel-heading" role="tab" id="headingTwo">
                         <h4 class="panel-title">
@@ -142,10 +144,10 @@
                         </div>
                     </div>
                 </div>
-            }
+                }
 
-            @if (Model.DeathNote != null)
-            {
+                @if (Model.DeathNote != null)
+                {
                 <div class="panel panel-default">
                     <div class="panel-heading" role="tab" id="headingDeath">
                         <h4 class="panel-title">
@@ -171,71 +173,71 @@
                         </div>
                     </div>
                 </div>
-            }
+                }
 
-            <div class="panel panel-default">
-                <div class="panel-heading" role="tab" id="headingSummery">
-                    <h4 class="panel-title">
-                        <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseSummery" aria-expanded="false" aria-controls="collapseSummery">
-                            首页诊断、手术和操作
-                        </a>
-                    </h4>
-                </div>
-                <div id="collapseSummery" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingSummery">
-                    <div class="panel-body">
-                        <div class="col-md-12">
-                            @Html.Label("首页诊断：", htmlAttributes: new { @class = "control-label" })
-                            @if (Model != null && Model.DischargeDiagnosisList != null)
-                            {
-                                var primaryMr = Model.DischargeDiagnosisList.FirstOrDefault(e => e.Index == 0);
-                                Model.DischargeDiagnosisList.Remove(primaryMr);
-                                var secondMr = Model.DischargeDiagnosisList.OrderBy(t => t.Index).FirstOrDefault();
-                                Model.DischargeDiagnosisList.Remove(secondMr);
+                <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="headingSummery">
+                        <h4 class="panel-title">
+                            <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseSummery" aria-expanded="false" aria-controls="collapseSummery">
+                                首页诊断、手术和操作
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseSummery" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingSummery">
+                        <div class="panel-body">
+                            <div class="col-md-12">
+                                @Html.Label("首页诊断：", htmlAttributes: new { @class = "control-label" })
+                                @if (Model != null && Model.DischargeDiagnosisList != null)
+                                {
+                                    var primaryMr = Model.DischargeDiagnosisList.FirstOrDefault(e => e.Index == 0);
+                                    Model.DischargeDiagnosisList.Remove(primaryMr);
+                                    var secondMr = Model.DischargeDiagnosisList.OrderBy(t => t.Index).FirstOrDefault();
+                                    Model.DischargeDiagnosisList.Remove(secondMr);
 
-                            <ul class="list-group">
-                                <li class="list-group-item">
-                                    主要诊断：@(primaryMr != null ? primaryMr.Diagnosis : string.Empty)
-                                    <span class=" badge">@(primaryMr != null ? primaryMr.AdmittingCondition.ToString() : string.Empty)</span>
-                                </li>
-                                <li class="list-group-item">
-                                    其他诊断：@(secondMr != null ? secondMr.Diagnosis : string.Empty)
-                                    <span class=" badge">@(secondMr != null ? secondMr.AdmittingCondition.ToString() : string.Empty)</span>
-                                </li>
-                                @foreach (var item in Model.DischargeDiagnosisList.OrderBy(t => t.Index))
-                                    {
+                                <ul class="list-group">
                                     <li class="list-group-item">
-                                        &#8195;&#8195;&#8195;&#8195;&#8195;@item.Diagnosis
-                                        <span class=" badge">@item.AdmittingCondition.ToString()</span>
+                                        主要诊断：@(primaryMr != null ? primaryMr.Diagnosis : string.Empty)
+                                        <span class=" badge">@(primaryMr != null ? primaryMr.AdmittingCondition.ToString() : string.Empty)</span>
                                     </li>
-                                    }
-                            </ul>
-                            }
-                        </div>
-                        <div class="col-md-12">
-                            @Html.Label("首页操作及手术：", htmlAttributes: new { @class = "control-label" })
-                            @if (Model != null && Model.ProceduresList != null)
-                            {
-                            <table class="table">
-                                <tr><th>手术、操作日期</th><th>手术、操作名称</th><th>麻醉方式</th><th>切口愈合等级</th><th>切口愈合类别</th></tr>
-                                @foreach (var item in Model.ProceduresList.OrderBy(t => t.Index))
-                                    {
-                                    <tr>
-                                        <td>@item.OperationTime.ToString("yyyy/MM/dd")</td>
-                                        <td>@item.OperationName</td>
-                                        <td>@item.AnesthesiaType</td>
-                                        <td>@item.IncisionHealingLevel</td>
-                                        <td>@item.IncisionHealingCategory</td>
-                                    </tr>
-                                    }
-                            </table>
-                            }
+                                    <li class="list-group-item">
+                                        其他诊断：@(secondMr != null ? secondMr.Diagnosis : string.Empty)
+                                        <span class=" badge">@(secondMr != null ? secondMr.AdmittingCondition.ToString() : string.Empty)</span>
+                                    </li>
+                                    @foreach (var item in Model.DischargeDiagnosisList.OrderBy(t => t.Index))
+                                        {
+                                        <li class="list-group-item">
+                                            &#8195;&#8195;&#8195;&#8195;&#8195;@item.Diagnosis
+                                            <span class=" badge">@item.AdmittingCondition.ToString()</span>
+                                        </li>
+                                        }
+                                </ul>
+                                }
+                            </div>
+                            <div class="col-md-12">
+                                @Html.Label("首页操作及手术：", htmlAttributes: new { @class = "control-label" })
+                                @if (Model != null && Model.ProceduresList != null)
+                                {
+                                <table class="table">
+                                    <tr><th>手术、操作日期</th><th>手术、操作名称</th><th>麻醉方式</th><th>切口愈合等级</th><th>切口愈合类别</th></tr>
+                                    @foreach (var item in Model.ProceduresList.OrderBy(t => t.Index))
+                                        {
+                                        <tr>
+                                            <td>@item.OperationTime.ToString("yyyy/MM/dd")</td>
+                                            <td>@item.OperationName</td>
+                                            <td>@item.AnesthesiaType</td>
+                                            <td>@item.IncisionHealingLevel</td>
+                                            <td>@item.IncisionHealingCategory</td>
+                                        </tr>
+                                        }
+                                </table>
+                                }
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            @if (Model.InspectionReports != null && Model.InspectionReports.Count > 0)
-            {
+                @if (Model.InspectionReports != null && Model.InspectionReports.Count > 0)
+                {
                 <div class="panel panel-default">
                     <div class="panel-heading" role="tab" id="headingExam">
                         <h4 class="panel-title">
@@ -249,22 +251,22 @@
                             <table class="table">
                                 <tr><th>检查日期</th><th>检查项目</th><th>检查结果</th></tr>
                                 @foreach (var item in Model.InspectionReports)
-                                {
-                                <tr>
-                                    <td>@item.ReportTime.ToString("yyyy/MM/dd")</td>
-                                    <td>@item.InspectionName</td>
-                                    <td>@item.InsepectionResult</td>
-                                </tr>
-                                }
+                                    {
+                                    <tr>
+                                        <td>@item.ReportTime.ToString("yyyy/MM/dd")</td>
+                                        <td>@item.InspectionName</td>
+                                        <td>@item.InsepectionResult</td>
+                                    </tr>
+                                    }
                             </table>
                         </div>
                     </div>
                 </div>
-            }
+                }
 
 
-            @if (Model.STATList != null && Model.STATList.Count > 0)
-            {
+                @if (Model.STATList != null && Model.STATList.Count > 0)
+                {
                 <div class="panel panel-default">
                     <div class="panel-heading" role="tab" id="headingOrder">
                         <h4 class="panel-title">
@@ -278,21 +280,21 @@
                             <table class="table">
                                 <tr><th>下达时间</th><th>医嘱内容</th><th>执行时间</th></tr>
                                 @foreach (var item in Model.STATList)
-                                {
-                                <tr>
-                                    <td>@item.ReleaseTime.ToString("yyyy/MM/dd hh:mm:ss")</td>
-                                    <td>@item.OrderContent</td>
-                                    <td>@item.ExecutionTime.ToString("yyyy/MM/dd hh:mm:ss")</td>
-                                </tr>
-                                }
+                                    {
+                                    <tr>
+                                        <td>@item.ReleaseTime.ToString("yyyy/MM/dd hh:mm:ss")</td>
+                                        <td>@item.OrderContent</td>
+                                        <td>@item.ExecutionTime.ToString("yyyy/MM/dd hh:mm:ss")</td>
+                                    </tr>
+                                    }
                             </table>
                         </div>
                     </div>
                 </div>
-            }
+                }
 
-            @if (Model.OperationDetailList != null && Model.OperationDetailList.Count > 0)
-            {
+                @if (Model.OperationDetailList != null && Model.OperationDetailList.Count > 0)
+                {
                 <div class="panel panel-default">
                     <div class="panel-heading" role="tab" id="headingOperate">
                         <h4 class="panel-title">
@@ -304,85 +306,135 @@
                     <div id="collapseOperate" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOperate">
                         <div class="panel-body">
                             @foreach (var item in Model.OperationDetailList.OrderBy(t => t.OperationBegin))
-                            {
-                            <ul class="list-group">
-                                <li class="list-group-item">
-                                    @item.OperationName&#8195;&#8195;&#8195;开始于：@item.OperationBegin.ToString("yyyy/MM/dd hh:mm") &#8195;&#8195;结束于：@item.OperationEnd.ToString("yyyy/MM/dd hh:mm")
-                                </li>
-                                <li class="list-group-item">
-                                    术前诊断：@item.PreoperativeDiagnosis
-                                </li>
-                                <li class="list-group-item">
-                                    术中诊断：@item.IntraoperativeDiagnosis
-                                </li>
-                                <li class="list-group-item">
-                                    麻醉方法：@item.Anesthetic
-                                </li>
-                                <li class="list-group-item">
-                                    手术步骤和经过：@item.Procedure
-                                </li>
-                            </ul>
-                            }
-
-                        </div>
-                    </div>
-                </div>
-            }
-        </div>
-        <div class="col-md-5" ng-controller="icdCodeCtrl">
-            <div class="panel panel-default">
-                <div class="panel-heading" role="tab" id="MRSummery">
-                    <h4 class="panel-title">
-                        <a class="accordion-toggle" data-toggle="collapse" href="#collapseMRSummery" aria-expanded="false" aria-controls="collapseMRSummery">
-                            建议诊断和编码
-                        </a>
-                    </h4>
-                </div>
-                <div id="collapseMRSummery" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="MRSummery">
-                    <div class="panel-body">
-                        <div class="form-group" id="diagnosis">
-                            @Html.Label("主要诊断：", htmlAttributes: new { @class = "control-label" })
-                            @Html.TextBox("sds", null, new { @class = "form-control", @placeholder = "建议临床诊断" })
-                            @Html.TextBox("sds", null, new { @class = "form-control typeahead", @placeholder = "诊断编码" })
-                        </div>
-                        <div class="form-group" id="diagnosis">
-                            @Html.Label("其他诊断：", htmlAttributes: new { @class = "control-label" })
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="panel panel-default">
-                <div class="panel-heading" role="tab" id="OperationSummery">
-                    <h4 class="panel-title">
-                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseOperationSummery" aria-expanded="false" aria-controls="collapseOperationSummery">
-                            建议手术和操作编码
-                        </a>
-                    </h4>
-                </div>
-                <div id="collapseOperationSummery" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="OperationSummery">
-                    <div class="panel-body">
-                        @Html.Label("首页操作及手术：", htmlAttributes: new { @class = "control-label" })
-                        @if (Model != null && Model.ProceduresList != null)
-                        {
-                            <table class="table">
-                                <tr><th>手术、操作日期</th><th>手术、操作名称</th><th>麻醉方式</th><th>切口愈合等级</th><th>切口愈合类别</th></tr>
-                                @foreach (var item in Model.ProceduresList.OrderBy(t => t.Index))
                                 {
-                                    <tr>
-                                        <td>@item.OperationTime.ToString("yyyy/MM/dd")</td>
-                                        <td>@item.OperationName</td>
-                                        <td>@item.AnesthesiaType</td>
-                                        <td>@item.IncisionHealingLevel</td>
-                                        <td>@item.IncisionHealingCategory</td>
-                                    </tr>
+                                <ul class="list-group">
+                                    <li class="list-group-item">
+                                        @item.OperationName&#8195;&#8195;&#8195;开始于：@item.OperationBegin.ToString("yyyy/MM/dd hh:mm") &#8195;&#8195;结束于：@item.OperationEnd.ToString("yyyy/MM/dd hh:mm")
+                                    </li>
+                                    <li class="list-group-item">
+                                        术前诊断：@item.PreoperativeDiagnosis
+                                    </li>
+                                    <li class="list-group-item">
+                                        术中诊断：@item.IntraoperativeDiagnosis
+                                    </li>
+                                    <li class="list-group-item">
+                                        麻醉方法：@item.Anesthetic
+                                    </li>
+                                    <li class="list-group-item">
+                                        手术步骤和经过：@item.Procedure
+                                    </li>
+                                </ul>
                                 }
-                            </table>
-                        }
+
+                        </div>
+                    </div>
+                </div>
+                }
+            </div>
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(model => model.CodeOrderID)
+            @Html.HiddenFor(model => model.LastModifyStamp, new { @Cache = false })
+            <div class="col-md-5" ng-controller="icdCodeCtrl">
+                <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="MRSummery">
+                        <h4 class="panel-title">
+                            <a class="accordion-toggle" data-toggle="collapse" href="#collapseMRSummery" aria-expanded="false" aria-controls="collapseMRSummery">
+                                建议诊断和编码
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseMRSummery" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="MRSummery">
+                        <div class="panel-body">
+                            @Html.Label("主要诊断：", htmlAttributes: new { @class = "control-label" })
+                            @{
+        var primaryDiagnosis = Model.DiagnosisCodeResultList.FirstOrDefault(e => e.Index == 0);
+                            @Html.Partial("DialogiosPartial", primaryDiagnosis);
+                            }
+                            @Html.Label("其他诊断：", htmlAttributes: new { @class = "control-label", @style = "margin-top:8px;" })
+                            @Html.ActionLink("添加其他诊断", "AddDialogios", null, new { id = "addDialogios" })
+                            <div class="form-inline" id="subDiagnosis">
+                                @Html.Partial("DialogiosesPartial", Model.DiagnosisCodeResultList)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="OperationSummery">
+                        <h4 class="panel-title">
+                            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseOperationSummery" aria-expanded="false" aria-controls="collapseOperationSummery">
+                                建议手术和操作编码
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseOperationSummery" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="OperationSummery">
+                        <div class="panel-body">
+                            @Html.ActionLink("添加手术或操作", "AddOperate", null, new { id = "addOperate" })
+                            <div class="form-inline" id="subOperates" style="margin-top:8px">
+                                @Html.Partial("OperatesPartial", Model.OperationCodeResultList)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="col-xs-6">
+                        <input type="submit" name="save" id="save" class="btn btn-primary btn-block" value="保存" />
+                    </div>
+                    <div class="col-xs-6">
+                        <input type="submit" name="submit" id="submit" class="btn btn-primary btn-block" value="提交" />
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-}
 
+        </div>
+    }
+    <script type="text/javascript">
+            $(document).ready(function () {
+                AddDialogios();
+                AddOperate();
+            });
+            var dialogIndex =@Model.DiagnosisCodeResultList.Count;
+            function AddDialogios() {
+                $('#addDialogios').unbind('click');
+                $("#addDialogios").click(function () {
+                    $.ajax({
+                        url: this.href,
+                        cache: false,
+                        data:{dialogIndex:dialogIndex},
+                        success: function (html) {
+                            dialogIndex++;
+                            $("#subDiagnosis").append(html);
+                        },
+                        error: function (html) {
+                            alert(html);
+                        }
+                    });
+                    return false;
+                });
+            }
+
+            var operateIndex =@Model.OperationCodeResultList.Count;
+            function AddOperate() {
+                $('#addOperate').unbind('click');
+                $("#addOperate").click(function () {
+                    $.ajax({
+                        url: this.href,
+                        cache: false,
+                        data:{operateIndex:operateIndex},
+                        success: function (html) {
+                            operateIndex++;
+                            $("#subOperates").append(html);
+                        },
+                        error: function (html) {
+                            alert(html);
+                        }
+                    });
+                    return false;
+                });
+            }
+    </script>
+}
+else
+{
+    <div>@ViewBag.ErrorStr</div>
+}
 

@@ -30,8 +30,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="PagedList, Version=1.17.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
@@ -87,8 +87,6 @@
     <Compile Include="Model\Public\UserServiceModel.cs" />
     <Compile Include="Model\RequestModel\SyncRequestModel.cs" />
     <Compile Include="Model\SearchModel\CodeOrderSearchModel.cs" />
-    <Compile Include="Model\Code_Diagnosis.cs" />
-    <Compile Include="Model\Code_Operate.cs" />
     <Compile Include="Model\Configurations\MailConfig.cs" />
     <Compile Include="Model\Configurations\SMSConfig.cs" />
     <Compile Include="Model\CodeOrderModel.cs" />
@@ -142,6 +140,7 @@
     <Content Include="Content\PagedList.css" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

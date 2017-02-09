@@ -1,0 +1,6 @@
+﻿@using Docimax.Common
+@model System.Collections.Generic.List<Docimax.Interface_ICD.Model.OperationCodeResult>
+@foreach (var operate in Model)
+{
+    @Html.Partial("OperatePartial", operate)
+}

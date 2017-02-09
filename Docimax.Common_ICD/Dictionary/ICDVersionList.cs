@@ -87,14 +87,36 @@ namespace Docimax.Common_ICD
             return new List<ICDModel>();
         }
 
-        public static string GetCodeByName(int icdVersionID, string queryStr)
+        public static string GetCodeDispalyTextByClinicName(int icdVersionID, string clinicName)
         {
-            var resultICD = GetICDList(icdVersionID, queryStr).FirstOrDefault();
-            if (resultICD == null)
+            if (icdVersionID <= 0)
             {
                 return string.Empty;
             }
-            return resultICD.ICD_Code;
+            var icdVersionTemp = icdVersionList.FirstOrDefault(e => e.ICD_VersionID == icdVersionID);
+            if (icdVersionTemp == null)
+            {
+                IICDRepository access = new DAL_ICDRepository();
+                icdVersionTemp = access.GetICDVersionWithICD(icdVersionID);
+                if (icdVersionTemp != null)
+                {
+                    icdVersionList.Add(icdVersionTemp);
+                }
+            }
+            if (icdVersionTemp != null && icdVersionTemp.ICDList != null)
+            {
+                if (!string.IsNullOrWhiteSpace(clinicName))
+                {
+                    var queryResult = icdVersionTemp.ICDList.FirstOrDefault(e =>
+                             e.ICD_Name == clinicName);
+
+                    if (queryResult != null)
+                    {
+                        return string.Format("{0}-{1}", queryResult.ICD_Code, queryResult.ICD_Name);
+                    }
+                }
+            }
+            return string.Empty;
         }
     }
 }
