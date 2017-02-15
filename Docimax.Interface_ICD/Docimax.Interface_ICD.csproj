@@ -81,6 +81,7 @@
     <Compile Include="Model\CodeOrder\CoderModelSimple.cs" />
     <Compile Include="Model\CodeOrder\InterfaceModel.cs" />
     <Compile Include="Model\DiagnosisCodeResult.cs" />
+    <Compile Include="Model\ICDViewModel.cs" />
     <Compile Include="Model\Log\BaseLog.cs" />
     <Compile Include="Model\Log\RequestLog.cs" />
     <Compile Include="Model\OrganizationModel.cs" />

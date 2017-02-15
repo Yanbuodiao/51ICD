@@ -57,6 +57,13 @@ namespace Docimax.Web_ICD.Controllers
             return Content(itemsStr);
         }
 
+        public ActionResult ICDViewModelList(ICDPagedList<CodeSearchModel, ICDViewModel> model)
+        {
+            model.Content = initialICDViewModelList(model);
+            var itemsStr = JsonHelper.SerializeObject(model);
+            return Content(itemsStr);
+        }
+
         public PartialViewResult _Tools(ICDPagedList<CodeSearchModel, ICDModel> model)
         {
             model = initialList(model);
@@ -103,13 +110,13 @@ namespace Docimax.Web_ICD.Controllers
 
         #region 私有方法
 
-        private List<ICDModel> initialICDList(ICDPagedList<CodeSearchModel, ICDModel> model)
+        private List<ICDViewModel> initialICDViewModelList(ICDPagedList<CodeSearchModel, ICDViewModel> model)
         {
             if (model != null && model.TextFilter != null && model.TextFilter.Contains('-'))
             {
                 model.TextFilter = model.TextFilter.Split('-')[0];
             }
-            var result = ICDVersionList.GetICDList(model.SearchModel.IcdVersionID, model.TextFilter);
+            var result = ICDVersionList.GetICDViewModelList(model.TextFilter, model.SearchModel.ICDType.GetHashCode());
             model.TotalRecords = result.Count();
             result = result.Skip((model.PageIndex - 1) * model.PageSize)
                     .Take(model.PageSize).ToList();
@@ -134,8 +141,20 @@ namespace Docimax.Web_ICD.Controllers
             }
             var selectList = new SelectList(items, "Key", "Value");
             ViewData["IcdVersion"] = selectList;
-            model.Content = initialICDList(model);
+            model.Content = buildICDList(model);
             return model;
+        }
+        private List<ICDModel> buildICDList(ICDPagedList<CodeSearchModel, ICDModel> model)
+        {
+            if (model != null && model.TextFilter != null && model.TextFilter.Contains('-'))
+            {
+                model.TextFilter = model.TextFilter.Split('-')[0];
+            }
+            var result = ICDVersionList.GetICDList(model.SearchModel.IcdVersionID, model.TextFilter);
+            model.TotalRecords = result.Count();
+            result = result.Skip((model.PageIndex - 1) * model.PageSize)
+                    .Take(model.PageSize).ToList();
+            return result;
         }
 
         #endregion

@@ -264,6 +264,8 @@
     <Content Include="Img\chrome.jpg" />
     <Content Include="Img\DRGsEP.jpg" />
     <Content Include="Img\ie.jpg" />
+    <Content Include="Img\webChat_query1.png" />
+    <Content Include="Img\webChat_query2.png" />
     <Content Include="Scripts\bloodhound.js" />
     <Content Include="Scripts\bloodhound.min.js" />
     <Content Include="Scripts\bootstrap-datepicker.js" />

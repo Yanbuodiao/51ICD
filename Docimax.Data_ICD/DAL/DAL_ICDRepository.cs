@@ -92,6 +92,7 @@ namespace Docimax.Data_ICD.DAL
                 var result = new ICDVersionModel
                 {
                     ICD_VersionID = icdVersion.ICD_VersionID,
+                    ICD_Type = icdVersion.ICD_Type ?? 0,
                     ICD_VersionName = icdVersion.ICD_VersionName,
                     ICD_Description = icdVersion.ICD_Description,
                 };
@@ -211,7 +212,7 @@ namespace Docimax.Data_ICD.DAL
                 {
                     try
                     {
-                        var userVerifyResult = varifyEditUser(userID,entity);
+                        var userVerifyResult = varifyEditUser(userID, entity);
                         if (!userVerifyResult.IsSuccess)
                         {
                             return userVerifyResult;
