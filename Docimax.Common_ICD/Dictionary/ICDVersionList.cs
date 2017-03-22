@@ -46,6 +46,7 @@ namespace Docimax.Common_ICD
                         ICD_VersionID = c.ICD_VersionID,
                         ICDID = c.ICDID,
                         PinyinShort = c.PinyinShort,
+                        Property=c.Property,
                         HitCount = queryList.Count(f =>
                              c.ICD_Code.Contains(f) ||
                              c.ICD_Code.Contains(f.ToUpper()) ||
@@ -71,11 +72,12 @@ namespace Docimax.Common_ICD
                         p.FirstOrDefault().i.ICD_Code,
                         p.FirstOrDefault().i.ICD_Name,
                         p.FirstOrDefault().i.PinyinShort,
-                        p.FirstOrDefault().i.ICD_VersionID }).
+                        p.FirstOrDefault().i.ICD_VersionID,
+                        p.FirstOrDefault().i.Property}).
                         Where(e => queryList.Any(t => e.ICD_Code.Contains(t) ||
                          e.ICD_Code.Contains(t.ToUpper()) ||
                          e.ICD_Name.Contains(t) ||
-                         e.PinyinShort.Contains(t.ToUpper()))).ToList();
+                         e.PinyinShort.Contains(t.ToUpper())));
 
                 var tempICDList = queryRsult.Select(c => new ICDViewModel
                 {
@@ -84,6 +86,7 @@ namespace Docimax.Common_ICD
                     ICD_VersionID = c.ICD_VersionID,
                     ICDID = c.ICDID,
                     ICD_VersionName = c.ICD_VersionName,
+                    Property=c.Property,
                     HitCount = queryList.Count(f =>
                          c.ICD_Code.Contains(f) ||
                          c.ICD_Code.Contains(f.ToUpper()) ||

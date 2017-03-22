@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,6 +13,8 @@ namespace Docimax.Interface_ICD.Model
         public string ICD_VersionName { get; set; }
         public string ICD_Description { get; set; }
         public int ICD_Type { get; set; }
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Include)]
+        public bool IsDefault { get; set; }
 
         public List<ICDModel> ICDList { get; set; }
     }

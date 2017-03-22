@@ -36,6 +36,8 @@
             var ddlProbeUrl = '@Url.Action("DropDownParial")';
             $("input[name='SearchModel.ICDType']").click(function () {
                 var id = $(this).val();
+                console.log(id);
+                $("#ICDType").val(id);
                 $.get(ddlProbeUrl, { icdType: id, dropDownListName: "SearchModel.IcdVersionID" }, function (data) {
                     $("#SearchModel_IcdVersionID").replaceWith(data);;
                 });
@@ -54,6 +56,7 @@
                     <label style="font-size:16px;">
                         @Html.RadioButtonFor(model => model.SearchModel.ICDType, ICDTypeEnum.诊断编码, new { }) @ICDTypeEnum.诊断编码.ToString()
                     </label>
+                    <input type="hidden" id="ICDType" />
                 </div>
                 <div class="radio">
                     <label style="font-size:16px;">
@@ -100,7 +103,7 @@
                 PageSize: PageSize,
                 PageIndex: pageIndex,
                 TextFilter: $("#TextFilter").val(),
-                SearchModel: { IcdVersionID: $('#SearchModel_IcdVersionID').val(), ICDType: $("input[name='SearchModel.ICDType']").val() }
+                SearchModel: { IcdVersionID: $('#SearchModel_IcdVersionID').val(), ICDType: $("#ICDType").val() }
             },
             datatype: "text",
             type: "post",

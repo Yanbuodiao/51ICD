@@ -37,7 +37,6 @@ namespace Docimax.Data_ICD.Entity
         public virtual DbSet<BaseDic_Code_History> BaseDic_Code_History { get; set; }
         public virtual DbSet<BaseDic_ICD_Diagnosis_Log> BaseDic_ICD_Diagnosis_Log { get; set; }
         public virtual DbSet<BaseDic_ICD_Diagnosis_Remark> BaseDic_ICD_Diagnosis_Remark { get; set; }
-        public virtual DbSet<BaseDic_ICD_Diagnosis_Repository> BaseDic_ICD_Diagnosis_Repository { get; set; }
         public virtual DbSet<BaseDic_ICD_Operate_DataLink> BaseDic_ICD_Operate_DataLink { get; set; }
         public virtual DbSet<BaseDic_ICD_Operate_Log> BaseDic_ICD_Operate_Log { get; set; }
         public virtual DbSet<BaseDic_ICD_Operate_Remark> BaseDic_ICD_Operate_Remark { get; set; }
@@ -71,6 +70,9 @@ namespace Docimax.Data_ICD.Entity
         public virtual DbSet<User_Service_Attach> User_Service_Attach { get; set; }
         public virtual DbSet<User_Service_Claim> User_Service_Claim { get; set; }
         public virtual DbSet<User_Service_Provider> User_Service_Provider { get; set; }
+        public virtual DbSet<WebChat_User> WebChat_User { get; set; }
+        public virtual DbSet<WebChat_UserICDVersion> WebChat_UserICDVersion { get; set; }
         public virtual DbSet<BaseDic_ICD_Diagnosis_DataLink> BaseDic_ICD_Diagnosis_DataLink { get; set; }
+        public virtual DbSet<BaseDic_ICD_Diagnosis_Repository> BaseDic_ICD_Diagnosis_Repository { get; set; }
     }
 }

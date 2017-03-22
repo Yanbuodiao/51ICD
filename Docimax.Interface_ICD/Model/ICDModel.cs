@@ -11,6 +11,7 @@ namespace Docimax.Interface_ICD.Model
         public string ICD_Description { get; set; }
         public string PinyinShort { get; set; }
         public int ICD_VersionID { get; set; }
+        public string Property { get; set; }
 
         public string DisplayText { get { return string.Format("{0}-{1}", ICD_Code, ICD_Name); } }
 

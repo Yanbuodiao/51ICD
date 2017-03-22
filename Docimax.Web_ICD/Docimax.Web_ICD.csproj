@@ -47,6 +47,10 @@
       <HintPath>..\packages\JavaScriptEngineSwitcher.V8.2.0.0\lib\net40-client\ClearScript.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Common.Encryption, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Lib\Common.Encryption.dll</HintPath>
+    </Reference>
     <Reference Include="Docimax.Common.Encryption">
       <HintPath>..\Lib\Docimax.Common.Encryption.dll</HintPath>
     </Reference>
@@ -229,6 +233,7 @@
     <Compile Include="Controllers_Manage\MenuController.cs" />
     <Compile Include="Controller_WebChat\QAController.cs" />
     <Compile Include="Controller_WebChat\ToolController.cs" />
+    <Compile Include="Controller_WebChat\WebChatUserController.cs" />
     <Compile Include="Convert\Model2ViewModel.cs" />
     <Compile Include="Convert\ViewModel2Model.cs">
       <SubType>Code</SubType>
@@ -240,6 +245,7 @@
     <Compile Include="Models\AdminViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\WebChatModel\WebChatSession.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -498,6 +504,7 @@
     <Folder Include="src\" />
     <Folder Include="Views\QA\" />
     <Folder Include="Views\Tool\" />
+    <Folder Include="Views\WebChatUser\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

@@ -105,6 +105,7 @@ namespace Docimax.Data_ICD.DAL
                         ICD_Name = e.ICD_Name,
                         ICD_VersionID = e.ICD_VersionID ?? 0,
                         PinyinShort = e.PinyinShort,
+                        Property=e.Property,
                     }).ToList();
                 }
                 if (resultDiagnosis != null && resultDiagnosis.Count > 0)

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿using Newtonsoft.Json;
 namespace Docimax.Interface_ICD.Model
 {
     /// <summary>
@@ -19,6 +14,7 @@ namespace Docimax.Interface_ICD.Model
         /// <summary>
         /// 执行结果
         /// </summary>
+        [JsonProperty(DefaultValueHandling=DefaultValueHandling.Include)]
         public bool IsSuccess { get; set; }
         /// <summary>
         /// 出现错误时，错误提示

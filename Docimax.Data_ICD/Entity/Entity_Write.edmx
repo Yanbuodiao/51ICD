@@ -172,6 +172,8 @@
           <Property Name="DeleteFlag" Type="int" />
           <Property Name="LastModifyStamp" Type="timestamp" StoreGeneratedPattern="Computed" />
         </EntityType>
+        <!--生成过程中发现错误:
+警告 6002: 表/视图“51ICD_DB.dbo.BaseDic_ICD_Diagnosis_Repository”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
         <EntityType Name="BaseDic_ICD_Diagnosis_Repository">
           <Key>
             <PropertyRef Name="ICDID" />
@@ -744,6 +746,31 @@
           <Property Name="DeleteFlag" Type="int" />
           <Property Name="LastModifyStamp" Type="timestamp" StoreGeneratedPattern="Computed" />
         </EntityType>
+        <EntityType Name="WebChat_User">
+          <Key>
+            <PropertyRef Name="Openid" />
+          </Key>
+          <Property Name="Openid" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Unionid" Type="nvarchar" MaxLength="100" />
+          <Property Name="Appid" Type="nvarchar" MaxLength="100" />
+          <Property Name="UserID" Type="nvarchar" MaxLength="128" />
+          <Property Name="City" Type="nvarchar" MaxLength="100" />
+          <Property Name="Country" Type="nvarchar" MaxLength="100" />
+          <Property Name="Province" Type="nvarchar" MaxLength="100" />
+          <Property Name="NikceName" Type="nvarchar" MaxLength="100" />
+          <Property Name="Gender" Type="int" />
+          <Property Name="AvatarUrl" Type="nvarchar" MaxLength="300" />
+          <Property Name="LastLoginTime" Type="datetime" />
+        </EntityType>
+        <EntityType Name="WebChat_UserICDVersion">
+          <Key>
+            <PropertyRef Name="UserICDVersionID" />
+          </Key>
+          <Property Name="UserICDVersionID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Openid" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="ICD_Type" Type="int" Nullable="false" />
+          <Property Name="ICD_VersionID" Type="int" Nullable="false" />
+        </EntityType>
         <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -813,7 +840,6 @@
           <EntitySet Name="BaseDic_Code_History" EntityType="Self.BaseDic_Code_History" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BaseDic_ICD_Diagnosis_Log" EntityType="Self.BaseDic_ICD_Diagnosis_Log" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BaseDic_ICD_Diagnosis_Remark" EntityType="Self.BaseDic_ICD_Diagnosis_Remark" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="BaseDic_ICD_Diagnosis_Repository" EntityType="Self.BaseDic_ICD_Diagnosis_Repository" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BaseDic_ICD_Operate_DataLink" EntityType="Self.BaseDic_ICD_Operate_DataLink" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BaseDic_ICD_Operate_Log" EntityType="Self.BaseDic_ICD_Operate_Log" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BaseDic_ICD_Operate_Remark" EntityType="Self.BaseDic_ICD_Operate_Remark" Schema="dbo" store:Type="Tables" />
@@ -847,6 +873,8 @@
           <EntitySet Name="User_Service_Attach" EntityType="Self.User_Service_Attach" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User_Service_Claim" EntityType="Self.User_Service_Claim" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User_Service_Provider" EntityType="Self.User_Service_Provider" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WebChat_User" EntityType="Self.WebChat_User" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WebChat_UserICDVersion" EntityType="Self.WebChat_UserICDVersion" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BaseDic_ICD_Diagnosis_DataLink" EntityType="Self.BaseDic_ICD_Diagnosis_DataLink" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [BaseDic_ICD_Diagnosis_DataLink].[DiagnosisDataLinkID] AS [DiagnosisDataLinkID], 
@@ -858,6 +886,22 @@
     [BaseDic_ICD_Diagnosis_DataLink].[DeleteFlag] AS [DeleteFlag], 
     [BaseDic_ICD_Diagnosis_DataLink].[LastModifyStamp] AS [LastModifyStamp]
     FROM [dbo].[BaseDic_ICD_Diagnosis_DataLink] AS [BaseDic_ICD_Diagnosis_DataLink]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="BaseDic_ICD_Diagnosis_Repository" EntityType="Self.BaseDic_ICD_Diagnosis_Repository" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [BaseDic_ICD_Diagnosis_Repository].[ICDID] AS [ICDID], 
+    [BaseDic_ICD_Diagnosis_Repository].[ICD_Code] AS [ICD_Code], 
+    [BaseDic_ICD_Diagnosis_Repository].[ICD_Name] AS [ICD_Name], 
+    [BaseDic_ICD_Diagnosis_Repository].[ICD_VersionID] AS [ICD_VersionID], 
+    [BaseDic_ICD_Diagnosis_Repository].[ICD_Description] AS [ICD_Description], 
+    [BaseDic_ICD_Diagnosis_Repository].[PinyinShort] AS [PinyinShort], 
+    [BaseDic_ICD_Diagnosis_Repository].[CreateTime] AS [CreateTime], 
+    [BaseDic_ICD_Diagnosis_Repository].[CreateUserID] AS [CreateUserID], 
+    [BaseDic_ICD_Diagnosis_Repository].[LastModifyTime] AS [LastModifyTime], 
+    [BaseDic_ICD_Diagnosis_Repository].[LastModifyUserID] AS [LastModifyUserID], 
+    [BaseDic_ICD_Diagnosis_Repository].[DeleteFlag] AS [DeleteFlag], 
+    [BaseDic_ICD_Diagnosis_Repository].[LastModifyStamp] AS [LastModifyStamp]
+    FROM [dbo].[BaseDic_ICD_Diagnosis_Repository] AS [BaseDic_ICD_Diagnosis_Repository]</DefiningQuery>
           </EntitySet>
           <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
@@ -893,7 +937,6 @@
           <EntitySet Name="BaseDic_Code_History" EntityType="ICD_DBModel.BaseDic_Code_History" />
           <EntitySet Name="BaseDic_ICD_Diagnosis_Log" EntityType="ICD_DBModel.BaseDic_ICD_Diagnosis_Log" />
           <EntitySet Name="BaseDic_ICD_Diagnosis_Remark" EntityType="ICD_DBModel.BaseDic_ICD_Diagnosis_Remark" />
-          <EntitySet Name="BaseDic_ICD_Diagnosis_Repository" EntityType="ICD_DBModel.BaseDic_ICD_Diagnosis_Repository" />
           <EntitySet Name="BaseDic_ICD_Operate_DataLink" EntityType="ICD_DBModel.BaseDic_ICD_Operate_DataLink" />
           <EntitySet Name="BaseDic_ICD_Operate_Log" EntityType="ICD_DBModel.BaseDic_ICD_Operate_Log" />
           <EntitySet Name="BaseDic_ICD_Operate_Remark" EntityType="ICD_DBModel.BaseDic_ICD_Operate_Remark" />
@@ -927,7 +970,10 @@
           <EntitySet Name="User_Service_Attach" EntityType="ICD_DBModel.User_Service_Attach" />
           <EntitySet Name="User_Service_Claim" EntityType="ICD_DBModel.User_Service_Claim" />
           <EntitySet Name="User_Service_Provider" EntityType="ICD_DBModel.User_Service_Provider" />
+          <EntitySet Name="WebChat_User" EntityType="ICD_DBModel.WebChat_User" />
+          <EntitySet Name="WebChat_UserICDVersion" EntityType="ICD_DBModel.WebChat_UserICDVersion" />
           <EntitySet Name="BaseDic_ICD_Diagnosis_DataLink" EntityType="ICD_DBModel.BaseDic_ICD_Diagnosis_DataLink" />
+          <EntitySet Name="BaseDic_ICD_Diagnosis_Repository" EntityType="ICD_DBModel.BaseDic_ICD_Diagnosis_Repository" />
           <AssociationSet Name="FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId" Association="ICD_DBModel.FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId">
             <End Role="AspNetRoles" EntitySet="AspNetRoles" />
             <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
@@ -1097,23 +1143,6 @@
           <Property Name="ICDDiagnosisRemarkID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ICDID" Type="Int32" />
           <Property Name="RemarkPath" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="CreateTime" Type="DateTime" Precision="3" />
-          <Property Name="CreateUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="LastModifyTime" Type="DateTime" Precision="3" />
-          <Property Name="LastModifyUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="DeleteFlag" Type="Int32" />
-          <Property Name="LastModifyStamp" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
-        </EntityType>
-        <EntityType Name="BaseDic_ICD_Diagnosis_Repository">
-          <Key>
-            <PropertyRef Name="ICDID" />
-          </Key>
-          <Property Name="ICDID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ICD_Code" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
-          <Property Name="ICD_Name" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
-          <Property Name="ICD_VersionID" Type="Int32" />
-          <Property Name="ICD_Description" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="PinyinShort" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
           <Property Name="CreateTime" Type="DateTime" Precision="3" />
           <Property Name="CreateUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="LastModifyTime" Type="DateTime" Precision="3" />
@@ -1676,12 +1705,54 @@
           <Property Name="DeleteFlag" Type="Int32" />
           <Property Name="LastModifyStamp" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
         </EntityType>
+        <EntityType Name="WebChat_User">
+          <Key>
+            <PropertyRef Name="Openid" />
+          </Key>
+          <Property Name="Openid" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Unionid" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Appid" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="UserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="City" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Country" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Province" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="NikceName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Gender" Type="Int32" />
+          <Property Name="AvatarUrl" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="LastLoginTime" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="WebChat_UserICDVersion">
+          <Key>
+            <PropertyRef Name="UserICDVersionID" />
+          </Key>
+          <Property Name="UserICDVersionID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Openid" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ICD_Type" Type="Int32" Nullable="false" />
+          <Property Name="ICD_VersionID" Type="Int32" Nullable="false" />
+        </EntityType>
         <EntityType Name="BaseDic_ICD_Diagnosis_DataLink">
           <Key>
             <PropertyRef Name="DiagnosisDataLinkID" />
           </Key>
           <Property Name="DiagnosisDataLinkID" Type="Int32" Nullable="false" />
           <Property Name="ICDID" Type="Int32" />
+          <Property Name="CreateTime" Type="DateTime" Precision="3" />
+          <Property Name="CreateUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="LastModifyTime" Type="DateTime" Precision="3" />
+          <Property Name="LastModifyUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="DeleteFlag" Type="Int32" />
+          <Property Name="LastModifyStamp" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+        </EntityType>
+        <EntityType Name="BaseDic_ICD_Diagnosis_Repository">
+          <Key>
+            <PropertyRef Name="ICDID" />
+          </Key>
+          <Property Name="ICDID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ICD_Code" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="ICD_Name" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="ICD_VersionID" Type="Int32" />
+          <Property Name="ICD_Description" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="PinyinShort" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
           <Property Name="CreateTime" Type="DateTime" Precision="3" />
           <Property Name="CreateUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="LastModifyTime" Type="DateTime" Precision="3" />
@@ -1899,24 +1970,6 @@
                 <ScalarProperty Name="RemarkPath" ColumnName="RemarkPath" />
                 <ScalarProperty Name="ICDID" ColumnName="ICDID" />
                 <ScalarProperty Name="ICDDiagnosisRemarkID" ColumnName="ICDDiagnosisRemarkID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="BaseDic_ICD_Diagnosis_Repository">
-            <EntityTypeMapping TypeName="ICD_DBModel.BaseDic_ICD_Diagnosis_Repository">
-              <MappingFragment StoreEntitySet="BaseDic_ICD_Diagnosis_Repository">
-                <ScalarProperty Name="LastModifyStamp" ColumnName="LastModifyStamp" />
-                <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
-                <ScalarProperty Name="LastModifyUserID" ColumnName="LastModifyUserID" />
-                <ScalarProperty Name="LastModifyTime" ColumnName="LastModifyTime" />
-                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
-                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
-                <ScalarProperty Name="PinyinShort" ColumnName="PinyinShort" />
-                <ScalarProperty Name="ICD_Description" ColumnName="ICD_Description" />
-                <ScalarProperty Name="ICD_VersionID" ColumnName="ICD_VersionID" />
-                <ScalarProperty Name="ICD_Name" ColumnName="ICD_Name" />
-                <ScalarProperty Name="ICD_Code" ColumnName="ICD_Code" />
-                <ScalarProperty Name="ICDID" ColumnName="ICDID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -2508,6 +2561,33 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="WebChat_User">
+            <EntityTypeMapping TypeName="ICD_DBModel.WebChat_User">
+              <MappingFragment StoreEntitySet="WebChat_User">
+                <ScalarProperty Name="LastLoginTime" ColumnName="LastLoginTime" />
+                <ScalarProperty Name="AvatarUrl" ColumnName="AvatarUrl" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+                <ScalarProperty Name="NikceName" ColumnName="NikceName" />
+                <ScalarProperty Name="Province" ColumnName="Province" />
+                <ScalarProperty Name="Country" ColumnName="Country" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="Appid" ColumnName="Appid" />
+                <ScalarProperty Name="Unionid" ColumnName="Unionid" />
+                <ScalarProperty Name="Openid" ColumnName="Openid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WebChat_UserICDVersion">
+            <EntityTypeMapping TypeName="ICD_DBModel.WebChat_UserICDVersion">
+              <MappingFragment StoreEntitySet="WebChat_UserICDVersion">
+                <ScalarProperty Name="ICD_VersionID" ColumnName="ICD_VersionID" />
+                <ScalarProperty Name="ICD_Type" ColumnName="ICD_Type" />
+                <ScalarProperty Name="Openid" ColumnName="Openid" />
+                <ScalarProperty Name="UserICDVersionID" ColumnName="UserICDVersionID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="BaseDic_ICD_Diagnosis_DataLink">
             <EntityTypeMapping TypeName="ICD_DBModel.BaseDic_ICD_Diagnosis_DataLink">
               <MappingFragment StoreEntitySet="BaseDic_ICD_Diagnosis_DataLink">
@@ -2519,6 +2599,24 @@
                 <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
                 <ScalarProperty Name="ICDID" ColumnName="ICDID" />
                 <ScalarProperty Name="DiagnosisDataLinkID" ColumnName="DiagnosisDataLinkID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BaseDic_ICD_Diagnosis_Repository">
+            <EntityTypeMapping TypeName="ICD_DBModel.BaseDic_ICD_Diagnosis_Repository">
+              <MappingFragment StoreEntitySet="BaseDic_ICD_Diagnosis_Repository">
+                <ScalarProperty Name="LastModifyStamp" ColumnName="LastModifyStamp" />
+                <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
+                <ScalarProperty Name="LastModifyUserID" ColumnName="LastModifyUserID" />
+                <ScalarProperty Name="LastModifyTime" ColumnName="LastModifyTime" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="PinyinShort" ColumnName="PinyinShort" />
+                <ScalarProperty Name="ICD_Description" ColumnName="ICD_Description" />
+                <ScalarProperty Name="ICD_VersionID" ColumnName="ICD_VersionID" />
+                <ScalarProperty Name="ICD_Name" ColumnName="ICD_Name" />
+                <ScalarProperty Name="ICD_Code" ColumnName="ICD_Code" />
+                <ScalarProperty Name="ICDID" ColumnName="ICDID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
