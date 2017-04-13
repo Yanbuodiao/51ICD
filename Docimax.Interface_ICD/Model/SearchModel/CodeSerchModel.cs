@@ -6,5 +6,7 @@ namespace Docimax.Interface_ICD.Model
     {
         public int IcdVersionID { get; set; }
         public ICDTypeEnum ICDType { get; set; }
+
+        public string ICDSessionKey { get; set; }
     }
 }

@@ -72,6 +72,7 @@ namespace Docimax.Data_ICD.Entity
         public virtual DbSet<User_Service_Provider> User_Service_Provider { get; set; }
         public virtual DbSet<WebChat_User> WebChat_User { get; set; }
         public virtual DbSet<WebChat_UserICDVersion> WebChat_UserICDVersion { get; set; }
+        public virtual DbSet<WebChat_UserSearchLog> WebChat_UserSearchLog { get; set; }
         public virtual DbSet<BaseDic_ICD_Diagnosis_DataLink> BaseDic_ICD_Diagnosis_DataLink { get; set; }
         public virtual DbSet<BaseDic_ICD_Diagnosis_Repository> BaseDic_ICD_Diagnosis_Repository { get; set; }
     }

@@ -771,6 +771,18 @@
           <Property Name="ICD_Type" Type="int" Nullable="false" />
           <Property Name="ICD_VersionID" Type="int" Nullable="false" />
         </EntityType>
+        <EntityType Name="WebChat_UserSearchLog">
+          <Key>
+            <PropertyRef Name="LogID" />
+          </Key>
+          <Property Name="LogID" Type="varchar" MaxLength="32" Nullable="false" />
+          <Property Name="Openid" Type="varchar" MaxLength="50" />
+          <Property Name="SearchFilter" Type="nvarchar" MaxLength="100" />
+          <Property Name="SearchTime" Type="datetime" />
+          <Property Name="ICDVersionID" Type="int" />
+          <Property Name="ICDVersionType" Type="int" />
+          <Property Name="SegmentResult" Type="nvarchar" MaxLength="200" />
+        </EntityType>
         <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -875,6 +887,7 @@
           <EntitySet Name="User_Service_Provider" EntityType="Self.User_Service_Provider" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="WebChat_User" EntityType="Self.WebChat_User" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="WebChat_UserICDVersion" EntityType="Self.WebChat_UserICDVersion" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WebChat_UserSearchLog" EntityType="Self.WebChat_UserSearchLog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BaseDic_ICD_Diagnosis_DataLink" EntityType="Self.BaseDic_ICD_Diagnosis_DataLink" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [BaseDic_ICD_Diagnosis_DataLink].[DiagnosisDataLinkID] AS [DiagnosisDataLinkID], 
@@ -972,6 +985,7 @@
           <EntitySet Name="User_Service_Provider" EntityType="ICD_DBModel.User_Service_Provider" />
           <EntitySet Name="WebChat_User" EntityType="ICD_DBModel.WebChat_User" />
           <EntitySet Name="WebChat_UserICDVersion" EntityType="ICD_DBModel.WebChat_UserICDVersion" />
+          <EntitySet Name="WebChat_UserSearchLog" EntityType="ICD_DBModel.WebChat_UserSearchLog" />
           <EntitySet Name="BaseDic_ICD_Diagnosis_DataLink" EntityType="ICD_DBModel.BaseDic_ICD_Diagnosis_DataLink" />
           <EntitySet Name="BaseDic_ICD_Diagnosis_Repository" EntityType="ICD_DBModel.BaseDic_ICD_Diagnosis_Repository" />
           <AssociationSet Name="FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId" Association="ICD_DBModel.FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId">
@@ -1729,6 +1743,18 @@
           <Property Name="Openid" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="ICD_Type" Type="Int32" Nullable="false" />
           <Property Name="ICD_VersionID" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="WebChat_UserSearchLog">
+          <Key>
+            <PropertyRef Name="LogID" />
+          </Key>
+          <Property Name="LogID" Type="String" Nullable="false" MaxLength="32" FixedLength="false" Unicode="false" />
+          <Property Name="Openid" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="SearchFilter" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="SearchTime" Type="DateTime" Precision="3" />
+          <Property Name="ICDVersionID" Type="Int32" />
+          <Property Name="ICDVersionType" Type="Int32" />
+          <Property Name="SegmentResult" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="BaseDic_ICD_Diagnosis_DataLink">
           <Key>
@@ -2585,6 +2611,19 @@
                 <ScalarProperty Name="ICD_Type" ColumnName="ICD_Type" />
                 <ScalarProperty Name="Openid" ColumnName="Openid" />
                 <ScalarProperty Name="UserICDVersionID" ColumnName="UserICDVersionID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WebChat_UserSearchLog">
+            <EntityTypeMapping TypeName="ICD_DBModel.WebChat_UserSearchLog">
+              <MappingFragment StoreEntitySet="WebChat_UserSearchLog">
+                <ScalarProperty Name="SegmentResult" ColumnName="SegmentResult" />
+                <ScalarProperty Name="ICDVersionType" ColumnName="ICDVersionType" />
+                <ScalarProperty Name="ICDVersionID" ColumnName="ICDVersionID" />
+                <ScalarProperty Name="SearchTime" ColumnName="SearchTime" />
+                <ScalarProperty Name="SearchFilter" ColumnName="SearchFilter" />
+                <ScalarProperty Name="Openid" ColumnName="Openid" />
+                <ScalarProperty Name="LogID" ColumnName="LogID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

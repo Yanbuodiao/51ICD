@@ -7,8 +7,8 @@
       <Diagram DiagramId="88e18319ada7490297b9f77549725482" Name="Diagram1" ZoomLevel="76">
         <EntityTypeShape EntityType="ICD_DBModel.C__MigrationHistory" Width="1.5" PointX="5.75" PointY="0.75" />
         <EntityTypeShape EntityType="ICD_DBModel.AspNetRoles" Width="1.5" PointX="0.75" PointY="9.375" />
-        <EntityTypeShape EntityType="ICD_DBModel.AspNetUserClaims" Width="1.5" PointX="3" PointY="7.75" />
-        <EntityTypeShape EntityType="ICD_DBModel.AspNetUserLogins" Width="1.5" PointX="3" PointY="5.25" />
+        <EntityTypeShape EntityType="ICD_DBModel.AspNetUserClaims" Width="1.5" PointX="3" PointY="5.25" />
+        <EntityTypeShape EntityType="ICD_DBModel.AspNetUserLogins" Width="1.5" PointX="3" PointY="7.75" />
         <EntityTypeShape EntityType="ICD_DBModel.AspNetUserRoles" Width="1.5" PointX="3" PointY="1.75" />
         <EntityTypeShape EntityType="ICD_DBModel.AspNetUsers" Width="1.5" PointX="0.75" PointY="1.25" />
         <EntityTypeShape EntityType="ICD_DBModel.BaseDic_Area" Width="1.5" PointX="5.75" PointY="3.75" />
@@ -52,8 +52,9 @@
         <EntityTypeShape EntityType="ICD_DBModel.User_Service_Provider" Width="1.5" PointX="19.75" PointY="5.75" />
         <EntityTypeShape EntityType="ICD_DBModel.WebChat_User" Width="1.5" PointX="19.75" PointY="10.75" />
         <EntityTypeShape EntityType="ICD_DBModel.WebChat_UserICDVersion" Width="1.5" PointX="10.75" PointY="19.75" />
-        <EntityTypeShape EntityType="ICD_DBModel.BaseDic_ICD_Diagnosis_DataLink" Width="1.5" PointX="12.75" PointY="20.75" />
-        <EntityTypeShape EntityType="ICD_DBModel.BaseDic_ICD_Diagnosis_Repository" Width="1.5" PointX="20.75" PointY="14.75" />
+        <EntityTypeShape EntityType="ICD_DBModel.WebChat_UserSearchLog" Width="1.5" PointX="12.75" PointY="20.75" />
+        <EntityTypeShape EntityType="ICD_DBModel.BaseDic_ICD_Diagnosis_DataLink" Width="1.5" PointX="20.75" PointY="14.75" />
+        <EntityTypeShape EntityType="ICD_DBModel.BaseDic_ICD_Diagnosis_Repository" Width="1.5" PointX="14.75" PointY="20.75" />
         <AssociationConnector Association="ICD_DBModel.FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId" />
         <AssociationConnector Association="ICD_DBModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" />
         <AssociationConnector Association="ICD_DBModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" />

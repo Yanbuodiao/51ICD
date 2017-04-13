@@ -63,107 +63,108 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DAL\WebChat\DAL_WebChatUser.cs" />
+    <Compile Include="DAL\WebChat\DAL_WebChatUserSearchLog.cs" />
     <Compile Include="Entity\AspNetRoles.cs">
-      <DependentUpon>Entity_Write.tt</DependentUpon>
+      <DependentUpon>Entity_Read.tt</DependentUpon>
     </Compile>
     <Compile Include="Entity\AspNetUserClaims.cs">
-      <DependentUpon>Entity_Write.tt</DependentUpon>
+      <DependentUpon>Entity_Read.tt</DependentUpon>
     </Compile>
     <Compile Include="Entity\AspNetUserLogins.cs">
-      <DependentUpon>Entity_Write.tt</DependentUpon>
+      <DependentUpon>Entity_Read.tt</DependentUpon>
     </Compile>
     <Compile Include="Entity\AspNetUserRoles.cs">
-      <DependentUpon>Entity_Write.tt</DependentUpon>
+      <DependentUpon>Entity_Read.tt</DependentUpon>
     </Compile>
     <Compile Include="Entity\AspNetUsers.cs">
-      <DependentUpon>Entity_Write.tt</DependentUpon>
+      <DependentUpon>Entity_Read.tt</DependentUpon>
     </Compile>
     <Compile Include="Entity\BaseDic_Area.cs">
-      <DependentUpon>Entity_Write.tt</DependentUpon>
+      <DependentUpon>Entity_Read.tt</DependentUpon>
     </Compile>
     <Compile Include="Entity\BaseDic_City.cs">
-      <DependentUpon>Entity_Write.tt</DependentUpon>
+      <DependentUpon>Entity_Read.tt</DependentUpon>
     </Compile>
     <Compile Include="Entity\BaseDic_Code.cs">
-      <DependentUpon>Entity_Write.tt</DependentUpon>
+      <DependentUpon>Entity_Read.tt</DependentUpon>
     </Compile>
     <Compile Include="Entity\BaseDic_Code_History.cs">
-      <DependentUpon>Entity_Write.tt</DependentUpon>
+      <DependentUpon>Entity_Read.tt</DependentUpon>
     </Compile>
     <Compile Include="Entity\BaseDic_ICD_Diagnosis_DataLink.cs">
-      <DependentUpon>Entity_Write.tt</DependentUpon>
+      <DependentUpon>Entity_Read.tt</DependentUpon>
     </Compile>
     <Compile Include="Entity\BaseDic_ICD_Diagnosis_Log.cs">
-      <DependentUpon>Entity_Write.tt</DependentUpon>
+      <DependentUpon>Entity_Read.tt</DependentUpon>
     </Compile>
     <Compile Include="Entity\BaseDic_ICD_Diagnosis_Remark.cs">
-      <DependentUpon>Entity_Write.tt</DependentUpon>
+      <DependentUpon>Entity_Read.tt</DependentUpon>
     </Compile>
     <Compile Include="Entity\BaseDic_ICD_Diagnosis_Repository.cs">
-      <DependentUpon>Entity_Write.tt</DependentUpon>
+      <DependentUpon>Entity_Read.tt</DependentUpon>
     </Compile>
     <Compile Include="Entity\BaseDic_ICD_Operate_DataLink.cs">
-      <DependentUpon>Entity_Write.tt</DependentUpon>
+      <DependentUpon>Entity_Read.tt</DependentUpon>
     </Compile>
     <Compile Include="Entity\BaseDic_ICD_Operate_Log.cs">
-      <DependentUpon>Entity_Write.tt</DependentUpon>
+      <DependentUpon>Entity_Read.tt</DependentUpon>
     </Compile>
     <Compile Include="Entity\BaseDic_ICD_Operate_Remark.cs">
-      <DependentUpon>Entity_Write.tt</DependentUpon>
+      <DependentUpon>Entity_Read.tt</DependentUpon>
     </Compile>
     <Compile Include="Entity\BaseDic_ICD_Operate_Repository.cs">
-      <DependentUpon>Entity_Write.tt</DependentUpon>
+      <DependentUpon>Entity_Read.tt</DependentUpon>
     </Compile>
     <Compile Include="Entity\BaseDic_ICD_Version.cs">
-      <DependentUpon>Entity_Write.tt</DependentUpon>
+      <DependentUpon>Entity_Read.tt</DependentUpon>
     </Compile>
     <Compile Include="Entity\BaseDic_Province.cs">
-      <DependentUpon>Entity_Write.tt</DependentUpon>
+      <DependentUpon>Entity_Read.tt</DependentUpon>
     </Compile>
     <Compile Include="Entity\BaseLink_ICD_Diagnosis_DataLink.cs">
-      <DependentUpon>Entity_Write.tt</DependentUpon>
+      <DependentUpon>Entity_Read.tt</DependentUpon>
     </Compile>
     <Compile Include="Entity\Code_Order.cs">
-      <DependentUpon>Entity_Write.tt</DependentUpon>
+      <DependentUpon>Entity_Read.tt</DependentUpon>
     </Compile>
     <Compile Include="Entity\Code_Order_Audit.cs">
-      <DependentUpon>Entity_Write.tt</DependentUpon>
+      <DependentUpon>Entity_Read.tt</DependentUpon>
     </Compile>
     <Compile Include="Entity\Code_Order_Diagnosis.cs">
-      <DependentUpon>Entity_Write.tt</DependentUpon>
+      <DependentUpon>Entity_Read.tt</DependentUpon>
     </Compile>
     <Compile Include="Entity\Code_Order_Operate.cs">
-      <DependentUpon>Entity_Write.tt</DependentUpon>
+      <DependentUpon>Entity_Read.tt</DependentUpon>
     </Compile>
     <Compile Include="Entity\Code_Order_UploadedItem.cs">
-      <DependentUpon>Entity_Write.tt</DependentUpon>
+      <DependentUpon>Entity_Read.tt</DependentUpon>
     </Compile>
     <Compile Include="Entity\C__MigrationHistory.cs">
-      <DependentUpon>Entity_Write.tt</DependentUpon>
+      <DependentUpon>Entity_Read.tt</DependentUpon>
     </Compile>
     <Compile Include="Entity\Dic_Item.cs">
-      <DependentUpon>Entity_Write.tt</DependentUpon>
+      <DependentUpon>Entity_Read.tt</DependentUpon>
     </Compile>
     <Compile Include="Entity\Dic_Menu.cs">
-      <DependentUpon>Entity_Write.tt</DependentUpon>
+      <DependentUpon>Entity_Read.tt</DependentUpon>
     </Compile>
     <Compile Include="Entity\Dic_Organization.cs">
-      <DependentUpon>Entity_Write.tt</DependentUpon>
+      <DependentUpon>Entity_Read.tt</DependentUpon>
     </Compile>
     <Compile Include="Entity\Dic_Service.cs">
-      <DependentUpon>Entity_Write.tt</DependentUpon>
+      <DependentUpon>Entity_Read.tt</DependentUpon>
     </Compile>
     <Compile Include="Entity\Dic_Service_Attach.cs">
-      <DependentUpon>Entity_Write.tt</DependentUpon>
+      <DependentUpon>Entity_Read.tt</DependentUpon>
     </Compile>
     <Compile Include="Entity\Dic_Service_Claim.cs">
-      <DependentUpon>Entity_Write.tt</DependentUpon>
+      <DependentUpon>Entity_Read.tt</DependentUpon>
     </Compile>
     <Compile Include="Entity\Dic_Service_Item.cs">
-      <DependentUpon>Entity_Write.tt</DependentUpon>
+      <DependentUpon>Entity_Read.tt</DependentUpon>
     </Compile>
     <Compile Include="Entity\Dic_Service_Menu.cs">
-      <DependentUpon>Entity_Write.tt</DependentUpon>
+      <DependentUpon>Entity_Read.tt</DependentUpon>
     </Compile>
     <Compile Include="Entity\Entity_Read.Context.cs">
       <AutoGen>True</AutoGen>
@@ -196,49 +197,52 @@
       <DependentUpon>Entity_Write.edmx</DependentUpon>
     </Compile>
     <Compile Include="Entity\Order_Interface.cs">
-      <DependentUpon>Entity_Write.tt</DependentUpon>
+      <DependentUpon>Entity_Read.tt</DependentUpon>
     </Compile>
     <Compile Include="Entity\ORG_Attach.cs">
-      <DependentUpon>Entity_Write.tt</DependentUpon>
+      <DependentUpon>Entity_Read.tt</DependentUpon>
     </Compile>
     <Compile Include="Entity\ORG_Service_Config.cs">
-      <DependentUpon>Entity_Write.tt</DependentUpon>
+      <DependentUpon>Entity_Read.tt</DependentUpon>
     </Compile>
     <Compile Include="Entity\ORG_Service_Item.cs">
-      <DependentUpon>Entity_Write.tt</DependentUpon>
+      <DependentUpon>Entity_Read.tt</DependentUpon>
     </Compile>
     <Compile Include="Entity\ORG_Service_Provider.cs">
-      <DependentUpon>Entity_Write.tt</DependentUpon>
+      <DependentUpon>Entity_Read.tt</DependentUpon>
     </Compile>
     <Compile Include="Entity\ORG_SubOrganization.cs">
-      <DependentUpon>Entity_Write.tt</DependentUpon>
+      <DependentUpon>Entity_Read.tt</DependentUpon>
     </Compile>
     <Compile Include="Entity\Sec_IP.cs">
-      <DependentUpon>Entity_Write.tt</DependentUpon>
+      <DependentUpon>Entity_Read.tt</DependentUpon>
     </Compile>
     <Compile Include="Entity\Sec_Message.cs">
-      <DependentUpon>Entity_Write.tt</DependentUpon>
+      <DependentUpon>Entity_Read.tt</DependentUpon>
     </Compile>
     <Compile Include="Entity\User_Attach.cs">
-      <DependentUpon>Entity_Write.tt</DependentUpon>
+      <DependentUpon>Entity_Read.tt</DependentUpon>
     </Compile>
     <Compile Include="Entity\User_ChangeAuditLog.cs">
-      <DependentUpon>Entity_Write.tt</DependentUpon>
+      <DependentUpon>Entity_Read.tt</DependentUpon>
     </Compile>
     <Compile Include="Entity\User_Service_Attach.cs">
-      <DependentUpon>Entity_Write.tt</DependentUpon>
+      <DependentUpon>Entity_Read.tt</DependentUpon>
     </Compile>
     <Compile Include="Entity\User_Service_Claim.cs">
-      <DependentUpon>Entity_Write.tt</DependentUpon>
+      <DependentUpon>Entity_Read.tt</DependentUpon>
     </Compile>
     <Compile Include="Entity\User_Service_Provider.cs">
-      <DependentUpon>Entity_Write.tt</DependentUpon>
+      <DependentUpon>Entity_Read.tt</DependentUpon>
     </Compile>
     <Compile Include="Entity\WebChat_User.cs">
-      <DependentUpon>Entity_Write.tt</DependentUpon>
+      <DependentUpon>Entity_Read.tt</DependentUpon>
     </Compile>
     <Compile Include="Entity\WebChat_UserICDVersion.cs">
-      <DependentUpon>Entity_Write.tt</DependentUpon>
+      <DependentUpon>Entity_Read.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\WebChat_UserSearchLog.cs">
+      <DependentUpon>Entity_Read.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
