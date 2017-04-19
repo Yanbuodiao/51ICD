@@ -20,7 +20,7 @@ namespace Docimax.Data_ICD.DAL.WebChat
                     LogID = Guid.NewGuid().ToString("N"),
                     Openid = logModel.OpentId,
                     SearchFilter = logModel.SearchFilter,
-                    SearchTime = DateTime.Now,
+                    SearchTime = DateTime.UtcNow,
                     ICDVersionID = logModel.ICDVersionID,
                     ICDVersionType = logModel.ICDVersionType,
                     SegmentResult = logModel.SegmentResult,
