@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace Docimax.Interface_ICD.Model
 {
     public class DiagnosisCodeResult : BaseModel
@@ -34,7 +28,7 @@ namespace Docimax.Interface_ICD.Model
         /// </summary>
         public string ICDName { get; set; }
         /// <summary>
-        /// 页面显示ICDCode
+        /// 页面带回的编码和编码对应的名称
         /// </summary>
         public string DisplayText { get; set; }
         public string Description { get; set; }
@@ -67,7 +61,7 @@ namespace Docimax.Interface_ICD.Model
         /// </summary>
         public string ICDName { get; set; }
         /// <summary>
-        /// 页面显示ICDCode
+        /// 页面带回的编码和编码对应的名称
         /// </summary>
         public string DisplayText { get; set; }
         public string Description { get; set; }

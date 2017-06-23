@@ -123,6 +123,20 @@ namespace Docimax.Web_ICD.Controllers
             if (!string.IsNullOrWhiteSpace(validateResult))
             {
                 ModelState.AddModelError("", validateResult);
+                ICode_Order dAccess = new DAL_Code_Order();
+                var inModel = access.GetCodeOrder(model.CodeOrderID);
+                if (inModel != null)
+                {
+                    var bytes = FileHelper.GetFile(inModel.MedicalRecordPath);
+                    var str = System.Text.Encoding.UTF8.GetString(bytes);
+                    var mr = JsonHelper.DeserializeObject<MedicalRecordCoding>(str);
+                    if (mr!=null)
+                    {
+                        mr.OperationCodeResultList = model.OperationCodeResultList;
+                        mr.DiagnosisCodeResultList = model.DiagnosisCodeResultList;
+                    }
+                    return View(mr);
+                }
             }
 
             model.LastModifyUserID = userID;
@@ -254,7 +268,7 @@ namespace Docimax.Web_ICD.Controllers
             }
             if (opetateList.All(e => string.IsNullOrWhiteSpace(e.DisplayText)))
             {
-                return "请输入至少一个操作";
+                return "请输入至少一个手术或操作";
             }
             for (int i = 0; i < diagnosisList.Count; i++)
             {
@@ -295,12 +309,14 @@ namespace Docimax.Web_ICD.Controllers
                     }
                     else
                     {
-                        return "请输入合法的操作";
+                        return "请输入合法的手术或操作";
                     }
                 }
             }
             return string.Empty;
         }
+
+     
 
 
         #endregion

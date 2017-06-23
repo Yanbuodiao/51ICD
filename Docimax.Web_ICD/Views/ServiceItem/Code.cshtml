@@ -1,9 +1,11 @@
 ﻿@model Docimax.Interface_ICD.Model.CodeOrderModel
 <script type="text/javascript" src="~/Scripts/typeahead.bundle.js"></script>
 <script type="text/javascript" src="~/Scripts/handlebars.js"></script>
+<script type="text/javascript" src="~/Scripts/bootstrap.min.js"></script>
 <h2>@ViewBag.Title</h2>
 <p class="text-success">@ViewBag.StatusMessage</p>
 <script>
+
     $(document).ready(function () {
         $('.tree-toggle').click(function () {
             $(this).parent().children('ul.tree').toggle(200);
@@ -47,7 +49,7 @@
             }
         });
     });
-
+   
     function showPic(el) {
         var picURL = $(el).attr("data-url");
         var contentType = $(el).attr("data-contenttype");
@@ -114,7 +116,7 @@
             </div>
         </div>
         <div style="padding-left:3px;padding-right:3px;display:inline">
-            <img id="pic" src="" width="600" height="800" style="border:1px;" />
+            <a href="#" class="bind_hover_card" data-toggle="popover" data-placement="bottom" data-trigger="hover"><img id="pic" src="" width="600" height="800" style="border:1px;" /></a>
         </div>
         <div class="col-md-5" style="display:inline-block; position: fixed;">
             @Html.ValidationSummary("", new { @class = "text-danger" })

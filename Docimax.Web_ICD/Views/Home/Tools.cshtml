@@ -39,7 +39,7 @@
                 console.log(id);
                 $("#ICDType").val(id);
                 $.get(ddlProbeUrl, { icdType: id, dropDownListName: "SearchModel.IcdVersionID" }, function (data) {
-                    $("#SearchModel_IcdVersionID").replaceWith(data);;
+                    $("#SearchModel_IcdVersionID").replaceWith(data);
                 });
             });
         }
@@ -56,7 +56,7 @@
                     <label style="font-size:16px;">
                         @Html.RadioButtonFor(model => model.SearchModel.ICDType, ICDTypeEnum.诊断编码, new { }) @ICDTypeEnum.诊断编码.ToString()
                     </label>
-                    <input type="hidden" id="ICDType" />
+                    <input type="hidden" id="ICDType" value="诊断编码" />
                 </div>
                 <div class="radio">
                     <label style="font-size:16px;">

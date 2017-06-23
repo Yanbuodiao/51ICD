@@ -335,6 +335,7 @@
             @Html.HiddenFor(model => model.CodeOrderID)
             @Html.HiddenFor(model => model.LastModifyStamp, new { @Cache = false })
             <div class="col-md-5" ng-controller="icdCodeCtrl">
+                @Html.ValidationSummary("", new { @class = "text-danger" })
                 <div class="panel panel-default">
                     <div class="panel-heading" role="tab" id="MRSummery">
                         <h4 class="panel-title">

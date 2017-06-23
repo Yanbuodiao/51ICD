@@ -26,32 +26,32 @@
                 {
                     if (item.ChildrenList != null && item.ChildrenList.Count > 0)
                     {
-            <div class="form-group">
-                @Html.Label(item.ItemName, htmlAttributes: new { @class = "control-label col-md-4" })
-            </div>
+                        <div class="form-group">
+                            @Html.Label(item.ItemName, htmlAttributes: new { @class = "control-label col-md-4" })
+                        </div>
                         foreach (var uploaditem in item.ChildrenList)
                         {
-            <div class="form-group">
-                @Html.Label(uploaditem.ItemName, htmlAttributes: new { @class = "control-label col-md-5" })
-            </div>
+                            <div class="form-group">
+                                @Html.Label(uploaditem.ItemName, htmlAttributes: new { @class = "control-label col-md-5" })
+                            </div>
                             foreach (var file in uploaditem.UploadedItemList)
                             {
-            <div class="col-md-offset-5">
-                <a style="cursor: pointer;" data-url="@file.AttachURL" data-contenttype="@file.ContentType" onclick="showPic(this)">@file.AttachFileName</a>
-            </div>
+                                <div class="col-md-offset-5">
+                                    <a style="cursor: pointer;" data-url="@file.AttachURL" data-contenttype="@file.ContentType" onclick="showPic(this)">@file.AttachFileName</a>
+                                </div>
                             }
                         }
                     }
                     else
                     {
-            <div class="form-group">
-                @Html.Label(item.ItemName, htmlAttributes: new { @class = "control-label col-md-4" })
-            </div>
+                        <div class="form-group">
+                            @Html.Label(item.ItemName, htmlAttributes: new { @class = "control-label col-md-4" })
+                        </div>
                         foreach (var file in item.UploadedItemList)
                         {
-            <div class="col-md-offset-3">
-                <a style="cursor: pointer;" data-url="@file.AttachURL" data-contenttype="@file.ContentType" onclick="showPic(this)">@file.AttachFileName</a>
-            </div>
+                            <div class="col-md-offset-3">
+                                <a style="cursor: pointer;" data-url="@file.AttachURL" data-contenttype="@file.ContentType" onclick="showPic(this)">@file.AttachFileName</a>
+                            </div>
                         }
                     }
                 }
@@ -66,13 +66,13 @@
                     {
                         if (index == 0)
                         {
-                @Html.Label("主要诊断：")
+                            @Html.Label("主要诊断：")
                         }
                         if (index == 1)
                         {
-                @Html.Label("其他诊断：")
+                            @Html.Label("其他诊断：")
                         }
-                @Html.TextBoxFor(model => model.DiagnosisList[index].DisplayText, new
+                        @Html.TextBoxFor(model => model.DiagnosisList[index].DisplayText, new
                {
                    @class = "form-control",
                    @style = "max-width: 480px;",
@@ -87,7 +87,7 @@
                 {
                     for (var index = 0; index < Model.OperateList.Count(); index++)
                     {
-                @Html.TextBoxFor(model => model.OperateList[index].DisplayText, new
+                        @Html.TextBoxFor(model => model.OperateList[index].DisplayText, new
                {
                    @class = "form-control",
                    @style = "max-width: 480px;",
@@ -100,7 +100,7 @@
         </div>
     </div>
     <div class="modal  fade" id="showPixModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog" id="modal-dialog">
+        <div class="modal-dialog" id="modal-dialog" style="width:auto;">
             <img id="pic" class="img-thumbnail" onclick="hidePix()" />
         </div>
     </div>
@@ -109,8 +109,12 @@
             var picURL = $(el).attr("data-url");
             var contentType = $(el).attr("data-contenttype");
             var newSrc = "@Url.Action("ShowPic", "UploadItem")?picURL=" + picURL + "&contentType=" + contentType;
-            $("#showPixModal").modal('show');
             $("#pic").attr("src", newSrc);
+            var modalWidth = $("#pic").width();
+
+            //计算偏移量  
+            var left = (screen.width + modalWidth) / 2 + "px";
+            $("#showPixModal").modal('show').css({ "margin-left": left });
         };
 
         function hidePix() {
@@ -119,6 +123,6 @@
     </script>
 }
 else
-{ 
+{
     <div>未找到该订单或您无权限查看此订单</div>
 }
