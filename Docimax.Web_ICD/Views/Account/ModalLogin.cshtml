@@ -3,24 +3,19 @@
 {
     @Html.HiddenFor(model => model.LoginType)
     @Html.AntiForgeryToken()
-    if (@Model != null && @Model.LoginSuccess)
-    {
-        <script type="text/javascript">
-            location.href = '@ViewBag.ReturnUrl';
-        </script>
-    }
+   
     <div class="modal-header">
         <h4 class="modal-title" id="myModalLabel">登录51ICD</h4>
     </div>
     <div class="modal-body">
-        <div class="row has-error" id="div_loginError">
+        <div class="row has-error" id="div_loginError" hidden="hidden">
             <div class="input-group col-xs-offset-1  col-xs-8">
                 <label class="control-label" id="error_Login_Error"></label>
             </div>
         </div>
         <div id="div_UserNameLogin">
             <div class="form-group">
-                <div class="input-group input-group-sm col-xs-offset-9 col-xs-3">
+                <div class="input-group input-group-sm col-xs-offset-9 col-xs-3" >
                     <span class="glyphicon glyphicon-phone"></span><a style="cursor:pointer" onclick="switchPhone()">短信快捷登录</a>
                 </div>
             </div>
@@ -96,6 +91,13 @@
     var loginTimer = null;
     $("#LoginType").val(0);
 
+    function GetUrlRelativePath() {
+        var url = document.location.toString();
+        var arrUrl = url.split("//");
+        var start = arrUrl[1].indexOf("/");
+        var relUrl = arrUrl[1].substring(start);
+        return relUrl;
+    }
 
     function validatePhone() {
         var phoneNum = $("#LoginPhoneNum").val()
@@ -248,6 +250,7 @@
         $.ajax({
             url: "@Url.Action("ModalLogin", "Account")",// 跳转到 action
             data: {
+                returnUrl:GetUrlRelativePath(),
                 __RequestVerificationToken: token,
                 model: {
                     LoginUserName: $("#LoginUserName").val(),

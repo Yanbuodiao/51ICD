@@ -457,7 +457,6 @@ namespace Docimax.Web_ICD.Controllers
         [AllowAnonymous]
         public PartialViewResult ModalLogin(string returnUrl)
         {
-            ViewBag.ReturnUrl = returnUrl;
             return PartialView();
         }
 
@@ -466,6 +465,8 @@ namespace Docimax.Web_ICD.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> ModalLogin(LoginViewModel model, string returnUrl)
         {
+            returnUrl = HttpUtility.UrlDecode(returnUrl);
+
             if (model == null)
             {
                 return Json(new ICDExcuteResult<string> { IsSuccess = false, ErrorStr = "数据丢失，请稍后再试" });

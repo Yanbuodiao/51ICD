@@ -118,13 +118,6 @@ else
 {
     <h2>未找到相关记录</h2>
 }
-<div class="modal fade" id="LoginModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div id="LoginModalView" class="modal-content">
-
-        </div>
-    </div>
-</div>
 <script type="text/javascript">
     var isSummaryEdite = false;
     var summaryText= '@Html.TextBoxFor(e => e.ICD_Description,
@@ -142,19 +135,7 @@ else
                 type: "post",
                 success: function (data) {
                     if ('true' != data) {
-                        $.ajax({
-                            url: '@Url.Action("ModalRegister", "Account")',
-                            datatype: "text",
-                            type: "get",
-                            async: true,
-                            data: {
-                                returnUrl: GetUrlRelativePath()
-                            },
-                            success: function (loginView) {
-                                $('#LoginModalView').html(loginView);
-                                $("#LoginModal").modal('show');
-                            }
-                        });
+                        $('#loginLink').click();
                     }
                     else {
                         $('#summaryDiv').html(summaryText);
@@ -190,14 +171,7 @@ else
                 }
             });
         }
-    });
-    function GetUrlRelativePath() {
-        var url = document.location.toString();
-        var arrUrl = url.split("//");
-        var start = arrUrl[1].indexOf("/");
-        var relUrl = arrUrl[1].substring(start);
-        return relUrl;
-    }
+    });   
 
     function reposition() {
         var modal = $(this),
