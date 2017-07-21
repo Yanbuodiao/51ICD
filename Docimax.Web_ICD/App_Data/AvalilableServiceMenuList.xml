@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfServiceMenuModel>
+    <ServiceMenuModel>
+        <ServiceID>1</ServiceID>
+        <ServiceType>Request</ServiceType>
+        <MenuList>
+            <ICDMenu>
+                <MenuID>3</MenuID>
+                <DisplayName>编码订单</DisplayName>
+                <ParentID>0</ParentID>
+                <Index>100</Index>
+                <AreaName>null</AreaName>
+                <ControllerName>UploadItem</ControllerName>
+                <ActionName>Index</ActionName>
+                <SonMenuList />
+            </ICDMenu>
+        </MenuList>
+    </ServiceMenuModel>
+    <ServiceMenuModel>
+        <ServiceID>1</ServiceID>
+        <ServiceType>Provider</ServiceType>
+        <MenuList>
+            <ICDMenu>
+                <MenuID>4</MenuID>
+                <DisplayName>我的订单</DisplayName>
+                <ParentID>0</ParentID>
+                <Index>100</Index>
+                <ControllerName>ServiceItem</ControllerName>
+                <ActionName>Index</ActionName>
+                <SonMenuList />
+            </ICDMenu>
+            <ICDMenu>
+                <MenuID>5</MenuID>
+                <DisplayName>编码抢单</DisplayName>
+                <ParentID>0</ParentID>
+                <Index>200</Index>
+                <ControllerName>UnRobItem</ControllerName>
+                <ActionName>Index</ActionName>
+                <SonMenuList />
+            </ICDMenu>
+        </MenuList>
+    </ServiceMenuModel>
+    <ServiceMenuModel>
+        <ServiceID>-1</ServiceID>
+        <ServiceType>Public</ServiceType>
+        <MenuList>
+            <ICDMenu>
+                <MenuID>8</MenuID>
+                <DisplayName>Help</DisplayName>
+                <ParentID>0</ParentID>
+                <Index>30000</Index>
+                <AreaName>null</AreaName>
+                <ControllerName>Home</ControllerName>
+                <ActionName>Help</ActionName>
+            </ICDMenu>
+            <ICDMenu>
+                <MenuID>9</MenuID>
+                <DisplayName>工具</DisplayName>
+                <ParentID>0</ParentID>
+                <Index>20000</Index>
+                <ControllerName>Home</ControllerName>
+                <ActionName>Tools</ActionName>
+            </ICDMenu>
+        </MenuList>
+    </ServiceMenuModel>
+</ArrayOfServiceMenuModel>

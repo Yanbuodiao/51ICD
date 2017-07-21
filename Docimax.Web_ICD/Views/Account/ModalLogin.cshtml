@@ -1,6 +1,7 @@
-﻿@model Docimax.Web_ICD.Models.TelLoginViewModel
+﻿@model Docimax.Web_ICD.Models.LoginViewModel
 @using (Html.BeginForm("ModalLogin", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form", @id = "loginForm" }))
 {
+    @Html.HiddenFor(model => model.LoginType)
     @Html.AntiForgeryToken()
     if (@Model != null && @Model.LoginSuccess)
     {
@@ -9,78 +10,177 @@
         </script>
     }
     <div class="modal-header">
-        <h4 class="modal-title" id="myModalLabel">登录51icd</h4>
+        <h4 class="modal-title" id="myModalLabel">登录51ICD</h4>
     </div>
     <div class="modal-body">
-        @Html.ValidationSummary("", new { @class = "text-danger" })
-        <div class="form-group">
-            <div class="col-xs-12">
-                <div class="input-group input-group-lg">
-                    <span class="input-group-addon"><span class="glyphicon glyphicon-phone"></span></span>
-                    @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control", @placeholder = "手机号码" })
+        <div class="row has-error" id="div_loginError">
+            <div class="input-group col-xs-offset-1  col-xs-8">
+                <label class="control-label" id="error_Login_Error"></label>
+            </div>
+        </div>
+        <div id="div_UserNameLogin">
+            <div class="form-group">
+                <div class="input-group input-group-sm col-xs-offset-9 col-xs-3">
+                    <span class="glyphicon glyphicon-phone"></span><a style="cursor:pointer" onclick="switchPhone()">短信快捷登录</a>
                 </div>
             </div>
-            <div class="col-xs-12">
-                <div class="input-group input-group-lg">
-                    @Html.TextBoxFor(m => m.DynamicPWD, new { @class = "form-control", @placeholder = "动态密码" })
+            <div class="row" id="div_Login_UserName">
+                <div class="input-group col-xs-offset-1  col-xs-8">
+                    <label class="control-label" id="error_Login_UserName"></label>
+                </div>
+                <div class="input-group col-xs-offset-1  col-xs-8">
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
+                    @Html.TextBoxFor(m => m.LoginUserName, new { @class = "form-control", placeholder = "用户名/手机号", @onblur = "validateUserName()" })
+                </div>
+            </div>
+            <div class="row" id="div_Login_Password">
+                <div class="input-group col-xs-offset-1  col-xs-8">
+                    <label class="control-label" id="error_Login_Password"></label>
+                </div>
+                <div class="input-group col-xs-offset-1  col-xs-8">
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
+                    @Html.PasswordFor(m => m.LoginPassword, new { @class = "form-control", placeholder = "密码" })
+                </div>
+                <label class="control-label"></label>
+            </div>
+            <div class="row">
+                <div class="input-group col-xs-offset-1  col-xs-8">
+                    @Html.ActionLink("忘记密码", "ForgotPassword")
+                </div>
+            </div>
+        </div>
+        <div id="div_Phone" hidden="hidden">
+            <div class="form-group">
+                <div class="input-group input-group-sm col-xs-offset-9 col-xs-3">
+                    <span class="glyphicon glyphicon-user"></span><a style="cursor:pointer" onclick="switchUser()">帐号密码登录</a>
+                </div>
+            </div>
+            <div class="row" id="div_login_PhoneNum">
+                <div class="input-group col-xs-offset-1  col-xs-8">
+                    <label class="control-label" id="error_login_PhoneNum"></label>
+                </div>
+                <div class="input-group col-xs-offset-1  col-xs-8">
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-phone"></span></span>
+                    @Html.TextBoxFor(m => m.LoginPhoneNum, new { @class = "form-control", placeholder = "手机号", @onblur = "validatePhone()" })
+                </div>
+            </div>
+            <div class="row" id="div_Login_DynamicPWD">
+                <div class="input-group col-xs-offset-1  col-xs-8">
+                    <label class="control-label" id="error_Login_DynamicPWD"></label>
+                </div>
+                <div class="input-group col-xs-offset-1  col-xs-8">
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
+                    @Html.TextBoxFor(m => m.LoginDynamicPWD, new { @class = "form-control", placeholder = "请输入51ICD发到您手机的验证码", autocomplete = "off" })
                     <span class="input-group-btn">
-                        <button id="loginSendCode" style="width:140px" class="btn btn-default" type="button">发送动态密码</button>
+                        <button id="loginSendCode" style="width:100px" class="btn btn-default" type="button">发送动态密码</button>
                     </span>
                 </div>
-            </div>
-            <div class="col-xs-12">
-                <div class="checkbox">
-                    <label>
-                        @Html.CheckBoxFor(m => m.RememberMe, new { @style = "transform:scale(1.3, 1.3);" }) 记住我
-                    </label>
-                </div>
-            </div>
-
-            <div class="col-xs-12" style="margin-top:20px;">
-                <button class="btn btn-primary btn-lg btn-block" id="btnLogin" type="button">登录</button>
+                <label class="control-label"></label>
             </div>
         </div>
     </div>
     <div class="modal-footer">
+        <div class="row">
+            <div class="input-group col-xs-offset-1  col-xs-4">
+                <input type="button" value="登录" class="btn btn-primary btn-block" id="btnLogin" />
+            </div>
+        </div>
         <p>
-            @Html.ActionLink("忘记密码", "ForgotPassword")
+            @Html.ActionLink("立即注册", "Register")
         </p>
     </div>
 }
 @Scripts.Render("~/bundles/jqueryval")
 @Scripts.Render("~/bundles/sitePubJS")
 <script type="text/javascript">
+    var loginTimer = null;
+    $("#LoginType").val(0);
+
+
+    function validatePhone() {
+        var phoneNum = $("#LoginPhoneNum").val()
+        if (validatemobile(phoneNum)) {
+            removePhoneError();
+            return true;
+        }
+        else {
+            showPhoneError("请填入正确的手机号码");
+            return false;
+        }
+    }
+
+    function validateLoginDynamicPWD() {
+        var dynamicPWD = $("#LoginDynamicPWD").val();
+        if ((!dynamicPWD) || !(/^\d{6}$/.test(dynamicPWD))) {
+            $("#div_Login_DynamicPWD").addClass("has-error");
+            $("#error_Login_DynamicPWD").html("手机验证码为6位数字");
+            return false;
+        }
+        else {
+            $("#div_Login_DynamicPWD").removeClass("has-error");
+            $("#error_Login_DynamicPWD").html('');
+            return true;
+        }
+    }
+
+    function switchUser() {
+        $("#div_loginError").hide();
+        $("#error_Login_Error").html('');
+        $("#LoginType").val(0);
+        $("#div_Phone").hide();
+        $("#div_UserNameLogin").show();
+    }
+
+    function switchPhone() {
+        $("#div_loginError").hide();
+        $("#error_Login_Error").html('');
+        $("#LoginType").val(1);
+        $("#div_Phone").show();
+        $("#div_UserNameLogin").hide();
+    }
 
     $('#loginSendCode').click(function () {
-        clearInterval(timer);
-        if (validatemobile($("#PhoneNumber").val())) {
+        clearInterval(loginTimer);
+        if (validatePhone()) {
             $("#loginSendCode").attr("disabled", true);
-
             $.ajax({
                 url: '@Url.Action("SendPhoneVerifyCode", "Pub")',
-                datatype: "text",
                 type: "post",
                 data: {
-                    telephone: { PhoneNumber: $("#PhoneNumber").val() },
+                    telephone: { PhoneNumber: $("#LoginPhoneNum").val() },
                 },
-                success: function (data) {
-                    var second = data.TResult;
-                    if (data.IsSuccess) {
+                success: function (loginSendResult) {
+                    var second = loginSendResult.TResult;
+                    if (loginSendResult.IsSuccess) {
+                        $("#loginSendCode").text("发送成功");
                         runTimer(second);
                     }
                     else {
-                        showError(data.ErrorStr);
+                        showError(loginSendResult.ErrorStr);
                         runTimer(second);
                     }
                 }
             });
+        }
+        else {
+            showPhoneError("请填入正确的手机号码");
         };
     });
 
+    function showPhoneError(errorStr) {
+        $("#div_login_PhoneNum").addClass("has-error");
+        $("#error_login_PhoneNum").html(errorStr);
+        $("#LoginPhoneNum").val("");
+    }
+    function removePhoneError() {
+        $("#div_login_PhoneNum").removeClass("has-error");
+        $("#error_login_PhoneNum").html('');
+    }
+
     function runTimer(second) {
         if (second > 0) {
-            $("#DynamicPWD").focus();
-            timer = setInterval(function () {
+            $("#LoginDynamicPWD").focus();
+            loginTimer = setInterval(function () {
                 second -= 1;
                 if (second > 0) {
                     $("#loginSendCode").attr("disabled", true);
@@ -89,37 +189,91 @@
                 else {
                     $("#loginSendCode").removeAttr("disabled");
                     $("#loginSendCode").text("发送动态密码");
-                    clearInterval(timer);
+                    clearInterval(loginTimer);
                 }
             }, 1000);
         }
     }
 </script>
 <script type="text/javascript">
-
-    $("#btnLogin").click(function (e) {
-        e.preventDefault();
-        var _form = $("#loginForm");
-        var valided = _form.valid();
-        if (!valided) {
-            return false;
-        }
-        if (!validatemobile($("#PhoneNumber").val())) {
-            return false;
-        }
-        if (!validateDymaticCode($("#DynamicPWD").val())) {
+    function validatePassword() {
+        var password = $("#LoginPassword").val();
+        if (!password || password.length == 0) {
+            $("#div_Login_Password").addClass("has-error");
+            $("#error_Login_Password").html("请输入密码");
             return false;
         }
         else {
-            $.ajax({
-                url: '@Url.Action("ModalLogin", "Account")',
-                datatype: "text",
-                type: "post",
-                data: $("#loginForm").serializeArray(),
-                success: function (data) {
-                    $('#LoginModalView').html(data);
+            $("#div_Login_Password").removeClass("has-error");
+            $("#error_Login_Password").html('');
+            return true;
+        }
+    }
+
+    function validateUserName() {
+        var userName = $("#LoginUserName").val();
+        if (!userName || userName.length == 0) {
+            $("#div_Login_UserName").addClass("has-error");
+            $("#error_Login_UserName").html("请输入用户名");
+            return false;
+        }
+        else {
+            $("#div_Login_UserName").removeClass("has-error");
+            $("#error_Login_UserName").html('');
+            return true;
+        }
+    }
+
+    $("#btnLogin").click(function (e) {
+        var loginType = $("#LoginType").val();
+        if (loginType == 0) {
+            if (validateUserName()) {
+                if (validatePassword()) {
+                    loginSubmitFunc();
                 }
-            });
+            }
+        }
+        else {
+            if (validatePhone($("#LoginPhoneNum").val())) {
+                if (validateLoginDynamicPWD()) {
+                    loginSubmitFunc();
+                }
+            }
         }
     });
+
+    function loginSubmitFunc() {
+        var form = $('#loginForm');
+        var token = $('input[name="__RequestVerificationToken"]', form).val();
+        $.ajax({
+            url: "@Url.Action("ModalLogin", "Account")",// 跳转到 action
+            data: {
+                __RequestVerificationToken: token,
+                model: {
+                    LoginUserName: $("#LoginUserName").val(),
+                    LoginPassword: $("#LoginPassword").val(),
+                    LoginPhoneNum: $("#LoginPhoneNum").val(),
+                    LoginDynamicPWD: $("#LoginDynamicPWD").val(),
+                    LoginType: $("#LoginType").val()
+                }
+            },
+            type: 'post',
+            cache: false,
+            async: false,
+            success: function (sendResult) {
+                if (!sendResult.IsSuccess) {
+                    $("#div_loginError").show();
+                    $("#error_Login_Error").html(sendResult.ErrorStr);
+                }
+                else {
+                    if (sendResult.TResult && sendResult.TResult.length > 0) {
+                        location.href = sendResult.TResult;
+                    }
+                    else {
+                        location.href = '@Url.Action("Index","Home")';
+                    }
+                }
+            }
+        });
+    }
 </script>

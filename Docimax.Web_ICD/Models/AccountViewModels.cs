@@ -48,29 +48,44 @@ namespace Docimax.Web_ICD.Models
         [Display(Name = "电子邮件")]
         public string Email { get; set; }
     }
-
-    public class LoginViewModel
+    public class UserNameModel
     {
         [Required]
-        [Display(Name = "电子邮件")]
-        [EmailAddress]
-        public string Email { get; set; }
+        [StringLength(50, ErrorMessage = "{0} 最多包含{1}个字符。")]
+        [Display(Name = "用户名")]
+        public string UserName { get; set; }
+    }
+    public class LoginViewModel
+    {
 
-        [Required]
-        [DataType(DataType.Password)]
-        [Display(Name = "密码")]
-        public string Password { get; set; }
+        [Display(Name = "用户名")]
+        public string LoginUserName { get; set; }
 
-        [Display(Name = "记住我?")]
-        public bool RememberMe { get; set; }
+        [Display(Name = "密   码")]
+        public string LoginPassword { get; set; }
+
+        [Display(Name = "手机号")]
+        public string LoginPhoneNum { get; set; }
+
+        [Display(Name = "验证码")]
+        public string LoginDynamicPWD { get; set; }
+
+        public int LoginType { get; set; }
+
+        public bool LoginSuccess { get; set; }
     }
 
     public class RegisterViewModel
     {
         [Required]
-        [EmailAddress]
-        [Display(Name = "电子邮件")]
-        public string Email { get; set; }
+        [Phone]
+        [Display(Name = "手机号")]
+        public string PhoneNum { get; set; }
+
+        [Required]
+        [StringLength(50, ErrorMessage = "{0} 最多包含{1}个字符。")]
+        [Display(Name = "用户名")]
+        public string UserName { get; set; }
 
         [Required]
         [StringLength(100, ErrorMessage = "{0} 必须至少包含 {2} 个字符。", MinimumLength = 6)]
@@ -79,14 +94,12 @@ namespace Docimax.Web_ICD.Models
         public string Password { get; set; }
 
         [Required]
-        [StringLength(100, ErrorMessage = "{0} 必须至少包含 {2} 个字符。", MinimumLength = 6)]
-        [Display(Name = "所在医院")]
+        [StringLength(100, ErrorMessage = "{0} 必须至少包含 {2} 个字符。", MinimumLength = 4)]
+        [Display(Name = "医院名")]
         public string HosipitalName { get; set; }
 
-        [DataType(DataType.Password)]
-        [Display(Name = "确认密码")]
-        [Compare("Password", ErrorMessage = "密码和确认密码不匹配。")]
-        public string ConfirmPassword { get; set; }
+        [Display(Name = "验证码")]
+        public string DynamicPWD { get; set; }
 
         public bool NeedVarify { get; set; }
     }
@@ -178,9 +191,23 @@ namespace Docimax.Web_ICD.Models
     public class ForgotPasswordViewModel
     {
         [Required]
-        [EmailAddress]
-        [Display(Name = "电子邮件")]
-        public string Email { get; set; }
+        [Phone]
+        [Display(Name = "手机号")]
+        public string PhoneNum { get; set; }
+
+        [Required]
+        [StringLength(50, ErrorMessage = "{0} 最多包含{1}个字符。")]
+        [Display(Name = "用户名")]
+        public string UserName { get; set; }
+
+        [Required]
+        [StringLength(100, ErrorMessage = "{0} 必须至少包含 {2} 个字符。", MinimumLength = 6)]
+        [DataType(DataType.Password)]
+        [Display(Name = "密码")]
+        public string Password { get; set; }
+
+        [Display(Name = "验证码")]
+        public string DynamicPWD { get; set; }
     }
 
     public class TelLoginViewModel : Telephone

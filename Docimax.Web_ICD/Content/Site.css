@@ -14,6 +14,9 @@
     white-space: normal;
 }
 
+label.control-label {
+    font-weight:normal;
+}
 /* Set width on the form input elements since they're 100% wide by default */
 input,
 select,
@@ -237,3 +240,13 @@ hr {
 .panel-heading .accordion-toggle.collapsed:after {
     content: "\e080";
 }
+
+
+.modal.modal-wide .modal-dialog {
+  width: 90%;
+}
+.modal-wide .modal-body {
+  overflow-y: auto;
+}
+
+#tallModal .modal-body p { margin-bottom: 900px }

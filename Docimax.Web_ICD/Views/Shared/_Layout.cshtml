@@ -40,5 +40,38 @@
     </div>
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
+
+    <div class="modal fade " id="LoginModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div id="LoginModalView" class="modal-content">
+
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        $('#loginLink').click(function () {
+            $.ajax({
+                url: '@Url.Action("ModalLogin", "Account")',
+                datatype: "text",
+                type: "get",
+                async: true,
+                data: {
+                    returnUrl: GetUrlRelativePath()
+                },
+                success: function (loginView) {
+                    $('#LoginModalView').html(loginView);
+                    $("#LoginModal").modal('show');
+                }
+            });
+        });
+        function GetUrlRelativePath() {
+            var url = document.location.toString();
+            var arrUrl = url.split("//");
+            var start = arrUrl[1].indexOf("/");
+            var relUrl = arrUrl[1].substring(start);
+            return relUrl;
+        }
+    </script>
 </body>
+
 </html>

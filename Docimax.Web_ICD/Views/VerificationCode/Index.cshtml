@@ -7,12 +7,19 @@
                 <h4 class="modal-title" id="myModalLabel">请输入下图中的验证码</h4>
             </div>
             <div class="modal-body">
-                <input id="valiKey" type="hidden" value="" />
-                <input id="valicodetxt" type="text" class="col-xs-1 form-control validate" placeholder="验证码">
-                <img id="valiCode" style="cursor: pointer;" alt="验证码" title="看不清，点击换一张" />
+                <div class="row">
+                    <input id="valiKey" type="hidden" value="" />
+                    <div class="col-md-6">
+                        <input id="valicodetxt" class="form-control" type="text"  placeholder="请输入右侧验证码">
+                    </div>
+                    <div class="col-md-6">
+                        <img id="valiCode" style="cursor: pointer;" alt="验证码" title="看不清，点击换一张" />
+                        <label class="control-label" id="lbl_refresh" style="cursor: pointer;"> <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span> 看不清？点击换一张</label>
+                    </div>
+                </div>
             </div>
             <div class="modal-footer">
-                <input type="submit" class="btn btn-default" value="确定" disabled="disabled" id="submitBtn" />
+                <input type="button" class="btn btn-default" value="确定" disabled="disabled" id="validateSubmitBtn"  />
             </div>
         </div>
     </div>
@@ -31,6 +38,7 @@
         getValidateCode();
 
         $("#valiCode").click(getValidateCode);
+        $("#lbl_refresh").click(getValidateCode);
 
         $("#valicodetxt").keyup(function () {
             if (this.value.length == 6) {
@@ -46,13 +54,13 @@
                         if (data == "True") {
                             $("#submitBtn").removeAttr("disabled");
                         }
-                        else {
-                            getValidateCode();
-                        }
+                        //else {
+                        //    getValidateCode();
+                        //}
                     },
-                    error: function () {
-                        alert("异常！");
-                    }
+                    //error: function () {
+                    //    alert("异常！");
+                    //}
                 })
             }
         });

@@ -1,50 +1,341 @@
 @model Docimax.Web_ICD.Models.RegisterViewModel
-@{
-    ViewBag.Title = "注册";
-}
-
-@using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+<meta http-equiv="Pragma" content="no-cache">
+@using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form", id = "registerForm", autocomplete = "off" }))
 {
     @Html.AntiForgeryToken()
     <h4>注册新用户.</h4>
     <hr />
     @Html.ValidationSummary("", new { @class = "text-danger" })
-    <div class="form-group">
-        @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+    <div class="form-group" id="div_UserName">
+        @Html.LabelFor(m => m.UserName, new { @class = "col-md-2 control-label" })
+        <div class="col-md-3">
+            @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", @onblur = "validateUserName()", placeholder = "请输入您的邮箱" })
         </div>
+        <label class="control-label" id="error_UserName"></label>
     </div>
-    <div class="form-group">
+    <div class="form-group" id="div_HosipitalName">
         @Html.LabelFor(m => m.HosipitalName, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.TextBoxFor(m => m.HosipitalName, new { @class = "form-control" })
+        <div class="col-md-3">
+            @Html.TextBoxFor(m => m.HosipitalName, new { @class = "form-control", @onblur = "validateHospital()", placeholder = "请输入您所在的医院名称" })
         </div>
+        <label class="control-label" id="error_HosipitalName"></label>
     </div>
-    <div class="form-group">
+    <div class="form-group" id="div_PhoneNum">
+        @Html.LabelFor(m => m.PhoneNum, new { @class = "col-md-2 control-label" })
+        <div class="col-md-3">
+            @Html.TextBoxFor(m => m.PhoneNum, new { @class = "form-control", placeholder = "请输入您本人的手机号码" })
+        </div>
+        <label class="control-label" id="error_PhoneNum"></label>
+    </div>
+    <div class="form-group" id="div_DynamicPWD">
+        @Html.LabelFor(m => m.DynamicPWD, new { @class = "col-md-2 control-label" })
+        <div class="col-md-3">
+            @Html.TextBoxFor(m => m.DynamicPWD, new { @class = "form-control", @onfocus = "sendValidationCode()", placeholder = "请输入51ICD平台发到您手机的验证码", autocomplete = "off" })
+        </div>
+        <label class="control-label" id="error_DynamicPWD" onclick="sendValidationCode()"></label>
+    </div>
+    <div class="form-group" id="div_Password">
         @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
+        <div class="col-md-3">
             @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
         </div>
+        <label class="control-label" id="error_Password"></label>
     </div>
     <div class="form-group">
-        @Html.LabelFor(m => m.ConfirmPassword, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
+        <div class="col-md-offset-2 col-md-3">
+            <input type="button" value="注册" class="btn btn-primary btn-block" onclick="submitRegister()" />
         </div>
     </div>
-    if (Model != null && Model.NeedVarify)
-    {
-        <div class="form-group">
-            @{Html.RenderAction("Index", "VerificationCode");}
-        </div>
-    }
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" class="btn btn-default" value="注册" />
+    <div class="modal  fade" id="verifyCodeModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">请输入下图中的验证码</h4>
+                </div>
+                <div class="modal-body">
+                    <div id="div_validateCode">
+                        <div class="row">
+                            <input id="valiKey" type="hidden" value="" />
+                            <div class="col-md-6">
+                                <input id="valicodetxt" class="form-control" type="text" placeholder="请输入右侧验证码">
+                            </div>
+                            <div class="col-md-6">
+                                <img id="valiCode" style="cursor: pointer;" alt="验证码" title="看不清，点击换一张" />
+                                <label class="control-label" id="lbl_refresh" style="cursor: pointer;color:black"> <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span> 看不清？点击换一张</label>
+                            </div>
+                        </div>
+                        <label class="control-label" id="error_Validate"></label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="button" class="btn btn-default" value="确定" id="validateSubmitBtn" />
+                </div>
+            </div>
         </div>
     </div>
 }
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/sitePubJS")
 }
+<script type="text/javascript">
+    var timer = null;
+    var canSend = true;
+    $("#DynamicPWD").val("");
+    function sendValidationCode() {
+        if (validatemobile($("#PhoneNum").val())) {
+            removePhoneError();
+            var phoneNumValidateResult = phoneNumExist($("#PhoneNum").val(), '@Url.Action("PhoneNumUsable", "Pub")');
+            if (!phoneNumValidateResult.IsSuccess) {
+                showPhoneError(phoneNumValidateResult.ErrorStr);
+            }
+            else {
+                if (canSend) {
+                    $("#valicodetxt").focus();
+                    getValidateCode();
+                    $("#valicodetxt").val("");
+                    $("#verifyCodeModal").modal({ backdrop: 'static', show: true });
+                }
+            }
+        }
+        else {
+            showPhoneError('请填入正确的手机号码');
+        }
+    }
+    function showPhoneError(errorStr) {
+        $("#div_PhoneNum").addClass("has-error");
+        $("#error_PhoneNum").html(errorStr);
+        $("#PhoneNum").val("");
+    }
+    function removePhoneError() {
+        $("#div_PhoneNum").removeClass("has-error");
+        $("#error_PhoneNum").html('');
+    }
+
+    function validateUserName() {
+        var userNameValidateResult = userNameUseable($("#UserName").val(), '@Url.Action("UserNameUsable", "Pub")');
+        if (!userNameValidateResult.IsSuccess) {
+            $("#div_UserName").addClass("has-error");
+            $("#error_UserName").html(userNameValidateResult.ErrorStr);
+            return false;
+        }
+        else {
+            $("#div_UserName").removeClass("has-error");
+            $("#error_UserName").html('');
+            return true;
+        }
+    }
+
+    function validateHospital() {
+        var hosipitalName = $("#HosipitalName").val();
+        if (!(hosipitalName)) {
+            $("#div_HosipitalName").addClass("has-error");
+            $("#error_HosipitalName").html("医院名称不能为空");
+            return false;
+        }
+        else {
+            if (hosipitalName.length < 4) {
+                $("#div_HosipitalName").addClass("has-error");
+                $("#error_HosipitalName").html("医院名称至少包含4个字符");
+                return false;
+            }
+            if (hosipitalName.length > 100) {
+                $("#div_HosipitalName").addClass("has-error");
+                $("#error_HosipitalName").html("医院名称最多包含100个字符");
+                return false;
+            }
+            $("#div_HosipitalName").removeClass("has-error");
+            $("#error_HosipitalName").html('');
+            return true;
+        }
+    }
+
+    function validateDynamicPWD() {
+        var dynamicPWD = $("#DynamicPWD").val();
+        if ((!dynamicPWD) || (dynamicPWD.length != 6)) {
+            $("#div_DynamicPWD").addClass("has-error");
+            $("#error_DynamicPWD").html("手机验证码为6位数字");
+            return false;
+        }
+        else {
+            $("#div_DynamicPWD").removeClass("has-error");
+            $("#error_DynamicPWD").html('');
+            return true;
+        }
+    }
+
+    function validateCode() {
+        $.ajax({
+            url: "@Url.Action("VerifyValidateCode", "VerificationCode")",// 跳转到 action
+            data: {
+                validateKey: $("#valiKey").val(),
+                validateCode: $("#valicodetxt").val()
+            },
+            type: 'post',
+            cache: false,
+            async: false,
+            success: function (data) {
+                if (data == "True") {
+                    $("#div_validateCode").removeClass("has-error");
+                    $("#error_Validate").html("");
+                    $("#verifyCodeModal").modal('hide');
+                    $.ajax({
+                        url: "@Url.Action("SendPhoneVerifyCode", "Pub")",// 跳转到 action
+                        data: {
+                            PhoneNumber: $("#PhoneNum").val(),
+                        },
+                        type: 'post',
+                        cache: false,
+                        async: false,
+                        success: function (sendResult) {
+                            if (!sendResult.IsSuccess) {
+                                if (sendResult.TResult > 0) {
+                                    showTimer(sendResult.TResult, false);
+                                }
+                                else {
+                                    showPhoneError(sendResult.ErrorStr);
+                                }
+                            }
+                            else {
+                                showTimer(sendResult.TResult, true);
+                            }
+                        }
+                    });
+                }
+                else {
+                    $("#div_validateCode").addClass("has-error");
+                    $("#error_Validate").html("验证码不正确");
+                }
+            },
+        })
+    }
+
+    function validatePassword() {
+        $("#div_Password").removeClass("has-error");
+        $("#error_Password").html('');
+        var sValue = $("#Password").val();
+        if (sValue.length < 6) {
+            $("#div_Password").addClass("has-error");
+            $("#error_Password").html('密码至少包含6个字符');
+            return false;
+        }
+        if (sValue.length > 20) {
+            $("#div_Password").addClass("has-error");
+            $("#error_Password").html('密码最多包含20个字符');
+            return false;
+        }
+        if (!(/\d/.test(sValue))) {
+            $("#div_Password").addClass("has-error");
+            $("#error_Password").html('密码至少包含一个数字');
+            return false;
+        }
+        if (!(/[a-z]/.test(sValue))) {
+            $("#div_Password").addClass("has-error");
+            $("#error_Password").html('密码至少包含一个小写字符');
+            return false;
+        } //小写
+        if (!(/[A-Z]/.test(sValue))) {
+            $("#div_Password").addClass("has-error");
+            $("#error_Password").html('密码至少包含一个大写字符');
+            return false;
+        } //大写
+        if (!(/\W/.test(sValue))) {
+            $("#div_Password").addClass("has-error");
+            $("#error_Password").html('密码至少包含一个符号');
+            return false;
+        }; //特殊字符
+        return true;
+    }
+
+    $("#validateSubmitBtn").click(function () {
+        validateCode();
+    });
+    function showTimer(delaySecond, success) {
+        if (timer) {
+            clearInterval(timer);
+        }
+        if (delaySecond > 0) {
+            canSend = false;
+            if (success) {
+                $("#error_DynamicPWD").html("验证码已发送到您的手机，" + delaySecond + "秒后重发");
+                $("#error_DynamicPWD").css({ "cursor": "default", "color": "Green" });
+            }
+            else {
+                $("#error_DynamicPWD").html("验证码发送频繁，" + delaySecond + "秒后重发");
+                $("#error_DynamicPWD").css({ "cursor": "default", "color": "red" });
+            }
+            timer = setInterval(function () {
+                delaySecond -= 1;
+                if (delaySecond > 0) {
+                    if (success) {
+                        $("#error_DynamicPWD").html("验证码已发送到您的手机，" + delaySecond + "秒后重发");
+                        $("#error_DynamicPWD").css({ "cursor": "default", "color": "Green" });
+                    }
+                    else {
+                        $("#error_DynamicPWD").html("验证码发送频繁，" + delaySecond + "秒后重发");
+                        $("#error_DynamicPWD").css({ "cursor": "default", "color": "red" });
+                    }
+                } else {
+                    canSend = true;
+                    clearInterval(timer);
+                    $("#error_DynamicPWD").html("重新发送发送短信");
+                    $("#error_DynamicPWD").css({ "cursor": "pointer", "color": "blue" });
+                }
+            }, 1000);
+        }
+        else {
+            canSend = true;
+        }
+    }
+</script>
+<script type="text/javascript">
+    function getValidateCode() {
+        uuid = guid();
+        $("#valiKey").val(uuid);
+        var newSrc = "@Url.Action("GetNewValidateCode", "VerificationCode")?validateKey=" + uuid;
+        $("#valiCode").attr("src", newSrc);
+    }
+
+    getValidateCode();
+
+    $("#valiCode").click(getValidateCode);
+    $("#lbl_refresh").click(getValidateCode);
+
+    $("#valicodetxt").keyup(function () {
+        if (this.value.length == 6) {
+            validateCode();
+        }
+    });
+
+    function guid() {
+        function s4() {
+            return Math.floor((1 + Math.random()) * 0x10000)
+              .toString(16)
+              .substring(1);
+        }
+        return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+          s4() + '-' + s4() + s4() + s4();
+    }
+</script>
+<script type="text/javascript">
+    function submitRegister() {
+        if (!validateUserName()) {
+            return;
+        }
+        if (!validateHospital()) {
+            return;
+        }
+        if (!validatemobile($("#PhoneNum").val())) {
+            showPhoneError('请填入正确的手机号码');
+            return;
+        }
+        clearInterval(timer);
+        if (!validateDynamicPWD()) {
+            return;
+        }
+        if (!validatePassword()) {
+            return;
+        }
+        $("#registerForm").submit();
+    }
+</script>

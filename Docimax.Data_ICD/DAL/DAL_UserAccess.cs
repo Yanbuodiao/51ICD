@@ -652,5 +652,179 @@ namespace Docimax.Data_ICD.DAL
                 }
             }
         }
+
+        public ICDExcuteResult<string> PhoneNumUsable(string phoneNum)
+        {
+            using (var entity = new Entity_Read())
+            {
+                if (entity.AspNetUsers.Any(e => e.UserName == phoneNum || e.PhoneNumber == phoneNum))
+                {
+                    return new ICDExcuteResult<string> { IsSuccess = false, ErrorStr = "该手机号码已经被占用" };
+                }
+                return new ICDExcuteResult<string> { IsSuccess = true };
+            }
+        }
+        public ICDExcuteResult<string> UserNameUsable(string userName)
+        {
+            using (var entity = new Entity_Read())
+            {
+                if (entity.AspNetUsers.Any(e => e.UserName == userName || e.PhoneNumber == userName))
+                {
+                    return new ICDExcuteResult<string> { IsSuccess = false, ErrorStr = "该用户名已经被占用" };
+                }
+                return new ICDExcuteResult<string> { IsSuccess = true };
+            }
+        }
+
+        public ICDExcuteResult<string> CreateUserByPhone(UserModel model)
+        {
+            if (model == null)
+            {
+                return new ICDExcuteResult<string> { IsSuccess = false, ErrorStr = "提交数据有误" };
+            }
+            try
+            {
+                using (var entity = new Entity_Write())
+                {
+                    if (entity.AspNetUsers.Any(e => e.UserName == model.UserName || e.PhoneNumber == model.UserName))
+                    {
+                        return new ICDExcuteResult<string> { IsSuccess = false, ErrorStr = "该用户名已经被占用" };
+                    }
+                    if (entity.AspNetUsers.Any(e => e.UserName == model.PhoneNumber || e.PhoneNumber == model.PhoneNumber))
+                    {
+                        return new ICDExcuteResult<string> { IsSuccess = false, ErrorStr = "该手机号码已经被占用" };
+                    }
+                    var securityStamp = Guid.NewGuid().ToString();
+                    var user = new AspNetUsers
+                    {
+                        Id = Guid.NewGuid().ToString(),
+                        UserName = model.UserName,
+                        PhoneNumber = model.PhoneNumber,
+                        PasswordHash = model.HashPassWord,
+                        HospitalName = model.HospitalName,
+                        PhoneNumberConfirmed = true,
+                        SecurityStamp = securityStamp,
+                    };
+                    entity.AspNetUsers.Add(user);
+                    entity.SaveChanges();
+                    return new ICDExcuteResult<string> { IsSuccess = true, TResult = user.Id };
+                }
+            }
+            catch (Exception ex)
+            {
+                //todo  记录错误日志
+                return new ICDExcuteResult<string> { IsSuccess = false, ErrorStr = "系统异常，请稍后再试" };
+            }
+
+        }
+
+        public ICDExcuteResult<string> UserLogin(UserModel model)
+        {
+            if (model == null)
+            {
+                return new ICDExcuteResult<string> { IsSuccess = false, ErrorStr = "提交数据有误" };
+            }
+            using (var entity = new Entity_Read())
+            {
+                var user = entity.AspNetUsers.FirstOrDefault(e => e.UserName == model.UserName || e.PhoneNumber == model.UserName);
+                if (user == null)
+                {
+                    return new ICDExcuteResult<string> { IsSuccess = false, ErrorStr = "用户不存在" };
+                }
+                if (!(user.PasswordHash == model.HashPassWord))
+                {
+                    return new ICDExcuteResult<string> { IsSuccess = false, ErrorStr = "密码不正确" };
+                }
+                model.PhoneNumber = user.PhoneNumber;
+                return new ICDExcuteResult<string> { IsSuccess = true, TResult = user.Id };
+            }
+        }
+
+        public ICDExcuteResult<UserModel> GetUserByPhoneNum(string phoneNum)
+        {
+            if (string.IsNullOrWhiteSpace(phoneNum))
+            {
+                return new ICDExcuteResult<UserModel> { IsSuccess = false, ErrorStr = "提交数据有误" };
+            }
+            using (var entity = new Entity_Read())
+            {
+                var user = entity.AspNetUsers.FirstOrDefault(e => e.PhoneNumber == phoneNum);
+                if (user == null)
+                {
+                    return new ICDExcuteResult<UserModel> { IsSuccess = false, ErrorStr = "用户不存在" };
+                }
+                return new ICDExcuteResult<UserModel>
+                {
+                    IsSuccess = true,
+                    TResult = new UserModel
+                    {
+                        UserName = user.UserName,
+                        PhoneNumber = user.PhoneNumber,
+                        UserID = user.Id
+                    }
+                };
+            }
+        }
+
+        public ICDExcuteResult<UserModel> GetUserByUserName(string userName)
+        {
+            if (string.IsNullOrWhiteSpace(userName))
+            {
+                return new ICDExcuteResult<UserModel> { IsSuccess = false, ErrorStr = "提交数据有误" };
+            }
+            using (var entity = new Entity_Read())
+            {
+                var user = entity.AspNetUsers.FirstOrDefault(e => e.PhoneNumber == userName || e.UserName == userName);
+                if (user == null)
+                {
+                    return new ICDExcuteResult<UserModel> { IsSuccess = false, ErrorStr = "用户不存在" };
+                }
+                return new ICDExcuteResult<UserModel>
+                {
+                    IsSuccess = true,
+                    TResult = new UserModel
+                    {
+                        UserName = user.UserName,
+                        PhoneNumber = user.PhoneNumber,
+                        UserID = user.Id
+                    }
+                };
+            }
+        }
+
+        public ICDExcuteResult<string> RestPasswordByPhone(UserModel model)
+        {
+            if (model == null)
+            {
+                return new ICDExcuteResult<string> { IsSuccess = false, ErrorStr = "提交数据有误" };
+            }
+            try
+            {
+                using (var entity = new Entity_Write())
+                {
+                    var user = entity.AspNetUsers.FirstOrDefault(e => (e.UserName == model.UserName || e.PhoneNumber == model.PhoneNumber));
+                    if (user == null)
+                    {
+                        return new ICDExcuteResult<string> { IsSuccess = false, ErrorStr = "用户名不存在" };
+                    }
+                    if (!string.IsNullOrWhiteSpace(user.PhoneNumber) && user.PhoneNumber != model.PhoneNumber)
+                    {
+                        return new ICDExcuteResult<string> { IsSuccess = false, ErrorStr = "用户名与手机号不匹配" };
+                    }
+                    user.PhoneNumber = model.PhoneNumber;
+                    user.PhoneNumberConfirmed = true;
+                    user.PasswordHash = model.HashPassWord;
+                    user.LastLoginIP = model.LastLoginIP;
+                    user.LastLoginTime = DateTime.Now;
+                    entity.SaveChanges();
+                    return new ICDExcuteResult<string> { IsSuccess = true, TResult = user.Id };
+                }
+            }
+            catch (Exception ex)
+            {
+                //todo  记录错误日志
+                return new ICDExcuteResult<string> { IsSuccess = false, ErrorStr = "系统异常，请稍后再试" };
+            }
+        }
     }
 }

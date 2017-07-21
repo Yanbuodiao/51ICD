@@ -17,5 +17,16 @@ namespace Docimax.Interface_ICD.Interface
         UserServiceModel GetUserService(int user_serviceID);
         ICDExcuteResult<int> AuditServiceProvider(UserServiceModel model);
         ICDExcuteResult<string> CreateOrLogin(string phoneNum, string hospitalName);
+        ICDExcuteResult<string> PhoneNumUsable(string phoneNum);
+        ICDExcuteResult<string> UserNameUsable(string userName);
+
+        ICDExcuteResult<string> CreateUserByPhone(UserModel model);
+
+        ICDExcuteResult<string> UserLogin(UserModel model);
+        ICDExcuteResult<UserModel> GetUserByPhoneNum(string phoneNum);
+
+        ICDExcuteResult<UserModel> GetUserByUserName(string userName);
+
+        ICDExcuteResult<string> RestPasswordByPhone(UserModel model);
     }
 }

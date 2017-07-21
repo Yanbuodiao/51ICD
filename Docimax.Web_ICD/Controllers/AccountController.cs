@@ -2,6 +2,7 @@
 using Docimax.Common_ICD.Cache;
 using Docimax.Data_ICD.DAL;
 using Docimax.Interface_ICD.Interface;
+using Docimax.Interface_ICD.Model;
 using Docimax.Web_ICD.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
@@ -79,24 +80,24 @@ namespace Docimax.Web_ICD.Controllers
                 return View(model);
             }
 
-            var result = await SignInHelper.PasswordSignIn(model.Email, model.Password, model.RememberMe, shouldLockout: true);
-            switch (result)
-            {
-                case SignInStatus.Success:
-                    return RedirectToLocal(returnUrl);
-                case SignInStatus.LockedOut:
-                    return View("Lockout");
-                case SignInStatus.InvalidEmail:
-                    var user = await UserManager.FindByNameAsync(model.Email);
-                    ViewBag.UserID = user.Id;
-                    return View("DisplayEmail");
-                case SignInStatus.RequiresTwoFactorAuthentication:
-                    return RedirectToAction("SendCode", new { ReturnUrl = returnUrl });
-                case SignInStatus.Failure:
-                default:
-                    ModelState.AddModelError("", "无效的登录.");
-                    return View(model);
-            }
+            //var result = await SignInHelper.PasswordSignIn(model.UserName, model.Password, model.RememberMe, shouldLockout: true);
+            //switch (result)
+            //{
+            //    case SignInStatus.Success:
+            //        return RedirectToLocal(returnUrl);
+            //    case SignInStatus.LockedOut:
+            //        return View("Lockout");
+            //    //case SignInStatus.InvalidEmail:
+            //    //    var user = await UserManager.FindByNameAsync(model.Email);
+            //    //    ViewBag.UserID = user.Id;
+            //    //    return View("DisplayEmail");
+            //    case SignInStatus.RequiresTwoFactorAuthentication:
+            //        return RedirectToAction("SendCode", new { ReturnUrl = returnUrl });
+            //    case SignInStatus.Failure:
+            //    default:
+            //        ModelState.AddModelError("", "无效的登录.");
+            return View(model);
+            //}
         }
 
         [AllowAnonymous]
@@ -141,29 +142,71 @@ namespace Docimax.Web_ICD.Controllers
             return View();
         }
 
+        //[HttpPost]
+        //[AllowAnonymous]
+        //[ValidateAntiForgeryToken]
+        //public async Task<ActionResult> Register(RegisterViewModel model)
+        //{
+        //    var ip = HttpHelper.GetIPFromRequest(Request);
+        //    if (ModelState.IsValid)
+        //    {
+        //        var user = new ApplicationUser
+        //        {
+        //            UserName = model.UserName,
+        //            PhoneNumber = model.PhoneNum,
+        //            LockoutEnabled = false,
+        //            HospitalName = model.HosipitalName,
+        //        };
+        //        var result = await UserManager.CreateAsync(user, model.Password);
+        //        if (result.Succeeded)
+        //        {
+        //            return await SendConfirmEmail(user.Id);
+        //        }
+        //        AddErrors(result);
+        //    }
+        //    model.NeedVarify = true;
+        //    return View(model);
+        //}
+
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Register(RegisterViewModel model)
+        public async Task<ActionResult> Register(RegisterViewModel model, string returnUrl)
         {
             var ip = HttpHelper.GetIPFromRequest(Request);
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser
+                var validateCodeResult = ValidateCodeHelper.VerifyPhoneDymaticCode(model.PhoneNum, model.DynamicPWD);
+                if (!validateCodeResult)
                 {
-                    UserName = model.Email,
-                    Email = model.Email,
-                    LockoutEnabled = false,
-                    HospitalName = model.HosipitalName,
-                };
-                var result = await UserManager.CreateAsync(user, model.Password);
-                if (result.Succeeded)
-                {
-                    return await SendConfirmEmail(user.Id);
+                    AddErrors(new IdentityResult("手机验证码不匹配或者已过期"));
                 }
-                AddErrors(result);
+                else
+                {
+                    var user = new UserModel
+                    {
+                        UserName = model.UserName,
+                        PhoneNumber = model.PhoneNum,
+                        LockoutEnabled = false,
+                        HospitalName = model.HosipitalName,
+                        Password = model.Password,
+                        LastLoginIP = ip,
+                    };
+                    IUserAccess access = new DAL_UserAccess();
+                    var result = access.CreateUserByPhone(user);
+                    if (!result.IsSuccess)
+                    {
+                        AddErrors(new IdentityResult(result.ErrorStr));
+                    }
+                    else
+                    {
+                        await signIn(user.UserName, result.TResult, user.PhoneNumber);
+                        return RedirectToLocal(returnUrl);
+                    }
+                }
             }
-            model.NeedVarify = true;
+            model.DynamicPWD = string.Empty;
+            model.Password = string.Empty;
             return View(model);
         }
 
@@ -208,23 +251,40 @@ namespace Docimax.Web_ICD.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> ForgotPassword(ForgotPasswordViewModel model)
+        public async Task<ActionResult> ForgotPassword(ForgotPasswordViewModel model,string returnUrl)
         {
+            var ip = HttpHelper.GetIPFromRequest(Request);
             if (ModelState.IsValid)
             {
-                var user = await UserManager.FindByNameAsync(model.Email);
-                if (user == null || !(await UserManager.IsEmailConfirmedAsync(user.Id)))
+                var validateCodeResult = ValidateCodeHelper.VerifyPhoneDymaticCode(model.PhoneNum, model.DynamicPWD);
+                if (!validateCodeResult)
                 {
-                    return View("ForgotPasswordConfirmation");
+                    AddErrors(new IdentityResult("手机验证码不匹配或者已过期"));
                 }
-                string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
-                var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                await UserManager.SendEmailAsync(user.Id, "51ICD-重置密码", string.Format(@"<br/><br/>请通过单击 <a href={0}>这里</a> 
-                                                     重置您在51ICD的账户密码
-                                       <br/><br/><br/>如果上述链接失效，请将下面地址复制到浏览器地址栏进行激活<br/><br/>{1}
-                                       <br/><br/><br/>系统邮件，请勿回复!", callbackUrl, callbackUrl));
-                return RedirectToAction("ForgotPasswordConfirmation", "Account");
+                else
+                {
+                    var user = new UserModel
+                    {
+                        UserName = model.UserName,
+                        PhoneNumber = model.PhoneNum,
+                        Password = model.Password,
+                        LastLoginIP = ip,
+                    };
+                    IUserAccess access = new DAL_UserAccess();
+                    var result = access.RestPasswordByPhone(user);
+                    if (!result.IsSuccess)
+                    {
+                        AddErrors(new IdentityResult(result.ErrorStr));
+                    }
+                    else
+                    {
+                        await signIn(user.UserName, result.TResult, user.PhoneNumber);
+                        return RedirectToLocal(returnUrl);
+                    }
+                }
             }
+            model.DynamicPWD = string.Empty;
+            model.Password = string.Empty;
             return View(model);
         }
 
@@ -404,85 +464,56 @@ namespace Docimax.Web_ICD.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> ModalLogin(TelLoginViewModel model, string returnUrl)
+        public async Task<ActionResult> ModalLogin(LoginViewModel model, string returnUrl)
         {
-            if (ModelState.IsValid)
+            if (model == null)
             {
-                var ip = HttpHelper.GetIPFromRequest(Request);
-                var validateCodeResult = ValidateCodeHelper.VerifyPhoneDymaticCode(model.PhoneNumber, model.DynamicPWD);
+                return Json(new ICDExcuteResult<string> { IsSuccess = false, ErrorStr = "数据丢失，请稍后再试" });
+            }
+
+            var ip = HttpHelper.GetIPFromRequest(Request);
+            IUserAccess access = new DAL_UserAccess();
+            if (model.LoginType == 0)//用户名密码登录
+            {
+                var userModel = new UserModel { UserName = model.LoginUserName, Password = model.LoginPassword };
+                var loginResult = access.UserLogin(userModel);
+                if (loginResult.IsSuccess)
+                {
+                    await signIn(model.LoginUserName, loginResult.TResult, userModel.PhoneNumber);
+                    return Json(new ICDExcuteResult<string> { IsSuccess = true, TResult = returnUrl });
+                }
+                return Json(new ICDExcuteResult<string> { IsSuccess = false, ErrorStr = loginResult.ErrorStr });
+            }
+            if (model.LoginType == 1)//短信验证码登录
+            {
+                var getResult = access.GetUserByPhoneNum(model.LoginPhoneNum);
+                if (!getResult.IsSuccess)
+                {
+                    return Json(new ICDExcuteResult<string> { IsSuccess = false, ErrorStr = getResult.ErrorStr });
+                }
+                var validateCodeResult = ValidateCodeHelper.VerifyPhoneDymaticCode(model.LoginPhoneNum, model.LoginDynamicPWD);
                 if (!validateCodeResult)
                 {
-                    AddErrors(new IdentityResult("动态密码不匹配或者已过期"));
+                    return Json(new ICDExcuteResult<string> { IsSuccess = false, ErrorStr = "动态密码不匹配或者已过期" });
                 }
                 else
                 {
-                    IUserAccess access = new DAL_UserAccess();
-                    var icdExcutResult = access.CreateOrLogin(model.PhoneNumber, string.Empty);
-                    if (icdExcutResult.IsSuccess)
-                    {
-                        await SignInHelper.SignInAsync(new ApplicationUser
-                        {
-                            UserName = model.PhoneNumber,
-                            Id = icdExcutResult.TResult,
-                            PhoneNumber = model.PhoneNumber,
-                            PhoneNumberConfirmed = true,
-                        }, false, false);
-                        model.LoginSuccess = true;
-                    }
-                    else
-                    {
-                        AddErrors(new IdentityResult(icdExcutResult.ErrorStr));
-                    }
+                    await signIn(getResult.TResult.UserName, getResult.TResult.UserID, model.LoginPhoneNum);
+                    return Json(new ICDExcuteResult<string> { IsSuccess = true, TResult = returnUrl });
                 }
             }
-            ViewBag.ReturnUrl = returnUrl;
-            return PartialView(model);
+            return Json(new ICDExcuteResult<string> { IsSuccess = false, ErrorStr = "无效的登录" });
         }
 
-        [AllowAnonymous]
-        public PartialViewResult ModalRegister(string returnUrl)
+        private async Task signIn(string userName, string Id, string phoneNum)
         {
-            ViewBag.ReturnUrl = System.Web.HttpUtility.UrlEncode(returnUrl);
-            return PartialView();
-        }
-
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> ModalRegister(TelRegisterViewModel model, string returnUrl)
-        {
-            if (ModelState.IsValid)
+            await SignInHelper.SignInAsync(new ApplicationUser
             {
-                var ip = HttpHelper.GetIPFromRequest(Request);
-                var validateCodeResult = ValidateCodeHelper.VerifyPhoneDymaticCode(model.PhoneNumber, model.DynamicPWD);
-                if (!validateCodeResult)
-                {
-                    AddErrors(new IdentityResult("动态密码不匹配或者已过期"));
-                }
-                else
-                {
-                    IUserAccess access = new DAL_UserAccess();
-                    var icdExcutResult = access.CreateOrLogin(model.PhoneNumber, model.HosipitalName);
-                    if (icdExcutResult.IsSuccess)
-                    {
-                        await SignInHelper.SignInAsync(new ApplicationUser
-                        {
-                            HospitalName = model.HosipitalName,
-                            UserName = model.PhoneNumber,
-                            Id = icdExcutResult.TResult,
-                            PhoneNumber = model.PhoneNumber,
-                            PhoneNumberConfirmed = true,
-                        }, false, false);
-                        model.RegisterSuccess = true;
-                    }
-                    else
-                    {
-                        AddErrors(new IdentityResult(icdExcutResult.ErrorStr));
-                    }
-                }
-            }
-            ViewBag.ReturnUrl = returnUrl;
-            return PartialView(model);
+                UserName = userName,
+                Id = Id,
+                PhoneNumber = phoneNum,
+                PhoneNumberConfirmed = true,
+            }, false, false);
         }
 
         #region 帮助程序

@@ -21,6 +21,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
+using System.Collections.Concurrent;
 
 namespace Docimax.Web_ICD
 {
@@ -114,6 +115,7 @@ namespace Docimax.Web_ICD
             }
             return manager;
         }
+
     }
     public class ApplicationRoleManager : RoleManager<IdentityRole>
     {
@@ -230,26 +232,18 @@ namespace Docimax.Web_ICD
 
         public async Task SignInAsync(ApplicationUser user, bool isPersistent, bool rememberBrowser)
         {
-            try
+            // Clear any partial cookies from external or two factor partial sign ins
+            AuthenticationManager.SignOut(DefaultAuthenticationTypes.ExternalCookie, DefaultAuthenticationTypes.TwoFactorCookie);
+            var userIdentity = await user.GenerateUserIdentityAsync(UserManager);
+            if (rememberBrowser)
             {
-                // Clear any partial cookies from external or two factor partial sign ins
-                AuthenticationManager.SignOut(DefaultAuthenticationTypes.ExternalCookie, DefaultAuthenticationTypes.TwoFactorCookie);
-                var userIdentity = await user.GenerateUserIdentityAsync(UserManager);
-                if (rememberBrowser)
-                {
-                    var rememberBrowserIdentity = AuthenticationManager.CreateTwoFactorRememberBrowserIdentity(user.Id);
-                    AuthenticationManager.SignIn(new AuthenticationProperties { IsPersistent = isPersistent }, userIdentity, rememberBrowserIdentity);
-                }
-                else
-                {
-
-                    AuthenticationManager.SignIn(new AuthenticationProperties { IsPersistent = isPersistent }, userIdentity);
-                }
+                var rememberBrowserIdentity = AuthenticationManager.CreateTwoFactorRememberBrowserIdentity(user.Id);
+                AuthenticationManager.SignIn(new AuthenticationProperties { IsPersistent = isPersistent }, userIdentity, rememberBrowserIdentity);
             }
-            catch (Exception ex)
+            else
             {
 
-                throw;
+                AuthenticationManager.SignIn(new AuthenticationProperties { IsPersistent = isPersistent }, userIdentity);
             }
         }
 

@@ -136,6 +136,7 @@
     <Compile Include="Model\UploadModel\UploadModel.cs" />
     <Compile Include="Model\UploadModel\UploadRequest.cs" />
     <Compile Include="Model\UserInfoModel.cs" />
+    <Compile Include="Model\UserModel.cs" />
     <Compile Include="Model\UserServiceModel.cs" />
     <Compile Include="Model\WebChat\WebChatUserInfo.cs" />
     <Compile Include="Model\WebChat\WebChatUserSearchLog.cs" />

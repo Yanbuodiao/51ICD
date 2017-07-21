@@ -27,9 +27,10 @@ namespace Docimax.Web_ICD.Controllers
                 _userManager = value;
             }
         }
+
         [HttpPost]
         [AllowAnonymous]
-        public async Task<JsonResult> SendPhoneVerifyCode(Telephone telephone)
+        public JsonResult SendPhoneVerifyCode(Telephone telephone)
         {
             if (!ModelState.IsValid)
             {
@@ -61,7 +62,7 @@ namespace Docimax.Web_ICD.Controllers
                             Destination = telephone.PhoneNumber,
                             Body = "您的验证码是：" + code.ValidateCode + "。请不要把验证码泄露给其他人。如非本人操作，可不用理会！",
                         };
-                        await UserManager.SmsService.SendAsync(message);
+                        //await UserManager.SmsService.SendAsync(message);
                         ThreadPool.QueueUserWorkItem(a =>
                         {
                             ISecurity access = new DAL_Security();
@@ -81,11 +82,63 @@ namespace Docimax.Web_ICD.Controllers
                 default:
                     return Json(new ICDExcuteResult<int>
                     {
-                        ErrorStr="没收到短信？请稍等，短信君正在路上",
+                        ErrorStr = "没收到短信？请稍等，短信君正在路上",
                         IsSuccess = false,
                         TResult = verifyResult,
                     });
             }
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public JsonResult PhoneNumUsable(Telephone telephone)
+        {
+            if (!ModelState.IsValid)
+            {
+                return Json(new ICDExcuteResult<string> { IsSuccess = false, ErrorStr = "请输入正确的手机号码" });
+            }
+            IUserAccess access = new DAL_UserAccess();
+            return Json(access.PhoneNumUsable(telephone.PhoneNumber));
+        }
+        [HttpPost]
+        [AllowAnonymous]
+        public JsonResult UserNameUsable(string userName)
+        {
+            if (string.IsNullOrWhiteSpace(userName))
+            {
+                return Json(new ICDExcuteResult<string> { IsSuccess = false, ErrorStr = "用户名不能为空" });
+            }
+            if (userName.Trim().Length > 50)
+            {
+                return Json(new ICDExcuteResult<string> { IsSuccess = false, ErrorStr = "用户名过长" });
+            }
+            IUserAccess access = new DAL_UserAccess();
+            return Json(access.UserNameUsable(userName));
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public JsonResult IsUserNameMatchPhoneNum(string userName, string phoneNum)
+        {
+            if (string.IsNullOrWhiteSpace(userName))
+            {
+                return Json(new ICDExcuteResult<string> { IsSuccess = false,TResult="user", ErrorStr = "用户名不能为空" });
+            }
+            if (string.IsNullOrWhiteSpace(phoneNum))
+            {
+                return Json(new ICDExcuteResult<string> { IsSuccess = false,TResult="phone", ErrorStr = "电话号码不能为空" });
+            }
+            IUserAccess access = new DAL_UserAccess();
+            var userResult = access.GetUserByUserName(userName);
+            if (!userResult.IsSuccess)
+            {
+                return Json(new ICDExcuteResult<string> { IsSuccess = false, ErrorStr = userResult.ErrorStr });
+            }
+            if (!string.IsNullOrWhiteSpace(userResult.TResult.PhoneNumber) && userResult.TResult.PhoneNumber != phoneNum)
+            {
+                return Json(new ICDExcuteResult<string> { IsSuccess = false, TResult = "phone", ErrorStr = "用户名与手机号不匹配" });
+            }
+            return Json(new ICDExcuteResult<string> { IsSuccess = true });
         }
     }
 }

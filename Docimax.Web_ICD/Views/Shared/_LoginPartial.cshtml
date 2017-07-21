@@ -17,6 +17,7 @@ else
 {
     <ul class="nav navbar-nav icd navbar-right">
         <li>@Html.ActionLink("注册", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
-        <li>@Html.ActionLink("登录", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+        @*<li>@Html.ActionLink("登录", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>*@
+        <li><a id="loginLink" style="cursor:pointer">登录</a></li>
     </ul>
 }

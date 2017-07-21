@@ -68,8 +68,10 @@ namespace Docimax.Web_ICD.Models
     public class AddPhoneNumberViewModel
     {
         [Display(Name = "电话号码")]
+        [Phone]
         public string Number { get; set; }
         public DateTime LastSendTime { get; set; }
+        public string ValidateCode { get; set; }
         /// <summary>
         /// 延迟时间
         /// </summary>
