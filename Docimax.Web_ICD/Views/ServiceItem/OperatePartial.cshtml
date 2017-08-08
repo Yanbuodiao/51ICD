@@ -2,7 +2,7 @@
 @model Docimax.Interface_ICD.Model.OperationCodeResult
 @using (@Html.BeginCollectionItem("OperationCodeResultList"))
 {
-    <div class="form-inline" id="operate">
+    <div class="form-inline" id="operate" style="margin-bottom:5px">
         <div class="input-group">
             <span class="input-group-addon"><span class="glyphicon glyphicon-list-alt"></span></span>
             @Html.TextBoxFor(e => e.OperationName, null, new { @class = "form-control", @placeholder = "临床手术或操作", @style = "min-width:240px" })

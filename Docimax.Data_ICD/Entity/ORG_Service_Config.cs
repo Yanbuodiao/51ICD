@@ -29,5 +29,6 @@ namespace Docimax.Data_ICD.Entity
         public Nullable<int> LastModityUserID { get; set; }
         public Nullable<int> DeleteFlag { get; set; }
         public byte[] LastModifyStamp { get; set; }
+        public Nullable<int> IsAssigned { get; set; }
     }
 }

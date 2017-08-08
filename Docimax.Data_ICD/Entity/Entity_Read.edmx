@@ -355,6 +355,7 @@
           <Property Name="LastModifyUserID" Type="nvarchar" MaxLength="128" />
           <Property Name="DeleteFlag" Type="int" />
           <Property Name="LastModifyStamp" Type="timestamp" StoreGeneratedPattern="Computed" />
+          <Property Name="ClinicalDiagnosis" Type="nvarchar" MaxLength="200" />
         </EntityType>
         <EntityType Name="Code_Order_Operate">
           <Key>
@@ -378,6 +379,7 @@
           <Property Name="LastModifyUserID" Type="nvarchar" MaxLength="128" />
           <Property Name="DeleteFlag" Type="int" />
           <Property Name="LastModifyStamp" Type="timestamp" StoreGeneratedPattern="Computed" />
+          <Property Name="ClinicalOperate" Type="nvarchar" MaxLength="200" />
         </EntityType>
         <EntityType Name="Code_Order_UploadedItem">
           <Key>
@@ -437,7 +439,7 @@
           <Key>
             <PropertyRef Name="OrganizationID" />
           </Key>
-          <Property Name="OrganizationID" Type="int" Nullable="false" />
+          <Property Name="OrganizationID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="AuthorizeCode" Type="nvarchar" MaxLength="300" Nullable="false" />
           <Property Name="OrganizationCode" Type="nvarchar" MaxLength="300" />
           <Property Name="OrganizationName" Type="nvarchar" MaxLength="300" />
@@ -570,6 +572,21 @@
           <Property Name="LastModifyUserID" Type="int" />
           <Property Name="DeleteFlag" Type="int" />
         </EntityType>
+        <EntityType Name="ORG_Service_Assign">
+          <Key>
+            <PropertyRef Name="ORG_Service_AssignedID" />
+          </Key>
+          <Property Name="ORG_Service_AssignedID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ORG_ServiceID" Type="int" />
+          <Property Name="UserID" Type="nvarchar" MaxLength="128" />
+          <Property Name="Enable" Type="bit" />
+          <Property Name="CreateTime" Type="datetime" />
+          <Property Name="CreateUserID" Type="nvarchar" MaxLength="128" />
+          <Property Name="LastModtifyTime" Type="datetime" />
+          <Property Name="LastModityUserID" Type="nvarchar" MaxLength="128" />
+          <Property Name="LastModifyStamp" Type="timestamp" StoreGeneratedPattern="Computed" />
+          <Property Name="ORG_ID" Type="int" />
+        </EntityType>
         <EntityType Name="ORG_Service_Config">
           <Key>
             <PropertyRef Name="ORG_ServiceID" />
@@ -589,6 +606,7 @@
           <Property Name="LastModityUserID" Type="int" />
           <Property Name="DeleteFlag" Type="int" />
           <Property Name="LastModifyStamp" Type="timestamp" StoreGeneratedPattern="Computed" />
+          <Property Name="IsAssigned" Type="int" />
         </EntityType>
         <EntityType Name="ORG_Service_Item">
           <Key>
@@ -874,6 +892,7 @@
           <EntitySet Name="Dic_Service_Menu" EntityType="Self.Dic_Service_Menu" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Order_Interface" EntityType="Self.Order_Interface" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ORG_Attach" EntityType="Self.ORG_Attach" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ORG_Service_Assign" EntityType="Self.ORG_Service_Assign" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ORG_Service_Config" EntityType="Self.ORG_Service_Config" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ORG_Service_Item" EntityType="Self.ORG_Service_Item" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ORG_Service_Provider" EntityType="Self.ORG_Service_Provider" Schema="dbo" store:Type="Tables" />
@@ -1004,6 +1023,7 @@
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
           </AssociationSet>
+          <EntitySet Name="ORG_Service_Assign" EntityType="ICD_DBModel.ORG_Service_Assign" />
         </EntityContainer>
         <EntityType Name="C__MigrationHistory">
           <Key>
@@ -1328,6 +1348,7 @@
           <Property Name="LastModifyUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="DeleteFlag" Type="Int32" />
           <Property Name="LastModifyStamp" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="ClinicalDiagnosis" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Code_Order_Operate">
           <Key>
@@ -1351,6 +1372,7 @@
           <Property Name="LastModifyUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="DeleteFlag" Type="Int32" />
           <Property Name="LastModifyStamp" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="ClinicalOperate" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Code_Order_UploadedItem">
           <Key>
@@ -1410,7 +1432,7 @@
           <Key>
             <PropertyRef Name="OrganizationID" />
           </Key>
-          <Property Name="OrganizationID" Type="Int32" Nullable="false" />
+          <Property Name="OrganizationID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="AuthorizeCode" Type="String" Nullable="false" MaxLength="300" FixedLength="false" Unicode="true" />
           <Property Name="OrganizationCode" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
           <Property Name="OrganizationName" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
@@ -1562,6 +1584,7 @@
           <Property Name="LastModityUserID" Type="Int32" />
           <Property Name="DeleteFlag" Type="Int32" />
           <Property Name="LastModifyStamp" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="IsAssigned" Type="Int32" />
         </EntityType>
         <EntityType Name="ORG_Service_Item">
           <Key>
@@ -1834,6 +1857,21 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="ORG_Service_Assign">
+          <Key>
+            <PropertyRef Name="ORG_Service_AssignedID" />
+          </Key>
+          <Property Name="ORG_Service_AssignedID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ORG_ServiceID" Type="Int32" />
+          <Property Name="UserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="Enable" Type="Boolean" />
+          <Property Name="CreateTime" Type="DateTime" Precision="3" />
+          <Property Name="CreateUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="LastModtifyTime" Type="DateTime" Precision="3" />
+          <Property Name="LastModityUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="LastModifyStamp" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="ORG_ID" Type="Int32" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2160,6 +2198,7 @@
           <EntitySetMapping Name="Code_Order_Diagnosis">
             <EntityTypeMapping TypeName="ICD_DBModel.Code_Order_Diagnosis">
               <MappingFragment StoreEntitySet="Code_Order_Diagnosis">
+                <ScalarProperty Name="ClinicalDiagnosis" ColumnName="ClinicalDiagnosis" />
                 <ScalarProperty Name="LastModifyStamp" ColumnName="LastModifyStamp" />
                 <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
                 <ScalarProperty Name="LastModifyUserID" ColumnName="LastModifyUserID" />
@@ -2177,6 +2216,7 @@
           <EntitySetMapping Name="Code_Order_Operate">
             <EntityTypeMapping TypeName="ICD_DBModel.Code_Order_Operate">
               <MappingFragment StoreEntitySet="Code_Order_Operate">
+                <ScalarProperty Name="ClinicalOperate" ColumnName="ClinicalOperate" />
                 <ScalarProperty Name="LastModifyStamp" ColumnName="LastModifyStamp" />
                 <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
                 <ScalarProperty Name="LastModifyUserID" ColumnName="LastModifyUserID" />
@@ -2403,6 +2443,7 @@
           <EntitySetMapping Name="ORG_Service_Config">
             <EntityTypeMapping TypeName="ICD_DBModel.ORG_Service_Config">
               <MappingFragment StoreEntitySet="ORG_Service_Config">
+                <ScalarProperty Name="IsAssigned" ColumnName="IsAssigned" />
                 <ScalarProperty Name="LastModifyStamp" ColumnName="LastModifyStamp" />
                 <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
                 <ScalarProperty Name="LastModityUserID" ColumnName="LastModityUserID" />
@@ -2667,6 +2708,22 @@
               <ScalarProperty Name="Id" ColumnName="UserId" />
             </EndProperty>
           </AssociationSetMapping>
+          <EntitySetMapping Name="ORG_Service_Assign">
+            <EntityTypeMapping TypeName="ICD_DBModel.ORG_Service_Assign">
+              <MappingFragment StoreEntitySet="ORG_Service_Assign">
+                <ScalarProperty Name="ORG_ID" ColumnName="ORG_ID" />
+                <ScalarProperty Name="LastModifyStamp" ColumnName="LastModifyStamp" />
+                <ScalarProperty Name="LastModityUserID" ColumnName="LastModityUserID" />
+                <ScalarProperty Name="LastModtifyTime" ColumnName="LastModtifyTime" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="Enable" ColumnName="Enable" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="ORG_ServiceID" ColumnName="ORG_ServiceID" />
+                <ScalarProperty Name="ORG_Service_AssignedID" ColumnName="ORG_Service_AssignedID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

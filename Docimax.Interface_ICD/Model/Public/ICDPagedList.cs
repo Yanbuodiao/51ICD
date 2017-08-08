@@ -43,7 +43,7 @@ namespace Docimax.Interface_ICD.Model
         /// <summary>
         /// 当前页数
         /// </summary>
-        public int PageIndex
+        public int Page
         {
             get
             {
@@ -94,7 +94,7 @@ namespace Docimax.Interface_ICD.Model
 
         public string PageScript
         {
-            get { return PageHelper.InitialPageScript(TotalRecords, PageSize, PageIndex); }
+            get { return PageHelper.InitialPageScript(TotalRecords, PageSize, Page); }
         }
     }
 }

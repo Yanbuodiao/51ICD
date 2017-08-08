@@ -23,9 +23,7 @@
                 @Html.DisplayFor(modelItem => item.UserName)
             </td>
             <td>
-                @Html.ActionLink("编辑用户", "Edit", new { id = item.Id }) |
                 @Html.ActionLink("用户详情", "Details", new { id = item.Id })
-                @*|@Html.ActionLink("冻结用户", "Delete", new { id = item.Id })*@
             </td>
         </tr>
     }

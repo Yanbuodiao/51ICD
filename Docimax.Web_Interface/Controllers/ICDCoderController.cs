@@ -28,14 +28,14 @@ namespace Docimax.Web_Interface.Controllers
             var verifyResult = BaseVerify.RequiredValidate<MedicalRecordCoding>(requestModel);
             if (!verifyResult.IsSuccess)
             {
-                return base.buildResponseAndLog(verifyResult.ErrorStr, (ViewBag.log as BaseLog));
+                return buildResponseAndLog(verifyResult.ErrorStr, (ViewBag.log as BaseLog));
             }
             var medicalRecord = requestModel.UploadContent;
             //todo  根据ticketID 查询回复的信息  能查到  直接返回
             verifyResult = Verify(medicalRecord);
             if (!verifyResult.IsSuccess)
             {
-                return base.buildResponseAndLog(verifyResult.ErrorStr, (ViewBag.log as BaseLog));
+                return buildResponseAndLog(verifyResult.ErrorStr, (ViewBag.log as BaseLog));
             }
 
             #endregion
@@ -50,7 +50,6 @@ namespace Docimax.Web_Interface.Controllers
             {
                 return base.buildResponseAndLog(saveResult.ErrorStr, (ViewBag.log as BaseLog));
             }
-            //todo 返回同步通知
             return base.buildResponseAndLog(MessageStr.SyncStr, (ViewBag.log as BaseLog));
         }
 

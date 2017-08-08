@@ -11,7 +11,7 @@
         <div class="col-md-3">
             @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", @onblur = "validateUserName()", placeholder = "ÇëÊäÈëÄúµÄÓÊÏä" })
         </div>
-        <label class="control-label" id="error_UserName"></label>
+        <label class="col-md-2 control-label" id="error_UserName"></label>
     </div>
     <div class="form-group" id="div_HosipitalName">
         @Html.LabelFor(m => m.HosipitalName, new { @class = "col-md-2 control-label" })
@@ -35,7 +35,7 @@
         <label class="control-label" id="error_DynamicPWD" onclick="sendValidationCode()"></label>
     </div>
     <div class="form-group" id="div_Password">
-        @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
+        @Html.Label("ÃÜ  Âë", new { @class = "col-md-2 control-label" })
         <div class="col-md-3">
             @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
         </div>

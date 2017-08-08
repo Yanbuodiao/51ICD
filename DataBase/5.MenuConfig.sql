@@ -1,0 +1,65 @@
+--INSERT INTO [dbo].[Dic_Menu]
+--           ([DisplayName]
+--           ,[AreaName]
+--           ,[ControllerName]
+--           ,[ActionName]
+--           ,[MenuIndex]
+--           ,[ParentMenuID]
+--           ,[RoleControl])
+--		   values('HOME',null,'Home','Index',0,NULL,NULL)
+--INSERT INTO [dbo].[Dic_Menu]
+--           ([DisplayName]
+--           ,[AreaName]
+--           ,[ControllerName]
+--           ,[ActionName]
+--           ,[MenuIndex]
+--           ,[ParentMenuID]
+--           ,[RoleControl])
+--		   values('服务详细介绍',null,'Home','Detail',1000,NULL,NULL)
+--INSERT INTO [51ICD_DB].[dbo].[Dic_Menu]
+--           ([DisplayName]
+--           ,[AreaName]
+--           ,[ControllerName]
+--           ,[ActionName]
+--           ,[MenuIndex]
+--           ,[ParentMenuID]
+--           ,[RoleControl])
+--		   values('编码订单',null,'UploadItem','Index',100,NULL,1)
+--INSERT INTO [51ICD_DB].[dbo].[Dic_Menu]
+--           ([DisplayName]
+--           ,[AreaName]
+--           ,[ControllerName]
+--           ,[ActionName]
+--           ,[MenuIndex]
+--           ,[ParentMenuID]
+--           ,[RoleControl])
+--		   values('我的订单',NULL,'ServiceItem','Index',100,NULL,1)
+--INSERT INTO [51ICD_DB].[dbo].[Dic_Menu]
+--           ([DisplayName]
+--           ,[AreaName]
+--           ,[ControllerName]
+--           ,[ActionName]
+--           ,[MenuIndex]
+--           ,[ParentMenuID]
+--           ,[RoleControl])
+--		   values('编码抢单',NULL,'UnRobItem','Index',200,NULL,1)
+--INSERT INTO [51ICD_DB].[dbo].[Dic_Menu]
+--           ([DisplayName]
+--           ,[AreaName]
+--           ,[ControllerName]
+--           ,[ActionName]
+--           ,[MenuIndex]
+--           ,[ParentMenuID]
+--           ,[RoleControl])
+--		   values('用户协议',NULL,'Home','Contact',19000,NULL,1)
+--INSERT INTO [51ICD_DB].[dbo].[Dic_Menu]
+--           ([DisplayName]
+--           ,[AreaName]
+--           ,[ControllerName]
+--           ,[ActionName]
+--           ,[MenuIndex]
+--           ,[ParentMenuID]
+--           ,[RoleControl])
+--		   values('联系我们',NULL,'Home','About',20000,NULL,NULL)
+
+select * from dbo.Dic_Menu

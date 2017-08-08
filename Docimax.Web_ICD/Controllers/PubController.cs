@@ -30,7 +30,7 @@ namespace Docimax.Web_ICD.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        public JsonResult SendPhoneVerifyCode(Telephone telephone)
+        public async Task<JsonResult> SendPhoneVerifyCode(Telephone telephone)
         {
             if (!ModelState.IsValid)
             {
@@ -62,7 +62,7 @@ namespace Docimax.Web_ICD.Controllers
                             Destination = telephone.PhoneNumber,
                             Body = "您的验证码是：" + code.ValidateCode + "。请不要把验证码泄露给其他人。如非本人操作，可不用理会！",
                         };
-                        //await UserManager.SmsService.SendAsync(message);
+                        await UserManager.SmsService.SendAsync(message);
                         ThreadPool.QueueUserWorkItem(a =>
                         {
                             ISecurity access = new DAL_Security();
@@ -122,11 +122,11 @@ namespace Docimax.Web_ICD.Controllers
         {
             if (string.IsNullOrWhiteSpace(userName))
             {
-                return Json(new ICDExcuteResult<string> { IsSuccess = false,TResult="user", ErrorStr = "用户名不能为空" });
+                return Json(new ICDExcuteResult<string> { IsSuccess = false, TResult = "user", ErrorStr = "用户名不能为空" });
             }
             if (string.IsNullOrWhiteSpace(phoneNum))
             {
-                return Json(new ICDExcuteResult<string> { IsSuccess = false,TResult="phone", ErrorStr = "电话号码不能为空" });
+                return Json(new ICDExcuteResult<string> { IsSuccess = false, TResult = "phone", ErrorStr = "电话号码不能为空" });
             }
             IUserAccess access = new DAL_UserAccess();
             var userResult = access.GetUserByUserName(userName);

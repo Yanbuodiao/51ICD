@@ -202,6 +202,9 @@
     <Compile Include="Entity\ORG_Attach.cs">
       <DependentUpon>Entity_Read.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entity\ORG_Service_Assign.cs">
+      <DependentUpon>Entity_Read.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entity\ORG_Service_Config.cs">
       <DependentUpon>Entity_Read.tt</DependentUpon>
     </Compile>

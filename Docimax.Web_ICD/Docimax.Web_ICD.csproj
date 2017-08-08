@@ -310,6 +310,7 @@
     <Content Include="WebChatHtml\Index.html" />
     <None Include="Properties\PublishProfiles\51icd - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\51icd - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\51icd_publish.pubxml" />
     <None Include="Properties\PublishProfiles\ftpPublish.pubxml" />
     <None Include="Properties\PublishProfiles\FtpPublish_Azure.pubxml" />
     <Content Include="Scripts\handlebars.amd.js" />
@@ -477,7 +478,9 @@
     <Content Include="Views\Account\ConfirmEmailNotify.cshtml" />
     <Content Include="Views\Home\Detail.cshtml" />
     <Content Include="Views\Shared\MenuList.cshtml" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Views\Manage\VerifyIdentity.cshtml" />
     <Content Include="Views\VerificationCode\Index.cshtml" />
     <Content Include="Views\Account\Manage.cshtml">
@@ -492,11 +495,8 @@
     <Content Include="Views\Service\ServiceApply.cshtml" />
     <Content Include="Views\Service\ServiceApplyDetail.cshtml" />
     <Content Include="Views\RoleAdmin\Index.cshtml" />
-    <Content Include="Views\RoleAdmin\Create.cshtml" />
-    <Content Include="Views\RoleAdmin\Edit.cshtml" />
     <Content Include="Views\RoleAdmin\Details.cshtml" />
     <Content Include="Views\UsersAdmin\Index.cshtml" />
-    <Content Include="Views\UsersAdmin\Edit.cshtml" />
     <Content Include="Views\UsersAdmin\Details.cshtml" />
     <Content Include="Views\ManageUserVeirfy\Index.cshtml" />
     <Content Include="Views\ManageUserVeirfy\ApproveDetail.cshtml" />

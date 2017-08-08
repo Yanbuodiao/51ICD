@@ -27,7 +27,7 @@ namespace Docimax.Web_ICD.Controllers_Manage
             var queryModel = new ICDTimePagedList<UserCertificationSearch, VerifyUserModel>
             {
                 SearchModel = model.SearchModel,
-                PageIndex = model.PageIndex,
+                Page = model.Page,
                 PageSize = model.PageSize,
                 TextFilter = model.TextFilter,
             };

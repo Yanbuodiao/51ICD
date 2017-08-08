@@ -8,14 +8,14 @@ namespace Docimax.Interface_ICD.Model.UploadModel
     /// <summary>
     /// 病案编码实体类  病案号+出院时间+住院次数  形成唯一标记号
     /// </summary>
-    public class MedicalRecordCoding:BaseModel
+    public class MedicalRecordCoding : BaseModel
     {
         /// <summary>
         /// 订单ID
         /// </summary>
         [JsonIgnore]
         public int CodeOrderID { get; set; }
-
+        public ICDOrderState OrderStatus { get; set; }
         #region 唯一标记一份病案
 
         /// <summary>
@@ -78,6 +78,8 @@ namespace Docimax.Interface_ICD.Model.UploadModel
         /// </summary>
         [JsonIgnore]
         public OrderTypeEnum OrderType { get; set; }
+        [JsonIgnore]
+        public string MedicalRecordPath { get; set; }
 
         /// <summary>
         /// 死亡记录

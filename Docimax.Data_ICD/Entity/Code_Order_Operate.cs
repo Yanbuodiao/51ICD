@@ -32,5 +32,6 @@ namespace Docimax.Data_ICD.Entity
         public string LastModifyUserID { get; set; }
         public Nullable<int> DeleteFlag { get; set; }
         public byte[] LastModifyStamp { get; set; }
+        public string ClinicalOperate { get; set; }
     }
 }

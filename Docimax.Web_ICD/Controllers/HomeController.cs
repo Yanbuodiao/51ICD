@@ -128,7 +128,7 @@ namespace Docimax.Web_ICD.Controllers
             saveSearchLog(model);
             var result = ICDVersionList.GetICDViewModelList(model.TextFilter, model.SearchModel.ICDType.GetHashCode());
             model.TotalRecords = result.Count();
-            result = result.Skip((model.PageIndex - 1) * model.PageSize)
+            result = result.Skip((model.Page - 1) * model.PageSize)
                     .Take(model.PageSize).ToList();
             return result;
         }
@@ -162,7 +162,7 @@ namespace Docimax.Web_ICD.Controllers
             }
             var result = ICDVersionList.GetICDList(model.SearchModel.IcdVersionID, model.TextFilter);
             model.TotalRecords = result.Count();
-            result = result.Skip((model.PageIndex - 1) * model.PageSize)
+            result = result.Skip((model.Page - 1) * model.PageSize)
                     .Take(model.PageSize).ToList();
             return result;
         }

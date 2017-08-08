@@ -43,6 +43,7 @@ namespace Docimax.Data_ICD.DAL
                         .ToList().Select(e => new DiagnosisCodeResult
                         {
                             CodeOrderID = codeOrderID,
+                            Diagnosis = e.ClinicalDiagnosis,
                             ICDCode = e.ICD_Code,
                             ICDName = e.ICD_Content,
                             DisplayText = string.Format("{0}-{1}", e.ICD_Code, e.ICD_Content),
@@ -52,13 +53,14 @@ namespace Docimax.Data_ICD.DAL
                         .ToList().Select(e => new OperationCodeResult
                         {
                             CodeOrderID = codeOrderID,
+                            OperationName = e.ClinicalOperate,
                             ICDCode = e.ICDCode,
                             ICDName = e.ICDContent,
                             DisplayText = string.Format("{0}-{1}", e.ICDCode, e.ICDContent),
-                            Index = e.OperateIndex??0,
+                            Index = e.OperateIndex ?? 0,
                         }).ToList();
-                    result.OperateList = dbOperate;
-                    result.DiagnosisList = dbDiagnosis;
+                    result.OperationCodeResultList = dbOperate;
+                    result.DiagnosisCodeResultList = dbDiagnosis;
                     var codeItems = entity.Code_Order_UploadedItem.Where(e => e.CodeOrderID == codeOrderID && e.DeleteFlag != 1)
                         .ToList().Select(p => new UploadedItemModel
                         {
@@ -178,7 +180,7 @@ namespace Docimax.Data_ICD.DAL
                                  o.ORGSubID,
                                  o.CodeOrderID
                              }).OrderByDescending(e => e.Createtime);
-                var resultQuery = query.Skip((queryModel.PageIndex - 1) * queryModel.PageSize)
+                var resultQuery = query.Skip((queryModel.Page - 1) * queryModel.PageSize)
                     .Take(queryModel.PageSize)
                     .ToList().Select(e => new CodeOrderModel
                     {
@@ -200,10 +202,14 @@ namespace Docimax.Data_ICD.DAL
         {
             using (var entity = new Entity_Read())
             {
+                var serviceName = "ICD编码";
                 var stateInt = queryModel.SearchModel.OrderState.GetHashCode();
                 var query = (from org in entity.Dic_Organization
                              join o in entity.Code_Order on org.OrganizationID equals o.ORGID
-                             where o.OrderStatus == stateInt
+                             join sc in entity.ORG_Service_Config on o.ORGID equals sc.ORGID
+                             join s in entity.Dic_Service.Where(e => e.ServiceName == serviceName) on sc.ServiceID equals s.ServiceID
+                             where o.OrderStatus == stateInt &&
+                             (sc.IsAssigned != 1 || (entity.ORG_Service_Assign.Any(e => e.UserID == queryModel.SearchModel.UserID && e.Enable == true && e.ORG_ID == o.ORGID)))
                              select new
                              {
                                  o.PlatformOrderCode,
@@ -216,7 +222,7 @@ namespace Docimax.Data_ICD.DAL
                                  o.CodeOrderID,
                                  o.LastModifyStamp,
                              }).OrderByDescending(e => e.Createtime);
-                var resultQuery = query.Skip((queryModel.PageIndex - 1) * queryModel.PageSize)
+                var resultQuery = query.Skip((queryModel.Page - 1) * queryModel.PageSize)
                     .Take(queryModel.PageSize)
                     .ToList().Select(e => new CodeOrderModel
                     {
@@ -259,7 +265,7 @@ namespace Docimax.Data_ICD.DAL
                                  or.OrganizationName,
                                  o.CodeOrderID
                              }).OrderByDescending(e => e.Createtime);
-                var resultQuery = query.Skip((queryModel.PageIndex - 1) * queryModel.PageSize)
+                var resultQuery = query.Skip((queryModel.Page - 1) * queryModel.PageSize)
                     .Take(queryModel.PageSize)
                     .ToList().Select(e => new CodeOrderModel
                     {
@@ -336,13 +342,61 @@ namespace Docimax.Data_ICD.DAL
 
                     #region 诊断处理
 
-                    uploadDiagnosis(model.CodeOrderID,model.DiagnosisList, entity);
+                    uploadDiagnosis(model.CodeOrderID, model.DiagnosisCodeResultList, entity);
 
                     #endregion
 
                     #region 手术操作处理
 
-                    uploadOperate(model.CodeOrderID, model.OperateList, entity);
+                    uploadOperate(model.CodeOrderID, model.OperationCodeResultList, entity);
+
+                    #endregion
+
+                    entity.SaveChanges();
+                    trasanction.Commit();
+                }
+            }
+            return new ICDExcuteResult<int> { IsSuccess = true, TResult = model.CodeOrderID };
+        }
+
+        /// <summary>
+        /// 保存编码结果
+        /// </summary>
+        /// <param name="model">页面提交的编码结果</param>
+        /// <returns>保存结果</returns>
+        public ICDExcuteResult<int> SaveCodeResult(MedicalRecordCoding model)
+        {
+            using (var entity = new Entity_Write())
+            {
+                using (var trasanction = entity.Database.BeginTransaction())
+                {
+                    var orderModel = entity.Code_Order.FirstOrDefault(e => e.CodeOrderID == model.CodeOrderID);
+                    if (orderModel == null)
+                    {
+                        trasanction.Rollback();
+                        return new ICDExcuteResult<int> { IsSuccess = false, ErrorStr = "未找到相应的订单" };
+                    }
+                    if (Convert.ToBase64String(orderModel.LastModifyStamp) != model.LastModifyStamp)
+                    {
+                        trasanction.Rollback();
+                        return new ICDExcuteResult<int> { IsSuccess = false, ErrorStr = "很遗憾，已经有人在您前面提交" };
+                    }
+                    if (orderModel.OrderStatus < model.OrderStatus.GetHashCode())
+                    {
+                        orderModel.OrderStatus = model.OrderStatus.GetHashCode();
+                    }
+                    orderModel.LastModifyUserID = model.LastModifyUserID;
+                    orderModel.LastModifyTime = DateTime.Now;
+
+                    #region 诊断处理
+
+                    uploadDiagnosis(model.CodeOrderID, model.DiagnosisCodeResultList, entity);
+
+                    #endregion
+
+                    #region 手术操作处理
+
+                    uploadOperate(model.CodeOrderID, model.OperationCodeResultList, entity);
 
                     #endregion
 
@@ -508,7 +562,7 @@ namespace Docimax.Data_ICD.DAL
 
                     #region 诊断处理
 
-                    uploadDiagnosis(model.CodeOrderID,model.DiagnosisCodeResultList, entity);
+                    uploadDiagnosis(model.CodeOrderID, model.DiagnosisCodeResultList, entity);
 
                     #endregion
 
@@ -631,11 +685,9 @@ namespace Docimax.Data_ICD.DAL
                 }
                 else
                 {
-                    if (diagnosis.Index != e.DiagnosisIndex)
-                    {
-                        e.DiagnosisIndex = diagnosis.Index;
-                        e.LastModifyTime = diagnosis.LastModifyTime;
-                    }
+                    e.ClinicalDiagnosis = diagnosis.Diagnosis;
+                    e.DiagnosisIndex = diagnosis.Index;
+                    e.LastModifyTime = diagnosis.LastModifyTime;
                 }
             });
             diagnosisList.Where(p => !string.IsNullOrWhiteSpace(p.ICDName)).ToList().ForEach(e =>
@@ -649,6 +701,7 @@ namespace Docimax.Data_ICD.DAL
                         CreateTime = e.CreateTime,
                         CreateUserID = e.CreateUserID,
                         DiagnosisIndex = e.Index,
+                        ClinicalDiagnosis = e.Diagnosis,
                         ICD_Code = e.ICDCode,
                         ICD_Content = e.ICDName,
                         LastModifyTime = e.LastModifyTime,
@@ -670,12 +723,10 @@ namespace Docimax.Data_ICD.DAL
                 }
                 else
                 {
-                    if (operate.Index != e.OperateIndex)
-                    {
-                        e.OperateIndex = operate.Index;
-                        e.LastModifyUserID = operate.LastModifyUserID;
-                        e.LastModifyTime = operate.LastModifyTime;
-                    }
+                    e.ClinicalOperate = operate.OperationName;
+                    e.OperateIndex = operate.Index;
+                    e.LastModifyUserID = operate.LastModifyUserID;
+                    e.LastModifyTime = operate.LastModifyTime;
                 }
             });
             operateList.Where(p => !string.IsNullOrWhiteSpace(p.ICDName)).ToList().ForEach(e =>
@@ -691,6 +742,7 @@ namespace Docimax.Data_ICD.DAL
                         OperateIndex = e.Index,
                         ICDCode = e.ICDCode,
                         ICDContent = e.ICDName,
+                        ClinicalOperate = e.OperationName,
                         LastModifyTime = e.LastModifyTime,
                         LastModifyUserID = e.LastModifyUserID,
                     };

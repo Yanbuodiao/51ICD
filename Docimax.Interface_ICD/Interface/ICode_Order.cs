@@ -74,6 +74,13 @@ namespace Docimax.Interface_ICD.Interface
         ICDExcuteResult<int> SaveCodeResult(CodeOrderModel model);
 
         /// <summary>
+        /// 保存编码结果
+        /// </summary>
+        /// <param name="model">页面提交的编码结果</param>
+        /// <returns>保存结果</returns>
+        ICDExcuteResult<int> SaveCodeResult(MedicalRecordCoding model);
+
+        /// <summary>
         /// 根据上传的病案信息（病案号  住院次  出院日期）判断是否已经存在相关的编码订单
         /// </summary>
         /// <param name="mr">病案信息</param>

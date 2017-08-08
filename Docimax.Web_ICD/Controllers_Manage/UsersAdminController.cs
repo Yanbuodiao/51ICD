@@ -68,62 +68,6 @@ namespace Docimax.Web_ICD.Controllers
             ViewBag.RoleNames = await UserManager.GetRolesAsync(user.Id);
             return View(user);
         }
-        //
-        //读取用户编辑
-        // GET: /Users/Edit/1
-        public async Task<ActionResult> Edit(string id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            var user = await UserManager.FindByIdAsync(id);
-            if (user == null)
-            {
-                return HttpNotFound();
-            }
-            var userRoles = await UserManager.GetRolesAsync(user.Id);
-            return View(new EditUserViewModel()
-            {
-                Id = user.Id,
-                Email = user.Email,
-                RolesList = RoleManager.Roles.ToList().Select(x => new SelectListItem()
-                {
-                    Selected = userRoles.Contains(x.Name),
-                    Text = x.Name,
-                    Value = x.Name
-                })
-            });
-        }
-        //
-        //写入用户编辑
-        // POST: /Users/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Email,Id")]EditUserViewModel editUser, params string[] selectedRole)
-        {
-            if (ModelState.IsValid)
-            {
-                var user = await UserManager.FindByIdAsync(editUser.Id);
-                if (user == null)
-                {
-                    return HttpNotFound();
-                }
-                user.UserName = editUser.Email;
-                user.Email = editUser.Email;
-
-                var userRoles = await UserManager.GetRolesAsync(user.Id);
-                selectedRole = selectedRole ?? new string[] { };
-                var result = await UserManager.AddToRolesAsync(user.Id, selectedRole.Except(userRoles).ToArray<string>());
-                if (!result.Succeeded)
-                {
-                    ModelState.AddModelError("", result.Errors.First());
-                    return View();
-                }
-                return RedirectToAction("Index");
-            }
-            ModelState.AddModelError("", "操作失败。");
-            return View();
-        }
+      
     }
 }

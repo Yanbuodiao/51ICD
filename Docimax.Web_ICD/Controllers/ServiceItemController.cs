@@ -11,6 +11,7 @@ using Docimax.Common;
 using Docimax.Interface_ICD.Model.UploadModel;
 using Docimax.Common_ICD;
 using System.Collections.Generic;
+using System.Text;
 
 namespace Docimax.Web_ICD.Controllers
 {
@@ -50,7 +51,7 @@ namespace Docimax.Web_ICD.Controllers
         {
             ICode_Order access = new DAL_Code_Order();
             var userID = User.Identity.GetUserId();
-            var validateResult = validateCodeModel(model.CodeOrderID,model.DiagnosisList,model.OperateList, userID);
+            var validateResult = validateCodeModel(model.CodeOrderID, model.DiagnosisCodeResultList, model.OperationCodeResultList, userID);
             if (!string.IsNullOrWhiteSpace(validateResult))
             {
                 ModelState.AddModelError("", validateResult);
@@ -69,7 +70,6 @@ namespace Docimax.Web_ICD.Controllers
                     return RedirectToAction("Index", "ServiceItem");
                 }
                 model = access.GetCodeOrderDetail(userID, model.CodeOrderID);
-                ModelState.Remove("LastModifyStamp");
                 initalDiagnosis(model);
                 initialOperate(model);
                 return View(model);
@@ -87,15 +87,19 @@ namespace Docimax.Web_ICD.Controllers
                 ViewBag.ErrorStr = "您无权限查看该订单！";
                 return View();
             }
-            var model = access.GetCodeOrder(orderID);
-            if (model != null)
+            var inModel = access.GetCodeOrder(orderID);
+            if (inModel != null)
             {
-                var bytes = FileHelper.GetFile(model.MedicalRecordPath);
-                var str = System.Text.Encoding.UTF8.GetString(bytes);
+                var bytes = FileHelper.GetFile(inModel.MedicalRecordPath);
+                var str = Encoding.UTF8.GetString(bytes);
                 var mr = JsonHelper.DeserializeObject<MedicalRecordCoding>(str);
-                mr = initalCode(mr, model.Diagnosis_ICD_VersionID, model.Operation_ICD_VersionID);
-                ViewBag.PlatformOrderCode = model.PlatformOrderCode;
-                mr.CodeOrderID = orderID;
+                if (mr != null)
+                {
+                    mr = initalCode(mr, inModel.Diagnosis_ICD_VersionID, inModel.Operation_ICD_VersionID);
+                    mr.CodeOrderID = orderID;
+                    mr.LastModifyStamp = inModel.LastModifyStamp;
+                }
+                ViewBag.PlatformOrderCode = inModel.PlatformOrderCode;
                 return View(mr);
             }
             return View();
@@ -117,54 +121,93 @@ namespace Docimax.Web_ICD.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult InterfaceOrdeCode(MedicalRecordCoding model, string submit)
         {
-            ICode_Order access = new DAL_Code_Order();
             var userID = User.Identity.GetUserId();
             var validateResult = validateCodeModel(model.CodeOrderID, model.DiagnosisCodeResultList, model.OperationCodeResultList, userID);
+            MedicalRecordCoding mr = getMr(model);
             if (!string.IsNullOrWhiteSpace(validateResult))
             {
                 ModelState.AddModelError("", validateResult);
-                ICode_Order dAccess = new DAL_Code_Order();
-                var inModel = access.GetCodeOrder(model.CodeOrderID);
-                if (inModel != null)
+                if (mr != null)
                 {
-                    var bytes = FileHelper.GetFile(inModel.MedicalRecordPath);
-                    var str = System.Text.Encoding.UTF8.GetString(bytes);
-                    var mr = JsonHelper.DeserializeObject<MedicalRecordCoding>(str);
-                    if (mr!=null)
-                    {
-                        mr.OperationCodeResultList = model.OperationCodeResultList;
-                        mr.DiagnosisCodeResultList = model.DiagnosisCodeResultList;
-                    }
                     return View(mr);
                 }
+                else
+                {
+                    ModelState.AddModelError("", "异常数据提交");
+                    return View(model);
+                }
             }
-
             model.LastModifyUserID = userID;
             model.LastModifyTime = DateTime.Now;
-            var orderStatus = string.IsNullOrWhiteSpace(submit) ? ICDOrderState.编码中 : ICDOrderState.编码完成;
-           
-            return View();
+            model.OrderStatus = string.IsNullOrWhiteSpace(submit) ? ICDOrderState.编码中 : ICDOrderState.编码完成;
+
+            ICode_Order access = new DAL_Code_Order();
+            var result = access.SaveCodeResult(model);
+            if (result.IsSuccess)
+            {
+
+                if (!string.IsNullOrWhiteSpace(submit))
+                {
+                    return RedirectToAction("Index", "ServiceItem");
+                }
+            }
+            else
+            {
+                ModelState.AddModelError("", result.ErrorStr);
+            }
+            if (mr != null)
+            {
+                ModelState.Clear();
+                IFile fileAccess = new File_Azure();
+                var medicalRecordPath = fileAccess.SaveMedicalFile(Encoding.UTF8.GetBytes(JsonHelper.SerializeObject(mr)),mr.MedicalRecordPath);
+                return View(mr);
+            }
+            else
+            {
+                ModelState.AddModelError("", "异常数据提交");
+                return View(model);
+            }
         }
 
         #region private Function
 
+        private MedicalRecordCoding getMr(MedicalRecordCoding model)
+        {
+            ICode_Order access = new DAL_Code_Order();
+            MedicalRecordCoding mr = null;
+            var inModel = access.GetCodeOrder(model.CodeOrderID);
+            if (inModel != null)
+            {
+                var bytes = FileHelper.GetFile(inModel.MedicalRecordPath);
+                var str = Encoding.UTF8.GetString(bytes);
+                mr = JsonHelper.DeserializeObject<MedicalRecordCoding>(str);
+                if (mr != null)
+                {
+                    mr.OperationCodeResultList = model.OperationCodeResultList;
+                    mr.DiagnosisCodeResultList = model.DiagnosisCodeResultList;
+                    mr.CodeOrderID = model.CodeOrderID;
+                    mr.LastModifyStamp = inModel.LastModifyStamp;
+                    mr.MedicalRecordPath = inModel.MedicalRecordPath;
+                }
+                ViewBag.PlatformOrderCode = inModel.PlatformOrderCode;
+            }
+            return mr;
+        }
+
         private void initialOperate(CodeOrderModel model)
         {
-            if (model.OperateList == null || model.OperateList.Count == 0)
+            if (model.OperationCodeResultList == null || model.OperationCodeResultList.Count == 0)
             {
-                model.OperateList = new System.Collections.Generic.List<OperationCodeResult> { 
-                    new OperationCodeResult{},
-                    new OperationCodeResult{},
-                    new OperationCodeResult{},
+                model.OperationCodeResultList = new List<OperationCodeResult> {
                     new OperationCodeResult{},
                     new OperationCodeResult{},};
                 return;
             }
-            var newOperateList = new System.Collections.Generic.List<OperationCodeResult>();
-            var maxIndex = model.OperateList.Max(e => e.Index) > 5 ? model.OperateList.Max(e => e.Index) : 5;
+            var newOperateList = new List<OperationCodeResult>();
+            var maxIndex = model.OperationCodeResultList.Max(e => e.Index) > 2 ? model.OperationCodeResultList.Max(e => e.Index) : 2;
             for (int i = 0; i < maxIndex; i++)
             {
-                var item = model.OperateList.FirstOrDefault(e => e.Index == i);
+                var item = model.OperationCodeResultList.FirstOrDefault(e => e.Index == i);
                 if (item != null)
                 {
                     newOperateList.Add(item);
@@ -174,27 +217,24 @@ namespace Docimax.Web_ICD.Controllers
                     newOperateList.Add(new OperationCodeResult());
                 }
             }
-            model.OperateList = newOperateList;
+            model.OperationCodeResultList = newOperateList;
         }
 
         private void initalDiagnosis(CodeOrderModel model)
         {
-            if (model.DiagnosisList == null || model.DiagnosisList.Count == 0)
+            if (model.DiagnosisCodeResultList == null || model.DiagnosisCodeResultList.Count == 0)
             {
-                model.DiagnosisList = new System.Collections.Generic.List<DiagnosisCodeResult> { 
+                model.DiagnosisCodeResultList = new List<DiagnosisCodeResult> {
                     new DiagnosisCodeResult{Description="主要诊断"},
                     new DiagnosisCodeResult{Description="其他诊断"},
-                    new DiagnosisCodeResult{},
-                    new DiagnosisCodeResult{},
-                    new DiagnosisCodeResult{},
                 };
                 return;
             }
-            var newDiagnosisList = new System.Collections.Generic.List<DiagnosisCodeResult>();
-            var maxIndex = model.DiagnosisList.Max(e => e.Index) > 5 ? model.DiagnosisList.Max(e => e.Index) : 5;
+            var newDiagnosisList = new List<DiagnosisCodeResult>();
+            var maxIndex = model.DiagnosisCodeResultList.Max(e => e.Index) > 2 ? model.DiagnosisCodeResultList.Max(e => e.Index) : 2;
             for (int i = 0; i < maxIndex; i++)
             {
-                var item = model.DiagnosisList.FirstOrDefault(e => e.Index == i);
+                var item = model.DiagnosisCodeResultList.FirstOrDefault(e => e.Index == i);
                 if (item != null)
                 {
                     newDiagnosisList.Add(item);
@@ -204,7 +244,7 @@ namespace Docimax.Web_ICD.Controllers
                     newDiagnosisList.Add(new DiagnosisCodeResult { Description = i == 0 ? "主要诊断" : (i == 1 ? "其他诊断" : null) });
                 }
             }
-            model.DiagnosisList = newDiagnosisList;
+            model.DiagnosisCodeResultList = newDiagnosisList;
         }
 
         private MedicalRecordCoding initalCode(MedicalRecordCoding mr, int diagnosisVersionId, int operateVersionId)
@@ -249,8 +289,8 @@ namespace Docimax.Web_ICD.Controllers
         private ActionResult returnOriginModel(CodeOrderModel model, ICode_Order access, string userID)
         {
             var newModel = access.GetCodeOrderDetail(userID, model.CodeOrderID);
-            newModel.OperateList = model.OperateList;
-            newModel.DiagnosisList = model.DiagnosisList;
+            newModel.OperationCodeResultList = model.OperationCodeResultList;
+            newModel.DiagnosisCodeResultList = model.DiagnosisCodeResultList;
             return View(newModel);
         }
 
@@ -315,9 +355,6 @@ namespace Docimax.Web_ICD.Controllers
             }
             return string.Empty;
         }
-
-     
-
 
         #endregion
     }
