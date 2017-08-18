@@ -14,5 +14,10 @@ namespace Docimax.Interface_ICD.Enum
         /// 接口订单 通过调用接口生成的订单
         /// </summary>
         InterfaceOrder = 1,
+
+        /// <summary>
+        /// 图片接口订单 通过调用图片接口生成的订单
+        /// </summary>
+        InterfaceFileOrder = 2,
     }
 }

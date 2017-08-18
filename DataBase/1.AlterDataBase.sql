@@ -97,7 +97,7 @@ GO
 if not exists(select 1 from syscolumns where id=object_id('WebChat_UserSearchLog') and name='SegmentResult')
 begin
 alter table WebChat_UserSearchLog add SegmentResult nvarchar(200) null
-print('添加列')
+print('WebChat_UserSearchLog添加列SegmentResult')
 end
 go
 
@@ -106,7 +106,7 @@ go
 if not exists(select 1 from syscolumns where id=object_id('Code_Order_Diagnosis') and name='ClinicalDiagnosis')
 begin
 alter table Code_Order_Diagnosis add ClinicalDiagnosis nvarchar(200) null
-print('添加列')
+print('Code_Order_Diagnosis添加列ClinicalDiagnosis')
 end
 go
 
@@ -115,10 +115,18 @@ go
 if not exists(select 1 from syscolumns where id=object_id('Code_Order_Operate') and name='ClinicalOperate')
 begin
 alter table Code_Order_Operate add ClinicalOperate nvarchar(200) null
-print('添加列')
+print('Code_Order_Operate添加列ClinicalOperate')
 end
 go
 
+
+/****** Table [dbo].[ORG_Service_Config] 添加 IsAssigned列  Script Date: 08/01/2017 18:43:18 ******/
+if not exists(select 1 from syscolumns where id=object_id('ORG_Service_Config') and name='IsAssigned')
+begin
+alter table ORG_Service_Config add IsAssigned int null
+print('ORG_Service_Config添加列IsAssigned')
+end
+go
 
 
 USE [51ICD_DB]
@@ -163,6 +171,6 @@ GO
 if not exists(select 1 from syscolumns where id=object_id('ORG_Service_Assign') and name='ORG_ID')
 begin
 alter table ORG_Service_Assign add ORG_ID int  null
-print('添加列ORG_Service_Assign.ORG_ID')
+print('ORG_Service_Assign添加列ORG_ID')
 end
 go

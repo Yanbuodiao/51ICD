@@ -6,11 +6,11 @@ using System.Web.Mvc;
 
 namespace Docimax.Web_Interface.Controllers
 {
-    public class TestController : BaseController
+    public class TestController : Controller
     {
         public ActionResult Index()
         {
-            return Content(Guid.NewGuid().ToString("N"));
+            return Content("N:" + Guid.NewGuid().ToString("N") + "<br/>" + "Default:" + Guid.NewGuid().ToString());
         }
     }
 }

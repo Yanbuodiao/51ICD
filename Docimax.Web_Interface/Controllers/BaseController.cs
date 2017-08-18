@@ -7,6 +7,7 @@ using Docimax.Interface_ICD.Message;
 using Docimax.Interface_ICD.Model.Log;
 using Docimax.Interface_ICD.Model.UploadModel;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
@@ -27,6 +28,7 @@ namespace Docimax.Web_Interface.Controllers
                 filterContext.Result = buildResponseAndLog(MessageStr.JsonDeserializeError, log);
                 return;
             }
+            uploadRequest.RecieveTime = DateTime.Now;
             if (string.IsNullOrWhiteSpace(uploadRequest.Version))
             {
                 filterContext.Result = buildResponseAndLog(MessageStr.VersionNull, log);
@@ -60,7 +62,7 @@ namespace Docimax.Web_Interface.Controllers
 
             var requestContentStr = ICD_EncryptUtils.DecryptByAES(uploadRequest.EncryptedRequest, orgModel.EncryptKeyName, "utf-8");
             log.RequestTime = uploadRequest.RequestTime;
-            ViewBag.Decrypt = requestContentStr.Split('&').ToDictionary(a => a.Split('=')[0], b => b.Split('=')[1]);
+            ViewBag.Decrypt = initialDic(requestContentStr);
             ViewBag.AUTHCode = uploadRequest.AUTHCode;
             ViewBag.Log = log;
             base.OnActionExecuting(filterContext);
@@ -75,6 +77,15 @@ namespace Docimax.Web_Interface.Controllers
                 RequestIP = HttpHelper.GetIPFromRequest(filterContext.HttpContext.Request),
                 UserAgent = HttpHelper.GetUserAgent(filterContext.HttpContext.Request),
             };
+        }
+
+        private Dictionary<string, string> initialDic(string requestContentStr)
+        {
+            var contentBegin = requestContentStr.IndexOf('{');
+            var contentEnd = requestContentStr.LastIndexOf('}');
+            var content = requestContentStr.Substring(contentBegin, contentEnd + 1 - contentBegin);
+            var aa = requestContentStr.Split(new char[] { '&' }, 2, StringSplitOptions.RemoveEmptyEntries);
+            return requestContentStr.Split(new char[] { '&' }, 2, StringSplitOptions.RemoveEmptyEntries).ToDictionary(a => a.Split(new char[] { '=' }, 2, StringSplitOptions.RemoveEmptyEntries)[0], b => b.Split(new char[] { '=' }, 2, StringSplitOptions.RemoveEmptyEntries)[1]);
         }
 
         internal ICDJsonResult buildResponseAndLog(string responseStr, BaseLog log)

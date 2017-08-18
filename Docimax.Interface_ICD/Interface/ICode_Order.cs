@@ -78,14 +78,14 @@ namespace Docimax.Interface_ICD.Interface
         /// </summary>
         /// <param name="model">页面提交的编码结果</param>
         /// <returns>保存结果</returns>
-        ICDExcuteResult<int> SaveCodeResult(MedicalRecordCoding model);
+        ICDExcuteResult<int> SaveCodeResult(MedicalRecordBase model);
 
         /// <summary>
         /// 根据上传的病案信息（病案号  住院次  出院日期）判断是否已经存在相关的编码订单
         /// </summary>
         /// <param name="mr">病案信息</param>
         /// <returns>True 存在  false：不存在</returns>
-        bool IsCodeOrderExistByMecicalRecord(MedicalRecordCoding mr);
+        bool IsCodeOrderExistByMecicalRecord(MedicalRecordBase mr);
 
         /// <summary>
         /// 保存从接口请求的编码订单
@@ -94,11 +94,11 @@ namespace Docimax.Interface_ICD.Interface
         /// <param name="authCode">机构授权号</param>
         /// <param name="medicalRecordPath">病案详细内容存放地址</param>
         /// <returns>true：保存成功 false：保存失败</returns>
-        ExcuteResult SaveCodeOrder(MedicalRecordCoding mr, string authCode, string medicalRecordPath);
+        ExcuteResult SaveCodeOrder(MedicalRecordBase mr, string authCode, string medicalRecordPath);
         CodeOrderInterfaceModel GetCodeOrder(int codeOrderID);
         bool CanCodingMR(int codeOrderID, string uid);
         bool CanViewingMR(int codeOrderID, string uid);
 
-        ICDExcuteResult<int> SaveInterfaceOrdeCode(MedicalRecordCoding model, ICDOrderState newState);
+        ICDExcuteResult<int> SaveInterfaceOrdeCode(MedicalRecord_Data model, ICDOrderState newState);
     }
 }

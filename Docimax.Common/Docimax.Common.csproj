@@ -74,6 +74,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ContentTypeCompare.cs" />
     <Compile Include="HtmlModelBindingHelperExtensions.cs" />
     <Compile Include="ICDJsonResult.cs" />
     <Compile Include="JsonHelper.cs" />

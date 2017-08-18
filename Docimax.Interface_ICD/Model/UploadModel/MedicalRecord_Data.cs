@@ -6,33 +6,10 @@ using System.Collections.Generic;
 namespace Docimax.Interface_ICD.Model.UploadModel
 {
     /// <summary>
-    /// 病案编码实体类  病案号+出院时间+住院次数  形成唯一标记号
+    /// 通过格式化数据上传的病案实体
     /// </summary>
-    public class MedicalRecordCoding : BaseModel
+    public class MedicalRecord_Data : MedicalRecordBase
     {
-        /// <summary>
-        /// 订单ID
-        /// </summary>
-        [JsonIgnore]
-        public int CodeOrderID { get; set; }
-        public ICDOrderState OrderStatus { get; set; }
-        #region 唯一标记一份病案
-
-        /// <summary>
-        /// 病案号
-        /// </summary>
-        public string MedicalRecordNO { get; set; }
-        /// <summary>
-        /// 出院时间或者死亡时间 yyyy-MM-dd HH:mm:ss
-        /// </summary>
-        public DateTime? DischargeDate { get; set; }
-        /// <summary>
-        /// 住院次数
-        /// </summary>
-        public int AdmissionTimes { get; set; }
-
-        #endregion
-
         /// <summary>
         /// 患者基本信息
         /// </summary>
@@ -71,15 +48,7 @@ namespace Docimax.Interface_ICD.Model.UploadModel
         /// <summary>
         /// 出院记录
         /// </summary>
-        public DischargeRecord DischargeRecord { get; set; }
-
-        /// <summary>
-        /// 订单类别
-        /// </summary>
-        [JsonIgnore]
-        public OrderTypeEnum OrderType { get; set; }
-        [JsonIgnore]
-        public string MedicalRecordPath { get; set; }
+        public DischargeRecord DischargeRecord { get; set; }    
 
         /// <summary>
         /// 死亡记录
@@ -96,13 +65,6 @@ namespace Docimax.Interface_ICD.Model.UploadModel
         /// 检查报告List
         /// </summary>
         public List<InspectionReport> InspectionReports { get; set; }
-        /// <summary>
-        /// 诊断编码结果
-        /// </summary>
-        public List<DiagnosisCodeResult> DiagnosisCodeResultList { get; set; }
-        /// <summary>
-        /// 手术操作编码结果
-        /// </summary>
-        public List<OperationCodeResult> OperationCodeResultList { get; set; }
+      
     }
 }

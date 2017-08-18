@@ -152,7 +152,12 @@ namespace Docimax.Web_ICD.Controllers
             {
                 return RedirectToAction("InterfaceOrderDetail", new { orderID = orderID });
             }
+            if (orderType==OrderTypeEnum.InterfaceFileOrder)
+            {
+                return RedirectToAction("InterfaceFileOrderDetail", new { orderID = orderID });
+            }
             var model = access.GetCodeOrderDetail(User.Identity.GetUserId(), orderID);
+            ViewBag.PlatformOrderCode = model.PlatformOrderCode;
             return View(model);
         }
         public ActionResult ShowPic(string picURL, string contentType)
@@ -182,7 +187,28 @@ namespace Docimax.Web_ICD.Controllers
             {
                 var bytes = FileHelper.GetFile(model.MedicalRecordPath);
                 var str = System.Text.Encoding.UTF8.GetString(bytes);
-                var mr = JsonHelper.DeserializeObject<MedicalRecordCoding>(str);
+                var mr = JsonHelper.DeserializeObject<MedicalRecord_Data>(str);
+                ViewBag.PlatformOrderCode = model.PlatformOrderCode;
+                return View(mr);
+            }
+            return View();
+        }
+
+        public ActionResult InterfaceFileOrderDetail(int orderID)
+        {
+            ICode_Order access = new DAL_Code_Order();
+            var uid = User.Identity.GetUserId();
+            if (!access.CanViewingMR(orderID, uid))
+            {
+                return View();
+            }
+            var model = access.GetCodeOrder(orderID);
+            if (model != null)
+            {
+                var bytes = FileHelper.GetFile(model.MedicalRecordPath);
+                var str = System.Text.Encoding.UTF8.GetString(bytes);
+                var mr = JsonHelper.DeserializeObject<MedicalRecord_File>(str);
+                mr.Catalogs = mr.Catalogs.OrderBy(e => e.CatalogOrder).ToList();
                 ViewBag.PlatformOrderCode = model.PlatformOrderCode;
                 return View(mr);
             }

@@ -1,7 +1,7 @@
-﻿@model Docimax.Interface_ICD.Model.UploadModel.MedicalRecordCoding
+﻿@model Docimax.Interface_ICD.Model.UploadModel.MedicalRecord_Data
 <script type="text/javascript" src="~/Scripts/typeahead.bundle.js"></script>
 <script type="text/javascript" src="~/Scripts/handlebars.js"></script>
-<h2>@ViewBag.PlatformOrderCode</h2>
+<h2>@Model.PlatformOrderCode</h2>
 <p class="text-success">@ViewBag.StatusMessage</p>
 <script>
     $(document).ready(function () {
@@ -67,6 +67,9 @@
         <hr />
         <div class="row">
             <div class="col-md-7">
+                <ul>
+                    <li style="display:none"></li>
+                </ul>
                 <div class="panel panel-default">
                     <div class="panel-heading" role="tab" id="headingOne">
                         <h4 class="panel-title">

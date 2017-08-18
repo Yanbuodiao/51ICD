@@ -1,0 +1,142 @@
+﻿@model Docimax.Interface_ICD.Model.UploadModel.MedicalRecord_File
+@using Docimax.Interface_ICD.Model.UploadModel
+
+<h2>@ViewBag.PlatformOrderCode</h2>
+<hr />
+@helper TreeView(List<Catalog> categoryTree)
+{
+    foreach (var item in categoryTree)
+    {
+        <div class="media">
+            <a class="media-left" href="#">
+                <span class="glyphicon glyphicon-bookmark"></span>
+            </a>
+            <div class="media-body">
+                <h4 class="list-group-item-heading"> @item.CatalogName</h4>
+                @foreach (var file in item.CatalogFiles)
+                {
+                    <a style="cursor: pointer;" data-url="@file.FileURL" data-contenttype="@file.ConentType" onclick="showPic(this)">@file.FileName</a><br />
+                }
+                @if (item.SubCatalog != null)
+                {
+                    @TreeView(item.SubCatalog)
+                }
+            </div>
+        </div>
+    }
+}
+
+@if (Model != null)
+{
+    <div class="row">
+        <div class="col-md-7">
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="MRSummery">
+                    <h4 class="panel-title">
+                        <a class="accordion-toggle" data-toggle="collapse" href="#collapseMRFiles" aria-expanded="false" aria-controls="collapseMRFiles">
+                            病案图片资料
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapseMRFiles" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="MRSummery">
+                    <div class="panel-body">
+                        @TreeView(Model.Catalogs)
+                    </div>
+                </div>
+            </div>
+           
+        </div>
+        <div class="col-md-5">
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="MRSummery">
+                    <h4 class="panel-title">
+                        <a class="accordion-toggle" data-toggle="collapse" href="#collapseMRSummery" aria-expanded="false" aria-controls="collapseMRSummery">
+                            建议诊断和编码
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapseMRSummery" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="MRSummery">
+                    <div class="panel-body">
+                        @{
+    if (Model.DiagnosisCodeResultList != null && Model.DiagnosisCodeResultList.Count > 0)
+    {
+        var primaryDiagnosis = Model.DiagnosisCodeResultList.FirstOrDefault(e => e.Index == 0);
+        Model.DiagnosisCodeResultList.Remove(primaryDiagnosis);
+        var secondDiagnosis = Model.DiagnosisCodeResultList.OrderBy(e => e.Index).FirstOrDefault();
+        Model.DiagnosisCodeResultList.Remove(secondDiagnosis);
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                主要诊断：@(primaryDiagnosis != null ? primaryDiagnosis.Diagnosis : string.Empty)
+                                <span class="badge">@(primaryDiagnosis != null ? primaryDiagnosis.ICDCode : string.Empty)</span>
+                            </li>
+                            <li class="list-group-item">
+                                其他诊断：@(secondDiagnosis != null ? secondDiagnosis.Diagnosis : string.Empty)
+                                <span class="badge">@(secondDiagnosis != null ? secondDiagnosis.ICDCode : string.Empty)</span>
+                            </li>
+                            @foreach (var item in Model.DiagnosisCodeResultList.OrderBy(t => t.Index))
+            {
+            <li class="list-group-item">
+                &#8195;&#8195;&#8195;&#8195;&#8195;@item.Diagnosis
+                <span class="badge">@item.ICDCode</span>
+            </li>
+            }
+                        </ul>
+    }
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="OperationSummery">
+                    <h4 class="panel-title">
+                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseOperationSummery" aria-expanded="false" aria-controls="collapseOperationSummery">
+                            建议手术和操作编码
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapseOperationSummery" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="OperationSummery">
+                    <div class="panel-body">
+                        @{
+    if (Model.OperationCodeResultList != null && Model.OperationCodeResultList.Count > 0)
+    {
+        <ul class="list-group">
+
+            @foreach (var item in Model.OperationCodeResultList.OrderBy(t => t.Index))
+            {
+                <li class="list-group-item">
+                    &#8195;&#8195;&#8195;&#8195;&#8195;@item.OperationName
+                    <span class="badge">@item.ICDCode</span>
+                </li>
+            }
+        </ul>
+    }
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal  fade" id="showPixModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" id="modal-dialog">
+            <img id="pic" class="img-thumbnail" onclick="hidePix()" />
+        </div>
+    </div>
+    <script type="text/javascript">
+        function showPic(el) {
+            var picURL = $(el).attr("data-url");
+            var contentType = $(el).attr("data-contenttype");
+            var newSrc = "@Url.Action("ShowPic", "UploadItem")?picURL=" + picURL + "&contentType=" + contentType;
+            $("#pic").attr("src", newSrc);
+            $("#showPixModal").modal('show');
+        };
+
+        function hidePix() {
+            $("#showPixModal").modal('hide');
+        }
+    </script>
+}
+else
+{
+    <div>未找到该订单或您无权限查看此订单</div>
+}

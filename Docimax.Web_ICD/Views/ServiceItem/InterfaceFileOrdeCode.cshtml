@@ -1,9 +1,31 @@
-﻿@model Docimax.Interface_ICD.Model.CodeOrderModel
+﻿@model Docimax.Interface_ICD.Model.UploadModel.MedicalRecord_File
 <script type="text/javascript" src="~/Scripts/typeahead.bundle.js"></script>
 <script type="text/javascript" src="~/Scripts/handlebars.js"></script>
 <script type="text/javascript" src="~/Scripts/bootstrap.min.js"></script>
 <h2>@Model.PlatformOrderCode</h2>
 <p class="text-success">@ViewBag.StatusMessage</p>
+@helper TreeView(List<Docimax.Interface_ICD.Model.UploadModel.Catalog> categoryTree)
+{
+    foreach (var item in categoryTree)
+    {
+        <div class="media">
+            <a class="media-left" href="#">
+                <span class="glyphicon glyphicon-bookmark"></span>
+            </a>
+            <div class="media-body">
+                <h4 class="list-group-item-heading"> @item.CatalogName</h4>
+                @foreach (var file in item.CatalogFiles)
+                {
+                    <a style="cursor: pointer;" data-url="@file.FileURL" data-contenttype="@file.ConentType" onclick="showPic(this)">@file.FileName</a><br />
+                }
+                @if (item.SubCatalog != null)
+                {
+                    @TreeView(item.SubCatalog)
+                }
+            </div>
+        </div>
+    }
+}
 <script>
     $(document).ready(function () {
         var remote_diagnosis = new Bloodhound({
@@ -54,60 +76,18 @@
         $("#pic").attr("src", newSrc);
     };
 </script>
-@using (Html.BeginForm("Code", "ServiceItem", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
+@using (Html.BeginForm("InterfaceFileOrdeCode", "ServiceItem", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
     @Html.HiddenFor(model => model.CodeOrderID)
-    @Html.HiddenFor(model => model.LastModifyStamp, new { @Cache = false })
-    @Html.HiddenFor(model => model.CaseNum)
-    @Html.HiddenFor(model => model.PickedUserID)
+    @Html.HiddenFor(model => model.LastModifyStamp)
     <hr />
     <div class="row">
-        <div class="col-md-2" >
+        <div class="col-md-2">
             <ul>
                 <li style="display:none"></li>
             </ul>
-            <div class="span3">
-                @if (Model != null && Model.ItemList != null)
-                {
-                    <ul class="nav nav-list">
-                        @foreach (var item in Model.ItemList)
-                        {
-                            <li>
-                                @Html.Label(item.ItemName, htmlAttributes: new { @class = "tree-toggle nav-header first-level" })
-                                <ul class="nav nav-list tree">
-                                    @if (item.ChildrenList != null && item.ChildrenList.Count > 0)
-                                    {
-                                        foreach (var sunItem in item.ChildrenList)
-                                        {
-                                            <li class="tree">
-                                                @Html.Label(sunItem.ItemName, htmlAttributes: new { @class = "tree-toggle nav-header" })
-                                                <ul class="nav nav-list tree">
-                                                    @foreach (var file in sunItem.UploadedItemList)
-                                                    {
-                                                        <li>
-                                                            <a style="cursor: pointer;" class="tree-nav-a" data-url="@file.AttachURL" data-contenttype="@file.ContentType" onclick="showPic(this)">@file.AttachFileName</a>
-                                                        </li>
-                                                    }
-                                                </ul>
-                                            </li>
-                                        }
-                                    }
-                                    else
-                                    {
-                                        foreach (var file in item.UploadedItemList)
-                                        {
-                                            <li class="tree">
-                                                <a style="cursor: pointer;" class="tree-nav-a" data-url="@file.AttachURL" data-contenttype="@file.ContentType" onclick="showPic(this)">@file.AttachFileName</a>
-                                            </li>
-                                        }
-                                    }
-                                </ul>
-                            </li>
-                        }
-                    </ul>
-                }
-            </div>
+            @TreeView(Model.Catalogs)
         </div>
         <div class="col-md-5" style="padding-left:3px;padding-right:3px;display:inline">
             <ul>

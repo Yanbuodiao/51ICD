@@ -364,7 +364,7 @@ namespace Docimax.Data_ICD.DAL
         /// </summary>
         /// <param name="model">页面提交的编码结果</param>
         /// <returns>保存结果</returns>
-        public ICDExcuteResult<int> SaveCodeResult(MedicalRecordCoding model)
+        public ICDExcuteResult<int> SaveCodeResult(MedicalRecordBase model)
         {
             using (var entity = new Entity_Write())
             {
@@ -407,7 +407,7 @@ namespace Docimax.Data_ICD.DAL
             return new ICDExcuteResult<int> { IsSuccess = true, TResult = model.CodeOrderID };
         }
 
-        public bool IsCodeOrderExistByMecicalRecord(MedicalRecordCoding mr)
+        public bool IsCodeOrderExistByMecicalRecord(MedicalRecordBase mr)
         {
             using (var entity = new Entity_Read())
             {
@@ -417,7 +417,7 @@ namespace Docimax.Data_ICD.DAL
             }
         }
 
-        public ExcuteResult SaveCodeOrder(MedicalRecordCoding mr, string authCode, string medicalRecordPath)
+        public ExcuteResult SaveCodeOrder(MedicalRecordBase mr, string authCode, string medicalRecordPath)
         {
             using (var entity = new Entity_Write())
             {
@@ -540,7 +540,7 @@ namespace Docimax.Data_ICD.DAL
             }
         }
 
-        public ICDExcuteResult<int> SaveInterfaceOrdeCode(MedicalRecordCoding model, ICDOrderState newState)
+        public ICDExcuteResult<int> SaveInterfaceOrdeCode(MedicalRecord_Data model, ICDOrderState newState)
         {
             using (var entity = new Entity_Write())
             {
