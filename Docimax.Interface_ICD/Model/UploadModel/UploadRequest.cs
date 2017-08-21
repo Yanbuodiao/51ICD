@@ -41,10 +41,10 @@ namespace Docimax.Interface_ICD.Model.UploadModel
         {
             var result = new Dictionary<string, string>
             {
-                {"AUTHCode",this.AUTHCode},
-                {"Version",this.Version},
-                {"RequestTime",this.RequestTime.ToString("yyyy-MM-dd HH:mm:ss.fff")},
-                {"EncryptedRequest",this.EncryptedRequest},
+                {"AUTHCode",AUTHCode},
+                {"Version",Version},
+                {"RequestTime",RequestTime.ToString("yyyy-MM-dd HH:mm:ss.fff")},
+                {"EncryptedRequest",EncryptedRequest},
             };
             return result;
         }
